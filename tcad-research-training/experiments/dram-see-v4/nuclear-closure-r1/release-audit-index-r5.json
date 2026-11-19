@@ -1,0 +1,677 @@
+{
+  "contract_sha256": "ed731d21a8abb74f6540ce1e129711dfccdbb61e4d7c532972c5438586fc7067",
+  "created_utc": "2026-10-15T05:13:01.014965+00:00",
+  "execution_enabled": true,
+  "files": [
+    {
+      "path": "experiments/dram-see-v1/analyze.py",
+      "sha256": "6b0df38bb4db9ff3a77bfaee1ead5ef3b794bf93999411bf016cc45ae526cabf"
+    },
+    {
+      "path": "experiments/dram-see-v3/audit.py",
+      "sha256": "f76ae7afb300dd77ba55e1c46486e911b82640ff302d4b7ee3bb89b59e05b229"
+    },
+    {
+      "path": "experiments/dram-see-v4/matched-transport-r1/control.py",
+      "sha256": "a216d325cd0ce82f4306a06efb8a818b2e4065b7581ca526fb6687aaae815194"
+    },
+    {
+      "path": "experiments/dram-see-v4/matched-transport-r1/matched-contract.json",
+      "sha256": "ebfda09fc00f1a0df5f870380af7a5fe7f2f4826dbadb5960ae1b2b8201301dc"
+    },
+    {
+      "path": "experiments/dram-see-v4/matched-transport-r1/transport_matched.cc",
+      "sha256": "0e510e397b5dd2ec03bcd14cb70d99dc33b59b469646d2920b0f4137a9161c27"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/AUDIT-INDEX-R5.md",
+      "sha256": "656e39d1d41cbe2ef573141ce83861f4fb83be3dda3f18005b7cf9eb4b052811"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/AUDIT-R3.md",
+      "sha256": "c01bdb6e3ef40ed0a90f0638d565f08b78d281317271d0c692ce4413da0065b8"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/DEVICE.md",
+      "sha256": "34cf06fb1cf3997314d98d2b5e734ba1374cf90daced55275b17a96debc9fff9"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/MATERIAL-R2.md",
+      "sha256": "768650b15b0afee92d91072e8d71ccb356854a273cec9cb43a5dc2cb61c21f5a"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/SOURCE.md",
+      "sha256": "2dcd0c96a0095bad26f2890c763eb421eddf858e9f5cf6776bce9379dcfcfde1"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/STORAGE-R4.md",
+      "sha256": "095d1672d6a33acbf86e50bc9e247f4e4fcaadfa71a6336f764d6724152d3ae8"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/acceptance.py",
+      "sha256": "57b8361d85e075431b4782e7c4b5653795cd1fa4b02e13f0b8cc6d614993b35a"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/build_cases.py",
+      "sha256": "d1c0282d4e668c743775291dcbdeb154e9e7be70aadc904f9187063200ea6ef7"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/campaign.py",
+      "sha256": "27c1439d0a4ea4a32f95e842c56ae1db7bb347ec229b15e53670e9fe774cd8c2"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/campaign_audit_r3.py",
+      "sha256": "e7de8527d68b807d06318f583fbf941157d5e27d890fd6b81ea1ae98c55d1b88"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/campaign_index_r5.py",
+      "sha256": "0a97c9d0be33402ec7ea60046a8338276e2545550281a049df49e96f4b2c6229"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/common.py",
+      "sha256": "1993f3bf0fc2e149ccab561eaff927533395f8ed5177b1bbe2d179fb705f585c"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/continue.py",
+      "sha256": "b23a10323a8125c162e3fc5449c6eaf1c864097e1f21bf0fb5c38306beec7dfa"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/continue_audit_r3.py",
+      "sha256": "87f69b7cf9b1898e460c41b285f5ecc893c42eeca7f101163056ac27f1e06c84"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/continue_index_r5.py",
+      "sha256": "0e4da59241fca6c07c59eaac373200b33ad1b1f6563936a1ebaedf30f62391ee"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/continue_material_r2.py",
+      "sha256": "caa77a4cbc26c0b770a540e601ec337eba936a33aea3250695c3edcf8d407266"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/continue_storage_r4.py",
+      "sha256": "cd0bc3aeec0e0ae93c72d7dd750e58f266b6e47691ee9c003733b360900417d8"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/contract.json",
+      "sha256": "ed731d21a8abb74f6540ce1e129711dfccdbb61e4d7c532972c5438586fc7067"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/event_source.py",
+      "sha256": "91ceb99c068e8da73ff3b7304dfe0143c47e627ea04c433323782e38e96c971e"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/event_source_audit_r3.py",
+      "sha256": "bf811f8dea72799f6cd0d56f86e7ddec587acacf520bb82f8b0855d76b5f0ff7"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/event_source_index_r5.py",
+      "sha256": "21aceb94dbc99dc19dabb9dec09ad50d319fcd93e03bdf93bedac1905325b209"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/event_source_material_r2.py",
+      "sha256": "8f5f2af359a3d1ed0b212398177067275509de9c8a2bb39deb28cfacc638d633"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/extract_fields.tcl",
+      "sha256": "634c310a4baa64937716e79e5a6689734b67cedd54062ef4bbd797eb5b280d53"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/field_audit.py",
+      "sha256": "2108042433a7bea7af63ba723fc22fbc232960db969f63f5035eeb56d7253d60"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/implementation-decisions.md",
+      "sha256": "1cf2c3111b70fdecb4a0b8b5a496ac089587588bdb9f3ad50caeac55eca84e2f"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/material_probe.cc",
+      "sha256": "a18facd3a10397fd53904c583aea9bb11be9c39efdacd9b10eda892867abc5d4"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/native_compile.py",
+      "sha256": "f5fed822148217e4ee2f02bba8286026d44cef4449dfb344189090442078e4a8"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/observe.py",
+      "sha256": "0afec9bac2aa36a5e4a82d53a759e96cd15b19fb479bf83d655520781287874e"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/pmi_source.C",
+      "sha256": "2eab722cb20b1b66258fbbcd7d02b29436c5b4b243369143d6cc83dc7de3290c"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/prepared_inputs_r4.py",
+      "sha256": "c9d02654fe82a9b2c0fb057582c1cded78392b6c82823601168a2cf96b38ce69"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/register_contract.py",
+      "sha256": "e77a67c11b0e9def07d23fbf0fc67cbc36f3d785952f2dab6568658a22e54daf"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/release-audit-r3.json",
+      "sha256": "325368b237262839bf3310c2e59efeab756a45f607e7e4a2368eeb6397d377e5"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/release-device.json",
+      "sha256": "b23eae9e2b4e53c8766b76baa7710cb9943e7394774304e3235fee90570c471b"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/release-source.json",
+      "sha256": "ff85ecd001bc0c6cce9a0d6a3cb3fec6ef268eff507702e34ba5b69cd4a05452"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/release-storage-r4.json",
+      "sha256": "abf8bf2a5ecd40835ec3d76afd14ced380d2889fc30750fc0eb82ac9ec79bff6"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/release-transport-material-r2.json",
+      "sha256": "95745247ec16f49ffbc2134ce215d3f00fb6b77515d1957f468f56901a4b894d"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/source_kernel.py",
+      "sha256": "2df1c3b86dc08e954f3f28d81cac7da41568bf885edb4d1ff559c48aec99aac4"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/storage_forecast_r4.py",
+      "sha256": "7d0fcea3d7ddd2e3def64334084632ed4f123e3896e38e3103016a76f0ceec39"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/supervisor.py",
+      "sha256": "0d851be13e642349a98f88badeee3c746b3ff616c2174a0bfd9edde4e8c9ec05"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/supervisor_material_r2.py",
+      "sha256": "8bd4a90ac7f3791403e6e22abd0abfc671f06b8853d3aa3e9199d567fb84eefe"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/supervisor_storage_r4.py",
+      "sha256": "bcf7d1e20e0b3d1d2b452697743cd1c21d90010de6f72781f248ea403e11f81c"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_acceptance.py",
+      "sha256": "f815abde010764bb8c67996f512178c7f7591c24439a64c19d0adcc0b9daa78f"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_audit_index_r5.py",
+      "sha256": "0aa4ce0c1d293ad9fa903846cf15aa88834d7c01e63e3867ef3801a635a7c1ae"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_audit_r3.py",
+      "sha256": "2ab007dce9f46a7c1985c0714ac74981be9e9ae0e9b3fa56320ba5b2f07e488b"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_campaign.py",
+      "sha256": "dfbbebb9b187009e825b4109f8271b6eff3899f834f1bd1091e2e3986b37161c"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_continue.py",
+      "sha256": "2b3aecfc2286131659d74befacad5de1b66d405618465d7898d5b648156a4165"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_device.py",
+      "sha256": "13a8c9313cf2baaf12bffaa7015d54881fdbc869702e9299da469651110d03ea"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_material_adapter_r2.py",
+      "sha256": "e8355463b990e91fbe4a0c2e346c80e42e5db0e6b7b2f1d89a50bf43bdc36ec3"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_material_r2.py",
+      "sha256": "8f43570b8cae2350f1d66691935302614af394d7cee3d1a71ea6156c2d90f775"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_source.py",
+      "sha256": "8498ee580994165b253b437ef29cecc34d6f74c2685b4cc75b0908ea0059967d"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_storage_integration_r4.py",
+      "sha256": "76b4133f3dfddccf936de1fd983f9676c14315a9739b0be3d6cf0dafff765d96"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_storage_r4.py",
+      "sha256": "ba950ff24ffb7515f3c82f38e17cf3c36fd0065e54589fdccabcdacbdb96329e"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_supervisor.py",
+      "sha256": "a73dad2fe5b58d16709e48bf0fa5e000a58be7f11d8099ee5d552ce8a82883ef"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/test_transport.py",
+      "sha256": "a6b9735859945915f071607b59c0ea1c33a90693e76b2ed7d3e41d28bb5dbe93"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport-contract-material-r2.json",
+      "sha256": "25dbf4cff5b9ee2a1522f1ce7fe8d353be0feb65b572054f217649b179c49048"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport-contract.json",
+      "sha256": "6c3d9d8cd724ae486de78ff871379ce8eb4bf8571b1188b8e5bde74046b02dc7"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport.py",
+      "sha256": "d9e8e1ab8fcfd51115ab425bf41f403dd9c98c67b1d23e4e27a8ed2eca4b0efd"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_audit.py",
+      "sha256": "2b743238aa83186a4756650217f75d88fdc03a3cad984a3643dd0f16fb905630"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_audit_indexed_r5.py",
+      "sha256": "4437e50f982aa318e348213fb5fc4b93603d1dbca411a461ded28726a41f4e84"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_audit_material_r2.py",
+      "sha256": "fe98fe55d1350ea9c057ca8767777cdc914f0f483ac0169a2b9c8f8196949a61"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_audit_r3.py",
+      "sha256": "181a6427f172fd6f7bbf1fcfd24c9b96f579c4cb90e5493f7011016fc239a784"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_index_r5.py",
+      "sha256": "6de6fd5dd19853079a57e45c6a8c62e2788977a338c89bb343b64ec9f0fced68"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_material_r2.cc",
+      "sha256": "57048e000b65f3c61b57b0c2a857fc41d6ce545a2e99545b66184ebb8d657fea"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_material_r2.py",
+      "sha256": "9d7d9a5b40766645fd932ec7559466d285cf17b9bd294aaf7168c579cfbdcc5a"
+    },
+    {
+      "path": "experiments/dram-see-v4/nuclear-closure-r1/transport_r3.py",
+      "sha256": "2d9797ce944f4c0b030c161e4d1725e3ae2cfb9693febd77d51e7c6b77b2f80e"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-3d-r1/audit_fields.py",
+      "sha256": "62a9273e780ef7d01ca18af3fc4b2e2a74fc5a54052a2652a27ccdd4bc2b1717"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-3d-r1/field_contract.json",
+      "sha256": "49b3283f32062192351043fb6c2c07c49c71e78519dc7f563d19c48aa5bd1ac2"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-3d-r1/postprocess-cost-contract.json",
+      "sha256": "2dd8a987ec8118fad4a943311f4b3aca5466c88c72ffe78ce00f261959e81a87"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-3d-r1/test_audit_fields.py",
+      "sha256": "59db534fa9bee30e95add2dadabbdb5615baf6184bf1dbbb12c8ce1be94e2366"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-r1/audit_fields.py",
+      "sha256": "e19273aaae335597593f9fbfa69f1f5facaaf3966151b44aad8c0dfe4c4371f2"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-r1/field_contract.json",
+      "sha256": "33c36c2e2ae31f6d3eabe46ae82cbde83172f99ca8e81936be86f55cb0595151"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-r1/test_audit_fields.py",
+      "sha256": "e2a758ad2df7f8b024c40fd1f48e3ef67ccaf5198ac9dccf481335df0b355972"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-r2/audit_fields.py",
+      "sha256": "5269653bccfabf0a30bd1d839d357fa5df9f5f738edd49df40b93c472d6d0272"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-r2/field_contract.json",
+      "sha256": "8fb5d56e958b6b861d7af360a30cb315fcb7c6a262af32d6a75b92ca81c9115f"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-r2/test_audit_fields.py",
+      "sha256": "600a74d56e7e052c1e51f01c51248d37d3e1702ea9958e4df4e831453ff7bf63"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-3d-r1/geometry-contract.json",
+      "sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-3d-r1/source_contract.json",
+      "sha256": "d4dd0ae1caaa82c66469a470fcf48cbdaedf7d01254113bd02a91014343765e4"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r2/audit_interface.py",
+      "sha256": "2b6f81290ed894c377fbd0781444e86de50992aa0919212e28d088371c31230f"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r2/build_interface.py",
+      "sha256": "039ab97397e344145eca77c38018e5c50dd515083f59257a064dd34eab9fa53f"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r2/source_contract.json",
+      "sha256": "41bea845de61349d864bd28c7e7eb21e66894cfeeb73364c27a39fc6285844cd"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r2/test_interface.py",
+      "sha256": "0068d1d7db1e388b9827bebe954209c5ebf045cd914155144eaea04a73428153"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r3/audit_interface.py",
+      "sha256": "479199fdb1d9e100a39847456038d4e8a808652496433688a648eabd863e0396"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r3/build_interface.py",
+      "sha256": "98c327b3230a7402694a7b2ce7db6376509cd6638b916e16ed2cc60404c79bd5"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r3/oracle.py",
+      "sha256": "718c4903de8cc68cdaa5c7e36bdb56d2b9f690b9016df082b745f7ca62862fdf"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r3/source_contract.json",
+      "sha256": "d865e7d25ab79fb9bc3e78721e3f47f248bac68959b3e03e3e81555101094d1f"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r3/test_interface.py",
+      "sha256": "dd362cc430c351a2abcb84e72ad8e9550896deef36f3aa20cbbe79ceabdde77a"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/audit_probe.py",
+      "sha256": "d79c0c0989a15e074e39d6ec721b39b5430ded7d4b8f8b6c6f3de122f9fba1c1"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/build_probe.py",
+      "sha256": "3ead51ba029e642a8a1fca4dfe0ab2afa69a269a7ea4d1d2d05c1ffbd2851a00"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/plot_results.py",
+      "sha256": "76ccc8520068244c10093251d7d060c18852450e0cf102c713fa97b90581e3ad"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/preflight.py",
+      "sha256": "562ffc40fa88726e0af65d10631301eb7ae0f243a4f9e71889b0435bef69ebc2"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/run-index.json",
+      "sha256": "74555f01c7b3b7fc5a685fbd6dbb22a774fcf0d43148345fa2adb75a4c7776f8"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/run_once.py",
+      "sha256": "44d70da603c4a0e8c40a746116e728db69c3d26ff0f378f4c882d6654ecb89d7"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/source_contract.json",
+      "sha256": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/test_source_probe.py",
+      "sha256": "75936b90ed16ae2d57f340d0918b7619ec8b8e5ac3b4711eeedd3b543aa1e6f4"
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/environment-spec.json",
+      "sha256": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4"
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/operation.py",
+      "sha256": "55d4b650b047be490a1aeb6b5c6d97c833e9bcab3c7ccbfc17ce7ee53c930d1b"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-index-r5/dev/attempt2/comparison.json",
+      "sha256": "5fd42f857ee88e66e6d0d51491fe5f98bd4b8f0bfd508268bdfa0c3ad69ffe7e"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-index-r5/dev/evidence.json",
+      "sha256": "aa4fdac6ebde125f0c2569162cc9e6fef007165519ec27a97148fb7b356096ee"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-index-r5/integration-review.json",
+      "sha256": "1268ddc28b7415dfa982984cea6d7a43b0b14920cf188d06461c6085030139e4"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-index-r5/original-reaudit.json",
+      "sha256": "09e87d0301d9706fa200355a71a72032f50fb13f37f49d7b5202d2870cec4234"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-index-r5/validation/evidence-final.json",
+      "sha256": "4fb47f08c3314d043952bf667cb3b2ad2d4e2311f3e02039fc09a304ce4dbc9a"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-index-r5/validation/test-run-final.log",
+      "sha256": "bc90db345fb61c16e1ebedb24d8c62a8e9da2b22cd77f5b8b9ae087ba0ec8a28"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-r3/integration-review.json",
+      "sha256": "db593deb6d1284a2429e47cc7c8f85b64e986ca8a3aaf0820437b823b5347d8d"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-r3/original-reaudit.json",
+      "sha256": "4ad47c57066872490725f0b47a1de5b4faff80e3990d14e80bbd108cc156a053"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-r3/review.json",
+      "sha256": "751e131a970484f7f9e64ae4e61d3b07da23d5f22c1eb4a5d30f668442be0631"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-r3/validation/evidence-r3-stage-guards.json",
+      "sha256": "5ba9c5265caf3ae9cd5afc91ab10726f544c0f5c304b0ca4bed8942037eb3c78"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/audit-r3/validation/test-run-r3-stage-guards.log",
+      "sha256": "f0f1f6c6e820ca9e7eb2a9f1a0cd7db6a3beb2cb8f3dba1c6972e4b087ffe515"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/device-dev/evidence-integration-r1.json",
+      "sha256": "338d2d592d3c055025bc9e7270ec861c4b808b07423be69130eb78b58dac54c8"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/material-r2/failure-diagnosis.json",
+      "sha256": "eaa9379b98775c5cbb61e2b959f49890c8ca5dc6c0b761331a05234e78b9d345"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/material-r2/native-material-acceptance.json",
+      "sha256": "56ff99a700e77ecfdc9396e432b0a63975cb636b654d5705a0c909ecc6f3cc33"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/audit-index-r5-release.json",
+      "sha256": "efe9630474cf2813517b10f49ad0aa4d18019c88a7446705ce8858299f36ba97"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/audit-r3-release.json",
+      "sha256": "92bd34afc9ace36ee265c21c27a4e84ddd799b8bce712eb2bf5b68d7e7693f89"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/device-release-r1.json",
+      "sha256": "dec8f9b0f9c7e3eafbabffcbffd1c4a45ca8a299fae96be93613ec42ba2ba5e6"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/material-r2-release.json",
+      "sha256": "f8842e38a8e20718a45bdf337e3aef531b074bad67e7ac457a29941729fc211f"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/source-release-r1.json",
+      "sha256": "a9e8bb55d186eeb03fbdd210ec2368995aa5786ee1d96a0ce50cd3f4cbf515b9"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/storage-r4-release.json",
+      "sha256": "d01333766dcd73474e25d6b67c14d0e15ba4675db58597d24e034b234e5dc954"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/transport-release-r1.json",
+      "sha256": "c6f0181f8b8bf8636ffb5454835f47e2d591a8fc5684e076bab84afe986f9f09"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/line/source.json",
+      "sha256": "ce19be3d044c926a50d5bace1df0b48050f97b050c178910c98f6967f12b6e5a"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/line/sources.dat",
+      "sha256": "ec741954bb48d8ce1ae6fee1372f74ff59d6ea723bf8613c48582ad8da887720"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/point/source.json",
+      "sha256": "5dfcc7e6365e2a1702c4f80ad675d1b056ac5f8bca75448f6a02c747416e0a4b"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/point/sources.dat",
+      "sha256": "7a139e08abb47ba32fe649140ca703d0c8aed92839272fb8e42650ba68fc9620"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/subdivided/source.json",
+      "sha256": "1433a61d1fe6a421ad63f55871c9560040155e18d1ece40af670f5d35a43fc3a"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/subdivided/sources.dat",
+      "sha256": "71263b214aeaafeb3883505e8d5bc3d1126e76761bddc6f2aa3cb9cc23df690c"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/tail/source.json",
+      "sha256": "5dfcc7e6365e2a1702c4f80ad675d1b056ac5f8bca75448f6a02c747416e0a4b"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/tail/sources.dat",
+      "sha256": "7a139e08abb47ba32fe649140ca703d0c8aed92839272fb8e42650ba68fc9620"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/vectors.json",
+      "sha256": "43e6568f622da601c7a9dfd4d65cf73d8aacefca9c77581309ba35d873a2f40f"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/zero/source.json",
+      "sha256": "868bf6e395e75973d4c3bd8360bf109ed6887d48cb3ba6677bc4d510b5d60422"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/zero/sources.dat",
+      "sha256": "0d3410f7ea6a428efd0202d38b8a4feb4ddcbe63feacabb079985a24abcf2ce7"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/zero_chord_delayed/source.json",
+      "sha256": "60f985284f9510b148a0c5be700040fea7c6e611bfc3b4184b35b1275a6c48ee"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/native-oracle-vectors-r1/zero_chord_delayed/sources.dat",
+      "sha256": "450b5c48dbc06edc7267ece4db2e374e0ef073a2d60b11bcbee5baa96e6d55db"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/source-dev/root-review-r3.json",
+      "sha256": "004102d77c35dd8a383f8a048a453bd5c61468041d71a3a67dcfd26e5c0fcbe7"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/storage-r4/dev/evidence-final.json",
+      "sha256": "befaf36542db3db7d236f19b1e9e6534bf5b80ea2e855e980e44123d5ec7b4a1"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/storage-r4/root-risk-review.json",
+      "sha256": "052902bc99e4dc56f4f488b19c119f16a52ceb57da0af2ef3c58d270e00b7b50"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/storage-r4/validation/evidence-integration-r4.json",
+      "sha256": "b15ffebb22b2f461676808d3784e9e183e28a6018ce66af4864c31f91e6b6ab0"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/storage-r4/validation/test-run-integration-r4.log",
+      "sha256": "9bd7287a136200462bcf49e29e23de43622010aea97cac12edc8dcfa40932770"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-h-000/audit.json",
+      "sha256": "ac3782749cc2ce0bd477193e55f3c2baacbf239102d89ed1b3db2dd270713e84"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-init-e/audit.json",
+      "sha256": "ebd0b183f64b526d01938111309c957bafcb8d8c4e0b9f758aae1210143fcea9"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-init-h-c1/audit.json",
+      "sha256": "87bbd70e350b83ede305aee821c3890096161b162ddf56d4976d604bdc753c01"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-miss-e/audit.json",
+      "sha256": "666ad475c6a5391c77c2232c9f3d0f901d99b7ea41c4c077cb90657c4a092dd7"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-miss-h/audit.json",
+      "sha256": "5575f4811acbad9399f9cd767a8335923abf9310ff642c1bf1f678fd30496de0"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-normal-e/audit.json",
+      "sha256": "ff064c62e81ccddc304745a168f658bf498917c847c283ce97ed6a3d00e9e7c3"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-index-r5/nc-r1-normal-h/audit.json",
+      "sha256": "4fc4204f16f1939c357ce682d5cf1389b2952a930969a2d832a1ef065f163687"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-r3/nc-r1-init-e/audit.json",
+      "sha256": "b81c375d6325901862618ee1ce383db93d9fa4142abb08e238134add3fb7ac6b"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-r3/nc-r1-init-h-c1/audit.json",
+      "sha256": "89654f9ddf681eef0e31f1886160ccae810aeb375a28249e28a5d17779c6abf5"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-r3/nc-r1-miss-h/audit.json",
+      "sha256": "5fae1fc169e5b52c04896c2179c7b34e987f815a56e2e91f1ca04d435d445ebe"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-r3/nc-r1-normal-e/audit.json",
+      "sha256": "cb550423ce3da4f4a1014e9029da38ec4d0e8a85f77e60486add6ec3f0cce574"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits-r3/nc-r1-normal-h/audit.json",
+      "sha256": "a50f55143f69cf45d3d081e7d3a744960bbba71f6cb0a21e498af6c60ccf76e7"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits/nc-r1-init-e/audit.json",
+      "sha256": "a2431bd3b207a0639499fa4a2f629e3f2249feacf3e49a46ec1045d15c455300"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits/nc-r1-init-h-c1/audit.json",
+      "sha256": "3049c454e10fcd40d1e4302c46d53aca22dda96702abbd455fea973fd249228d"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits/nc-r1-miss-h/audit.json",
+      "sha256": "af9fa09f7c98e6a8a950735012ac3877d2b7b95da4ad1f8166e04e5b10f805e8"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits/nc-r1-normal-e/audit.json",
+      "sha256": "0078bdda03432e86ed0a1b2e4a76e59c455c21bc48509fb43e0fa8bf422f38f8"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/audits/nc-r1-normal-h/audit.json",
+      "sha256": "aabaa8681600c6fcb96fee6defc2c0435f377b01a480e4f1571d759aac163734"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/transport/stages-r3/N1.json",
+      "sha256": "cf75f30a00f209a6f4dd6d59d39331c86b515efa1ba369a5a600fd64db2d06d8"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/validation-dev/continue-supervisor-evidence.json",
+      "sha256": "146764057aa2cf3809d4529fda868ab4ab701114badcbab67fb091f1444da8ce"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/validation-dev/hash-correction-evidence.json",
+      "sha256": "9bdab0f547aeff980df9f6366bfdcb82fc12a84556b3408f8f459162a44a6bcf"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/validation-dev/material-adapter-r2-evidence.json",
+      "sha256": "66dd9d6351b36bab788909c2e45ec968fa641bee0b225c9beca636336c34e285"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/validation-root/source-device-release-r1/receipt.json",
+      "sha256": "acdfa02fa93a87adcac711fc22ba4d6c2d905cf4da51fe6ab4d8a7b5f2a6485e"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/device.cmd",
+      "sha256": "da11dfc2b3cc092dd414a1d35d27c092f64154a1f15e01fcc9149df83479ebca"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/install-data-r2/collected/dataset-inventory.json",
+      "sha256": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/install-data-r2/collected/environment.sh",
+      "sha256": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe"
+    },
+    {
+      "path": "scripts/tcad.py",
+      "sha256": "8a08d895d788f053da8d07cc29dd7c745ede9b5f3b29b757ad012ca79f7779d5"
+    }
+  ],
+  "root_review": {
+    "path": "local_runtime/dram-see-v4/nuclear-closure-r1/reviews/audit-index-r5-release.json",
+    "sha256": "efe9630474cf2813517b10f49ad0aa4d18019c88a7446705ce8858299f36ba97"
+  },
+  "schema": "nuclear-closure-indexed-audit-release-r5",
+  "stage": "audit-index-r5"
+}

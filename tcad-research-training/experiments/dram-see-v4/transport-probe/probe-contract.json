@@ -1,0 +1,229 @@
+{
+  "schema": "dram-see-v4-proton-check-contract-v1",
+  "geometry": {
+    "geometry_id": "v4-thin-si-l025-r1",
+    "world_half_um": [
+      10.0,
+      10.0,
+      10.0
+    ],
+    "silicon_bounds_um": [
+      [
+        0.0,
+        0.85
+      ],
+      [
+        0.0,
+        1.2
+      ],
+      [
+        -0.5,
+        0.5
+      ]
+    ],
+    "material": "G4_Si",
+    "production_cut_um": 0.01,
+    "charged_max_step_um": 0.02,
+    "surface_impact_x_um": 0.7,
+    "source_y_um": -0.001,
+    "source_z_um": 0.0,
+    "direction": "[-sin(theta),cos(theta),0]",
+    "source_x_um": ".7 + .001*tan(theta); miss surface_x=-5",
+    "scope": "Uncalibrated historical silicon slab geometry; no oxide/back-end stack; transport-record validation only"
+  },
+  "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+  "requests": [
+    {
+      "label": "init-h-r1",
+      "mode": "init",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131001,
+      "event_count": 0,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "initialization"
+    },
+    {
+      "label": "init-e-r1",
+      "mode": "init",
+      "arm": "E",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131002,
+      "event_count": 0,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "initialization"
+    },
+    {
+      "label": "format-h5-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131101,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "format-probe"
+    },
+    {
+      "label": "proton-h-e1-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 1,
+      "angle_deg": 0,
+      "seed": 40131201,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e1-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 1,
+      "angle_deg": 30,
+      "seed": 40131202,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e5-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131203,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e5-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 30,
+      "seed": 40131204,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e20-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 20,
+      "angle_deg": 0,
+      "seed": 40131205,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e20-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 20,
+      "angle_deg": 30,
+      "seed": 40131206,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e100-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 100,
+      "angle_deg": 0,
+      "seed": 40131207,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-h-e100-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 100,
+      "angle_deg": 30,
+      "seed": 40131208,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "proton-e-e5-a0-r1",
+      "mode": "thin",
+      "arm": "E",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131301,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events"
+    },
+    {
+      "label": "miss-h-e5-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131302,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 1,
+      "stage": "zero-event-retention"
+    }
+  ],
+  "total_primary_events": 22,
+  "events_for_probability": false,
+  "gate_order": [
+    "dataset verification",
+    "H/E zero-primary initialization with physics tables and actual process audit",
+    "2-primary H format probe audit",
+    "serial small points and explicit miss probe"
+  ],
+  "stop_on_failure": true,
+  "expand_to_find_nuclear_events": false,
+  "full_design_160_primaries_started": false,
+  "convert_to_tcad": false,
+  "trained_models": false,
+  "nuclear_energy_rule": "Do not impose old deposition <= primary kinetic energy bound; check per-step components and recorded sums only",
+  "csv_arithmetic_tolerances": {
+    "energy_abs_MeV": 1e-12,
+    "energy_relative": 1e-09,
+    "time_abs_ns": 1e-09,
+    "position_abs_um": 1e-09,
+    "direction_norm_abs": 1e-10
+  },
+  "reference_neutron_tracking_cut": "QGSP_BIC standard 10us; log actual process and affected tracks, no custom user killing",
+  "grouping": "Every run/event owns all descendants; future stored0/1 mappings must keep same run/event group. H/E same seed is not event pairing."
+}

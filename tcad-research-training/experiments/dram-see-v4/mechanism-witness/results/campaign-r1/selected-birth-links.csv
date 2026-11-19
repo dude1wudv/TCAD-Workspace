@@ -1,0 +1,16 @@
+event_id,birth_token,parent_track_id,parent_step_id,secondary_ordinal,child_track_id,creator_process,creator_type,creator_subtype,parent_hadronic_before,parent_hadronic_after
+3,e3:t1:s12:n1,1,12,1,2,hIoni,2,2,0,0
+3,e3:t1:s16:n1,1,16,1,3,hIoni,2,2,0,0
+3,e3:t1:s18:n1,1,18,1,4,hIoni,2,2,0,0
+3,e3:t1:s19:n1,1,19,1,5,hIoni,2,2,0,0
+3,e3:t1:s25:n1,1,25,1,6,hIoni,2,2,0,0
+3,e3:t1:s27:n1,1,27,1,7,hIoni,2,2,0,0
+3,e3:t1:s28:n1,1,28,1,8,hIoni,2,2,0,0
+3,e3:t1:s31:n1,1,31,1,9,protonInelastic,4,121,0,1
+3,e3:t1:s31:n2,1,31,2,10,protonInelastic,4,121,0,1
+3,e3:t1:s31:n3,1,31,3,11,protonInelastic,4,121,0,1
+3,e3:t1:s31:n4,1,31,4,12,protonInelastic,4,121,0,1
+3,e3:t1:s31:n5,1,31,5,13,protonInelastic,4,121,0,1
+3,e3:t1:s31:n6,1,31,6,14,protonInelastic,4,121,0,1
+3,e3:t1:s31:n7,1,31,7,15,protonInelastic,4,121,0,1
+3,e3:t14:s1:n1,14,1,1,16,compt,2,13,0,0

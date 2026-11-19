@@ -1,0 +1,47 @@
+{
+  "utc": "2026-11-17T17:53:41.642897+00:00",
+  "gate_sha256": "0a95669d88f273906cad0a64571f0dd1ebdbd39b8ea0069d11d413fc442bb3e6",
+  "policy_sha256": "866d03ea00944bcea65d55613f82c0f7969e05788bcf50fe3f29cbf065c4875b",
+  "results": {
+    "r06-p0-d0-o2-zero-prefix-a-r1": {
+      "scope": "p0_diagnostic",
+      "recipe_id": "zero_whr",
+      "admission": {
+        "path": "plans/dram-se-ddr5-lpddr5/r06-gate/p0-admissions/r06-p0-d0-o2-zero-prefix-a-r1.json",
+        "sha256": "0971bc225455e51bc2da35e7d83f1e05a6ca2bd36ce568929293a9f3e35c86c3"
+      },
+      "scientific_object": {
+        "scope": "p0_diagnostic",
+        "recipe_id": "zero_whr",
+        "profile_id": "D0-nominal",
+        "diagnostic_plan_sha256": "5f00ff6cb4bcebe85d05c1051f472d894ecb5e4b6a7e816b555a8baf09092c00"
+      },
+      "contract": {
+        "path": "plans/dram-se-ddr5-lpddr5/r06-gate/contract.json",
+        "sha256": "550ee6764bb0e94c65fafacd17d0273541c8a540aa761ad8e9587b6466150b37"
+      },
+      "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+    },
+    "r06-p0-d0-o2-zero-prefix-b-r1": {
+      "scope": "p0_diagnostic",
+      "recipe_id": "zero_whr",
+      "admission": {
+        "path": "plans/dram-se-ddr5-lpddr5/r06-gate/p0-admissions/r06-p0-d0-o2-zero-prefix-b-r1.json",
+        "sha256": "976912e9bd79c5903e91a9fbbdf12cf217dab2523d941517ff1d3116d8696a7d"
+      },
+      "scientific_object": {
+        "scope": "p0_diagnostic",
+        "recipe_id": "zero_whr",
+        "profile_id": "D0-nominal",
+        "diagnostic_plan_sha256": "5f00ff6cb4bcebe85d05c1051f472d894ecb5e4b6a7e816b555a8baf09092c00"
+      },
+      "contract": {
+        "path": "plans/dram-se-ddr5-lpddr5/r06-gate/contract.json",
+        "sha256": "550ee6764bb0e94c65fafacd17d0273541c8a540aa761ad8e9587b6466150b37"
+      },
+      "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+    }
+  },
+  "scientific_acceptance": "not_assessed",
+  "formal_case_credit": 0
+}

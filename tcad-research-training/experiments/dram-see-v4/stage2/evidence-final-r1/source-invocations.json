@@ -1,0 +1,97 @@
+[
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r2/launches/r2-a0-b1-base-r1/execution.json",
+    "sha256": "2c264307220baa31d6f4308af7c44bfa5cf4a900ca6460fda7ed234a2c992abe",
+    "label": "r2-a0-b1-base-r1",
+    "identity": [
+      "A0",
+      1,
+      "base"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T114619Z-v4-source-interface-r2-a0-b1-base-e305bf26",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 1,
+    "started_utc": "2026-10-13T11:46:19.136891+00:00",
+    "finished_utc": "2026-10-13T11:52:47.360906+00:00",
+    "manifest_input_matches_project": true
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r2/launches/r2-a1-b1-base-r1/execution.json",
+    "sha256": "3e930c91b53b9d72214fff04dab19397a0127c6cc72978975bcfc0bf408aa735",
+    "label": "r2-a1-b1-base-r1",
+    "identity": [
+      "A1",
+      1,
+      "base"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T115652Z-v4-source-interface-r2-a1-b1-base-9aee36a9",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 2,
+    "started_utc": "2026-10-13T11:56:51.295732+00:00",
+    "finished_utc": "2026-10-13T12:04:57.738456+00:00",
+    "manifest_input_matches_project": true
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r3/launches/r3-a1-b1-base-r1/execution.json",
+    "sha256": "c39f82328b47c2450e35f9b0b936d1c92703a4f67e2541a4c44490040f606e2d",
+    "label": "r3-a1-b1-base-r1",
+    "identity": [
+      "A1",
+      1,
+      "base"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T125700Z-v4-source-interface-r3-a1-b1-base-2f1ef557",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 3,
+    "started_utc": "2026-10-13T12:56:59.838330+00:00",
+    "finished_utc": "2026-10-13T13:06:38.138725+00:00",
+    "manifest_input_matches_project": true
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r4/launches/r4-a0-b1-mesh-r1/execution.json",
+    "sha256": "912e23c092c91a031847889e98edddbe94051946238efc98faceb4a210cf6c5b",
+    "label": "r4-a0-b1-mesh-r1",
+    "identity": [
+      "A0",
+      1,
+      "mesh"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T132129Z-v4-source-interface-r4-a0-b1-mesh-5a893127",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 4,
+    "started_utc": "2026-10-13T13:21:28.481151+00:00",
+    "finished_utc": "2026-10-13T13:56:39.129480+00:00",
+    "manifest_input_matches_project": true
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r4/launches/r4-a1-b1-mesh-r1/execution.json",
+    "sha256": "9f2c5ac0947b556590085e8fd7c0eacc9b4b83622b6901b4733c06e2f3c70753",
+    "label": "r4-a1-b1-mesh-r1",
+    "identity": [
+      "A1",
+      1,
+      "mesh"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T135733Z-v4-source-interface-r4-a1-b1-mesh-b66a8e0d",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 5,
+    "started_utc": "2026-10-13T13:57:32.689701+00:00",
+    "finished_utc": "2026-10-13T14:49:32.981464+00:00",
+    "manifest_input_matches_project": true
+  }
+]

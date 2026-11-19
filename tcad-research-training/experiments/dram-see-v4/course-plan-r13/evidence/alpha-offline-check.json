@@ -1,0 +1,33 @@
+{
+  "status": "OFFLINE_CHECK_PASSED_NOT_NATIVE_QUALIFICATION",
+  "verified_utc": "2026-10-16T04:49:54.0245581Z",
+  "parser_command": "python -B local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/extract_alpha_evidence.py",
+  "parser_exit_code": 0,
+  "astar_rows": 121,
+  "role_count": 18,
+  "B1_A0": 6,
+  "B2_additional": 12,
+  "matched_A0_all": true,
+  "cited_evidence_links_exist": true,
+  "provenance_hashes_match": true,
+  "profile_nodes": 101,
+  "path_length_um": 1.0,
+  "untruncated_line_charge_fC": 6.468053389410294,
+  "space_centroid_gate_um": 0.002,
+  "time_centroid_gate_s": 4E-14,
+  "native_calls": {
+    "ssh": 0,
+    "tcad": 0,
+    "geant4": 0,
+    "compile": 0,
+    "postprocess": 0,
+    "training": 0
+  },
+  "not_verified": [
+    "new CAD deck and material masks",
+    "native source syntax and accepted BE fields",
+    "native mesh/time convergence",
+    "physical alpha track width/time calibration",
+    "budget/release authorization"
+  ]
+}

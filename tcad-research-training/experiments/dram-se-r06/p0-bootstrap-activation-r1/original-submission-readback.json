@@ -1,0 +1,106 @@
+{
+  "utc": "2026-11-17T17:56:15.215110+00:00",
+  "observation_utc": "2026-11-17T17:56:05.143361+00:00",
+  "scope": "single postpublication read of original supervisor files; no status/run/collect/solver call",
+  "prefix_original_runs": [
+    {
+      "id": "r06-p0-d0-o2-zero-prefix-a-r1",
+      "run_id": "auto-r06-p0-d0-o2-zero-prefix-a-r1-2f24d43e305e4322",
+      "backend": "tcad",
+      "slot": 0,
+      "status": "reconciliation_pending",
+      "collected": false,
+      "success": false,
+      "occupied": true,
+      "requested_resources": {
+        "schema": "tcad-shared-gate-slots-r4",
+        "capacity": 4,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "requested_threads": 2
+      },
+      "reason": "original_manifest_missing_launch_unknown",
+      "reconciliation_error": "runner_error"
+    }
+  ],
+  "prefix_pending": [
+    {
+      "id": "r06-p0-d0-o2-zero-prefix-b-r1",
+      "reason": "dependencies_pending",
+      "depends_on": [
+        "r06-p0-d0-o2-zero-prefix-a-r1"
+      ],
+      "requires": []
+    }
+  ],
+  "original_intents": {
+    "r06-p0-d0-o2-zero-prefix-a-r1": {
+      "backend": "tcad",
+      "connection": {
+        "path": "/home/tcad/course-workspace/local_runtime/cloud-benchmark/connection-local-centos79-mc2-four.json",
+        "sha256": "93bd322f12efe93fc8205a7a7559a8b1b54eda4873923aef5e8485081adc45a3"
+      },
+      "input_digest": "183c8c73fe156b03b9b45691ca31518450ab4ca80656655d57163b9854377270",
+      "input_sha256": {
+        "bootstrap-lineage.json": "5196ff591f4107d5803c3f58a0541b00aacb17fc4b3b3d99e01b75685c7c5eec",
+        "cell_msh.tdr": "058a547770051c4047899c2e4faa76eab4da4d1b3d0642d94c9c5962375f4475",
+        "device.cmd": "86f7adbce44e243288e49757172bc3e6b3ae6391f2425999d57439328420d1c7",
+        "nodal-source.dat": "9aaa4bb9c6823c08384fdb53340b7e5d7361337f66e60c0bf66ceef3dafc5e25",
+        "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+        "pmi_r04_nodal.C": "3d735507c8d7f976c217bcb2c6eb679bae70fb426f99adca0959a9e6a7a6c549",
+        "pmi_r04_nodal.so.linux64": "bb77b42878a41dbe2efc603409479b6e8d512da5996a2cb1b3b46eab411ce594",
+        "project.json": "0c46a7c54bb579f9b23208abed524fc730185f19a68c16ba01cd7de0fdc2df1a",
+        "reference-apd.plx": "2093cf6eaa3a24a2771da846c4fe3008cbd79e90afc3a2e1c47d0fbd7898349a",
+        "reference-spectrum.txt": "2f5d4beaba4c97d042a0427733ec38a192ce784308fa83ab63efbe24a566911f",
+        "source-original.dat": "c5475fc5c212cd65be92b499d81573c804b1f257780608b9d446f1e394933d85",
+        "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+      },
+      "next_probe_at": 1794938342.1412961,
+      "probe_failures": 1,
+      "project": "experiments/dram-se-r06/p0-bootstrap-r1/prepared-prefix-r1/inputs/r06-p0-d0-o2-zero-prefix-a-r1",
+      "reconciliation_error": {
+        "detail": "ERROR: Multicore shared pool does not admit Geant4 operations; use the original single-core profile in an idle pool\n",
+        "kind": "runner_error",
+        "ok": false,
+        "returncode": 1
+      },
+      "repair_of": null,
+      "repair_reason": "",
+      "requested_resources": {
+        "capacity": 4,
+        "cpu_set": [
+          0,
+          1
+        ],
+        "requested_threads": 2,
+        "schema": "tcad-shared-gate-slots-r4"
+      },
+      "run_id": "auto-r06-p0-d0-o2-zero-prefix-a-r1-2f24d43e305e4322",
+      "scientific_admission": {
+        "admission": {
+          "path": "plans/dram-se-ddr5-lpddr5/r06-gate/p0-admissions/r06-p0-d0-o2-zero-prefix-a-r1.json",
+          "sha256": "0971bc225455e51bc2da35e7d83f1e05a6ca2bd36ce568929293a9f3e35c86c3"
+        },
+        "contract": {
+          "path": "plans/dram-se-ddr5-lpddr5/r06-gate/contract.json",
+          "sha256": "550ee6764bb0e94c65fafacd17d0273541c8a540aa761ad8e9587b6466150b37"
+        },
+        "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6",
+        "recipe_id": "zero_whr",
+        "scientific_object": {
+          "diagnostic_plan_sha256": "5f00ff6cb4bcebe85d05c1051f472d894ecb5e4b6a7e816b555a8baf09092c00",
+          "profile_id": "D0-nominal",
+          "recipe_id": "zero_whr",
+          "scope": "p0_diagnostic"
+        },
+        "scope": "p0_diagnostic"
+      },
+      "slot": 0,
+      "submission_intent_at": 1794938041.9977274,
+      "task_digest": "74710940667c1db180f46ccd13607f8b0b92038e62975b28c7bb72c6de122698"
+    }
+  },
+  "scientific_acceptance": "not_assessed"
+}

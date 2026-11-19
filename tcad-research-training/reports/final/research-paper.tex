@@ -1,0 +1,48 @@
+\documentclass[UTF8,a4paper,zihao=-4,fontset=fandol]{ctexart}
+\input{shared-preamble.tex}
+\input{tables/snapshot.tex}
+\hypersetup{pdftitle={AI辅助Geant4--TCAD联合仿真的DRAM单粒子读出裕量评估}}
+\title{\heiti\Large AI辅助Geant4--TCAD联合仿真的\\DRAM单粒子读出裕量评估\\[0.5em]\large 阶段研究稿}
+\author{}
+\date{\EvidenceDate}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+针对存储节点电荷扰动与读出电路响应相互混合的问题，构建二维访问晶体管与理想电容组成的DRAM探索模型，将Geant4电离沉积总量传递为TCAD等效径迹源，建立匹配中性参考定义的读出裕量及同条件无粒子对照定义的裕量损失。历史D1诊断表明，固定理想参考保留约$12.37\mV$的无粒子读出偏移；对同一无粒子信号状态，匹配参考使差分由$+2.454961\mV$变为$-9.915036\mV$。在独立建立的50$\,\Omega$预充版本中，参考、源隔离及代表点数值检查通过，已完成32个独立粒子事件的64个存储位响应。基于沉积电荷、栅长和角度的四个岭回归模型，在八组物理工况留一交叉验证中，存储0/1的电荷扰动平均折RMSE分别为$0.102888/0.112903\fC$，裕量损失为$0.955160/1.012491\mV$。这些结果支持受约束AI辅助流程、匹配评价方法及条件响应代理在训练工况内的可行性；独立插值留出与尺寸外推尚未完成全量验证，不能据此宣称测试预测精度或真实器件误码概率。模型未作工艺校准，适用范围限于固定粒子能量、所选电磁输运配置和二维等效源近似。
+\end{abstract}
+\noindent\textbf{关键词：}DRAM；单粒子效应；Geant4；TCAD；匹配参考；岭回归
+
+\input{sections/paper/01-introduction.tex}
+\input{sections/paper/02-model-transfer.tex}
+\input{sections/paper/03-workflow-metrics.tex}
+\input{sections/paper/04-results.tex}
+\input{sections/paper/05-prediction-discussion.tex}
+\input{sections/paper/06-conclusion.tex}
+
+\FloatBarrier
+\bibliographystyle{unsrt}
+\bibliography{references}
+
+\appendix
+\section{证据来源与复核范围}
+正文由固定证据快照生成，证据日期为\EvidenceDate。D1、原100$\,\Omega$版本与R50分别保留模型身份；路径、运行标识、输入和原始输出哈希以及图表字段对应关系由随稿证据包记录\cite{project}。表\ref{tab:paper-evidence}列出主要读取对象。训练交叉验证图表来自已冻结模型，不能用实时测试进度替换其中的误差定义。
+
+\begin{table}[htbp]
+\centering\small
+\caption{主要证据对象及其用途}
+\label{tab:paper-evidence}
+\begin{tabularx}{\textwidth}{@{}p{2.3cm}X p{4.8cm}@{}}
+\toprule
+对象 & 归档入口 & 本文使用范围\\
+\midrule
+D1诊断 & \sourcepath{experiments/dram-readout-offset-d1/data/summary.csv} & 历史无粒子偏移与参考比较\\
+R50冻结模型 & \sourcepath{experiments/dram-see-v3/r50-main/data/predictions/models.json} & 特征、分组、正则化及训练交叉验证\\
+R50预测归档 & \sourcepath{experiments/dram-see-v3/r50-main/data/predictions/} & 预测先于独立测试的冻结证据\\
+本文结果快照 & \sourcepath{tables/snapshot.tex}及随稿图表来源索引 & 状态分母、完成范围和版本对应\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+对文稿的复核包括来源一致性、公式和单位、样本分母、阶段界限及PDF排版。本文整理不启动新的粒子输运或器件求解，也不将待完成扩展作为结果。模型与预测的科学结论仍以正文所列已完成检查为限。
+\end{document}

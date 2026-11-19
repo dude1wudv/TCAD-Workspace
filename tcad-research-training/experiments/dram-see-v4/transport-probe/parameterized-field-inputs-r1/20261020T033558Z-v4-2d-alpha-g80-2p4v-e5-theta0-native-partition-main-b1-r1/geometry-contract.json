@@ -1,0 +1,423 @@
+{
+  "schema": "s2-bcat-analytic-geometry-r1",
+  "status": "OFFLINE_REVIEW_ONLY",
+  "native_qualified": false,
+  "dimension": 2,
+  "length_unit": "um",
+  "model_id": "bcat2020-asymmetric-finite-width-1t1c-r13",
+  "size_id": "S2",
+  "coordinates": "physical x,z_depth -> SDE x,y; SDE z=0",
+  "domain_um": {
+    "x": [
+      -1.0,
+      1.0
+    ],
+    "y": [
+      -0.25,
+      0.25
+    ],
+    "z": [
+      0.0,
+      1.0
+    ]
+  },
+  "outer_trench": {
+    "x_half_width_um": 0.012,
+    "y_half_width_um": 0.060000000000000005,
+    "top_um": 0.0,
+    "round_center_z_um": 0.142,
+    "radius_um": 0.012,
+    "bottom_um": 0.154,
+    "construction": "rectangle/cuboid union circle/cylinder"
+  },
+  "gate_void": {
+    "x_half_width_um": 0.008,
+    "y_half_width_um": 0.05600000000000001,
+    "top_um": 0.08,
+    "round_center_z_um": 0.142,
+    "radius_um": 0.008,
+    "bottom_um": 0.15,
+    "temporary_material": "Metal",
+    "retained_as_volume": false
+  },
+  "sti": {
+    "included": false,
+    "x_um": [
+      -1.0,
+      1.0
+    ],
+    "y_intervals_um": [
+      [
+        -0.060000000000000005,
+        -0.01
+      ],
+      [
+        0.01,
+        0.060000000000000005
+      ]
+    ],
+    "z_um": [
+      0,
+      0.2
+    ]
+  },
+  "nominal_oxide_um": {
+    "side": 0.004,
+    "bottom": 0.004,
+    "y_end_cap": null,
+    "top_cap": 0.08
+  },
+  "regions": [
+    {
+      "name": "R.Silicon",
+      "material": "Silicon",
+      "measure": 1.9963658053289415
+    },
+    {
+      "name": "R.Trench",
+      "material": "SiO2",
+      "measure": 0.0025416637061435915
+    }
+  ],
+  "measure_unit": "um^2",
+  "measures": {
+    "domain": 2.0,
+    "outer_trench": 0.0036341946710584648,
+    "gate_void": 0.0010925309649148732,
+    "sti_gross_each": 0,
+    "sti_trench_intersection_each": 0,
+    "silicon": 1.9963658053289415,
+    "oxide": 0.0025416637061435915,
+    "retained": 1.9989074690350852
+  },
+  "contacts": [
+    {
+      "name": "source",
+      "circuit_node": "SN",
+      "material": "Silicon",
+      "physical_probe_um": [
+        -0.052,
+        0.0,
+        0.0
+      ],
+      "sde_probe_um": [
+        -0.052,
+        0.0,
+        0.0
+      ],
+      "physical_box_xy_um": [
+        [
+          -0.072,
+          -0.032
+        ],
+        [
+          -0.01,
+          0.01
+        ]
+      ],
+      "measure": 0.039999999999999994,
+      "measure_unit": "um"
+    },
+    {
+      "name": "drain",
+      "circuit_node": "BL",
+      "material": "Silicon",
+      "physical_probe_um": [
+        0.052,
+        0.0,
+        0.0
+      ],
+      "sde_probe_um": [
+        0.052,
+        0.0,
+        0.0
+      ],
+      "physical_box_xy_um": [
+        [
+          0.032,
+          0.072
+        ],
+        [
+          -0.01,
+          0.01
+        ]
+      ],
+      "measure": 0.039999999999999994,
+      "measure_unit": "um"
+    },
+    {
+      "name": "gate",
+      "circuit_node": "WL",
+      "material": "SiO2",
+      "physical_body_probe_um": [
+        0,
+        0,
+        0.11099999999999999
+      ],
+      "sde_body_probe_um": [
+        0,
+        0.11099999999999999,
+        0.0
+      ],
+      "boundary_probes": [
+        {
+          "surface": "top",
+          "point": [
+            0,
+            0,
+            0.08
+          ],
+          "outward": [
+            0,
+            0,
+            -1
+          ],
+          "sde_point_um": [
+            0,
+            0.08,
+            0.0
+          ]
+        },
+        {
+          "surface": "side_sn",
+          "point": [
+            -0.008,
+            0,
+            0.11099999999999999
+          ],
+          "outward": [
+            -1,
+            0,
+            0
+          ],
+          "sde_point_um": [
+            -0.008,
+            0.11099999999999999,
+            0.0
+          ]
+        },
+        {
+          "surface": "side_bl",
+          "point": [
+            0.008,
+            0,
+            0.11099999999999999
+          ],
+          "outward": [
+            1,
+            0,
+            0
+          ],
+          "sde_point_um": [
+            0.008,
+            0.11099999999999999,
+            0.0
+          ]
+        },
+        {
+          "surface": "round_bottom",
+          "point": [
+            0,
+            0,
+            0.15
+          ],
+          "outward": [
+            0,
+            0,
+            1
+          ],
+          "sde_point_um": [
+            0,
+            0.15,
+            0.0
+          ]
+        }
+      ],
+      "temporary_material": "Metal",
+      "metal_removed": true,
+      "measure": 0.1651327412287183,
+      "measure_unit": "um"
+    },
+    {
+      "name": "body",
+      "circuit_node": "BODY",
+      "material": "Silicon",
+      "physical_probe_um": [
+        0,
+        0,
+        1.0
+      ],
+      "sde_probe_um": [
+        0,
+        1.0,
+        0.0
+      ],
+      "measure": 2.0,
+      "measure_unit": "um"
+    }
+  ],
+  "doping": {
+    "donor_species": "ArsenicActiveConcentration",
+    "acceptor_species": "BoronActiveConcentration",
+    "material_restriction": "Silicon",
+    "acceptor_cm3": 1e+17,
+    "peak_cm3": 1.45e+20,
+    "a_sn_um": 0.032245853876921464,
+    "a_bl_um": 0.05096327480547933,
+    "blend_um": 0.005,
+    "type": "General",
+    "initialization": "s2_npk=1.45e+20;s2_na=1e+17;s2_asn=0.087/sqrt(log(1450));s2_abl=0.1375/sqrt(log(1450));s2_blend=0.005",
+    "formula": "s2_npk*((1-tanh(x/s2_blend))/2*exp(-(y/s2_asn)^2)+(1-(1-tanh(x/s2_blend))/2)*exp(-(y/s2_abl)^2))",
+    "failure_sentinel_cm3": -1.0,
+    "native_doping_audit_required": true
+  },
+  "mesh": {
+    "windows": [
+      {
+        "name": "All",
+        "physical_min_um": [
+          -1.0,
+          -0.25,
+          0.0
+        ],
+        "physical_max_um": [
+          1.0,
+          0.25,
+          1.0
+        ],
+        "sde_min_um": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "sde_max_um": [
+          1.0,
+          1.0,
+          0.0
+        ],
+        "max_size_um": [
+          0.04,
+          0.04
+        ],
+        "min_size_um": [
+          0.02,
+          0.02
+        ],
+        "materials": []
+      },
+      {
+        "name": "Junction",
+        "physical_min_um": [
+          -1.0,
+          -0.25,
+          0.0
+        ],
+        "physical_max_um": [
+          1.0,
+          0.25,
+          0.16
+        ],
+        "sde_min_um": [
+          -1.0,
+          0.0,
+          0.0
+        ],
+        "sde_max_um": [
+          1.0,
+          0.16,
+          0.0
+        ],
+        "max_size_um": [
+          0.005,
+          0.005
+        ],
+        "min_size_um": [
+          0.0025,
+          0.0025
+        ],
+        "materials": [
+          "Silicon"
+        ]
+      },
+      {
+        "name": "GateOxide",
+        "physical_min_um": [
+          -0.013000000000000001,
+          -0.061000000000000006,
+          0
+        ],
+        "physical_max_um": [
+          0.013000000000000001,
+          0.061000000000000006,
+          0.155
+        ],
+        "sde_min_um": [
+          -0.013000000000000001,
+          0,
+          0.0
+        ],
+        "sde_max_um": [
+          0.013000000000000001,
+          0.155,
+          0.0
+        ],
+        "max_size_um": [
+          0.001,
+          0.001
+        ],
+        "min_size_um": [
+          0.0005,
+          0.0005
+        ],
+        "materials": []
+      },
+      {
+        "name": "AlphaTrack",
+        "physical_min_um": [
+          -0.252,
+          -0.2,
+          0
+        ],
+        "physical_max_um": [
+          0.14800000000000002,
+          0.2,
+          1.0
+        ],
+        "sde_min_um": [
+          -0.252,
+          0,
+          0.0
+        ],
+        "sde_max_um": [
+          0.14800000000000002,
+          1.0,
+          0.0
+        ],
+        "max_size_um": [
+          0.005,
+          0.005
+        ],
+        "min_size_um": [
+          0.0025,
+          0.0025
+        ],
+        "materials": [
+          "Silicon"
+        ]
+      }
+    ],
+    "interface": {
+      "materials": [
+        "Silicon",
+        "SiO2"
+      ],
+      "first_step_um": 0.001,
+      "factor": 1.5,
+      "DoubleSide": true,
+      "minimum_um": 0.0005
+    },
+    "resource_forecast": "UNQUALIFIED; requested controls do not bound nodes, memory, or storage",
+    "mesh_output": "cell_msh.tdr",
+    "guard_file": "mesh_resource_guard.py"
+  }
+}

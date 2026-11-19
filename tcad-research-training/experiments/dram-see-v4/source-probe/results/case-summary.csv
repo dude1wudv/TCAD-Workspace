@@ -1,0 +1,4 @@
+case,stored_bit,source_count,target_fC,generated_fC,relative_error,final_time_s,solver_wallclock_s,passed,run_id
+A0,1,0,0.0,0.0,,4e-09,441.36,True,20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4
+A1,1,1,1.0,1.009915237729964,0.009915237729964055,4e-09,444.36,True,20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782
+A4,1,2,1.0,1.009915237729964,0.009915237729964055,4e-09,475.42,True,20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93

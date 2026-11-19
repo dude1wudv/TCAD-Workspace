@@ -1,0 +1,438 @@
+# 研究设计输入，不是可直接提交的run清单；具体工况在启动阶段解析为版本化输入。
+schema_version: "0.2"
+plan_id: dram-se-ddr5-lpddr5
+revision: "0.6"
+status: authorized_modeling_and_simulation
+execution_authorized: true
+plan_file: PLAN.md
+handoff_file: HANDOFF.md
+decisions_file: decisions.json
+sources_file: SOURCES.md
+current_first_batch_design:
+  file: FIRST-BATCH-DESIGN.md
+  model_design_file: MODEL-AND-TOOLS.md
+  status: design_selected_from_user_direction_not_materialized
+  particle_scope: proton_first_other_species_require_data
+  energy_semantics: incident_kinetic_energy
+  detailed_bounds_and_budget_selected_by: assistant_under_user_delegation
+  exact_case_manifest_created: false
+  execution_authorized: true
+
+formal_title: AI辅助下的DRAM存储器单粒子效应评估研究
+
+research_requirements:
+  R: literature_and_data_driven_route
+  B: geant4_tcad_models_and_dataset
+  T: cross_section_error_rate_training_hpo_cv
+  V: independent_accuracy_generalization_factor_analysis
+
+routes:
+  ddr5:
+    role: engineering_error_rate_and_external_validation
+    preferred_data: mentor_proton_neutron_exposures_and_geant4
+    data_receipt: not_verified_in_this_plan
+    geometry_policy: reuse_group_model_else_explicit_representative_model
+    targets: [sigma_bit_cm2_per_bit, error_rate_per_bit_s]
+    labels_from: verified_exposures
+  lpddr5:
+    role: tcad_structure_and_mechanism
+    preferred_structure_source: L08
+    model_identity: literature_representative_dram_for_lpddr5_research
+    product_geometry_calibrated: false
+    coupling_method_source: L04
+    targets: [collected_charge_fC, read_margin_mV, readout_error_probability]
+    required_derived_targets: [representative_sigma_bit_cm2_per_bit, field_conditioned_error_rate_per_bit_s]
+    derived_target_requires_population_and_readout_definition: true
+    labels_from: native_tcad_responses_with_versioned_readout
+  sharing:
+    share: [parameter_schema, mapping_schema, analysis_code, training_framework]
+    do_not_pool_without_domain_model: [raw_labels, product_identity, exposure_statistics]
+
+parameters:
+  particle:
+    first_batch_species: proton
+    future_schema_support: [proton, neutron, heavy_ion_with_isotope]
+    trained_species_support: only_species_in_validated_training_domain
+  energy:
+    definition: incident_kinetic_energy_at_declared_source_plane
+    proposed_range_MeV: [1, 200]
+    direct_dram_literature_anchors_MeV: [20, 25, 30, 40, 50, 58, 98, 200]
+    anchor_sources: [L05_PDF_p7_Fig7, W5_PDF_p1_proton_tests]
+    coverage_reference_points_MeV: [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 40, 50, 58, 70, 98, 120, 150, 200]
+    low_energy_exploration_MeV: [1, 20]
+    low_energy_upper_bound_exclusive: true
+    development_max_MeV: 120
+    extrapolation_lower_exclusive_MeV: 120
+    reference_plane: null
+    preserve_sensitive_region_energy_distribution: true
+    incident_energy_is_let_or_deposition: false
+  direction:
+    theta_definition: polar_angle_from_device_surface_normal
+    theta_design_range_deg: [0, 60]
+    theta_reference_levels_deg: [0, 30, 45, 60]
+    phi_definition: azimuth_from_declared_device_x_axis
+    phi_reference_levels_deg: [0, 90]
+    additional_in_domain_angle_combinations: true
+    theta_zero_phi_is_duplicate: true
+    oblique_angles_are_project_extension: true
+    L08_original_angle_requires_coordinate_conversion: true
+  position:
+    source_plane_definition: plane_perpendicular_to_beam
+    source_area_cm2: null
+    recompute_normalization_for_geometry_and_angle: true
+    statistical_sampling: uniform_over_declared_population
+    enrichment_sampling: documented_deposition_position_and_mechanism_strata
+  geometry:
+    baseline_model_id: null
+    family: L08_saddle_fin_literature_representative
+    baseline_gate_length_nm: 14
+    baseline_fin_width_nm: 8
+    baseline_oxide_thickness_nm: 6
+    geometry_scale_design_range: [0.8, 1.2]
+    gate_length_design_nm: [11.2, 16.8]
+    fin_width_design_nm: [6.4, 9.6]
+    oxide_thickness_design_nm: [4.8, 7.2]
+    junction_geometry_nm: [82, 92]
+    gate_length_development_scale_range: [0.8, 1.1]
+    gate_length_holdout_scale_lower_exclusive: 1.1
+    gate_length_holdout_scale_upper: 1.2
+    extract_separately: [device_extent_x_nm, device_extent_y_nm, effective_channel_length_nm, actual_net_doping_junction_location]
+    scale_bounds_are_literature_claim: false
+    respect_layout_contact_and_material_dependencies: true
+  doping:
+    region_types: explicit_p_and_n_region_labels
+    acceptor_profile_scale_design: [0.5, 2.0]
+    donor_profile_scale_design: [0.5, 2.0]
+    sampling: log_scale
+    baseline_absolute_profiles: null
+    preserve: [region_id, type, source_profile, peak_cm3, background_cm3, gradient, profile_hash]
+    category_flip_creates_valid_p_channel_device: false
+  operating:
+    initial_temperature_candidate_K: 300
+    capacitance_bias_and_clock: resolve_from_electrical_baseline_then_hold_fixed_in_first_batch
+    fixed_fields_claimed_as_learned_variations: false
+  stored_bit: [0, 1]
+  readout:
+    protocol_version: null
+    threshold_and_timing: source_and_baseline_derived
+    transient_read_error_and_confirmed_upset: separate_labels
+
+mapping:
+  coordinate_transform: explicit_rotation_translation
+  tcad_length_unit: um
+  event_energy_unit: MeV
+  time_unit: s
+  generation_unit: "cm^-3 s^-1"
+  pair_creation_energy: per_material_with_source
+  dimensionality: two_dimensional_screening_then_targeted_three_dimensional_validation
+  formal_azimuth_and_area_cross_section_labels: native_3d_or_independently_validated_mapping_only
+  two_dimensional_screening: retain_fidelity_and_do_not_pool_as_unqualified_3d_truth
+  effective_thickness_um: null
+  fidelity_values: [full_spatiotemporal, equivalent_track, exploratory_pulse]
+  preserve: [event_id, track_id, parent_id, material, deposition, source_time, normalization, input_hash]
+  compare: [mapped_pair_integral, source_integral, readout_effect, approximation_error]
+
+cohorts:
+  device_profiles:
+    total: 6
+    development_domain: 4
+    profile_holdout: 2
+    design: nominal_plus_single_factor_profiles_with_explicit_profile_holdout
+    first_month_profiles:
+      development: [D0-nominal, D1-short-channel, D2-narrow-fin, D3-low-acceptor]
+      holdout: [H0-long-channel, H1-high-donor]
+    active_device_axes: [gate_length, fin_width, acceptor_profile_scale, donor_profile_scale]
+    fixed_first_month_axes: [oxide_thickness, junction_geometry]
+    unresolved_or_invalid_profiles: record_reason_and_continue_independent_profiles
+  development:
+    conditions: 8
+    primary_per_condition: 12
+    response_target: 192
+  in_domain_combination_test:
+    conditions: 4
+    primary_per_condition: 12
+    response_target: 96
+    interpolation_claim_requires_local_support: true
+  energy_extrapolation_test:
+    conditions: 2
+    primary_per_condition: 12
+    response_target: 48
+    all_supervised_training_energy_max_MeV: 120
+  profile_holdout_test:
+    conditions: 2
+    primary_per_condition: 12
+    response_target: 48
+    energy_max_MeV: 120
+    isolate_profile_identity_from_training_profiles: true
+  reserve_profile_holdout:
+    conditions: 2
+    primary_per_condition: 12
+    response_target: 48
+    only_enqueue_after_core_budget: true
+  first_batch:
+    core_conditions: 16
+    reserve_conditions: 2
+    conditions: 18
+    core_radiation_combinations_per_profile: 2
+    max_radiation_combinations_for_any_profile: 4
+    primary_per_condition: 12
+    random_per_condition: 6
+    enrichment_per_condition: 6
+    states_per_primary: 2
+    core_primary_group_target_if_no_reuse: 192
+    primary_target_if_no_reuse: 216
+    core_main_response_target: 384
+    main_response_target: 432
+    baseline_controls: 12
+    numerical_refinement_responses: 0
+    matched_refinement_controls: 0
+    listed_transient_core_total: 396
+    listed_transient_max_total: 444
+    excludes: [geometry_mesh_dc, numerical_refinements, additional_upset_confirmation, repairs, statistical_topups]
+    sample_count_guarantees_precision: false
+  independent_statistics_start:
+    conditions: 0
+    selection: deferred_until_first_month_review
+    conditions_are_subset_of_existing_18: true
+    independent_random_primary_per_condition: 256
+    states_per_primary: 2
+    response_target: 0
+    deferred_response_ceiling: 3072
+    additional_to_first_batch: false
+    expansion: interval_width_counts_and_measured_cost
+    combined_listed_transient_total: 444
+    blocks_unrelated_research: false
+  ddr5_exposures:
+    intake: all_verified_available_groups
+    split_unit: device_batch_or_complete_exposure_condition
+    receipt: not_verified
+  geant4_statistics:
+    cost_measurement_primary_per_unique_transport_case: 10000
+    initial_pool_target_after_cost_measurement: 100000
+    include_all_primaries_and_zero_deposition: true
+    exact_pool_reuse_requires_transport_identity_match: true
+    random_subset_for_direct_statistics: true
+    enrichment_counts_as_unweighted_population: false
+    combined_weighted_estimator_requires_full_inclusion_probability: true
+
+data:
+  tables: [models, events, responses, exposures, datasets]
+  execution_truth: existing_runner_ledger_and_original_archives
+  snapshot_fields: [dataset_version, source_hashes, label_version, mapping_version, group_id, split, exclusion_reason]
+  missing_is_zero: false
+  same_event_pair_is_two_independent_samples: false
+  statistical_labels:
+    sigma_bit_cm2_per_bit:
+      numerator: error_bit_occurrences_under_deduplication_protocol
+      denominator: fluence_times_effective_tested_bits
+    error_rate_per_bit_s:
+      numerator: error_bit_occurrences_under_deduplication_protocol
+      denominator: effective_bit_time_s
+  simulation_statistics:
+    native_random_sigma: "source_area * sum(native_error_bits) / (native_random_primary_count * physical_sensitive_bits)"
+    full_pool_surrogate_sigma: "source_area * sum(predicted_expected_error_bits) / (transport_pool_primary_count * physical_sensitive_bits)"
+    normalize_native_subset_errors_by_full_transport_pool: false
+    states: estimate_separately_then_mix_by_declared_weights
+    enrichment_in_unweighted_native_estimator: false
+    unresolved_or_unsolved_is_success: false
+  unresolved_response: separate_unknown_or_interval_never_silent_negative
+
+training:
+  design_version: "1.0"
+  design_file: PREDICTOR-TRAINING.md
+  status: user_choices_confirmed_not_trained
+  formal_training_authorized: false
+  language_module: existing_llm_retrieval_structured_tools
+  language_finetuning: out_of_first_scope
+  required_models: [mechanism_plus_residual_event_response_mlp, pre_simulation_cross_section_mlp]
+  layers: [event_response_R, weighted_population_aggregation_A, pre_simulation_F, spectrum_error_rate]
+  comparison_families: [mechanism_only, constant_or_group_baseline, ridge, exposure_count_model, small_tree_ensemble, comparable_capacity_plain_mlp]
+  networks:
+    R:
+      formulation: calibrated_low_order_mechanism_plus_mlp_residual
+      hidden_default: [64, 64]
+      hidden_candidates: [[32, 32], [64, 64], [64, 64, 32]]
+      labels: [node_voltage_increment, defined_port_charge, readout_margin, valid_binary_upset]
+      unresolved_label: quality_status_with_per_head_mask_not_third_physical_class
+      mechanism_calibration_scope: current_training_fold_controls_and_irradiated_responses
+      profile_id_as_feature: false
+    F:
+      formulation: direct_cross_section_regression_no_extra_macroscopic_mechanism_fit
+      hidden_default: [32, 32]
+      hidden_candidates: [[16, 16], [32, 32]]
+      output_heads: [sigma_state_0, sigma_state_1]
+      output_transform: scaled_softplus
+      requires_new_geant4_or_tcad_at_prediction: false
+    activation: SiLU
+    optimizer: AdamW
+    initial_learning_rate: 0.001
+    initial_weight_decay: 0.0001
+    initial_dropout: 0
+    batch_normalization: false
+    initial_R_batch_primary_groups: 64
+    initial_F_batch_conditions: 32
+    max_epochs: 300
+    early_stopping_patience: 30
+    early_stopping_scope: grouped_subset_of_current_training_side_not_outer_validation
+  seeds_initial: 1
+  search_seed: 1729
+  selected_configuration_seeds: [1729, 2718, 31415]
+  threads_per_fit: 1
+  initial_parallel_fits: 1
+  compute_budget: reserve_from_shared_nine_cpu_budget_not_an_extra_unbounded_pool
+  physics:
+    confirmed_approach: mechanism_plus_residual
+    probability_and_nonnegative_rate_outputs: true
+    matched_zero_source_increment: true
+    zero_source_residual: difference_against_complete_mapped_source_off
+    conditional_charge_voltage_relation: same_capacitor_branch_calibrated_Q_of_V
+    equate_port_collected_charge_to_capacitor_net_charge: false
+    no_source_controls_alone_identify_radiation_collection: false
+    independent_charge_measurement_preferred: true
+    material_source_integral: mapping_validation_not_automatically_training_loss
+    event_to_cross_section_consistency: frozen_R_A_proxy_counted_once_with_uncertainty
+    rate_from_declared_flux_or_spectrum: true
+    enforce_energy_monotonicity: false
+    enforce_collected_charge_le_deposited_charge: false
+    residual_applicability_masks: true
+    lambda_selection: development_cv_only
+    ablation_required: true
+    ablation_variants: [mechanism_only, comparable_plain_mlp, hybrid_without_extra_residual_penalty, hybrid_with_selected_residual_penalty]
+  hpo:
+    main_joint_candidate_configs: 12
+    candidate_count_is_not_total_fits: true
+    method: bounded_search
+    development_folds: 3
+    split_seed: 20261116
+    inner_R_cross_fitting_folds: 2
+    learning_rate_candidates: [0.0003, 0.001]
+    weight_decay_candidates: [0.00001, 0.0001, 0.001]
+    normalized_residual_penalty_candidates: [0, 0.001, 0.01]
+    selection_scope: development_only
+    score_identity: development_selection_score_not_unbiased_final_performance
+    cache_scope: training_group_R_config_input_and_label_version
+  grouping:
+    outer_cv: development_only_device_profile_and_connected_provenance
+    event_family: all_states_repairs_refinements_together
+    reused_primary: connected_source_group
+    full_pipeline_rebuilt_inside_fold: true
+    no_source_controls_and_refinements_follow_profile_partition: true
+    known_profile_combination_and_energy_tests: allow_profile_overlap_not_training_primary_or_derived_labels
+    final_test_labels_available_to_training_or_hpo: false
+    ddr5: device_batch_or_complete_exposure_condition
+  preprocessing: fit_inside_training_fold
+  proxy_labels:
+    source: cross_fitted_development_response_model_aggregation
+    freeze_R_and_A_before_F_training: true
+    preserve_uncertainty_and_identity: true
+    substitute_for_independent_truth: false
+    duplicate_aggregation_loss_from_same_proxy: false
+    final_F_labels: three_fold_development_R_cross_fitting_not_full_fit_R_labels
+  losses:
+    R: masked_normalized_huber_valid_binary_bce_and_residual_penalty
+    F_native: applicable_count_likelihood_with_exposure_and_primary_dependence
+    F_proxy: asinh_scale_huber_with_capped_uncertainty_weights
+    zero_count_epsilon_log_labels: false
+    probability_calibration: development_random_events_out_of_fold_or_valid_inclusion_weighting
+    ensemble_spread_is_calibrated_95_percent_interval: false
+  input_variants:
+    pre_simulation: device_physics_particle_incident_energy_direction_and_operating_conditions
+    after_geant4: explicit_deposition_spatial_temporal_features
+    incident_and_deposited_energy_distinct: true
+  model_artifacts: [weights, preprocessing, units_schema, source_parameters, mechanism_calibration_provenance, split_manifest, hpo_record, physics_ablation, model_card, frozen_test_predictions]
+  interface_modes: [predict, simulate, auto_within_authorized_budget]
+
+language_evaluation:
+  proposed_development_cases: 30
+  proposed_independent_test_cases: 30
+  grouping: intent_and_parameter_combination
+  metrics: [parameter_accuracy, tool_action_accuracy, completion_rate, citation_correctness, clarification_appropriateness, latency, api_usage]
+  real_execution_demo: limited_small_native_cases_plus_labeled_archive_replay
+
+# depends_on只表达实际输入依赖；等待一项不阻塞其它分支。
+dependency_resolution: required_input_artifact_available_not_entire_upstream_work_package_closed
+incremental_work: start_modeling_or_baseline_training_when_usable_inputs_arrive
+tasks:
+  - {id: R1, route: common, objective: 文献与模型参数来源, depends_on: [], output: source_and_parameter_register}
+  - {id: R2, route: ddr5, objective: 接收DDR5日志和暴露条件, depends_on: [], output: verified_exposure_inventory}
+  - {id: B-D1, route: ddr5, objective: 清洗计数并生成截面和错误率标签, depends_on: [R2], output: exposures_dataset}
+  - {id: B-D2, route: ddr5, objective: 复用DDR5输运模型与必要工况, depends_on: [R1], output: ddr5_transport_dataset}
+  - {id: B-L1, route: lpddr5, objective: 参数化结构与网格, depends_on: [R1], output: literature_based_structure}
+  - {id: B-L2, route: lpddr5, objective: 静态电学和写保持读出, depends_on: [B-L1], output: electrical_baseline_and_readout_protocol}
+  - {id: B-G1, route: lpddr5, objective: 对应几何的粒子输运, depends_on: [B-L1], output: primary_and_secondary_events}
+  - {id: B-C1, route: common, objective: 沉积到源项转换及近似记录, depends_on: [R1], output: coupling_adapter}
+  - {id: B-L3, route: lpddr5, objective: 首批就绪子集耦合并测真实成本, depends_on: [B-L2, B-G1, B-C1], output: pilot_responses_and_measured_cost}
+  - {id: B-L4, route: lpddr5, objective: 分批生成开发矩阵响应, depends_on: [B-L3], output: responses_dataset}
+  - {id: B-S1, route: lpddr5, objective: 独立随机统计验证队列真实求解, depends_on: [B-L3], output: statistical_validation_responses}
+  - {id: T-D1, route: ddr5, objective: 截面与错误率基线训练优化CV, depends_on: [B-D1], output: engineering_models_and_cv}
+  - {id: T-L1, route: lpddr5, objective: 物理约束响应神经网络与完整链分组CV, depends_on: [B-L4], output: response_models_and_cv}
+  - {id: T-M1, route: lpddr5, objective: 折内代理聚合与仿真前神经网络训练, depends_on: [T-L1, B-G1], output: pre_simulation_neural_predictor}
+  - {id: V-P1, route: common, objective: 同数据物理约束消融与校准, depends_on: [T-L1, T-M1], output: physics_ablation_report}
+  - {id: V-D1, route: ddr5, objective: 未见暴露组及外部验证, depends_on: [T-D1], output: independent_engineering_scores}
+  - {id: V-L1, route: lpddr5, objective: 未见组合和外推实际求解评分, depends_on: [T-L1, T-M1], output: independent_response_scores}
+  - {id: V-S1, route: common, objective: 直接统计与两级预测截面比较, depends_on: [B-G1, T-L1, T-M1, B-S1], output: representative_cross_section_intervals}
+  - {id: V-FD, route: ddr5, objective: DDR5因素分析误差及成本, depends_on: [T-D1], output: ddr5_factor_and_cost_report}
+  - {id: V-FL, route: lpddr5, objective: LPDDR5因素分析误差及成本, depends_on: [T-L1], output: lpddr5_factor_and_cost_report}
+  - {id: V-F1, route: common, objective: 汇总已完成的分路线因素与成本, depends_on: [V-FD, V-FL], output: combined_factor_and_cost_report}
+  - {id: S1, route: support, objective: 参数schema和自然语言工具接口, depends_on: [R1], output: request_to_parameter_interface}
+  - {id: S2, route: support, objective: 原runner适配和事件驱动接续, depends_on: [], output: disabled_controller_design_and_later_implementation}
+  - {id: S3, route: support, objective: 最小网页和CLI演示, depends_on: [S1, S2], output: server_application}
+  - {id: S4, route: support, objective: 独立自然语言用例评测, depends_on: [S1], output: language_evaluation_report}
+  - {id: M4, route: common, objective: 四项研究成果与课程交付, depends_on: [V-D1, V-L1, V-S1, V-P1, V-F1, S3, S4], output: reproducible_research_and_course_packages}
+
+resource_policy:
+  capacity_source: latest_user_message_confirming_nine_parallel_tasks
+  available_solver_cpus: 9
+  authorized_parallel_capacity: 9
+  task_threads: 1
+  current_active_mode: four_single_core_tasks_until_batch_drain
+  future_candidate_parallel_capacity: 4
+  future_candidate_threads_per_task: 2
+  future_candidate_cpu_sets: ["0-1", "2-3", "4-5", "6-7"]
+  future_candidate_requires_empty_pool: true
+  future_candidate_validation: [one_task, two_tasks, four_tasks]
+  do_not_assume_future_speedup: true
+  remote_profile_verified_in_this_turn: false
+  profile_alignment: original_execution_owner_at_actual_handoff
+  keep_original_shared_slot_pool: true
+  allow_memory_license_backoff: true
+  budget: resolve_at_execution_handoff_not_inherited_from_legacy_unlimited_authorization
+
+adaptation:
+  allowed_with_record: [mesh, timestep, solver_options, task_order, resource_backoff, training_sample_selection, labeled_approximation]
+  change_requires_explicit_scientific_decision: [research_object, outcome_definition, final_test_reuse, product_identity_claim]
+  failure_scope: affected_task_or_artifact
+  no_information_change_action: wait_or_work_on_independent_task
+  execution_in_this_revision: authorized_modeling_simulation_and_collection
+
+execution_handoff:
+  file: EXECUTION.md
+  user_authorized_date: "2026-11-16"
+  scope: r04_proton_modeling_simulation_repairs_and_data_collection
+  formal_model_training: local_design_confirmed_not_started
+  web_deployment: not_part_of_this_start
+
+# 2026-11-17 r0.6 execution override; actual deployment tracked by receipt.
+r06_local_override:
+  file: plans/dram-se-ddr5-lpddr5/BUDGET-REVISION-r06-20261117.md
+  review_file: plans/dram-se-ddr5-lpddr5/DESIGN-REVIEW-20261117.md
+  handoff_and_predictor_contract: plans/dram-se-ddr5-lpddr5/R06-HANDOFF-AND-PREDICTOR-CONTRACT.md
+  status: execution_authorized_pending_scientific_gates
+  execution_authorization: plans/dram-se-ddr5-lpddr5/EXECUTION-AUTHORIZATION-r06-20261117.md
+  design: anchor_aware_maximin_lhs_plus_axiswise_sparse_holdouts_adaptive_threshold_active_learning
+  profiles: {development: 10, profile_holdout: 3, total: 13}
+  cases: {Z: 26, T: 68, S: 150, R: 12, HR: 28, HP: 30, AL: 82, total: 396}
+  source_time_ns: 22.0
+  hold_window_ns: [18.2, 30.0]
+  deck_timing_version: r06-hold-window-v1
+  stored_bit_policy: b1_priority_with_approximately_25_percent_matched_b0_stratified_subset
+  threshold_adaptive_bracketing: true
+  synthetic_statistics_eligible: false
+  radiation_development_pool: [G0, G1, G2, G3, G4, G5, C0, C1]
+  radiation_holdout_pool: [C2, C3]
+  geant4_batch: wave_bounded_by_geometry_with_immediate_retention_compression
+  resource: keep_virtual_machine_9cpu_28GiB_r4_batch_four_tasks_two_threads
+  p0_gates: [diagnose_mc2_presource_pairing_diff, verify_o2_global_be_summary, verify_o3_hold_window_d0, qualify_13_profiles_z_whr]
+  p0_release: automatic_evidence_review_no_further_user_confirmation
+  statistics_intended_slots: 214
+  currently_statistics_eligible: 0

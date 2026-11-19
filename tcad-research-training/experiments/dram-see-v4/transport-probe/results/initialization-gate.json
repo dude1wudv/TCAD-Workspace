@@ -1,0 +1,22 @@
+{
+  "schema": "dram-see-v4-transport-gate-v1",
+  "gate": "initialization",
+  "passed": true,
+  "utc": "2026-10-13T03:51:11.462049+00:00",
+  "contract_sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+  "audit_evidence": [
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/init-h-r2/audit.json",
+      "sha256": "a101efb2a2e81bf42bcbaaf142f33a714d75b64f9db4e6304430035b53fcef80"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/init-e-r1/audit.json",
+      "sha256": "1269e1918e89e97905e37f2df4e352e6d69a22c7648dea9384503cd12a7ca297"
+    }
+  ],
+  "independent_review": [
+    "local_runtime/dram-see-v4/transport-probe/validation/logs/init-h-r2-audit.json.log",
+    "local_runtime/dram-see-v4/transport-probe/validation/logs/init-e-r1-audit.json.log"
+  ],
+  "scope": "Zero-primary table construction and actual process inventory, not nuclear-event or device calibration"
+}

@@ -1,0 +1,57 @@
+\section{模型与参数传递}
+\subsection{1T1C探索模型及其参数含义}
+信号单元由二维平面NMOS、存储电容$C_s$和位线电容$C_b$构成。存储节点记为SN，位线为BL；字线驱动访问晶体管，使SN与BL交换电荷。中性参考采用相同几何、网格、物理模型、电容和时序，其SN初始目标为$0.5\V$。参考器件不施加粒子源。该结构保留了读出驱动对器件和电容的共同作用，但中性状态与信号状态不同，匹配参考并不保证消除所有状态相关响应。
+
+硅横截面宽为$L+0.6\um$、深为$1.2\um$，出平面按$1\um$有效厚度归一化。表\ref{tab:paper-parameters}给出主要设定。四种特征尺寸专指访问晶体管栅长；扫描时名义氧化层、掺杂和集总电容保持不变，因此它们不是四代商业工艺节点。文献支持1T1C和电荷共享原理，而表中的具体数值是继承并冻结的探索设定，尚未由器件电学曲线、版图寄生或实际DRAM数据校准。
+
+\begin{table}[htbp]
+\centering\small
+\caption{R50主模型的主要参数；取值为项目设定，未作工艺校准}
+\label{tab:paper-parameters}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}X@{}}
+\toprule
+参数 & 取值或定义\\
+\midrule
+栅长$L$、名义栅氧厚度 & $0.18/0.25/0.35/0.45\um$；$5\,\mathrm{nm}$\\
+体区、源漏掺杂 & 硼$10^{17}\,\mathrm{cm}^{-3}$；砷高斯峰值$10^{20}\,\mathrm{cm}^{-3}$\\
+源漏深度参数 & $0.12\um$处指定$10^{17}\,\mathrm{cm}^{-3}$，横向因子0.4；不等于净掺杂结深\\
+栅功函数、温度 & $4.6\,\mathrm{eV}$；$300\,\mathrm{K}$\\
+存储、位线电容 & $C_s=10\,\mathrm{fF}$；$C_b=100\,\mathrm{fF}$\\
+信号、中性初态 & 信号$0.1/0.9\V$对应存储0/1；中性$0.5\V$\\
+预充与字线 & BL目标$0.5\V$；R50预充通路$50\,\Omega$；WL终值$1.8\V$\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+器件求解耦合泊松方程、电子与空穴连续性方程及外部电路，采用Fermi统计、OldSlotboom带隙变窄、掺杂相关迁移率、高场饱和、法向电场迁移率修正，以及SRH和Auger复合。瞬态采用后向欧拉离散。理想钳位在$0.6\ns$释放，$0.95\ns$核验初态；粒子在$1\ns$入射，$2.8\ns$提取保持阶段指标。BL在$2.8$--$2.9\ns$预充，$3\ns$将预充电阻切至$10^{20}\,\Omega$；WL在$3.05$--$3.10\ns$上升，$4\ns$采样。受控初态使尺寸和位值的比较有共同起点，但不构成真实写入过程的验证。
+
+\subsection{输运几何与等效径迹}
+Geant4 10.7.3采用option4电磁构造器和步长限制\cite{g4em}。粒子为$5\,\mathrm{MeV}$的alpha或proton，方向角为$0^\circ/30^\circ$；材料仅含硅和外部真空。硅横截面与TCAD对应，入射点为$(L+0.45,0,0)\um$，方向为$(-\sin\theta,\cos\theta,0)$，$+y$指向硅体内部。有限直径迹长度为
+\begin{equation}
+\ell=\begin{cases}
+1.2\um,&\theta=0^\circ,\\
+\min\!\left(\dfrac{1.2}{\cos\theta},\dfrac{L+0.45}{\sin\theta}\right)\um,&\theta=30^\circ.
+\end{cases}
+\label{eq:paper-length}
+\end{equation}
+式中$L$以$\mu\mathrm{m}$计。例如$L=0.18\um$、$30^\circ$时从侧边退出，$\ell=1.26\um$；该直径迹不等于散射后的实际输运路程。固定表面入口也意味着本文比较的是约定入射位置，不能推广到整个单元的空间敏感区分布。
+
+\subsection{沉积量到TCAD源项的转换与检查}
+设第$j$步总沉积和非电离沉积分别为$E_{{\rm dep},j}$与$E_{{\rm NIEL},j}$，定义
+\begin{align}
+E_{\rm ion}&=\sum_j\max(0,E_{{\rm dep},j}-E_{{\rm NIEL},j}),\\
+Q_{\rm dep}&=q\frac{10^6E_{\rm ion}[\mathrm{MeV}]}{W[\mathrm{eV}]},\qquad
+W=3.6\,\mathrm{eV},\quad q=1.602176634\times10^{-19}\,\mathrm{C}.
+\label{eq:paper-qdep}
+\end{align}
+$W$是硅中生成一对电子空穴的平均能量约定\cite{ryder2021}。$Q_{\rm dep}$表示一类载流子的生成电荷尺度，不是产生的净电荷，也不是SN最终损失的电荷。
+
+将总量沿式\eqref{eq:paper-length}的直径迹均匀分配，线电荷密度为$\lambda_{\rm eq}=Q_{\rm dep}/\ell$，横向高斯尺度为$0.03\um$。程序字段\texttt{LET}采用$\mathrm{pC}/\mu\mathrm{m}$，与常用质量阻止本领单位不同。逐步沉积记录用于溯源；实际激励是总量等效源，未忠实传递三维逐步沉积及其时空分布。
+
+对TCAD生成率$G_{\rm ion}$作时空积分，并将二维归一化厚度计入体积元：
+\begin{equation}
+Q_{\rm src}=q\int\!\!\int_{\Omega}G_{\rm ion}(\mathbf r,t)\,\mathrm dV\,\mathrm dt,
+\qquad \frac{|Q_{\rm src}-Q_{\rm dep}|}{Q_{\rm dep}}\leq5\%.
+\label{eq:paper-source}
+\end{equation}
+相对门槛适用于正沉积事件，合法零沉积单独检查近零源项。侧边高斯截断不能通过改小目标沉积量来通过检查。该积分检验转换总量；对等效分布的物理适用性，仍须保留降维近似的限制。

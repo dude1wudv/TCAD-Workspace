@@ -1,0 +1,77 @@
+{
+  "schema": "dram-see-v4-source-probe-index-v1",
+  "owner": "root",
+  "phase": "COMPLETED_SOURCE_PROBES_HADRONIC_BLOCKED",
+  "cases": {
+    "A0": {
+      "stored_bit": 1,
+      "state": "VERIFIED_INTERFACE",
+      "attempts": [
+        {
+          "label": "a0-b1-r1",
+          "run_id": "20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4",
+          "execution_record": "local_runtime/dram-see-v4/source-probe/launches/a0-b1-r1/execution.json",
+          "input": "local_runtime/dram-see-v4/source-probe/inputs/v4-source-probe-a0-b1-r1",
+          "status": "VERIFIED_INTERFACE",
+          "runner_exit_code": 0,
+          "ssh_exit_code": 0,
+          "remote_exit_code": 0,
+          "audit": "results/a0-b1-r1.json",
+          "audit_sha256": "2187d55137b327086c56c66273f0e74c18125168b8d5ba1fc5255260500f35f3",
+          "start_process_pid": 117620,
+          "launcher_pid": 120732,
+          "runner_pid": 103028
+        }
+      ]
+    },
+    "A1": {
+      "stored_bit": 1,
+      "state": "VERIFIED_INTERFACE",
+      "attempts": [
+        {
+          "label": "a1-b1-r1",
+          "run_id": "20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782",
+          "execution_record": "local_runtime/dram-see-v4/source-probe/launches/a1-b1-r1/execution.json",
+          "input": "local_runtime/dram-see-v4/source-probe/inputs/v4-source-probe-a1-b1-r1",
+          "status": "VERIFIED_INTERFACE",
+          "runner_exit_code": 0,
+          "ssh_exit_code": 0,
+          "remote_exit_code": 0,
+          "audit": "results/a1-b1-r1.json",
+          "audit_sha256": "4d123b3b676964a257f1ea3a76107334e70761b6296bfc9ed107209f8eaa2281",
+          "start_process_pid": 106372,
+          "launcher_pid": 87324,
+          "runner_pid": 105228
+        }
+      ]
+    },
+    "A4": {
+      "stored_bit": 1,
+      "state": "VERIFIED_INTERFACE",
+      "attempts": [
+        {
+          "label": "a4-b1-r1",
+          "run_id": "20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93",
+          "start_process_pid": 103092,
+          "launcher_pid": 121040,
+          "runner_pid": 122640,
+          "execution_record": "local_runtime/dram-see-v4/source-probe/launches/a4-b1-r1/execution.json",
+          "input": "local_runtime/dram-see-v4/source-probe/inputs/v4-source-probe-a4-b1-r1",
+          "status": "VERIFIED_INTERFACE",
+          "runner_exit_code": 0,
+          "ssh_exit_code": 0,
+          "remote_exit_code": 0,
+          "audit": "results/a4-b1-r1.json",
+          "audit_sha256": "5f96e5a0045fbc7c4a98368ed0e6a8691061bbbb1f91dbfce38ee13fe5632608"
+        }
+      ]
+    }
+  },
+  "hadronic_gate": "NOT_READY_DATA_MISSING",
+  "failures": [],
+  "readiness": "results/readiness.json",
+  "comparison": "results/comparison.json",
+  "summary": "results/summary.json",
+  "failure_ledger": "results/failures.json",
+  "active_runs": []
+}

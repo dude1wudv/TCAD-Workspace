@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self' file:; style-src 'self' 'unsafe-inline' file:; connect-src 'none'; form-action 'none'; base-uri 'none'; object-src 'none'">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DRAM 单粒子效应研究台</title>
+<link rel="stylesheet" href="./desk.css">
+<script src="./material.bundle.js" defer></script>
+<script src="./waveform.js" defer></script>
+<script src="./desk.js" defer></script>
+</head>
+<body>
+<header class="topbar"><div class="shell topbar-inner">
+  <span class="brand"><span class="brand-mark" aria-hidden="true">X</span>DRAM SEE</span>
+  <md-text-button href="https://status.xjtu.shop/">研究进度 ↗</md-text-button>
+</div></header>
+<main class="shell">
+  <div class="workspace-heading"><h1>DRAM 单粒子效应研究台</h1><span class="research-state">r0.6 · 归档快照</span></div>
+  <div class="status-kpi-grid" aria-label="归档概览">
+    <md-elevated-card class="status-kpi" data-glass><div class="kpi-top"><span class="kpi-icon" aria-hidden="true">▦</span>归档读点</div><strong class="kpi-value">WHR-01</strong></md-elevated-card>
+    <md-elevated-card class="status-kpi kpi-memory" data-glass><div class="kpi-top"><span class="kpi-icon" aria-hidden="true">⌁</span>波形保存点</div><strong class="kpi-value" id="sample-count">—</strong></md-elevated-card>
+    <md-elevated-card class="status-kpi kpi-runs" data-glass><div class="kpi-top"><span class="kpi-icon" aria-hidden="true">◷</span>SN1 读出时刻</div><strong class="kpi-value">31.9 <small>ns</small></strong></md-elevated-card>
+    <md-elevated-card class="status-kpi kpi-rate" data-glass><div class="kpi-top"><span class="kpi-icon" aria-hidden="true">↗</span>b0 读出裕量</div><strong class="kpi-value"><span id="summary-margin">—</span> <small>mV</small></strong></md-elevated-card>
+  </div>
+
+  <md-tabs class="status-tabs" id="view-tabs" aria-label="研究台">
+    <md-primary-tab id="tab-query" aria-controls="query-pane" active>条件查询</md-primary-tab>
+    <md-primary-tab id="tab-wave" aria-controls="wave-pane">时序读出</md-primary-tab>
+    <md-primary-tab id="tab-audit" aria-controls="audit-pane">电荷核对</md-primary-tab>
+    <md-primary-tab id="tab-plan" aria-controls="plan-pane">研究计划</md-primary-tab>
+  </md-tabs>
+
+  <section class="telemetry-grid" role="tabpanel" id="query-pane" aria-labelledby="tab-query">
+    <div class="composer">
+      <md-filled-text-field id="phrase" type="textarea" rows="2" aria-label="输入查询" placeholder="输入查询" value="查询 D2 无粒子 b0 的读出裕量" maxlength="240" spellcheck="false"></md-filled-text-field>
+      <div class="composer-toolbar">
+        <div class="examples"><md-assist-chip id="quick-point" label="读出裕量"></md-assist-chip><md-assist-chip id="quick-protocol" label="协议时刻"></md-assist-chip></div>
+        <div class="composer-actions">
+          <md-text-button id="mode-button" aria-haspopup="menu" aria-expanded="false" aria-controls="mode-menu">离线归档 ▾</md-text-button>
+          <md-menu id="mode-menu" anchor="mode-button" anchor-corner="start-end" menu-corner="end-end" quick>
+            <md-menu-item id="archive-mode"><div slot="headline">离线归档</div><span slot="end" aria-hidden="true">✓</span></md-menu-item>
+            <md-menu-item disabled><div slot="headline">Codex · 待接入</div></md-menu-item>
+          </md-menu>
+          <md-filled-icon-button id="parse" aria-label="查询" title="查询">↑</md-filled-icon-button>
+        </div>
+      </div>
+    </div>
+    <md-outlined-card class="telemetry-panel">
+      <div class="panel-heading"><h2>查询条件</h2><span class="research-state">离线归档</span></div>
+      <div class="filter-grid">
+        <div class="filter-group" role="group" aria-labelledby="label-device"><span id="label-device">结构</span><div class="research-chips" data-field="device"></div></div>
+        <div class="filter-group" role="group" aria-labelledby="label-state"><span id="label-state">初始状态</span><div class="research-chips" data-field="state"></div></div>
+        <div class="filter-group" role="group" aria-labelledby="label-source"><span id="label-source">粒子条件</span><div class="research-chips" data-field="source"></div></div>
+        <div class="filter-group" role="group" aria-labelledby="label-intent"><span id="label-intent">查询内容</span><div class="research-chips" data-field="intent"></div></div>
+      </div>
+    </md-outlined-card>
+
+    <md-outlined-card class="telemetry-panel" id="result-panel">
+      <div class="panel-heading"><h2>查询结果</h2><span class="research-state" id="archive-id" hidden>WHR-01</span></div>
+      <div class="status-note" id="notice" role="status"><span class="note-mark" id="status-icon" aria-hidden="true">i</span><div><strong id="verdict">载入归档</strong><span id="reason"></span></div></div>
+      <noscript>请启用 JavaScript 以查看归档。</noscript>
+      <div id="record" hidden>
+        <div id="point">
+          <div class="result-caption"><h3>SN1 破坏性读出</h3><span class="parameter-pill">31.9 ns</span></div>
+          <dl class="plan-summary readings-pair"><div class="plan-stat"><dt>b0 读出裕量</dt><dd id="margin"></dd></div><div class="plan-stat"><dt>位线电压</dt><dd><span id="read-voltage">0.556458126540221</span> <small>V</small></dd></div></dl>
+          <dl class="parameter-pills" aria-label="读出参数"><div class="parameter-pill"><dt>WL1</dt><dd>2.5 V</dd></div><div class="parameter-pill"><dt>WL2</dt><dd>0 V</dd></div><div class="parameter-pill"><dt>SN1</dt><dd>约 0.437 V</dd></div></dl>
+          <div class="result-actions"><md-filled-tonal-button id="show-wave">查看波形 ›</md-filled-tonal-button></div>
+        </div>
+        <details class="plan-details" id="protocol"><summary>写入、保持与读出<span class="chevron" aria-hidden="true"></span></summary>
+          <table><thead><tr><th scope="col">时刻</th><th scope="col">归档读数与操作</th></tr></thead><tbody>
+            <tr><th scope="row">10 ns</th><td>SN2 写低 · 1.37611100883295 × 10⁻⁵ V</td></tr>
+            <tr><th scope="row">18 ns</th><td>SN1 写低 · 1.82946604778705 × 10⁻⁵ V</td></tr>
+            <tr><th scope="row">18.1 ns</th><td>释放写入，进入保持段</td></tr>
+            <tr><th scope="row">18.2 ns</th><td>保持起点候选 · 位线 0.133961819676023 V</td></tr>
+            <tr><th scope="row">30 ns</th><td>隔离驱动 · 位线 0.599999999987254 V</td></tr>
+            <tr><th scope="row">31.9 ns</th><td>读取 SN1</td></tr><tr><th scope="row">35 ns</th><td>瞬态结束</td></tr>
+          </tbody></table>
+        </details>
+        <details class="plan-details" id="evidence"><summary>读点口径<span class="chevron" aria-hidden="true"></span></summary><dl class="detail-list"><div><dt>裕量算法</dt><dd>0.6 V − 位线电压</dd></div><div><dt>取值</dt><dd>原始保存点 · 31.9 ns 只积分一次</dd></div><div><dt>对照时刻</dt><dd>21、22、24 ns 位于保存点之间</dd></div><div><dt>待核对</dt><dd>双初态、SN2 读出、感放恢复、持久翻转</dd></div></dl></details>
+      </div>
+    </md-outlined-card>
+  </section>
+
+  <section class="telemetry-grid" role="tabpanel" id="wave-pane" aria-labelledby="tab-wave" hidden>
+    <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>电压波形</h2><span class="research-state">WHR-01</span></div>
+      <p id="trace-error" role="status">请检查本地波形文件。</p>
+      <figure id="scope" hidden>
+        <div class="legend"><span>BL 位线</span><span>SN1</span><span>SN2</span></div>
+        <svg id="plot" role="img" aria-label="位线与存储节点电压随时间变化，圆点标出当前保存点"></svg>
+        <div class="slider-label"><label for="sample">保存点</label><output id="index-label" for="sample"></output></div>
+        <md-slider id="sample" min="0" step="1" aria-label="保存点"></md-slider>
+        <dl class="plan-summary wave-readings" id="readings"><div class="plan-stat"><dt>时刻 / ns</dt><dd></dd></div><div class="plan-stat"><dt>BL / V</dt><dd></dd></div><div class="plan-stat"><dt>SN1 / V</dt><dd></dd></div><div class="plan-stat"><dt>SN2 / V</dt><dd></dd></div></dl>
+      </figure>
+    </md-outlined-card>
+    <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>协议时刻</h2><span class="research-state">D2 · b0</span></div><div class="event-grid" id="event-times"></div></md-outlined-card>
+  </section>
+
+  <section class="audit-grid" role="tabpanel" id="audit-pane" aria-labelledby="tab-audit" hidden>
+    <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>节点电荷平衡</h2><span class="research-state">D2 · 无粒子</span></div>
+      <table><thead><tr><th scope="col">节点</th><th scope="col">等效电压残差</th></tr></thead><tbody><tr><th scope="row">SN1</th><td class="num">≈ 7.48 × 10⁻⁹ V</td></tr><tr><th scope="row">SN2</th><td class="num">≈ 2.63 × 10⁻⁹ V</td></tr><tr><th scope="row">BL</th><td class="num">≈ 1.44 × 10⁻⁹ V</td></tr></tbody></table>
+      <details class="plan-details"><summary>计算口径<span class="chevron" aria-hidden="true"></span></summary><dl class="detail-list"><div><dt>步数</dt><dd>619 个接受步，每步一次</dd></div><div><dt>残差</dt><dd>节点电流收支的绝对残差积分 ÷ 节点电容</dd></div><div><dt>精度</dt><dd>60 位十进制</dd></div><div><dt>生成量</dt><dd>源表与三列记录均为 0</dd></div></dl></details>
+    </md-outlined-card>
+    <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>电子–空穴对</h2><span class="research-state">D0 · event4</span></div>
+      <dl class="detail-list"><div><dt>源表</dt><dd class="num">1412.509075364216</dd></div><div><dt>三列生成量（各）</dt><dd class="num">1412.5090753626195</dd></div><div><dt>积分相对偏差</dt><dd class="num">≈ 1.13 × 10⁻¹²</dd></div><div><dt>限值</dt><dd class="num">1 × 10⁻⁹</dd></div></dl>
+      <div class="status-note" data-tone="ok"><span class="note-mark" aria-hidden="true">✓</span><div><strong>生成量核对通过</strong><span>约 15 ns · 零偏短源</span></div></div>
+    </md-outlined-card>
+    <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>注入前电流</h2><span class="research-state warning">比较失败</span></div>
+      <strong class="kpi-value">34 / 54</strong><p class="caption">超过原限值 · 对照匹配零源</p><md-divider></md-divider><p class="caption">待核对：收集效率、翻转标签</p>
+    </md-outlined-card>
+  </section>
+
+  <section class="plan-pane" role="tabpanel" id="plan-pane" aria-labelledby="tab-plan" hidden>
+    <dl class="plan-summary plan-counts"><div class="plan-stat"><dt>器件配置</dt><dd>13</dd></div><div class="plan-stat"><dt>计划样本</dt><dd>396</dd></div><div class="plan-stat"><dt>统计用途上限</dt><dd>214</dd></div><div class="plan-stat"><dt>快照合格数</dt><dd>0</dd></div></dl>
+    <div class="audit-grid">
+      <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>无粒子对照</h2><span class="research-state">D2</span></div><dl class="detail-list"><div><dt>已归档</dt><dd>b0 · 35 ns · SN1 读出方向符合预期</dd></div><div><dt>待核对</dt><dd>两种初态</dd></div></dl></md-outlined-card>
+      <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>步长对照</h2><span class="research-state">计划</span></div><dl class="detail-list"><div><dt>诊断时刻</dt><dd>22 ns</dd></div><div><dt>比较条件</dt><dd>b0 · 零源与 event4 · 两种步长</dd></div><div><dt>报告分辨率目标</dt><dd>0.1 mV</dd></div></dl></md-outlined-card>
+      <md-outlined-card class="telemetry-panel"><div class="panel-heading"><h2>标签与模型</h2><span class="research-state">待训练</span></div><dl class="detail-list"><div><dt>待匹配标签</dt><dd>待定 · 在共有保存点复核步长影响</dd></div><div><dt>独立留出集</dt><dd>封存中</dd></div><div><dt>器件校准</dt><dd>D2 为 LPDDR5 文献代表结构 · 商用品待校准</dd></div></dl></md-outlined-card>
+    </div>
+  </section>
+  <footer class="footer"><span>归档快照 · WHR-01</span><span>R/F 模型待训练</span></footer>
+</main>
+</body>
+</html>

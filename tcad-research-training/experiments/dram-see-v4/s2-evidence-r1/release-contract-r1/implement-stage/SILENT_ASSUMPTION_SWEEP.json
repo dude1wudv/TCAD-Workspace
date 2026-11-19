@@ -1,0 +1,25 @@
+{
+  "undeclared": [],
+  "stale_rows": [],
+  "semantic_undeclared": 0,
+  "findings": [],
+  "verdict": "clean",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "scope": "仅首四角色离线合同的假设一致性审查；不构成科研验收、原生资格或执行发布。",
+  "evidence": [
+    "授权原文与 C001/C010 一致：行动许可已授予，预算、策略和 owner 发布仍未批准。",
+    "C002 与 supervisor.py:14-29 一致：绑定既有 owner.lock，现场持有人及准入保持 null。",
+    "C003/C005 与四角色合同一致：四个预定 run ID、八个独立预约请求；批准、预约、消耗均为 0。",
+    "C004/C007 与 geometry_bridge.py:213-266、326-377 一致：A0 绑定同一 D3 原档，最终执行输入和真实证据 hash 保持未冻结。",
+    "C006/C011 与产物一致：资源预测未编造，A0 字段提取作为独立 operation 合同，依赖各自原档。"
+  ],
+  "verification": "直接阅读指定快照、source-r1.diff、授权、合同及四角色全部 review 文件；仅只读检查。",
+  "not_performed": [
+    "文件修改",
+    "测试或生成器执行",
+    "原生调用",
+    "SSH",
+    "全包哈希复验"
+  ]
+}

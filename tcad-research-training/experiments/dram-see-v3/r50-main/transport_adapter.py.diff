@@ -1,0 +1,20 @@
+--- dram-see-v3/transport.py
++++ dram-see-v3/r50-main/transport_adapter.py
+@@ -16,7 +16,7 @@
+ import subprocess
+ import tarfile
+ 
+-HERE = Path(__file__).resolve().parent
++HERE = Path(__file__).resolve().parent.parent
+ ROOT = HERE.parents[1]
+ RUNTIME = ROOT / 'local_runtime/dram-see-v3'
+ 
+@@ -24,7 +24,7 @@
+ def _load(name, path):
+     spec = importlib.util.spec_from_file_location(name, path)
+     module = importlib.util.module_from_spec(spec)
+-    spec.loader.exec_module(module)
++    exec(compile(Path(path).read_bytes(), str(path), 'exec'), module.__dict__)
+     return module
+ 
+ 

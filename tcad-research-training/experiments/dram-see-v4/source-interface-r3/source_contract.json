@@ -1,0 +1,274 @@
+{
+  "schema": "dram-see-v4-source-interface-r3-contract",
+  "revision": 3,
+  "scope": "A1 bit1 base measurement repair only; no new physical source/device model; global 19-attempt budget includes prior r2 attempts",
+  "device": {
+    "dimension": 2,
+    "effective_thickness_um": 1.0,
+    "gate_length_um": 0.25,
+    "oxide_nm": 5.0,
+    "silicon_bounds_um": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ]
+  },
+  "units": {
+    "coordinates": "um",
+    "time": "s",
+    "source_charge": "fC",
+    "deck_let": "pC/um",
+    "generation": "pairs/cm^3/s",
+    "raw_2d_spatial_integral": "um^2*cm^-3*s^-1",
+    "raw_centroid": "um"
+  },
+  "conversion": {
+    "elementary_charge_C": 1.602176634e-19,
+    "silicon_eV_per_pair": 3.6,
+    "fC_to_pC": 0.001,
+    "um3_to_cm3": 1e-12
+  },
+  "kernel": {
+    "shape": "Gaussian",
+    "width_um": 0.03,
+    "s_hi_s": 2e-12,
+    "time_domain_s": [
+      0.0,
+      4e-09
+    ],
+    "longitudinal": "constant for 0<=dot(r-start,direction)<length; zero otherwise",
+    "transverse": "exp(-(perpendicular_distance/width)^2)/(sqrt(pi)*width)",
+    "temporal": "2*exp(-((t-t0)/(sqrt(2)*s_hi))^2)/(sqrt(2)*s_hi*sqrt(pi)*(1+erf(t0/(sqrt(2)*s_hi)))) for t>=0",
+    "domain_clipping": "Account before solving; never renormalize after clipping or observing TCAD",
+    "segment_endpoints": "half-open analytic segments; TCAD endpoint discretization is measured by A8, not assumed identical"
+  },
+  "heavyion_parameters": {
+    "s_hi": 2e-12,
+    "a_1": 0.0,
+    "a_2": 0.0,
+    "a_3": 0.0,
+    "a_4": 0.0,
+    "k_hi": 1.0,
+    "c_1": 0.0,
+    "c_2": 1.0,
+    "c_3": 0.0,
+    "c_4": 1.0
+  },
+  "variants": {
+    "base": {
+      "mesh_factor": 1.0,
+      "pulse_max_step_s": 5e-13
+    },
+    "time": {
+      "mesh_factor": 1.0,
+      "pulse_max_step_s": 2.5e-13
+    },
+    "mesh": {
+      "mesh_factor": 0.5,
+      "pulse_max_step_s": 5e-13
+    }
+  },
+  "pulse_output_window_s": [
+    9.5e-10,
+    1.05e-09
+  ],
+  "tdr_times_s": [
+    9.95e-10,
+    1e-09,
+    1.005e-09,
+    1.01e-09,
+    1.015e-09
+  ],
+  "rois_um": {
+    "Total": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "Left": [
+      0.0,
+      0.0,
+      0.425,
+      1.2
+    ],
+    "Right": [
+      0.425,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "Center": [
+      0.395,
+      0.0,
+      0.455,
+      1.2
+    ],
+    "Low": [
+      0.0,
+      0.0,
+      0.85,
+      0.45
+    ],
+    "Middle": [
+      0.0,
+      0.45,
+      0.85,
+      0.75
+    ],
+    "High": [
+      0.0,
+      0.75,
+      0.85,
+      1.2
+    ],
+    "LowerLeft": [
+      0.0,
+      0.0,
+      0.425,
+      0.6
+    ],
+    "UpperLeft": [
+      0.0,
+      0.6,
+      0.425,
+      1.2
+    ]
+  },
+  "partitions": [
+    [
+      "Left",
+      "Right"
+    ],
+    [
+      "Low",
+      "Middle",
+      "High"
+    ],
+    [
+      "LowerLeft",
+      "UpperLeft",
+      "Right"
+    ]
+  ],
+  "case_ids": [
+    "A1"
+  ],
+  "run_sequence": [
+    [
+      "A1",
+      1,
+      "base"
+    ]
+  ],
+  "offline_tolerances": {
+    "charge_abs_fC": 1e-06,
+    "charge_relative": 0.001
+  },
+  "audit_tolerances": {
+    "source_relative": 0.05,
+    "zero_charge_fC": 1e-06,
+    "final_time_abs_s": 1e-18,
+    "pair_generated_charge_abs_fC": 0.0001,
+    "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-05,
+    "pair_current_abs_A": 1e-12,
+    "pair_current_relative": 0.001,
+    "roi_fraction_abs": 0.05,
+    "partition_relative": 0.05,
+    "centroid_abs_um": 0.01,
+    "time_centroid_abs_s": 5e-13,
+    "generation_waveform_relative": 0.05,
+    "active_generation_fraction": 0.001,
+    "output_step_roundoff_s": 1e-18,
+    "refinement_charge_relative": 0.02,
+    "refinement_voltage_abs_V": 0.001,
+    "refinement_voltage_relative": 0.05
+  },
+  "tolerance_basis": "Pre-registered engineering gates authorized by root. Refinement and segmentation use the user-approved 2% generated charge and max(1mV,5% perturbation peak) control-relative voltage gates. Port current integrals are diagnostic only. These gates do not establish device calibration.",
+  "evidence": [
+    {
+      "path": "local_runtime/dram-see-v1/sdevice_ug.pdf",
+      "pages": [
+        180,
+        181,
+        182,
+        183,
+        184,
+        812,
+        813,
+        814,
+        816
+      ],
+      "purpose": "Native named window integrals, Coordinates centroid, um integration units and HeavyIon kernel; licensed copy remains outside source directory"
+    },
+    {
+      "path": "local_runtime/vdmos-tid-training/references/svisual_ug-installed-private.pdf",
+      "pages": [
+        309,
+        310,
+        319,
+        339
+      ],
+      "purpose": "Optional native TDR field inventory and window integration; not fabricated pixel measurement"
+    },
+    {
+      "path": "experiments/dram-see-v4/stage1/design-register.json",
+      "purpose": "A2/A3/A5/A6 registered artificial fixture positions"
+    }
+  ],
+  "decisions": [
+    "No dimension reduction exists here: dimension!=2, real/synthetic=false, nonzero z or nonzero direction-z is rejected.",
+    "Keep full xyz in artificial source specifications, render only the explicitly zero-z 2D components.",
+    "Time refinement changes only the injection-window maximum step and initial step; all circuit timing remains inherited.",
+    "Request all accepted-time current samples; do not thin device currents independently of mixed-mode circuit samples.",
+    "A3 x=0 half-domain charge is computed before running; total prescribed charge is still 1fC and domain charge is 0.5fC.",
+    "A0 absence of radiation datasets can prove only a source-free structure; never claim a measured numerical zero field from absence.",
+    "Chosen HeavyIon c2=1,c3=0,c4=1 is explicit and differs from the installed default; no default-equivalence claim.",
+    "Each A8 subsegment owns a disjoint longitudinal interval and its proportional charge once; A8 compares against this revision's A1 with matching A0.",
+    "Source parameters are interface fixtures, not calibrated particle radial or timing physics.",
+    "The old r2 time oracle misread sqrt(2)*s as 2*s; revision3 corrects the analytic observer only. Actual deck s_hi remains2ps.",
+    "Only archived r2 A0 may be reused as control after its frozen original audit passes and matching_contract/actual mesh hashes exactly match.",
+    "No r2 A1 failure is promoted; failed measurement paths remain diagnostic raw data.",
+    "Source specification and physical matching contract are byte-identical to the frozen r2 A1; current output definitions alone change."
+  ],
+  "candidate_roles": [
+    [
+      "A1",
+      1,
+      "base"
+    ]
+  ],
+  "measurement": {
+    "acceptance_path": "native CurrentPlot generic 3-coordinate Window z=[-0.5,0.5], not a 3D physical simulation",
+    "z_window_um": [
+      -0.5,
+      0.5
+    ],
+    "legacy_total_command": "Integrate(Semiconductor)",
+    "legacy_total_raw_dataset": "IntegrSemiconductor HeavyIonGeneration",
+    "other_paths_diagnostic_only": [
+      "named_no_window",
+      "two_coordinate_Total_window"
+    ],
+    "area_diagnostic": "Temperature CurrentPlot token (UG p273) window integral / frozen 300K; no thermal model changes; exact native output aliases Temperature or LatticeTemperature only",
+    "generation_time_semantics": "BE accepted-step average; r2 five native TDR values independently match the documented sigma=s_hi interval averages, current r3 output must also match",
+    "charge_integral": "sum_i G_i*(t_i-t_(i-1)); retain old trapezoid as diagnostic",
+    "temporal_centroid": "BE constant-per-interval source moment at interval midpoints",
+    "window_semantics_evidence": "UG pp180-181 and Table208 p1618 support three-component window corners; exact treatment on 2D mesh is an explicit diagnostic hypothesis, not established fact",
+    "center_roi_warning": "r2 native TDR Center/Total differs from analytic by about0.0595>0.05; PLT repair alone is not a spatial pass"
+  },
+  "global_budget": {
+    "maximum_tcad_attempts": 19,
+    "shared_with": "source-interface-r2",
+    "prior_attempts_at_revision_freeze": 2,
+    "new_candidate_cost": 1,
+    "scheduler": "root only; no per-revision reset"
+  },
+  "frozen_references": {
+    "r2_builder_sha256": "039ab97397e344145eca77c38018e5c50dd515083f59257a064dd34eab9fa53f",
+    "r2_contract_sha256": "41bea845de61349d864bd28c7e7eb21e66894cfeeb73364c27a39fc6285844cd",
+    "r2_auditor_sha256": "2b6f81290ed894c377fbd0781444e86de50992aa0919212e28d088371c31230f"
+  }
+}

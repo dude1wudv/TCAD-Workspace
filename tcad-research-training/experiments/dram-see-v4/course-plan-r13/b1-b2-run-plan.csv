@@ -1,0 +1,22 @@
+role_id,stage,purpose,bit,mesh,time_grid,source_scale,matched_A0,depends_on,status,sdevice_reservations
+B1-D2,B1,2D section/DC normalization check,,2D,main,,,G0 input release,PROPOSED_NOT_RELEASED,1
+B1-D3,B1,3D DC two drain voltages,,main,main,,,B1-D2,PROPOSED_NOT_RELEASED,1
+B1-A0-main-b0,B1,actual write/hold/read without source,0,main,main,,,B1-D3,PROPOSED_NOT_RELEASED,1
+B1-A0-main-b1,B1,actual write/hold/read without source,1,main,main,,,B1-D3,PROPOSED_NOT_RELEASED,1
+B1-D3-mesh,B1,3D DC spatial refinement,,h/2,main,,,B1-D3,PROPOSED_NOT_RELEASED,1
+B1-A0-mesh-b0,B1,matched no-source refinement,0,h/2,main,,,B1-A0-main-b0,PROPOSED_NOT_RELEASED,1
+B1-A0-mesh-b1,B1,matched no-source refinement,1,h/2,main,,,B1-A0-main-b1,PROPOSED_NOT_RELEASED,1
+B1-A0-time-b0,B1,matched no-source refinement,0,main,dt/2-all,,,B1-A0-main-b0,PROPOSED_NOT_RELEASED,1
+B1-A0-time-b1,B1,matched no-source refinement,1,main,dt/2-all,,,B1-A0-main-b1,PROPOSED_NOT_RELEASED,1
+B2-Z-b0,B2,zero-amplitude source equivalence,0,main,main,0,B1-A0-main-b0,G1 and source offline release,PROPOSED_NOT_RELEASED,1
+B2-Z-b1,B2,zero-amplitude source equivalence,1,main,main,0,B1-A0-main-b1,G1 and source offline release,PROPOSED_NOT_RELEASED,1
+B2-A-main-b0,B2,5 MeV alpha variable LET,0,main,main,1,B1-A0-main-b0,G1;B2-Z-b0,PROPOSED_NOT_RELEASED,1
+B2-A-main-b1,B2,5 MeV alpha variable LET,1,main,main,1,B1-A0-main-b1,G1;B2-Z-b1,PROPOSED_NOT_RELEASED,1
+B2-A-mesh-b0,B2,5 MeV alpha variable LET,0,h/2,main,1,B1-A0-mesh-b0,B2-A-main-b0;B1-A0-mesh-b0,PROPOSED_NOT_RELEASED,1
+B2-A-mesh-b1,B2,5 MeV alpha variable LET,1,h/2,main,1,B1-A0-mesh-b1,B2-A-main-b1;B1-A0-mesh-b1,PROPOSED_NOT_RELEASED,1
+B2-A-time-b0,B2,5 MeV alpha variable LET,0,main,dt/2-all,1,B1-A0-time-b0,B2-A-main-b0;B1-A0-time-b0,PROPOSED_NOT_RELEASED,1
+B2-A-time-b1,B2,5 MeV alpha variable LET,1,main,dt/2-all,1,B1-A0-time-b1,B2-A-main-b1;B1-A0-time-b1,PROPOSED_NOT_RELEASED,1
+B2-H-b0,B2,half-amplitude native source audit,0,main,main,0.5,B1-A0-main-b0,B2-A-main-b0,PROPOSED_NOT_RELEASED,1
+B2-H-b1,B2,half-amplitude native source audit,1,main,main,0.5,B1-A0-main-b1,B2-A-main-b1,PROPOSED_NOT_RELEASED,1
+B2-SPLIT-b0,B2,two contiguous segments in one solve,0,main,main,1,B1-A0-main-b0,B2-A-main-b0,PROPOSED_NOT_RELEASED,1
+B2-SPLIT-b1,B2,two contiguous segments in one solve,1,main,main,1,B1-A0-main-b1,B2-A-main-b1,PROPOSED_NOT_RELEASED,1

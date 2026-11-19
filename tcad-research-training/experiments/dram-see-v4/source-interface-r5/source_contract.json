@@ -1,0 +1,603 @@
+{
+  "additional_roi_gate_cases": [
+    "A5",
+    "A6",
+    "A7"
+  ],
+  "additional_rois": [
+    "SourceLeft",
+    "SourceRight"
+  ],
+  "audit_tolerances": {
+    "active_generation_fraction": 0.001,
+    "centroid_abs_um": 0.01,
+    "final_time_abs_s": 1e-18,
+    "generation_waveform_relative": 0.05,
+    "output_step_roundoff_s": 1e-18,
+    "pair_current_abs_A": 1e-12,
+    "pair_current_relative": 0.001,
+    "pair_generated_charge_abs_fC": 0.0001,
+    "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-05,
+    "partition_relative": 0.05,
+    "refinement_charge_relative": 0.02,
+    "refinement_voltage_abs_V": 0.001,
+    "refinement_voltage_relative": 0.05,
+    "roi_fraction_abs": 0.05,
+    "source_relative": 0.05,
+    "time_centroid_abs_s": 5e-13,
+    "zero_charge_fC": 1e-06
+  },
+  "case_ids": [
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8S2",
+    "A8S4"
+  ],
+  "conversion": {
+    "elementary_charge_C": 1.602176634e-19,
+    "fC_to_pC": 0.001,
+    "silicon_eV_per_pair": 3.6,
+    "um3_to_cm3": 1e-12
+  },
+  "decisions": [
+    "No dimension reduction exists here: dimension!=2, real/synthetic=false, nonzero z or nonzero direction-z is rejected.",
+    "Keep full xyz in artificial source specifications, render only the explicitly zero-z 2D components.",
+    "Time refinement changes only the injection-window maximum step and initial step; all circuit timing remains inherited.",
+    "Request all accepted-time current samples; do not thin device currents independently of mixed-mode circuit samples.",
+    "A3 x=0 half-domain charge is computed before running; total prescribed charge is still 1fC and domain charge is 0.5fC.",
+    "A0 absence of radiation datasets can prove only a source-free structure; never claim a measured numerical zero field from absence.",
+    "Chosen HeavyIon c2=1,c3=0,c4=1 is explicit and differs from the installed default; no default-equivalence claim.",
+    "Each A8 subsegment owns a disjoint longitudinal interval and its proportional charge once; A8 compares against this revision's A1 with matching A0.",
+    "Source parameters are interface fixtures, not calibrated particle radial or timing physics.",
+    "The old r2 time oracle misread sqrt(2)*s as 2*s; revision3 corrects the analytic observer only. Actual deck s_hi remains2ps.",
+    "No r2 A1 failure is promoted; failed measurement paths remain diagnostic raw data.",
+    "No root scheduler, SSH, solver, installation, training or remote message is implemented here.",
+    "The approved next round adopts mesh factor0.5 as 2D main without promoting failed r2/r3 source audits or claiming calibration.",
+    "A5 fine compares0.5 to0.25 with own matched A0; historical1.0 to0.5 remains separate.",
+    "Only registered r4 A0/A1 are reusable; mesh to main is a display alias; all other physics and provenance must match.",
+    "No new forced timepoint: gstep Range has no Intervals; original five gfield points remain.",
+    "A0/A1 bit1 main builds are offline references; root reserve is required for recalculation.",
+    "Frozen v1 build domain excludes mesh0.25; r5 reads its exact geometry f-string AST with source hash and strict structure/name whitelist, leaving old code unchanged."
+  ],
+  "device": {
+    "dimension": 2,
+    "effective_thickness_um": 1.0,
+    "gate_length_um": 0.25,
+    "oxide_nm": 5.0,
+    "silicon_bounds_um": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ]
+  },
+  "evidence": [
+    {
+      "pages": [
+        180,
+        181,
+        182,
+        183,
+        184,
+        812,
+        813,
+        814,
+        816
+      ],
+      "path": "local_runtime/dram-see-v1/sdevice_ug.pdf",
+      "purpose": "Native named window integrals, Coordinates centroid, um integration units and HeavyIon kernel; licensed copy remains outside source directory"
+    },
+    {
+      "pages": [
+        309,
+        310,
+        319,
+        339
+      ],
+      "path": "local_runtime/vdmos-tid-training/references/svisual_ug-installed-private.pdf",
+      "purpose": "Optional native TDR field inventory and window integration; not fabricated pixel measurement"
+    },
+    {
+      "path": "experiments/dram-see-v4/stage1/design-register.json",
+      "purpose": "A2/A3/A5/A6 registered artificial fixture positions"
+    },
+    {
+      "pages": [
+        193,
+        194
+      ],
+      "path": "local_runtime/dram-see-v1/sdevice_ug.pdf",
+      "purpose": "Range with no Intervals outputs all computed times; adding Intervals forces requested time points; NoOverwrite numbers output files"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-r3/diagnostics/tdr-fallback-design.md",
+      "purpose": "Frozen prior investigation and known Window failure; original runner complete-project archive limitation"
+    }
+  ],
+  "frozen_dependency_sha256": {
+    "experiments/dram-see-v1/build_case.py": "7a22e53bc939b236b0b612f42e382b952c362042b28e187414e481e77b9916bd",
+    "experiments/dram-see-v3/r50-main/build_case.py": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+    "experiments/dram-see-v4/source-interface-r2/audit_interface.py": "2b6f81290ed894c377fbd0781444e86de50992aa0919212e28d088371c31230f",
+    "experiments/dram-see-v4/source-interface-r2/build_interface.py": "039ab97397e344145eca77c38018e5c50dd515083f59257a064dd34eab9fa53f",
+    "experiments/dram-see-v4/source-interface-r2/source_contract.json": "41bea845de61349d864bd28c7e7eb21e66894cfeeb73364c27a39fc6285844cd",
+    "experiments/dram-see-v4/source-interface-r3/build_interface.py": "98c327b3230a7402694a7b2ce7db6376509cd6638b916e16ed2cc60404c79bd5",
+    "experiments/dram-see-v4/source-interface-r3/oracle.py": "718c4903de8cc68cdaa5c7e36bdb56d2b9f690b9016df082b745f7ca62862fdf",
+    "experiments/dram-see-v4/source-interface-r3/source_contract.json": "d865e7d25ab79fb9bc3e78721e3f47f248bac68959b3e03e3e81555101094d1f",
+    "experiments/dram-see-v4/source-interface-r4/build_interface.py": "bd7897419e57d5b74e90885fa1ddacd5e714d473dd26e272ec98da26e3fd09ce",
+    "experiments/dram-see-v4/source-interface-r4/source_contract.json": "f58abfde8f0c5ce405f3288668df9bfc1849716513d0f8886f79b69a7294c85c",
+    "local_runtime/dram-see-v1/heavyion-reference.txt": "5bafcbd86ca09e1081f00fddf849cbefb58218bb96aebaa7e868b103ce300960",
+    "scripts/tcad.py": "8a08d895d788f053da8d07cc29dd7c745ede9b5f3b29b757ad012ca79f7779d5"
+  },
+  "geometry_sha256_by_profile": {
+    "fine": "a560e037c009062bfa43e263bdedb920d9f524151d0d6a3115636f0bede22878",
+    "main": "de339ae9ba920e8ce42515144eb270c64e8e026b00aea917ab1e3253fa1a9dae",
+    "time": "de339ae9ba920e8ce42515144eb270c64e8e026b00aea917ab1e3253fa1a9dae"
+  },
+  "global_budget": {
+    "historical_attempts_at_freeze": 5,
+    "maximum_tcad_attempts": 26,
+    "primary_attempts": 17,
+    "reserve_attempts": 4,
+    "reuse_recalculation_requires_reserve": true,
+    "reuse_reference_build_cost": 0,
+    "scheduler": "root only; every new solver invocation including failures counted once; unknown exits never automatically resubmitted",
+    "this_round_maximum_attempts": 21
+  },
+  "heavyion_parameters": {
+    "a_1": 0.0,
+    "a_2": 0.0,
+    "a_3": 0.0,
+    "a_4": 0.0,
+    "c_1": 0.0,
+    "c_2": 1.0,
+    "c_3": 0.0,
+    "c_4": 1.0,
+    "k_hi": 1.0,
+    "s_hi": 2e-12
+  },
+  "implementation_contract": "experiments/dram-see-v4/interface-completion-r1/implementation-contract.md",
+  "kernel": {
+    "domain_clipping": "Account before solving; never renormalize after clipping or observing TCAD",
+    "longitudinal": "constant for 0<=dot(r-start,direction)<length; zero otherwise",
+    "s_hi_s": 2e-12,
+    "segment_endpoints": "half-open analytic segments; TCAD endpoint discretization is measured by A8, not assumed identical",
+    "shape": "Gaussian",
+    "temporal": "2*exp(-((t-t0)/(sqrt(2)*s_hi))^2)/(sqrt(2)*s_hi*sqrt(pi)*(1+erf(t0/(sqrt(2)*s_hi)))) for t>=0",
+    "time_domain_s": [
+      0.0,
+      4e-09
+    ],
+    "time_sigma_equals_s_hi": true,
+    "transverse": "exp(-(perpendicular_distance/width)^2)/(sqrt(pi)*width)",
+    "width_um": 0.03
+  },
+  "legacy_roi_names": [
+    "Total",
+    "Left",
+    "Right",
+    "Center",
+    "Low",
+    "Middle",
+    "High",
+    "LowerLeft",
+    "UpperLeft"
+  ],
+  "measurement": {
+    "acceptance": "Legacy full-time BE total/timing plus independent native all-accepted-frame TDR 11-ROI audit; old nine gates unchanged; extra SourceLeft/Right gates only A5/A6/A7",
+    "acceptance_path": "Independent legacy CurrentPlot total plus native SVisual measured complete accepted-step gstep TDR sequence; Window CurrentPlot is diagnostic only",
+    "all_frames_required": true,
+    "centroid": "Native per-frame measured generation-weighted spatial centroid, not source coordinates copied as data",
+    "charge_integral": "sum_i measured G_i*(t_i-t_(i-1)); exact PLT interval mapping plus successful native Writing/BE step evidence",
+    "currentplot_roi_names": [
+      "Total",
+      "Left",
+      "Right",
+      "Center",
+      "Low",
+      "Middle",
+      "High",
+      "LowerLeft",
+      "UpperLeft"
+    ],
+    "dynamic_output_prefix": "gstep",
+    "dynamic_output_semantics": "All actual accepted simulation times in Range; no Intervals, MinSpacing, or forced extra times; actual filename and time association require native log/PLT evidence",
+    "dynamic_plot_command": "Plot(FilePrefix=\"gstep\" Time=(Range=(0.95e-9 1.05e-9)) NoOverwrite)",
+    "dynamic_time_range_s": [
+      9.5e-10,
+      1.05e-09
+    ],
+    "fixed_five_gfield_retained": true,
+    "generation_time_semantics": "BE accepted-step average is tested from full native frames; five prior matching frames do not prove whole sequence",
+    "historical_failure": "r2/r3 source-interface failures retained; r3 legacy/noWindow ~1.00416388fC while HI Window=0 despite valid Temperature windows; no promotion to source pass",
+    "legacy_total_command": "Integrate(Semiconductor)",
+    "legacy_total_raw_dataset": "IntegrSemiconductor HeavyIonGeneration",
+    "missing_frame_policy": "Fail/incomplete; no interpolation, analytic replacement, fitted waveform, or five-frame reconstruction",
+    "native_extractor": "Separate audited native SVisual implementation; never execute from builder",
+    "new_forced_time_points": false,
+    "project_output_inventory": "Only fixed expected filenames; no wildcard. Original runner tar archives whole project; audit verifies every dynamic TDR independently.",
+    "retained_diagnostics": [
+      "named_no_window",
+      "two_coordinate_Total_window",
+      "three_coordinate_ROI_windows",
+      "Temperature_all_windows"
+    ],
+    "tdr_roi_names": [
+      "Total",
+      "Left",
+      "Right",
+      "Center",
+      "Low",
+      "Middle",
+      "High",
+      "LowerLeft",
+      "UpperLeft",
+      "SourceLeft",
+      "SourceRight"
+    ],
+    "temporal_centroid": "Measured interval weights at interval midpoints",
+    "time_window_scope": "TDR directly observes injection window only; legacy curve independently measures total 0-4ns. Do not replace unmeasured outside-window tails with the analytic oracle.",
+    "window_can_pass_acceptance": false,
+    "z_window_um": [
+      -0.5,
+      0.5
+    ],
+    "zero_source_centroid": "A0 omits Coordinates on zero generation integrals; missing field remains structural_zero_not_measured_zero"
+  },
+  "offline_tolerances": {
+    "charge_abs_fC": 1e-06,
+    "charge_relative": 0.001
+  },
+  "partitions": [
+    [
+      "Left",
+      "Right"
+    ],
+    [
+      "Low",
+      "Middle",
+      "High"
+    ],
+    [
+      "LowerLeft",
+      "UpperLeft",
+      "Right"
+    ]
+  ],
+  "primary_roles": [
+    [
+      "A4",
+      1,
+      "main"
+    ],
+    [
+      "A5",
+      1,
+      "main"
+    ],
+    [
+      "A0",
+      1,
+      "fine"
+    ],
+    [
+      "A6",
+      1,
+      "main"
+    ],
+    [
+      "A7",
+      1,
+      "main"
+    ],
+    [
+      "A2",
+      1,
+      "main"
+    ],
+    [
+      "A3",
+      1,
+      "main"
+    ],
+    [
+      "A8S2",
+      1,
+      "main"
+    ],
+    [
+      "A8S4",
+      1,
+      "main"
+    ],
+    [
+      "A0",
+      0,
+      "main"
+    ],
+    [
+      "A1",
+      0,
+      "main"
+    ],
+    [
+      "A4",
+      0,
+      "main"
+    ],
+    [
+      "A0",
+      1,
+      "time"
+    ],
+    [
+      "A1",
+      1,
+      "time"
+    ],
+    [
+      "A6",
+      1,
+      "time"
+    ],
+    [
+      "A1",
+      1,
+      "fine"
+    ],
+    [
+      "A5",
+      1,
+      "fine"
+    ]
+  ],
+  "pulse_output_window_s": [
+    9.5e-10,
+    1.05e-09
+  ],
+  "reuse_candidate_roles": [
+    [
+      "A0",
+      1,
+      "main"
+    ],
+    [
+      "A1",
+      1,
+      "main"
+    ]
+  ],
+  "reuse_roles": [
+    {
+      "archive_sha256": "8e5fc4fe9a9e22bae7a6a25a22e4be676dc68cada94f9ff0df55ab189100b57f",
+      "audit_path": "local_runtime/dram-see-v4/source-interface-r4/audits/r4-a0-b1-mesh-r1/audit.json",
+      "audit_sha256": "2d61cb6b2ef3916d77d2ab58579697d060efd5d05c566640ae8e9271c589faae",
+      "canonical_variant": "main",
+      "case_id": "A0",
+      "comparison_path": "local_runtime/dram-see-v4/source-interface-r4/comparisons/a1-base-to-mesh-r1/comparison.json",
+      "comparison_sha256": "d93864b6b3b30b34b8782d47129f1bd6ce726f646f2f6309cfdf7eeaf3df16ec",
+      "field_audit_path": null,
+      "field_audit_sha256": null,
+      "manifest_sha256": "f8c8ded5c1ea1c07ffb42151eec8f87268b47d0049be30e8271a5eea54f2aac1",
+      "original_variant": "mesh",
+      "project_path": "local_runtime/dram-see-v4/source-interface-r4/inputs/v4-source-interface-r4-a0-b1-mesh",
+      "run_id": "20261013T132129Z-v4-source-interface-r4-a0-b1-mesh-5a893127",
+      "run_manifest_sha256": "2d6a95def54648b303697c38e5e72e618e771c68f1e1a8383d0b54579d6d8e13",
+      "run_path": "local_runtime/runs/20261013T132129Z-v4-source-interface-r4-a0-b1-mesh-5a893127",
+      "stored_bit": 1
+    },
+    {
+      "archive_sha256": "50ee6c4747f09077e735f421e9380803806a3cebc9ef7125a25a37f6c911ba5e",
+      "audit_path": "local_runtime/dram-see-v4/source-interface-r4/audits/r4-a1-b1-mesh-r1/audit.json",
+      "audit_sha256": "f0205aa04c8746f74dec74e70f86586dcf097ee6de12ab3a2a7156f5651284ca",
+      "canonical_variant": "main",
+      "case_id": "A1",
+      "comparison_path": "local_runtime/dram-see-v4/source-interface-r4/comparisons/a1-base-to-mesh-r1/comparison.json",
+      "comparison_sha256": "d93864b6b3b30b34b8782d47129f1bd6ce726f646f2f6309cfdf7eeaf3df16ec",
+      "field_audit_path": "local_runtime/dram-see-v4/source-field-audit-r1/audit-dev/r4-a1-full-bounded-r1/audit.json",
+      "field_audit_sha256": "ed0ece3924cc1014fdcb5e079f38026b4527f580b03285c4e2a12167be5a5838",
+      "manifest_sha256": "e84e4cf5004625480e3975ca656876cd62eabbc7fc8b6bdc119e0cc3aacfe741",
+      "original_variant": "mesh",
+      "project_path": "local_runtime/dram-see-v4/source-interface-r4/inputs/v4-source-interface-r4-a1-b1-mesh",
+      "run_id": "20261013T135733Z-v4-source-interface-r4-a1-b1-mesh-b66a8e0d",
+      "run_manifest_sha256": "a81793425a85de359d7ed1aa5a646eb2ff1c3eec4280c55ffb1c52ab5398aee0",
+      "run_path": "local_runtime/runs/20261013T135733Z-v4-source-interface-r4-a1-b1-mesh-b66a8e0d",
+      "stored_bit": 1
+    }
+  ],
+  "revision": 5,
+  "rois_um": {
+    "Center": [
+      0.395,
+      0.0,
+      0.455,
+      1.2
+    ],
+    "High": [
+      0.0,
+      0.75,
+      0.85,
+      1.2
+    ],
+    "Left": [
+      0.0,
+      0.0,
+      0.425,
+      1.2
+    ],
+    "Low": [
+      0.0,
+      0.0,
+      0.85,
+      0.45
+    ],
+    "LowerLeft": [
+      0.0,
+      0.0,
+      0.425,
+      0.6
+    ],
+    "Middle": [
+      0.0,
+      0.45,
+      0.85,
+      0.75
+    ],
+    "Right": [
+      0.425,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "SourceLeft": [
+      0.295,
+      0.0,
+      0.355,
+      1.2
+    ],
+    "SourceRight": [
+      0.495,
+      0.0,
+      0.555,
+      1.2
+    ],
+    "Total": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "UpperLeft": [
+      0.0,
+      0.6,
+      0.425,
+      1.2
+    ]
+  },
+  "run_sequence": [
+    [
+      "A4",
+      1,
+      "main"
+    ],
+    [
+      "A5",
+      1,
+      "main"
+    ],
+    [
+      "A0",
+      1,
+      "fine"
+    ],
+    [
+      "A6",
+      1,
+      "main"
+    ],
+    [
+      "A7",
+      1,
+      "main"
+    ],
+    [
+      "A2",
+      1,
+      "main"
+    ],
+    [
+      "A3",
+      1,
+      "main"
+    ],
+    [
+      "A8S2",
+      1,
+      "main"
+    ],
+    [
+      "A8S4",
+      1,
+      "main"
+    ],
+    [
+      "A0",
+      0,
+      "main"
+    ],
+    [
+      "A1",
+      0,
+      "main"
+    ],
+    [
+      "A4",
+      0,
+      "main"
+    ],
+    [
+      "A0",
+      1,
+      "time"
+    ],
+    [
+      "A1",
+      1,
+      "time"
+    ],
+    [
+      "A6",
+      1,
+      "time"
+    ],
+    [
+      "A1",
+      1,
+      "fine"
+    ],
+    [
+      "A5",
+      1,
+      "fine"
+    ]
+  ],
+  "schema": "dram-see-v4-source-interface-r5-contract",
+  "scope": "Complete artificial 2D interface acceptance on inherited uncalibrated 0.25um cell; no real-event projection, SEE probability or training",
+  "tdr_times_s": [
+    9.95e-10,
+    1e-09,
+    1.005e-09,
+    1.01e-09,
+    1.015e-09
+  ],
+  "tolerance_basis": "Pre-registered engineering gates authorized by root. Refinement and segmentation use the user-approved 2% generated charge and max(1mV,5% perturbation peak) control-relative voltage gates. Port current integrals are diagnostic only. These gates do not establish device calibration.",
+  "units": {
+    "coordinates": "um",
+    "deck_let": "pC/um",
+    "generation": "pairs/cm^3/s",
+    "raw_2d_spatial_integral": "um^2*cm^-3*s^-1",
+    "raw_centroid": "um",
+    "source_charge": "fC",
+    "time": "s"
+  },
+  "variants": {
+    "fine": {
+      "mesh_factor": 0.25,
+      "pulse_max_step_s": 5e-13
+    },
+    "main": {
+      "mesh_factor": 0.5,
+      "pulse_max_step_s": 5e-13
+    },
+    "time": {
+      "mesh_factor": 0.5,
+      "pulse_max_step_s": 2.5e-13
+    }
+  }
+}

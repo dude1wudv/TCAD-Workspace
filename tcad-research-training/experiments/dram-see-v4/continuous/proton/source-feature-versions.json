@@ -1,0 +1,97 @@
+{
+  "default_version": "v1-s2",
+  "historical_dispatchers": [
+    {
+      "repository_relative_path": "local_runtime/dram-see-v4/continuous/proton/source-feature-registration-v2-r1/dispatcher-history.json",
+      "sha256": "f0c207f4833ae926d17ed73aa41cf23f60d376f9e7bd167137b996b8b0aff302"
+    }
+  ],
+  "policy": "Fixed trusted registration only; unknown versions/dependencies fail before loading. No packet-provided executable path.",
+  "schema": "continuous-source-feature-verifier-registry-v1",
+  "semantic_compatibility": {
+    "repository_relative_path": "experiments/dram-see-v4/continuous/proton/source-feature-compatibility-v1-v2.json",
+    "sha256": "4a1cbbe8fadb4156a0d64d559a6e318507879da4dcc9f8b1cec8fdbc40eda1dd"
+  },
+  "versions": [
+    {
+      "common_dependencies": [
+        "verifier",
+        "math",
+        "reference",
+        "contract"
+      ],
+      "dependency_snapshot": {
+        "repository_relative_path": "local_runtime/dram-see-v4/continuous/proton/source-feature-v1-dependencies-r1/manifest.json",
+        "sha256": "9c4d7f042fc8685caae7c0af9cd65d88de05e53249dcdd28ff974ce4f876283c"
+      },
+      "feature_contract_sha256": "a7a5d4c92ef2e6d0cbab80c96b2ed8c97835300326ea04df10458ffc852df122",
+      "packet_implementation_dependencies": {
+        "alpha": {
+          "alpha-temporal-oracle.py": "alpha_time_reference",
+          "alpha_source.py": "alpha_reference"
+        },
+        "common": {
+          "source_feature_math.py": "math",
+          "source_features.py": "verifier",
+          "source_reference.py": "reference"
+        },
+        "proton": {
+          "couple.py": "proton_coupler",
+          "prepare.py": "proton_prepare",
+          "source_bundle.py": "proton_bundle"
+        }
+      },
+      "packet_schema": "continuous-particle-source-features-v1",
+      "particle_dependencies": {
+        "alpha": [
+          "alpha_reference",
+          "alpha_time_reference",
+          "alpha_profile"
+        ],
+        "proton": [
+          "proton_prepare",
+          "proton_coupler",
+          "proton_bundle",
+          "proton_matrix"
+        ]
+      },
+      "verifier_dependency_id": "verifier",
+      "verifier_sha256": "a3b00be407df6f89eb9981de68140a95140b9f074a2dcc7950f0884c95919135",
+      "version_id": "v1-s2"
+    },
+    {
+      "common_dependencies": [
+        "verifier",
+        "math",
+        "source",
+        "reference",
+        "contract",
+        "assumptions",
+        "astar"
+      ],
+      "dependency_snapshot": {
+        "repository_relative_path": "local_runtime/dram-see-v4/continuous/proton/source-feature-registration-v2-r1/v2-dependencies/manifest.json",
+        "sha256": "2794e9e95a35693668b57d045f07c418de0c03e3fd93e05cf76c3ae3c4bcaf36"
+      },
+      "feature_contract_sha256": "28fbb4aabbf8a8b8e7b45c544b93ddf791100085f77dbacc6c7f35314bd7d6f1",
+      "packet_implementation_dependencies": {
+        "alpha": {},
+        "common": {
+          "ALPHA-V2-ASSUMPTIONS.md": "assumptions",
+          "alpha_moments_v2.py": "math",
+          "alpha_source_v2.py": "source",
+          "source_features_v2.py": "verifier",
+          "source_reference.py": "reference"
+        }
+      },
+      "packet_schema": "continuous-particle-source-features-v2",
+      "packet_version_id_required": true,
+      "particle_dependencies": {
+        "alpha": []
+      },
+      "verifier_dependency_id": "verifier",
+      "verifier_sha256": "350bfd653f38e0b4a74d7c184e36b70b901af47edce0449a26003fc2f5f5fcb6",
+      "version_id": "v2-alpha-surface"
+    }
+  ]
+}

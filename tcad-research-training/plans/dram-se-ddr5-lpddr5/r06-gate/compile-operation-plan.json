@@ -1,0 +1,14 @@
+{
+  "schema": "tcad-r06-diagnostic-plan-v1",
+  "plan_id": "dram-se-ddr5-lpddr5",
+  "revision": "r0.6",
+  "owner": "server-codex",
+  "recipe_id": "pmi_build",
+  "profile_id": "D0-nominal",
+  "frozen_before_submission": true,
+  "acceptance_criteria": "Compile only the frozen r06-o2-global-r1 logging source with the original CentOS7 Sentaurus W-2024.09 CMI through the original single-core operation backend. Require original terminal collection, CMI exit zero, ELF64 x86-64, expected PMI exported symbol, no missing linked libraries, exact source/header/ELF/evidence SHA bindings and unchanged old inputs. Compilation does not establish numerical, waveform, source-integral, timing, WHR or scientific acceptance. Do not call SDevice, manufacture an ELF, reuse the old ELF as the new version, or credit any of the 396 formal slots.",
+  "independent_primary_count": 0,
+  "formal_case_id": null,
+  "statistics_eligible": false,
+  "budget_account": "p0_diagnostics"
+}

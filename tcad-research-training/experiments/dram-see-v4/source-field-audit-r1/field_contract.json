@@ -1,0 +1,151 @@
+{
+  "schema": "source-field-audit-r1-contract",
+  "scope": "A1 native snapshots or all injection-window accepted steps; no overall device calibration claim",
+  "source_revision": "source-interface-r4 full mode only; r2/r3 snapshot diagnostics preserve failures",
+  "window_s": [
+    9.5e-10,
+    1.05e-09
+  ],
+  "rois_um": {
+    "Total": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "Left": [
+      0.0,
+      0.0,
+      0.425,
+      1.2
+    ],
+    "Right": [
+      0.425,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "Center": [
+      0.395,
+      0.0,
+      0.455,
+      1.2
+    ],
+    "Low": [
+      0.0,
+      0.0,
+      0.85,
+      0.45
+    ],
+    "Middle": [
+      0.0,
+      0.45,
+      0.85,
+      0.75
+    ],
+    "High": [
+      0.0,
+      0.75,
+      0.85,
+      1.2
+    ],
+    "LowerLeft": [
+      0.0,
+      0.0,
+      0.425,
+      0.6
+    ],
+    "UpperLeft": [
+      0.0,
+      0.6,
+      0.425,
+      1.2
+    ]
+  },
+  "partitions": [
+    [
+      "Left",
+      "Right"
+    ],
+    [
+      "Low",
+      "Middle",
+      "High"
+    ],
+    [
+      "LowerLeft",
+      "UpperLeft",
+      "Right"
+    ]
+  ],
+  "audit_tolerances": {
+    "source_relative": 0.05,
+    "zero_charge_fC": 1e-06,
+    "final_time_abs_s": 1e-18,
+    "pair_generated_charge_abs_fC": 0.0001,
+    "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-05,
+    "pair_current_abs_A": 1e-12,
+    "pair_current_relative": 0.001,
+    "roi_fraction_abs": 0.05,
+    "partition_relative": 0.05,
+    "centroid_abs_um": 0.01,
+    "time_centroid_abs_s": 5e-13,
+    "generation_waveform_relative": 0.05,
+    "active_generation_fraction": 0.001,
+    "output_step_roundoff_s": 1e-18,
+    "refinement_charge_relative": 0.02,
+    "refinement_voltage_abs_V": 0.001,
+    "refinement_voltage_relative": 0.05
+  },
+  "device": {
+    "dimension": 2,
+    "effective_thickness_um": 1.0,
+    "gate_length_um": 0.25,
+    "oxide_nm": 5.0,
+    "silicon_bounds_um": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ]
+  },
+  "conversion": {
+    "elementary_charge_C": 1.602176634e-19,
+    "silicon_eV_per_pair": 3.6,
+    "fC_to_pC": 0.001,
+    "um3_to_cm3": 1e-12
+  },
+  "coordinate_fields": {
+    "x": "X",
+    "y": "Y"
+  },
+  "native_fields": {
+    "G": "HeavyIonGeneration",
+    "ONE": "SFA_One",
+    "XG": "SFA_XG",
+    "YG": "SFA_YG"
+  },
+  "frozen_reference_contract_sha256": "d865e7d25ab79fb9bc3e78721e3f47f248bac68959b3e03e3e81555101094d1f",
+  "integration": "Real accepted BE intervals, right-rectangle, midpoint temporal moment; no missing-frame interpolation",
+  "units": {
+    "G_integral": "um^2*cm^-3*s^-1",
+    "XG_or_YG_integral": "um^3*cm^-3*s^-1",
+    "ONE_integral": "um^2",
+    "centroid": "um"
+  },
+  "limits": [
+    "Native node-field integration is not solver control-volume integration.",
+    "No missing generation field is replaced by theoretical or structural zero.",
+    "Outside-window charge comes from native legacy PLT, not theoretical tails.",
+    "Area is diagnostic; required scopes must have positive area.",
+    "Root retains sole solver budget and dispatch responsibility."
+  ],
+  "audit_revision": 3,
+  "extractor_revisions": {
+    "b0c565290ce27f0ae8913cc9443827fd184555d35a6dbd213d7aa958f233e463": "extract_fields.tcl",
+    "134c2fa5424d4930558cf3f132b7e547c877680b7ddb0ee25340261e6622bf07": "extract_fields_bounded.tcl",
+    "d540b0b425bd785abba341e868114f7207ef2def60b6f7a3f19a9ab334f54356": "extract_fields_bounded_r2.tcl"
+  },
+  "memory_revision_note": "Revision3 adds exact deleted-object-name success semantics for bounded_r2, as observed in installed W-2024.09 (UG pp343/347 state Integer). Original and bounded-r1 hashes/semantics are preserved. Every physical measurement and gate is unchanged."
+}

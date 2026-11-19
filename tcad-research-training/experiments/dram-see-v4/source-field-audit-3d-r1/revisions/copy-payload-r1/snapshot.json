@@ -1,0 +1,11 @@
+{
+  "created_utc": "2026-10-14T04:11:46.389492+00:00",
+  "reason": "Preserve initial copied-TDR implementation before read-only-original optimization",
+  "files_sha256": {
+    "audit_fields.py": "4f8dfc6dc25bcac14e13207fdd6c3273de840c9f56c31634f8fa4a52f0aa037d",
+    "extract_fields.tcl": "5e2707bb6d61b44d4d020393de644900b7cd2f59b1285c1f5abeb91f862a7661",
+    "field_contract.json": "938139c6adf8a29cd2744a127c13e582e089b973a9cdad15a6e3b8f71eb02463",
+    "README.md": "1c41630e36a04afcdd897c5883f17d053f5feb7a255938ce45a56864c4d85c26",
+    "test_audit_fields.py": "34c26098fd5296351964d4b8074b694c86c3952570f7f3f63aedc839a36633a4"
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "schema": "dram-see-v4-source-probe-summary-v1",
+  "completed_utc": "2026-10-13T02:51:35.364092+00:00",
+  "status": "THREE_SOURCE_PROBES_PASSED_HADRONIC_BLOCKED",
+  "scope": "Real TCAD execution of deterministic prescribed sources; 2D inherited uncalibrated L=0.25um cell, effective thickness1um, bit1 only",
+  "cases": [
+    {
+      "case": "A0",
+      "stored_bit": 1,
+      "source_count": 0,
+      "target_fC": 0.0,
+      "generated_fC": 0.0,
+      "relative_error": null,
+      "final_time_s": 4e-09,
+      "solver_wallclock_s": 441.36,
+      "passed": true,
+      "run_id": "20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4"
+    },
+    {
+      "case": "A1",
+      "stored_bit": 1,
+      "source_count": 1,
+      "target_fC": 1.0,
+      "generated_fC": 1.009915237729964,
+      "relative_error": 0.009915237729964055,
+      "final_time_s": 4e-09,
+      "solver_wallclock_s": 444.36,
+      "passed": true,
+      "run_id": "20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782"
+    },
+    {
+      "case": "A4",
+      "stored_bit": 1,
+      "source_count": 2,
+      "target_fC": 1.0,
+      "generated_fC": 1.009915237729964,
+      "relative_error": 0.009915237729964055,
+      "final_time_s": 4e-09,
+      "solver_wallclock_s": 475.42,
+      "passed": true,
+      "run_id": "20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93"
+    }
+  ],
+  "equivalence": {
+    "generated_charge_difference_fC": 0.0,
+    "generation_curve_max_difference": 0.0,
+    "voltage_max_difference_V": 0.0,
+    "current_max_difference_A": 0.0,
+    "qualification": "Zero at saved output precision; same actual mesh and common timing; separate run IDs and different 1-source/2-source archived input hashes verified"
+  },
+  "responses_relative_to_A0": {
+    "A1": {
+      "delta_SN_hold_V": -0.034114169282500995,
+      "delta_Qstore_hold_fC": -0.34114169282500995,
+      "delta_BL_read_V": -0.0031711154422899845,
+      "definition": "signal minus same-bit A0; no neutral-cell classification"
+    },
+    "A4": {
+      "delta_SN_hold_V": -0.034114169282500995,
+      "delta_Qstore_hold_fC": -0.34114169282500995,
+      "delta_BL_read_V": -0.0031711154422899845,
+      "definition": "signal minus same-bit A0; no neutral-cell classification"
+    }
+  },
+  "hadronic_ready": false,
+  "hadronic_runs": 0,
+  "training_runs": 0,
+  "solver_failures": 0,
+  "automatic_retries": 0,
+  "independent_software_tests": {
+    "tests": 9,
+    "exit_code": 0,
+    "log": "local_runtime/dram-see-v4/source-probe/validation/logs/source-probe-unittest.log"
+  },
+  "independent_raw_audits": {
+    "exit_codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "checks_each_case": 7,
+    "comparison_checks": 5,
+    "directory": "local_runtime/dram-see-v4/source-probe/validation/logs/"
+  },
+  "scientific_calibration_passed": false,
+  "numerical_convergence_validated": false,
+  "not_verified": [
+    "bit0",
+    "separated or delayed tracks",
+    "3D source mapping",
+    "mesh/time-step convergence",
+    "new-size device calibration",
+    "hadronic initialization or transport",
+    "readout classification or event probabilities",
+    "predictor training"
+  ],
+  "constraints": {
+    "software_installed": false,
+    "git_committed_or_pushed": false,
+    "external_messages_sent": false,
+    "old_heartbeat_resumed": false
+  },
+  "final_remote_preflight": "local_runtime/dram-see-v4/preflight/after-a4-final/",
+  "raw_index": "raw-artifact-index.json",
+  "failure_ledger": "failures.json"
+}

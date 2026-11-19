@@ -1,0 +1,119 @@
+{
+  "schema": "dram-see-v4-r13-budget-proposal-1",
+  "status": "PROPOSAL_NOT_AUTHORIZATION",
+  "execution_enabled": false,
+  "all_native_and_training_authorized": 0,
+  "accounting": "Every launch reservation counts, including failed/unknown. Distinct ledger required; old remaining balances are not transferable.",
+  "existing_ledger": "local_runtime/dram-see-v4/nuclear-closure-r1/budget.json",
+  "existing_counts": {
+    "tcad": 2,
+    "tcad_corrective": 1,
+    "compile": 6,
+    "postprocess": 2,
+    "transport_normal": 17,
+    "transport_corrective": 1,
+    "unique_primaries": 100008
+  },
+  "B1_first_slice": {
+    "role_ids": [
+      "B1-D2",
+      "B1-D3",
+      "B1-A0-main-b0",
+      "B1-A0-main-b1"
+    ],
+    "sdevice": 4,
+    "mesh_builds": 2,
+    "native_field_extractions": 2,
+    "dispatch_cpu_hours_cap_proposed": 4,
+    "retained_new_GiB_cap_proposed": 8,
+    "approved": false
+  },
+  "B1_total_including_first_slice": {
+    "sdevice": 9,
+    "mesh_builds_total": 3,
+    "native_field_extractions": 6,
+    "dispatch_cpu_hours_cap_proposed": 12,
+    "measured_time_hours": null
+  },
+  "B2_additional": {
+    "sdevice": 12,
+    "native_field_extractions": 12,
+    "compile": 0,
+    "transport": 0,
+    "training": 0,
+    "dispatch_cpu_hours_cap_proposed": 12,
+    "measured_time_hours": null
+  },
+  "B1_B2_shared_correction_reserve": {
+    "sdevice": 2,
+    "native_field_extractions_max": 2,
+    "conditions": "Known root cause, offline fix review and separate corrective release. Same cause after fix stops branch."
+  },
+  "B1_B2_total": {
+    "normal_sdevice": 21,
+    "maximum_sdevice_with_corrections": 23,
+    "normal_native_field_extractions_max": 18,
+    "maximum_native_field_extractions_with_corrections": 20,
+    "mesh_builds_normal": 3,
+    "training": 0,
+    "compile": 0,
+    "transport": 0
+  },
+  "domain_extension_separate_required_before_unrestricted_physical_dataset": {
+    "sdevice_minimum": 5,
+    "native_field_extractions_minimum": 4,
+    "mesh_builds": 1,
+    "approved": false
+  },
+  "B3_envelope_not_released": {
+    "compile_max": 2,
+    "transport_requests_max": 3,
+    "unique_proton_primaries_max": 8,
+    "source_qualification_and_event_tcad_max": 12,
+    "native_field_extractions_max": 12,
+    "replays_authorized": 0,
+    "must_freeze_exact_roles_first": true
+  },
+  "B4_signal_candidate": {
+    "conditions_per_particle": 12,
+    "alpha_configs_per_condition": 1,
+    "proton_events_per_condition": 3,
+    "bits": 2,
+    "alpha_signal": 24,
+    "proton_signal": 72,
+    "signal_total_before_proven_reuse": 96,
+    "first_training_condition_spine_signal_max_before_reuse": 24,
+    "S1_S3_QA_additional_min": 24,
+    "SN_junction_sensitivity_additional_min_before_QA": 8,
+    "unpriced_QA_must_be_frozen_before_release": true,
+    "approved": false
+  },
+  "B4_training_proposal": {
+    "fit_calls_max": 12,
+    "cpu_minutes_max": 10,
+    "gpu": 0,
+    "threads": 1,
+    "hyperparameter_search": false,
+    "approved": false
+  },
+  "resource_gates": {
+    "local_free_GiB_min": 20,
+    "remote_free_GiB_min": 8,
+    "remote_available_memory_GiB_min": 4,
+    "combined_project_retained_GiB_cap": 160,
+    "forecast_addition_required": true,
+    "native_threads": 1,
+    "native_cores": 1,
+    "shared_lock_required": true,
+    "wall_limit_behavior": "Stop new dispatch, preserve and inspect current job; never kill unknown/healthy work based solely on elapsed time."
+  },
+  "release_required": [
+    "explicit authorization",
+    "exact role/input hashes",
+    "complete deck and physics manifest",
+    "preflight storage forecast",
+    "independent acceptance",
+    "new release bound to unique owner"
+  ],
+  "not_a_schedule": true
+}

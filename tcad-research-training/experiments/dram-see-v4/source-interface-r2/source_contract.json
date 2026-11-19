@@ -1,0 +1,65 @@
+{
+  "schema": "dram-see-v4-source-interface-r2-contract",
+  "revision": 2,
+  "scope": "Artificial finite-line 2D interface tests on the inherited uncalibrated 0.25 um cell; no real 3D event projection, upset classification or training",
+  "device": {"dimension": 2, "effective_thickness_um": 1.0, "gate_length_um": 0.25, "oxide_nm": 5.0, "silicon_bounds_um": [0.0, 0.0, 0.85, 1.2]},
+  "units": {"coordinates": "um", "time": "s", "source_charge": "fC", "deck_let": "pC/um", "generation": "pairs/cm^3/s", "raw_2d_spatial_integral": "um^2*cm^-3*s^-1", "raw_centroid": "um"},
+  "conversion": {"elementary_charge_C": 1.602176634e-19, "silicon_eV_per_pair": 3.6, "fC_to_pC": 0.001, "um3_to_cm3": 1e-12},
+  "kernel": {"shape": "Gaussian", "width_um": 0.03, "s_hi_s": 2e-12, "time_domain_s": [0.0, 4e-9], "longitudinal": "constant for 0<=dot(r-start,direction)<length; zero otherwise", "transverse": "exp(-(perpendicular_distance/width)^2)/(sqrt(pi)*width)", "temporal": "exp(-((t-t0)/(2*s_hi))^2)/(s_hi*sqrt(pi)*(1+erf(t0/(2*s_hi)))) for t>=0", "domain_clipping": "Account before solving; never renormalize after clipping or observing TCAD", "segment_endpoints": "half-open analytic segments; TCAD endpoint discretization is measured by A8, not assumed identical"},
+  "heavyion_parameters": {"s_hi": 2e-12, "a_1": 0.0, "a_2": 0.0, "a_3": 0.0, "a_4": 0.0, "k_hi": 1.0, "c_1": 0.0, "c_2": 1.0, "c_3": 0.0, "c_4": 1.0},
+  "variants": {
+    "base": {"mesh_factor": 1.0, "pulse_max_step_s": 5e-13},
+    "time": {"mesh_factor": 1.0, "pulse_max_step_s": 2.5e-13},
+    "mesh": {"mesh_factor": 0.5, "pulse_max_step_s": 5e-13}
+  },
+  "pulse_output_window_s": [9.5e-10, 1.05e-9],
+  "tdr_times_s": [9.95e-10, 1e-9, 1.005e-9, 1.01e-9, 1.015e-9],
+  "rois_um": {
+    "Total": [0.0, 0.0, 0.85, 1.2],
+    "Left": [0.0, 0.0, 0.425, 1.2],
+    "Right": [0.425, 0.0, 0.85, 1.2],
+    "Center": [0.395, 0.0, 0.455, 1.2],
+    "Low": [0.0, 0.0, 0.85, 0.45],
+    "Middle": [0.0, 0.45, 0.85, 0.75],
+    "High": [0.0, 0.75, 0.85, 1.2],
+    "LowerLeft": [0.0, 0.0, 0.425, 0.6],
+    "UpperLeft": [0.0, 0.6, 0.425, 1.2]
+  },
+  "partitions": [["Left", "Right"], ["Low", "Middle", "High"], ["LowerLeft", "UpperLeft", "Right"]],
+  "case_ids": ["A0", "A1", "A2", "A3", "A4", "A5", "A6", "A7", "A8S2", "A8S4"],
+  "run_sequence": [
+    ["A0", 1, "base"], ["A1", 1, "base"], ["A4", 1, "base"],
+    ["A2", 1, "base"], ["A3", 1, "base"], ["A5", 1, "base"], ["A6", 1, "base"], ["A7", 1, "base"],
+    ["A8S2", 1, "base"], ["A8S4", 1, "base"],
+    ["A0", 0, "base"], ["A1", 0, "base"], ["A4", 0, "base"],
+    ["A0", 1, "time"], ["A1", 1, "time"], ["A6", 1, "time"],
+    ["A0", 1, "mesh"], ["A1", 1, "mesh"], ["A5", 1, "mesh"]
+  ],
+  "offline_tolerances": {"charge_abs_fC": 1e-6, "charge_relative": 0.001},
+  "audit_tolerances": {
+    "source_relative": 0.05, "zero_charge_fC": 1e-6, "final_time_abs_s": 1e-18,
+    "pair_generated_charge_abs_fC": 1e-4, "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-5, "pair_current_abs_A": 1e-12, "pair_current_relative": 0.001,
+    "roi_fraction_abs": 0.05, "partition_relative": 0.05, "centroid_abs_um": 0.01,
+    "time_centroid_abs_s": 5e-13, "generation_waveform_relative": 0.05,
+    "active_generation_fraction": 0.001, "output_step_roundoff_s": 1e-18,
+    "refinement_charge_relative": 0.02, "refinement_voltage_abs_V": 0.001, "refinement_voltage_relative": 0.05
+  },
+  "tolerance_basis": "Pre-registered engineering gates authorized by root. Refinement and segmentation use the user-approved 2% generated charge and max(1mV,5% perturbation peak) control-relative voltage gates. Port current integrals are diagnostic only. These gates do not establish device calibration.",
+  "evidence": [
+    {"path": "local_runtime/dram-see-v1/sdevice_ug.pdf", "pages": [180, 181, 182, 183, 184, 812, 813, 814, 816], "purpose": "Native named window integrals, Coordinates centroid, um integration units and HeavyIon kernel; licensed copy remains outside source directory"},
+    {"path": "local_runtime/vdmos-tid-training/references/svisual_ug-installed-private.pdf", "pages": [309, 310, 319, 339], "purpose": "Optional native TDR field inventory and window integration; not fabricated pixel measurement"},
+    {"path": "experiments/dram-see-v4/stage1/design-register.json", "purpose": "A2/A3/A5/A6 registered artificial fixture positions"}
+  ],
+  "decisions": [
+    "No dimension reduction exists here: dimension!=2, real/synthetic=false, nonzero z or nonzero direction-z is rejected.",
+    "Keep full xyz in artificial source specifications, render only the explicitly zero-z 2D components.",
+    "Time refinement changes only the injection-window maximum step and initial step; all circuit timing remains inherited.",
+    "Request all accepted-time current samples; do not thin device currents independently of mixed-mode circuit samples.",
+    "A3 x=0 half-domain charge is computed before running; total prescribed charge is still 1fC and domain charge is 0.5fC.",
+    "A0 absence of radiation datasets can prove only a source-free structure; never claim a measured numerical zero field from absence.",
+    "Chosen HeavyIon c2=1,c3=0,c4=1 is explicit and differs from the installed default; no default-equivalence claim.",
+    "Each A8 subsegment owns a disjoint longitudinal interval and its proportional charge once; A8 compares against this revision's A1 with matching A0.",
+    "Source parameters are interface fixtures, not calibrated particle radial or timing physics."
+  ]
+}

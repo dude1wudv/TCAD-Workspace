@@ -1,0 +1,35 @@
+{
+  "schema": "dram-see-v4-dataset-inventory-v1",
+  "new_archive_payloads_verified": 5110,
+  "datasets": [
+    {
+      "env": "G4LEDATA",
+      "path": "/home/tcad/research-training/dram-see-v1/software/data-complete/G4EMLOW7.13",
+      "file_count": 11209,
+      "bytes": 489005134,
+      "content_manifest_sha256": "910435bdeb62f9951f43a78a1d81cd7fb6013f53e18a7d02b3d770ffe0917c98"
+    },
+    {
+      "env": "G4ENSDFSTATEDATA",
+      "path": "/home/tcad/research-training/dram-see-v1/software/data/G4ENSDFSTATE2.3",
+      "file_count": 3,
+      "bytes": 1788263,
+      "content_manifest_sha256": "0f632edf73f960138cce994e1213b39bcc94320860a57374cb6fc590b684d6f6"
+    },
+    {
+      "env": "G4LEVELGAMMADATA",
+      "path": "/home/tcad/research-training/dram-see-v4/software/data/PhotonEvaporation5.7",
+      "file_count": 3110,
+      "bytes": 37449830,
+      "content_manifest_sha256": "3c297e48a194d2099b5cd1ce4327ded787d9a3df7fa1f8eb43ca46563f433818"
+    },
+    {
+      "env": "G4PARTICLEXSDATA",
+      "path": "/home/tcad/research-training/dram-see-v4/software/data/G4PARTICLEXS3.1.1",
+      "file_count": 2000,
+      "bytes": 22482907,
+      "content_manifest_sha256": "f21a696fdab229815ae5a0a77cd823b24360e67f70b2da96cba27f3cb9aa1eb6"
+    }
+  ],
+  "dataset_files_sha256": "0f37b5e0dddaed70258e104e7a0a53388a0bf7141a1b991335169245f2338da4"
+}

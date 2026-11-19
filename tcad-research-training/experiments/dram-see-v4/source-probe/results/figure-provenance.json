@@ -1,0 +1,31 @@
+{
+  "source": "Real audited solver curves; no synthetic curves or smoothing",
+  "generator_sha256": "76ccc8520068244c10093251d7d060c18852450e0cf102c713fa97b90581e3ad",
+  "inputs": [
+    {
+      "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/circuit.csv",
+      "sha256": "bc7c14190bb45afce335af19bbfcfbef3b0d81cb0b6dd1f54e1b5837a21ae254"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/device.csv",
+      "sha256": "0ec46567a81f6e82fc673ae7c25602e43eac855c01fe9efff5159ce0403aa58a"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/circuit.csv",
+      "sha256": "2f9140381ddd165692d0968e187b5209962751ba62936905f9213267487a1ce4"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/device.csv",
+      "sha256": "830dc3b24fb59e212723164d63db375cba8a14bef91e47e55ba587372d06badc"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/circuit.csv",
+      "sha256": "2f9140381ddd165692d0968e187b5209962751ba62936905f9213267487a1ce4"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/device.csv",
+      "sha256": "830dc3b24fb59e212723164d63db375cba8a14bef91e47e55ba587372d06badc"
+    }
+  ],
+  "note": "Plotting does not establish numerical convergence or device calibration."
+}

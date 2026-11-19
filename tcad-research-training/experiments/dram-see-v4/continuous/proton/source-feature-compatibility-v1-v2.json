@@ -1,0 +1,126 @@
+{
+  "alpha_mixed_version_conditions": {
+    "allowed_source_case": "Aalpha",
+    "amplitude": 1.0,
+    "condition_binding": "Each row retains exact source packet, version and contract SHA; device/SN/energy/angle must equal verified source_conditions",
+    "energy_definition": "MeV at the first modeled Si surface, with no preceding stack propagation",
+    "epoch_s": 1.5e-08,
+    "geometry_rule": "Each packet must independently validate its original input model and exact analytic Si mask",
+    "origin_change": "A changed anchor, epoch or unit convention requires a separately registered compatible model contract; this list does not admit it",
+    "r0_um": [
+      -0.052,
+      0.0,
+      0.0
+    ],
+    "source_angle_definition": "degrees from +z in x-z plane, phi=180 degrees",
+    "source_status": "PRESCRIBED_POSITIVE_SOURCE",
+    "spatial_width_um": 0.05,
+    "temporal_sigma_ps": 0.2,
+    "v1_conditions": {
+      "angle_deg": 0,
+      "energy_MeV": 5,
+      "gate_top_depth_nm": 80,
+      "sn_junction_depth_nm": 87
+    },
+    "v2_conditions": {
+      "angle_deg": [
+        0,
+        30
+      ],
+      "energy_MeV": [
+        3,
+        5,
+        7
+      ],
+      "gate_top_depth_nm": [
+        70,
+        80,
+        90
+      ],
+      "sn_junction_depth_nm": [
+        82,
+        87,
+        92
+      ]
+    }
+  },
+  "automatic_data_or_native_admission": false,
+  "common_semantics": {
+    "charge": "Electronic generation charge in fC, one elementary charge per electron-hole pair",
+    "domain": "Exact prescribed finite Si material mask and all time; no tail renormalization",
+    "normalization": "Raw charge-weighted moments; never divide feature columns by Q",
+    "origin_rule": "Prescribed input source anchor and epoch, never measured centroid, TCAD field or accepted clock",
+    "source_present": "Explicit positive source=1; verified explicit absent source=0 only if that version supports it; missing/failed input rejects",
+    "spatial_first": "Integral of (r_i-r0_i) dQ",
+    "spatial_second": "Integral of (r_i-r0_i)(r_j-r0_j) dQ",
+    "structural_zero": "All 13 raw features zero and explanatory moments null; no measured-native-zero claim",
+    "time_first": "Integral of ((t-epoch_s)/1e-12) dQ",
+    "time_second": "Integral of ((t-epoch_s)/1e-12)^2 dQ"
+  },
+  "comparison_evidence": {
+    "S2_max_abs_feature_difference_in_declared_units": 8.881784197001252e-15,
+    "interpretation": "Existing input-only normal-incidence comparison; not native proof and not a new tolerance",
+    "path": "local_runtime/dram-see-v4/continuous/proton/alpha-v2-handoff-r2.json",
+    "sha256": "2da241095ed00c71a4a5809afd0f4aa93729d5f3d2757d7f79c18f94e70f7fc9"
+  },
+  "compatible_contract_sets": {
+    "alpha": [
+      {
+        "sha256": "a7a5d4c92ef2e6d0cbab80c96b2ed8c97835300326ea04df10458ffc852df122",
+        "version_id": "v1-s2"
+      },
+      {
+        "sha256": "28fbb4aabbf8a8b8e7b45c544b93ddf791100085f77dbacc6c7f35314bd7d6f1",
+        "version_id": "v2-alpha-surface"
+      }
+    ],
+    "proton": [
+      {
+        "sha256": "a7a5d4c92ef2e6d0cbab80c96b2ed8c97835300326ea04df10458ffc852df122",
+        "version_id": "v1-s2"
+      }
+    ]
+  },
+  "excluded_inferences": [
+    "The two source generators are not byte-identical or physically calibrated equivalents.",
+    "v1 Z/H/split remain version-specific qualification inputs; this compatibility does not make v2 accept them.",
+    "No v2 proton implementation, structural-zero builder, native BE/HeavyIon/endpoint qualification or PMI/R12 repair is implied.",
+    "No holdout relabeling, training authorization, response reuse, population risk or energy-angle-only stochastic prediction is implied."
+  ],
+  "feature_order": [
+    "source_present",
+    "Q_Si_fC",
+    "M_x_fC_um",
+    "M_y_fC_um",
+    "M_z_fC_um",
+    "M_xx_fC_um2",
+    "M_xy_fC_um2",
+    "M_xz_fC_um2",
+    "M_yy_fC_um2",
+    "M_yz_fC_um2",
+    "M_zz_fC_um2",
+    "M_t_fC_ps",
+    "M_tt_fC_ps2"
+  ],
+  "required_downstream_checks": [
+    "Explicit compatible contract list in data design; retain the existing rejection of unlisted or mixed-semantic contracts.",
+    "Recompute every packet with its own registered immutable verifier; never regenerate or relabel a v1 packet as v2.",
+    "Matching response/circuit/physics, actual source/native qualification, same-event two-bit A0 controls, and frozen final holdouts remain required."
+  ],
+  "schema": "continuous-source-feature-semantic-compatibility-v1",
+  "units": {
+    "M_t_fC_ps": "fC ps",
+    "M_tt_fC_ps2": "fC ps^2",
+    "M_x_fC_um": "fC um",
+    "M_xx_fC_um2": "fC um^2",
+    "M_xy_fC_um2": "fC um^2",
+    "M_xz_fC_um2": "fC um^2",
+    "M_y_fC_um": "fC um",
+    "M_yy_fC_um2": "fC um^2",
+    "M_yz_fC_um2": "fC um^2",
+    "M_z_fC_um": "fC um",
+    "M_zz_fC_um2": "fC um^2",
+    "Q_Si_fC": "fC",
+    "source_present": "1"
+  }
+}

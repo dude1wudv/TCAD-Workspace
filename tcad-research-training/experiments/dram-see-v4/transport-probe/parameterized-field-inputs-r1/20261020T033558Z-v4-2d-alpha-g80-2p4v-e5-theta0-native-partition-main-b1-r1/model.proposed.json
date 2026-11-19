@@ -1,0 +1,332 @@
+{
+  "schema": "dram-see-v4-continuous-model-assumptions-r1",
+  "status": "CURRENT_DECLARED_ASSUMPTIONS_UNCALIBRATED",
+  "execution_enabled": true,
+  "model_id": "bcat2020-asymmetric-finite-width-1t1c-r13",
+  "scope": "Literature-anchored representative model; neither commercial LPDDR5/6 process reproduction nor calibrated reproduction of the paper",
+  "primary_reference": {
+    "doi": "10.3390/electronics9111908",
+    "url": "https://www.mdpi.com/2079-9292/9/11/1908",
+    "structure": "Figure 2(c), conventional asymmetric junction BCAT; no Pi buried insulator",
+    "evidence": "evidence/device-evidence.md"
+  },
+  "geometry": {
+    "units": "nm",
+    "coordinates": {
+      "x": "SN to BL",
+      "y": "finite active width",
+      "z": "depth below silicon contact surface, positive downward"
+    },
+    "silicon_domain_nm": {
+      "x": [
+        -1000,
+        1000
+      ],
+      "y": [
+        -250,
+        250
+      ],
+      "z": [
+        0,
+        1000
+      ]
+    },
+    "gate_top_depth_nm": 80,
+    "published_gate_recess_depth_nm": 150,
+    "reconstruction_interpretation": "Use published recess marker as deepest metal point z=150; this coordinate interpretation is an explicit assumption, not additional information from the paper",
+    "trench_outer_width_nm": 24,
+    "gate_oxide_side_and_bottom_nm": 4,
+    "outer_rounding_radius_nm": 12,
+    "rounding_center_z_nm": 142,
+    "metal_rounding_radius_nm": 8,
+    "metal_bottom_z_nm": 150,
+    "oxide_outer_bottom_z_nm": 154,
+    "active_width_nm": 20,
+    "sti_each_side_width_nm": 50,
+    "sti_depth_nm": 200,
+    "sn_contact_box_xy_nm": [
+      [
+        -72,
+        -32
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "bl_contact_box_xy_nm": [
+      [
+        32,
+        72
+      ],
+      [
+        -10,
+        10
+      ]
+    ],
+    "body_contact_z_nm": 1000,
+    "topology": "Finite-width extrusion of Figure 2(c) cross-section, STI on both y sides; no claim of reconstructing unreported saddle side gates or adjacent wordlines",
+    "side_boundary": "electrically insulating; bottom body contact; no periodic cell array",
+    "size_family": [
+      {
+        "id": "S1",
+        "gate_top_depth_nm": 70,
+        "metal_vertical_span_nm": 80,
+        "split": "training_domain"
+      },
+      {
+        "id": "S2",
+        "gate_top_depth_nm": 80,
+        "metal_vertical_span_nm": 70,
+        "split": "baseline_training_domain"
+      },
+      {
+        "id": "S3",
+        "gate_top_depth_nm": 90,
+        "metal_vertical_span_nm": 60,
+        "split": "smaller_vertical_span_extrapolation"
+      }
+    ],
+    "size_semantics": "Only gate top depth changes; vertical span is not effective channel length, technology node, or lateral gate length",
+    "evidence_class": "80/150 nm and family 70/80/90 nm from paper; all other dimensions and topology completion are declared engineering assumptions",
+    "extension_reason": "x boundary expanded before any native run so 30-degree tilt toward SN stays inside Si through z=1000 nm; original +/-250 nm proposal and review retained"
+  },
+  "doping": {
+    "units": "cm^-3",
+    "peak_donor": 1.45e+20,
+    "uniform_acceptor": 1e+17,
+    "sn_junction_depth_nm": 87,
+    "bl_junction_depth_nm": 137.5,
+    "source_intervals_nm": {
+      "sn": [
+        82,
+        92
+      ],
+      "bl": [
+        134,
+        141
+      ]
+    },
+    "profile": "ND(x,z)=w(x)*Npk*exp(-(z/aSN)^2)+(1-w(x))*Npk*exp(-(z/aBL)^2); w(x)=(1-tanh(x/5nm))/2; aJ=zJ/sqrt(ln(Npk/NA)); assigned only in silicon",
+    "evidence_class": "Peak and junction intervals and Gaussian family from paper; interval midpoints, acceptor, exact Gaussian convention and lateral blending are assumptions",
+    "later_process_axis": {
+      "name": "sn_junction_depth_nm",
+      "values": [
+        82,
+        87,
+        92
+      ],
+      "others_fixed": true
+    }
+  },
+  "materials_and_physics": {
+    "silicon_density_g_cm3": 2.33,
+    "dielectric": "SiO2",
+    "gate": "ideal metal, assumed work function 4.6 eV; transport material mapping must be separately frozen before Geant4 release",
+    "temperature_K": 300,
+    "equations": [
+      "Poisson",
+      "Electron",
+      "Hole"
+    ],
+    "statistics": "Fermi",
+    "candidate_models": [
+      "doping dependent mobility",
+      "high field saturation",
+      "normal field mobility",
+      "band gap narrowing",
+      "SRH",
+      "Auger",
+      "band-to-band tunnelling for GIDL"
+    ],
+    "model_gate": "Exact installed-version model names, parameter defaults and units must be exported to a frozen physics manifest before any run; no silent fallback or fitting to radiation response",
+    "not_claimed": [
+      "trap-calibrated retention",
+      "quantum-calibrated advanced process",
+      "random dopant variability",
+      "commercial reliability"
+    ],
+    "selected_btbt": {
+      "model": "Hurkx",
+      "density_correction": "None",
+      "parameters": {
+        "Agen": 400000000000000.0,
+        "Bgen": 19000000.0,
+        "Pgen": 2.5,
+        "Arec": 400000000000000.0,
+        "Brec": 19000000.0,
+        "Prec": 2.5,
+        "alpha": 0,
+        "dDist": 0,
+        "dPot": 0,
+        "MinField": 0
+      },
+      "units": {
+        "Agen": "cm^-3 s^-1",
+        "Bgen": "V/cm",
+        "Pgen": "1",
+        "Arec": "cm^-3 s^-1",
+        "Brec": "V/cm",
+        "Prec": "1",
+        "alpha": "1",
+        "dDist": "cm",
+        "dPot": "V",
+        "MinField": "V/cm"
+      },
+      "assumption_id": "dram-see-v4-physics-local-hurkx-r1",
+      "self_consistent": true
+    },
+    "scientific_limitations": [
+      "This is a declared local model branch, not a nonlocal-path equivalent or a calibrated reproduction.",
+      "A/B and exponent map the 300 K uniform-field phonon-assisted reference only; Fermi statistics, bandgap narrowing and nonuniform fields preclude general equality.",
+      "Local generation/recombination lacks path integration, spatially separated electron/hole endpoints and reflection at insulator interfaces.",
+      "dDist=dPot=0 retains the installed local defaults; abrupt trench fields and GIDL may have model-form bias of unproven magnitude or sign.",
+      "DC, retention, charge collection and upset results remain conditional on this model; subsequent matched model sensitivity is required.",
+      "Legal native availability and syntax are unverified until the original SDevice run actually checks out the required features."
+    ],
+    "required_evidence": [
+      "Frozen installed-version physics manifest and original successful solver exits",
+      "DC and actual two-bit write/read checks under this same physics assumption",
+      "Matched model-form sensitivity with final holdout excluded from tuning"
+    ]
+  },
+  "circuit": {
+    "Cstore_fF": 20,
+    "Cbl_fF": 200,
+    "VDD_V": 1.2,
+    "Vplate_V": 0.6,
+    "Vbl_precharge_V": 0.6,
+    "Vbody_V": 0,
+    "Vwl_on_V": 1.8,
+    "Vwl_off_V": -0.5,
+    "driver_on_resistance_ohm": 1000,
+    "driver_off_resistance_ohm": 1000000000000000.0,
+    "initial_Vsn_V": 0.6,
+    "bias_and_capacitance_evidence": "Explicit cell-operation assumptions; paper DC drain biases are not claimed to be product supply specifications",
+    "timeline_ns": [
+      {
+        "interval": [
+          0,
+          2
+        ],
+        "action": "WL off; BL driver at bit*VDD; common numerical SN initial value"
+      },
+      {
+        "interval": [
+          2,
+          2.1
+        ],
+        "action": "ramp WL to on"
+      },
+      {
+        "interval": [
+          2.1,
+          6
+        ],
+        "action": "write through transistor"
+      },
+      {
+        "interval": [
+          6,
+          6.1
+        ],
+        "action": "ramp WL off"
+      },
+      {
+        "interval": [
+          6.1,
+          8
+        ],
+        "action": "switch BL to precharge, then isolate driver by 8.1 ns"
+      },
+      {
+        "interval": [
+          8.1,
+          20
+        ],
+        "action": "hold; particle at 15 ns only in signal roles"
+      },
+      {
+        "interval": [
+          20,
+          20.1
+        ],
+        "action": "ramp WL on for charge-sharing read"
+      },
+      {
+        "interval": [
+          20.1,
+          22
+        ],
+        "action": "read, score mean VBL over 21.9 to 22 ns"
+      },
+      {
+        "interval": [
+          22,
+          22.1
+        ],
+        "action": "ramp WL off"
+      },
+      {
+        "interval": [
+          22.1,
+          25
+        ],
+        "action": "finish without claiming restored or persistent memory state"
+      }
+    ]
+  },
+  "alpha": {
+    "particle": "alpha",
+    "first_energy_MeV": 5,
+    "energy_definition": "At local silicon surface; no package or orbit spectrum",
+    "later_energy_MeV": [
+      3,
+      5,
+      7
+    ],
+    "angle_deg_from_positive_z": 0,
+    "later_angles_deg": [
+      0,
+      30
+    ],
+    "position_nm": [
+      -52,
+      0,
+      0
+    ],
+    "azimuth": "180 degrees in x-y convention: tilt toward negative x, away from the buried gate",
+    "time_center_ns": 15,
+    "radial_Gaussian_w_nm": 50,
+    "temporal_sigma_ps": 0.2,
+    "regularization_status": "Literature order-of-magnitude guided assumptions; parameter mapping and radial heterostructure losses are not calibrated",
+    "eV_per_pair": 3.6,
+    "charge_fC_per_MeV_electronic": 44.5049065,
+    "native_route": "installed-version HeavyIon, PicoCoulomb; positive carrier-pair generation; no PMI dependency",
+    "profile": "Integrate NIST ASTAR electronic stopping along E(s); nuclear stopping changes energy loss but is not counted wholesale as electron-hole generation",
+    "cutoff": "Finite silicon volume and finite accepted time window; report tail/oxide/domain loss without renormalizing it away",
+    "profile_candidate": "evidence/alpha-5MeV-1p0um-profile.csv",
+    "unclipped_line_charge_fC_1um": 6.468053,
+    "evidence": "evidence/alpha-source-design.md",
+    "azimuth_deg": 180,
+    "oblique_path_length_um_at_30deg": 1.1547005383792515,
+    "later_profile_rule": "Reintegrate ASTAR for each energy and actual clipped path length; never stretch the normal-incidence 1 um table"
+  },
+  "numerics": {
+    "time_integrator": "BE",
+    "near_oxide_max_edge_nm": 1,
+    "near_junction_or_track_max_edge_nm": 5,
+    "far_bulk_max_edge_nm": 40,
+    "mesh_refinement_factor": 0.5,
+    "source_window_sigma": 8,
+    "source_max_step_ps": 0.04,
+    "source_refined_max_step_ps": 0.02,
+    "edge_ramp_max_step_ns": 0.01,
+    "hold_max_step_ns": 0.1,
+    "global_time_refinement_factor": 0.5,
+    "native_field_sampling": "Every accepted source-window BE endpoint plus bracketing endpoints; retain rejected-step and rollback facts; no synthetic expected-time fields",
+    "source_spatial_centroid_abs_nm": 2,
+    "source_time_centroid_abs_ps": 0.04
+  },
+  "physics_assumption_id": "dram-see-v4-physics-local-hurkx-r1"
+}

@@ -1,0 +1,47 @@
+schema_version: "0.1"
+plan_id: null
+revision: "0.1"
+status: draft
+execution_authorized: false
+formal_title: null
+
+# 实例化时按导师任务填入，不添加与题目无关的必做项。
+research_requirements: {}
+routes: {}
+parameters:
+  particle_and_energy: null
+  direction_and_coordinate_convention: null
+  geometry_and_process: null
+  electrical_and_readout_protocol: null
+mapping:
+  units: null
+  coordinate_transform: null
+  source_normalization: null
+  dimensionality_and_approximation: null
+cohorts:
+  pilot: {}
+  development: {}
+  in_domain_test: {}
+  extrapolation_test: {}
+  statistical_sampling: {}
+data:
+  execution_truth: existing_runner_ledger_and_original_archives
+  labels_and_denominators: {}
+  missing_is_zero: false
+training:
+  targets: []
+  feature_availability_at_inference: {}
+  grouping: null
+  candidate_families: []
+  hpo_scope: development_only
+  independent_test_use: after_model_and_predictions_frozen
+tasks: []
+resource_policy:
+  authorized_parallel_capacity: null
+  task_threads: 1
+  capacity_source: latest_user_decision_and_current_runner_profile
+  budget: null
+adaptation:
+  allowed_with_record: []
+  scientific_decisions: []
+  failure_scope: affected_task_or_artifact

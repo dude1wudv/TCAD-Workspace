@@ -1,0 +1,21 @@
+{
+  "undeclared": [],
+  "stale_rows": [],
+  "semantic_undeclared": 0,
+  "verdict": "clean",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "resolved": [
+    {
+      "ledger": "G016",
+      "site": "E:/TCAD-Workspace/tcad-research-training/local_runtime/dram-see-v4/s2-geometry-r1/20261016T135638Z/review-inputs-r2/implement-stage/ASSUMPTIONS.md:21",
+      "result": "已声明 gate 的2D≥4、3D≥6及其他接触恰1的实体计数条件，与 evaluate.py:179-186 一致。"
+    },
+    {
+      "ledger": "G017",
+      "site": "E:/TCAD-Workspace/tcad-research-training/local_runtime/dram-see-v4/s2-geometry-r1/20261016T135638Z/review-inputs-r2/implement-stage/ASSUMPTIONS.md:22",
+      "result": "已声明 Si donor 最大值及非Si区域两物种极值比较，明确允许[0,1e8] cm^-3且不能解释为严格零掺杂，与 producer.py:87-99、evaluate.py:168-171 一致。"
+    }
+  ],
+  "boundary": "初轮两项声明缺口已解决，并明确保留事后补记事实。本轮未发现新增未声明决策或账本不一致；clean仅表示本轮静态扫查零发现，不构成跨家族无遗漏确认、实现正确性确认或原生验收。未运行候选代码、测试或原生工具。"
+}

@@ -1,0 +1,21 @@
+% Conceptual workflow, not a measured result or screenshot.
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+ block/.style={draw=signalblue,rounded corners=2pt,fill=softgray,
+ text width=4.2cm,minimum height=1.5cm,align=center,font=\small},
+ arrow/.style={-{Latex[length=2.4mm]},thick,draw=signalblue},
+ node distance=0.7cm and 0.6cm]
+\node[block] (request) {限定中文请求\\尺寸、粒子、角度\\独立事件数};
+\node[block,right=of request] (matrix) {受约束的工况清单\\单位、范围、版本与种子};
+\node[block,right=of matrix] (transport) {Geant4 硅内电离沉积\\$E_{\rm ion}\ \rightarrow\ Q_{\rm dep}$\\有限径迹及单位检查};
+\node[block,below=of transport] (tcad) {TCAD 器件与电路求解\\等效径迹与受控初态\\读出瞬态与端口检查};
+\node[block,left=of tcad] (metric) {匹配中性参考与同位对照\\$D,\ M,\ \Delta Q,\ \Delta M$};
+\node[block,left=of metric] (model) {按工况分组的响应拟合\\冻结预测后检验未见响应};
+\draw[arrow] (request)--(matrix);
+\draw[arrow] (matrix)--(transport);
+\draw[arrow] (transport)--(tcad);
+\draw[arrow] (tcad)--(metric);
+\draw[arrow] (metric)--(model);
+\node[below=0.40cm of metric,align=center,font=\small,text width=14.5cm]
+ {每一层绑定输入版本、运行记录和来源哈希；科学质量门槛与执行状态分别记录。};
+\end{tikzpicture}}

@@ -1,0 +1,231 @@
+{
+  "schema": "dram-see-v4-mesh-policy-definition-r1",
+  "policy_id": "dram-see-v4-gradient-mesh-r5",
+  "dimension": 3,
+  "length_unit": "um",
+  "legacy_policy": "s2-global-interface-1nm-active-doping-r1",
+  "previous_explicit_policy": "dram-see-v4-gradient-mesh-r4",
+  "assumptions_file": "MESH-GRADIENT-R5-ASSUMPTIONS.md",
+  "active_bounds_um": [
+    [
+      -0.1,
+      -0.07,
+      0.0
+    ],
+    [
+      0.1,
+      0.07,
+      0.25
+    ]
+  ],
+  "blend_half_width_um": 0.02,
+  "active_core_max_um": [
+    0.001,
+    0.005,
+    0.001
+  ],
+  "active_outer_max_um": [
+    0.005,
+    0.005,
+    0.001
+  ],
+  "contact_halo_um": [
+    0.002,
+    0.005,
+    0.04
+  ],
+  "contact_max_um": [
+    0.001,
+    0.005,
+    0.001
+  ],
+  "source_depth_boundaries_um": [
+    0.0,
+    0.25,
+    0.98,
+    1.0
+  ],
+  "source_max_xyz_um": [
+    [
+      0.01,
+      0.01,
+      0.005
+    ],
+    [
+      0.01,
+      0.01,
+      0.02
+    ],
+    [
+      0.01,
+      0.01,
+      0.005
+    ]
+  ],
+  "source_core_max_xyz_um": [
+    [
+      0.005,
+      0.005,
+      0.005
+    ],
+    [
+      0.005,
+      0.005,
+      0.02
+    ],
+    [
+      0.005,
+      0.005,
+      0.005
+    ]
+  ],
+  "source_outer_half_width_multiple": 4,
+  "source_core_half_width_multiple": 2,
+  "source_partition_scope": "Original normal-alpha-axis column; arbitrary proton secondary or oblique source coverage is not qualified",
+  "interface_remote_first_um": 0.005,
+  "interface_factor": 1.5,
+  "DoubleSide": true,
+  "minimum_to_maximum_ratio": 0.5,
+  "refinement_factor": 0.5,
+  "junction_max_xyz_um": [
+    0.02,
+    0.02,
+    0.005
+  ],
+  "blend_full_y_max_xyz_um": [
+    0.001,
+    0.02,
+    0.001
+  ],
+  "geometry_derived_directional_windows": {
+    "padding_to_side_oxide_ratio": 0.25,
+    "corner_half_width_to_side_oxide_ratio": 0.5,
+    "sti_core_half_width_to_side_oxide_ratio": 1.0,
+    "sti_transition_half_width_to_side_oxide_ratio": 3.0,
+    "sti_bottom_transition_y_halo_to_side_oxide_ratio": 2.0,
+    "gate_top_pre_halo_to_side_oxide_ratio": 2.0,
+    "gate_top_post_halo_to_side_oxide_ratio": 0.5,
+    "maximum_xyz_um": {
+      "GateEnvelope": [
+        0.005,
+        0.005,
+        0.005
+      ],
+      "GateSideNormalX": [
+        0.001,
+        0.005,
+        0.001
+      ],
+      "GateBottomCurveXZ": [
+        0.001,
+        0.005,
+        0.001
+      ],
+      "GateTopNormalZ": [
+        0.005,
+        0.005,
+        0.001
+      ],
+      "GateEndNormalY": [
+        0.005,
+        0.001,
+        0.005
+      ],
+      "STISideNormalYCore": [
+        0.005,
+        0.001,
+        0.005
+      ],
+      "STISideNormalYTransition": [
+        0.005,
+        0.0025,
+        0.005
+      ],
+      "STIBottomNormalZCore": [
+        0.005,
+        0.005,
+        0.001
+      ],
+      "STIBottomNormalZTransition": [
+        0.005,
+        0.005,
+        0.0025
+      ],
+      "TrenchSTISideCorners": [
+        0.001,
+        0.001,
+        0.001
+      ],
+      "TrenchSTICurvedCorners": [
+        0.001,
+        0.001,
+        0.001
+      ]
+    },
+    "sti_adjacent_regions": [
+      "R.Silicon",
+      "R.STI.minus",
+      "R.STI.plus"
+    ],
+    "excluded_sti_region": "R.Trench"
+  },
+  "delaunizer": {
+    "explicit_parameters": {
+      "maxPoints": 2147483647
+    },
+    "other_parameters": "unchanged vendor defaults, including boxmethod",
+    "finite_integer_not_unlimited": true,
+    "not_project_resource_budget": true,
+    "not_accuracy_acceptance": true,
+    "scales_with_h2": false
+  },
+  "previous_native_delaunizer_serialization": {
+    "source_run_id": "20261017T100332Z-v4-continuous-b1-d3-r6",
+    "source_run_state": "FAILED_COLLECTED",
+    "original_archive_sha256": "3a5b0ad1525f58d4848a3adb620c17f5da1bdc5c8c07ee34bf31d02878b09db1",
+    "actual_cell_cmd_sha256": "50dcaab38f02ba9abad9f5e233b606cf09e92a9c2973fbabb81026fc3ffce346",
+    "requested_integer": 2147483647,
+    "actual_literal": "2.14748e+09",
+    "actual_literal_numeric_value": 2147480000,
+    "actual_minus_requested": -3647,
+    "exact_parameter_match": false,
+    "is_current_run_measurement": false,
+    "does_not_qualify_mesh_or_dc": true
+  },
+  "native_accuracy_qualified": false,
+  "thresholds_changed": false,
+  "physical_parameters_changed": false,
+  "resource_limit": null,
+  "changed_r4_rules": [
+    "ActiveDopingCore",
+    "ActiveDopingLeft",
+    "ActiveDopingRight",
+    "BlendFullWidth",
+    "GateSideNormalX1",
+    "GateSideNormalX2",
+    "TrenchSTISideCorners1",
+    "TrenchSTISideCorners2",
+    "TrenchSTISideCorners3",
+    "TrenchSTISideCorners4"
+  ],
+  "doping_partition_source": {
+    "path": "local_runtime/dram-see-v4/continuous/data/doping-mesh-error-analysis-r1/candidate-partitions.json",
+    "sha256": "04b2a4d3782456dcbaeb82537aae1473642c71078f47bb06079ce877dab776dc",
+    "raw_utf8": "{\n  \"schema\": \"dram-see-v4-doping-mesh-mathematical-candidate-r1\",\n  \"status\": \"ANALYTICAL_CANDIDATE_NOT_NATIVE_QUALIFICATION\",\n  \"applicability\": {\n    \"sn_junction_depth_nm\": 87,\n    \"bl_junction_depth_nm\": 137.5,\n    \"peak_donor_cm3\": 1.45e20,\n    \"uniform_acceptor_cm3\": 1.0e17,\n    \"blend_length_nm\": 5,\n    \"gate_depth_dependency\": \"none for doping; existing actual Silicon masks and geometry refinements remain authoritative\",\n    \"other_sn_values\": \"reject; 82 and 92 nm not covered by this candidate analysis\"\n  },\n  \"length_unit\": \"nm\",\n  \"replace_exact_windows\": [\"ActiveDopingCore\", \"ActiveDopingLeft\", \"ActiveDopingRight\", \"BlendFullWidth\"],\n  \"unchanged_rules\": \"All other geometry, source, contact, oxide, STI, minimum-size and precedence rules remain in force. A replacement must remove the old overlapping full-depth doping placement, not add a coarser placement under it.\",\n  \"min_step_rule\": \"each nominal maximum component divided by 2, as in the original policy\",\n  \"h_over_2_rule\": \"multiply every maximum/minimum step by 0.5; keep all physical partition boundaries fixed\",\n  \"original_acceptance\": \"all original 148 D3 measurements and their individual tolerances, including max(0.02*abs(expected),1e8 cm^-3) for donor/acceptor probes, remain unchanged\",\n  \"derived_boundaries\": {\n    \"a_SN_nm\": 32.245853876921466,\n    \"a_BL_nm\": 50.96327480547932,\n    \"a_SN_over_sqrt2_nm\": 22.80126194152169,\n    \"twice_a_SN_nm\": 64.49170775384293,\n    \"sqrt2_a_BL_nm\": 72.07295441285592,\n    \"four_a_BL_nm\": 203.8530992219173\n  },\n  \"placements\": [\n    {\"id\":\"CoreShallow\",\"replaces\":\"ActiveDopingCore\",\"lo_nm\":[-20,-70,0],\"hi_nm\":[20,70,22.80126194152169],\"max_step_nm\":[2,5,2]},\n    {\"id\":\"CoreRest\",\"replaces\":\"ActiveDopingCore\",\"lo_nm\":[-20,-70,22.80126194152169],\"hi_nm\":[20,70,250],\"max_step_nm\":[1,5,1]},\n    {\"id\":\"BlendShallow\",\"replaces\":\"BlendFullWidth\",\"lo_nm\":[-20,-250,0],\"hi_nm\":[20,250,22.80126194152169],\"max_step_nm\":[2,20,2]},\n    {\"id\":\"BlendRest\",\"replaces\":\"BlendFullWidth\",\"lo_nm\":[-20,-250,22.80126194152169],\"hi_nm\":[20,250,250],\"max_step_nm\":[1,20,1]},\n    {\"id\":\"LeftTransition\",\"replaces\":\"ActiveDopingLeft\",\"lo_nm\":[-40,-70,0],\"hi_nm\":[-20,70,250],\"max_step_nm\":[5,5,1]},\n    {\"id\":\"LeftShallow\",\"replaces\":\"ActiveDopingLeft\",\"lo_nm\":[-100,-70,0],\"hi_nm\":[-40,70,32.245853876921466],\"max_step_nm\":[5,5,4]},\n    {\"id\":\"LeftMiddle\",\"replaces\":\"ActiveDopingLeft\",\"lo_nm\":[-100,-70,32.245853876921466],\"hi_nm\":[-40,70,64.49170775384293],\"max_step_nm\":[5,5,2]},\n    {\"id\":\"LeftTailFine\",\"replaces\":\"ActiveDopingLeft\",\"lo_nm\":[-100,-70,64.49170775384293],\"hi_nm\":[-40,70,185],\"max_step_nm\":[5,5,1]},\n    {\"id\":\"LeftDeepGuard\",\"replaces\":\"ActiveDopingLeft\",\"lo_nm\":[-45,-70,185],\"hi_nm\":[-40,70,250],\"max_step_nm\":[5,5,1]},\n    {\"id\":\"LeftDeepAbsolute\",\"replaces\":\"ActiveDopingLeft\",\"lo_nm\":[-100,-70,185],\"hi_nm\":[-45,70,250],\"max_step_nm\":[5,5,5]},\n    {\"id\":\"RightShallow\",\"replaces\":\"ActiveDopingRight\",\"lo_nm\":[20,-70,0],\"hi_nm\":[100,70,72.07295441285592],\"max_step_nm\":[5,5,5]},\n    {\"id\":\"RightMiddle\",\"replaces\":\"ActiveDopingRight\",\"lo_nm\":[20,-70,72.07295441285592],\"hi_nm\":[100,70,203.8530992219173],\"max_step_nm\":[5,5,2]},\n    {\"id\":\"RightTailFine\",\"replaces\":\"ActiveDopingRight\",\"lo_nm\":[20,-70,203.8530992219173],\"hi_nm\":[100,70,250],\"max_step_nm\":[5,5,1]}\n  ],\n  \"boundary_basis\": {\n    \"x_minus40_nm\": \"-8 times the original 5nm blending length; retain nearer mixed tail at original steps\",\n    \"left_deep_proven_domain\": \"x <= -40nm and z >= 180nm implies 0 <= ND <= 6.662132620752443e7 cm^-3 < 1e8\",\n    \"left_deep_coarse_rectangle\": \"inset 5nm from the proven x/z boundaries; any actual interpolation cell used for this range argument must stay within the proven domain\",\n    \"partition_locations\": \"physical Gaussian/mixture scales and absolute-tolerance bound; no probe-based local boxes\"\n  },\n  \"limitations\": [\n    \"No native run or 3D qualification is represented by this file.\",\n    \"P1 interpolation bounds require the actual cell projected x/z spans; nominal MaxElementSize is a proposed construction control, not proof of the produced tetrahedral spans.\",\n    \"Original 1nm regions are retained as the existing baseline, not newly certified by this analysis.\",\n    \"This candidate does not assert a node count, memory use, runtime, PDE convergence or source qualification.\"\n  ]\n}\n"
+  },
+  "straight_geometry_partition": {
+    "physical_boundary_basis": "t/2, gate.top-2t, gate.top+t/2, round.center-t, round.center+t/4",
+    "gate_side_straight_max_xyz_um": [
+      0.001,
+      0.005,
+      0.005
+    ],
+    "trench_sti_edge_straight_max_xyz_um": [
+      0.001,
+      0.001,
+      0.005
+    ],
+    "top_surface_halo_to_side_oxide_ratio": 0.5,
+    "native_accuracy_qualified": false
+  }
+}

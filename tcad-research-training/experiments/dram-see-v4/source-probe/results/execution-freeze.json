@@ -1,0 +1,41 @@
+{
+  "schema": "dram-see-v4-source-probe-execution-freeze",
+  "utc": "2026-10-13T02:24:07.189473+00:00",
+  "source_files": [
+    {
+      "path": "experiments\\dram-see-v4\\source-probe\\build_probe.py",
+      "sha256": "3ead51ba029e642a8a1fca4dfe0ab2afa69a269a7ea4d1d2d05c1ffbd2851a00"
+    },
+    {
+      "path": "experiments\\dram-see-v4\\source-probe\\source_contract.json",
+      "sha256": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb"
+    },
+    {
+      "path": "experiments\\dram-see-v4\\source-probe\\run_once.py",
+      "sha256": "44d70da603c4a0e8c40a746116e728db69c3d26ff0f378f4c882d6654ecb89d7"
+    },
+    {
+      "path": "experiments\\dram-see-v4\\source-probe\\preflight.py",
+      "sha256": "15161b53bcae78fe24bca19f7a9587b7d2306ac86e629cdf02e3886299934684"
+    },
+    {
+      "path": "experiments\\dram-see-v4\\source-probe\\run-plan.md",
+      "sha256": "861a78ab284980e4084a748aefbbf4149671580ca3114520ec0b076f35e0c118"
+    }
+  ],
+  "input_manifest_sha256": {
+    "A0": "5651a7f9260c1b326a277e97172866ebacf611dedb9d0daebe2f299f40ed7401",
+    "A1": "11a1ff8b6cb9326244704e7c8825a0547f1ad8c49e6b7aa5bff9743e4594757a",
+    "A4": "a3b50afbb3cc0e4394ec772aa3a66867d465654d93bd9154df59cfaaf9ce1f17"
+  },
+  "accepted_offline_checks": "Independent validation_worker generator suite: 4 tests, exit0; synthetic only",
+  "initial_cases": [
+    "A0",
+    "A1",
+    "A4"
+  ],
+  "stored_bit": 1,
+  "automatic_expansion": false,
+  "single_scheduler": "root",
+  "hadronic_execution_allowed": false
+}

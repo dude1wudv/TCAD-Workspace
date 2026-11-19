@@ -1,0 +1,30 @@
+{
+  "schema": "dram-see-v4-interface-completion-state-r1",
+  "state": "IMPLEMENTING",
+  "updated_utc": "2026-10-13T16:15:07.879279+00:00",
+  "active_job": null,
+  "completed_roles": [],
+  "pending_roles": [
+    "a4-b1-main",
+    "a5-b1-main",
+    "a0-b1-fine",
+    "a6-b1-main",
+    "a7-b1-main",
+    "a2-b1-main",
+    "a3-b1-main",
+    "a8s2-b1-main",
+    "a8s4-b1-main",
+    "a0-b0-main",
+    "a1-b0-main",
+    "a4-b0-main",
+    "a0-b1-time",
+    "a1-b1-time",
+    "a6-b1-time",
+    "a1-b1-fine",
+    "a5-b1-fine"
+  ],
+  "historical_attempts": 5,
+  "new_attempts": 0,
+  "reserve_used": 0,
+  "gate_directory": "local_runtime/dram-see-v4/interface-completion-r1/gates"
+}

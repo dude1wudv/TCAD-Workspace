@@ -1,0 +1,127 @@
+\section{已完成结果与验证证据}
+\label{cr:results}
+\subsection{证据快照与阶段进度}
+表\ref{cr:progress}取自本报告共享快照，截止时间为\EvidenceDate。
+R50-main的训练响应已完成\TrainVerified{}项；留出已验证\HoldoutVerified{}项，
+账本在途\HoldoutRunning{}项，尚缺\HoldoutMissing{}项；外推已验证
+\ExtrapVerified{}项，账本在途\ExtrapRunning{}项，尚缺\ExtrapMissing{}项。
+这些计数描述逻辑响应槽位；在途是快照记录，不表示报告生成时重新核查过实时进程。
+工程重试保留原记录但不增加独立样本分母。
+本稿不把正在运行的输出纳入评分，也不因后续文件变化自动改写本次快照。
+
+\begin{table}[htbp]
+\centering\small
+\caption{R50-main在共享证据快照时的完成状态。训练与测试预测已冻结，
+未完成的求解及后续验证均按真实状态列出。}
+\label{cr:progress}
+\input{tables/progress.tex}
+\end{table}
+
+\subsection{历史链路验证与读出偏移诊断}
+v1完成16个固定事件工况，覆盖四栅长、两粒子和两方向。
+匹配对照修正的SN电压下降范围为$0.018553$至$0.490764\V$；
+源项积分误差为0.2036\%至1.2422\%。
+其8点训练、4点域内留出、4点域外评价中，域内MAE为$4.392\mV$，
+域外MAE为$3.414\mV$。域外预测有先于参考TCAD完成的登记记录，
+而域内响应在系数文件冻结前可见，所以只称留出评价。
+这批结果证明了小矩阵的真实贯通和两阶段代理能力，尚无独立事件统计。
+
+v2用受控初态建立读出流程，在$L=0.25\um$、$5\,\mathrm{MeV}$、
+垂直入射下完成每种粒子四个独立事件。原理想参考和$5\mV$门槛下，
+$\alpha$存储1为1项正确、3项临界，其他位值组均正确。
+明确误读为每种粒子0/4，并不能证明误读概率为零；完全可判且零事件的
+单侧95\%上界在$N=4$时仍达52.7\%。这些历史分类保持原判据，不按后来的
+参考方案追溯替换。
+
+D1通过九个无粒子工况说明参考选择为何重要。中性SN=$0.5\V$、标准字线下，
+理想参考保留了约$+12.370\mV$的读出差分，关闭字线后仅为
+$-0.003816\mV$。当无粒子SN与原$\alpha$事件读前状态相匹配时，
+理想参考得到$+2.454961\mV$；离线中性参考和实际匹配支路均得到
+$-9.915036\mV$。端口积分及电容净电荷闭合支持字线耦合与访问管交换的解释。
+这推动了R50-main的匹配参考设计，但D1不是新的粒子样本，也不是R50响应。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{d1-reference-comparison.pdf}
+\caption{历史D1无粒子诊断的参考方式比较。$L=0.25\um$，存储电容10 fF、
+位线100 fF，信号SN匹配原$\alpha$事件的读前电压；读出在4 ns比较，差分单位mV。
+理想、离线中性及物理匹配参考属于同一诊断比较，不对旧v2事件重新分类。}
+\label{cr:d1}
+\end{figure}
+
+\subsection{预充修订与R50参考验证}
+旧$100\,\Omega$版本的一个固定$\alpha$事件在$3\ns$的BL预充误差为
+$-13.297362\,\mu\mathrm{V}$，超过原$10\,\mu\mathrm{V}$门槛。
+随后独立$50\,\Omega$ probe的匹配事件误差为
+$-4.731204\,\mu\mathrm{V}$，control与neutral亦通过；
+源、初态和其余时序保持对应关系。
+因此项目建立独立R50-main物理版本，从头生成所需基准与参考，
+而未把原失败改判或把probe填入正式矩阵。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{r50-precharge.pdf}
+\caption{旧100 $\Omega$与独立50 $\Omega$ probe中同一固定事件的预充误差绝对值。
+精确采样时刻3 ns，量为$|V_{\mathrm{BL}}-0.5\,\mathrm{V}|$，单位$\mu$V；
+固定上限为10 $\mu$V。旧失败保留，probe不计入R50-main训练或测试样本。}
+\label{cr:precharge}
+\end{figure}
+
+R50-main现有20项参考建立与验证证据：四尺寸的0/1无粒子对照及中性参考共12项，
+以及四尺寸乘两位的物理双支路比较8项。
+小批量粒子响应及两项源隔离检查也已完成；预登记代表点的匹配数值检查通过。
+图\ref{cr:reference}展示这些基准的受控初态和代表尺寸的无粒子读出波形。
+前置结果支撑当前训练数据的参考定义和接口使用，但不替代主矩阵完成后的
+边界细化，也不证明所有尺寸、所有事件均达到空间网格独立。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{r50-reference.pdf}
+\caption{R50-main无粒子基准与中性参考。左图为四栅长、存储0/中性/存储1
+共12项的粒子前SN电压，单位V；右图为$L=0.18\,\mu$m三种初态在3至4 ns
+读出阶段的BL电压，单位V。全部来自50 $\Omega$参考快照，未混入粒子主响应或旧D1数据。}
+\label{cr:reference}
+\end{figure}
+
+\subsection{训练响应与冻结预测}
+R50-main已有32个独立训练事件、64个配对响应，见图\ref{cr:training}。
+在$5\mV$主阈值下，64行训练记录中48行为正确、10行为判据误读、
+4行为临界、2行为数值不确定。这个汇总用于描述训练数据构成，
+不能把64行当成64次独立粒子入射，也不是持久SEU率。
+连续目标与离散分类应同时保留：临界或近边界记录仍可能提供有用的连续响应信息，
+但其类别判断需要相应数值证据。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.94\textwidth]{r50-training-response.pdf}
+\caption{R50-main已完成训练集的连续响应。栅长0.18/0.35 $\mu$m，
+5 MeV $\alpha$/质子、0°/30°，共32个独立事件、64个配对位响应。
+$\Delta Q$为2.8 ns同位无粒子对照修正电荷，单位fC；
+$\Delta M$为4 ns匹配中性参考下的裕量损失，单位mV。}
+\label{cr:training}
+\end{figure}
+
+四个位值与目标组合均选取$\lambda=0.1$。表\ref{cr:cv}列出训练LOCO结果：
+两个电荷目标的RMSE为0.102888和0.112903 fC，
+两个裕量目标为0.955160和1.012491 mV；训练均值基准分别为
+2.279967、2.515710 fC和21.458870、23.383861 mV。
+这说明选定特征在已采样训练工况中包含明显的响应信息，而不只是拟合一个常数。
+模型与64条测试位预测已经冻结，冻结记录中测试响应可见数为零。
+尚未完成的测试评分不能由较小的交叉验证误差代替。
+
+\begin{table}[htbp]
+\centering\small
+\caption{R50-main训练工况LOCO评价。数值是八个留出工况折RMSE的算术均值，
+按存储位和目标分别评价；不是独立测试集的误差。}
+\label{cr:cv}
+\input{tables/training-cv.tex}
+\end{table}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{r50-training-cv.pdf}
+\caption{R50-main训练LOCO中岭回归与训练均值基准的比较。
+电荷目标以fC、裕量目标以mV表示；四个模型均仅使用训练数据选取$\lambda=0.1$。
+该图不表示域内留出或尺寸外推已经验证。}
+\label{cr:cvplot}
+\end{figure}
+\FloatBarrier

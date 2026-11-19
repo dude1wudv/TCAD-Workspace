@@ -1,0 +1,17 @@
+{
+  "name": "v3-r50-main-buildcheck-r2",
+  "steps": [
+    {
+      "tool": "sdevice",
+      "args": [
+        "device.cmd"
+      ],
+      "outputs": [
+        "circuit.plt",
+        "access_device.plt",
+        "transient_des.log",
+        "final_access_des.tdr"
+      ]
+    }
+  ]
+}

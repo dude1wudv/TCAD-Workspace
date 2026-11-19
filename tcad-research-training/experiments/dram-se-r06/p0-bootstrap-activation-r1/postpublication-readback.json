@@ -1,0 +1,75 @@
+{
+  "utc": "2026-11-17T17:54:22.094818+00:00",
+  "queue_sha256": "84161beb96526bbdf86ff758c8308597268816321c1b7901baee4d730a8df55c",
+  "queue_count": 57,
+  "prior55_queue_bytes_sha_reconstructed_exactly": true,
+  "results": {
+    "r06-p0-d0-o2-zero-prefix-a-r1": {
+      "command": [
+        "/usr/bin/python3.12",
+        "-B",
+        "automation/server-codex/r06_gate.py",
+        "--policy",
+        "/etc/tcad-autonomy/policy.json",
+        "--task-id",
+        "r06-p0-d0-o2-zero-prefix-a-r1"
+      ],
+      "exit_code": 0,
+      "result": {
+        "allowed": true,
+        "scope": "p0_diagnostic",
+        "recipe_id": "zero_whr",
+        "admission": {
+          "path": "plans/dram-se-ddr5-lpddr5/r06-gate/p0-admissions/r06-p0-d0-o2-zero-prefix-a-r1.json",
+          "sha256": "0971bc225455e51bc2da35e7d83f1e05a6ca2bd36ce568929293a9f3e35c86c3"
+        },
+        "scientific_object": {
+          "scope": "p0_diagnostic",
+          "recipe_id": "zero_whr",
+          "profile_id": "D0-nominal",
+          "diagnostic_plan_sha256": "5f00ff6cb4bcebe85d05c1051f472d894ecb5e4b6a7e816b555a8baf09092c00"
+        },
+        "contract": {
+          "path": "plans/dram-se-ddr5-lpddr5/r06-gate/contract.json",
+          "sha256": "550ee6764bb0e94c65fafacd17d0273541c8a540aa761ad8e9587b6466150b37"
+        },
+        "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+      }
+    },
+    "r06-p0-d0-o2-zero-prefix-b-r1": {
+      "command": [
+        "/usr/bin/python3.12",
+        "-B",
+        "automation/server-codex/r06_gate.py",
+        "--policy",
+        "/etc/tcad-autonomy/policy.json",
+        "--task-id",
+        "r06-p0-d0-o2-zero-prefix-b-r1"
+      ],
+      "exit_code": 0,
+      "result": {
+        "allowed": true,
+        "scope": "p0_diagnostic",
+        "recipe_id": "zero_whr",
+        "admission": {
+          "path": "plans/dram-se-ddr5-lpddr5/r06-gate/p0-admissions/r06-p0-d0-o2-zero-prefix-b-r1.json",
+          "sha256": "976912e9bd79c5903e91a9fbbdf12cf217dab2523d941517ff1d3116d8696a7d"
+        },
+        "scientific_object": {
+          "scope": "p0_diagnostic",
+          "recipe_id": "zero_whr",
+          "profile_id": "D0-nominal",
+          "diagnostic_plan_sha256": "5f00ff6cb4bcebe85d05c1051f472d894ecb5e4b6a7e816b555a8baf09092c00"
+        },
+        "contract": {
+          "path": "plans/dram-se-ddr5-lpddr5/r06-gate/contract.json",
+          "sha256": "550ee6764bb0e94c65fafacd17d0273541c8a540aa761ad8e9587b6466150b37"
+        },
+        "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+      }
+    }
+  },
+  "scientific_acceptance": "not_assessed",
+  "formal_case_credit": 0,
+  "first_readback_attempt": "PermissionError reading external deployment/before backup, before any writes or gate calls; replaced with exact prior55 SHA reconstruction, no external permissions changed"
+}

@@ -1,0 +1,214 @@
+\documentclass[UTF8,fontset=fandol,10pt,a4paper]{ctexart}
+\usepackage[left=18mm,right=18mm,top=16mm,bottom=17mm,headheight=12pt]{geometry}
+\usepackage{amsmath,booktabs,tabularx,array,xcolor,tikz,pgfplots,fancyhdr}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\pgfplotsset{compat=1.18}
+\usepackage[hidelinks,unicode]{hyperref}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\CJKfamilydefault}{\CJKsfdefault}
+\definecolor{ink}{HTML}{172E3A}
+\definecolor{blue}{HTML}{287A9A}
+\definecolor{coral}{HTML}{CC7053}
+\definecolor{green}{HTML}{367C70}
+\definecolor{gold}{HTML}{D5A34A}
+\definecolor{muted}{HTML}{677A83}
+\definecolor{soft}{HTML}{EDF2F4}
+\definecolor{purple}{HTML}{83749E}
+\color{ink}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\linespread{1.23}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyfoot[L]{\scriptsize\color{muted}DRAM SEE v3\quad 项目简报}
+\fancyfoot[R]{\scriptsize\color{muted}\thepage\,/\,3}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{.3pt}
+\newcommand{\kicker}[1]{{\small\bfseries\color{blue}#1}\par\vspace{4pt}}
+\newcommand{\bigtitle}[1]{{\fontsize{22}{30}\selectfont\bfseries #1}\par\vspace{6pt}}
+\newcommand{\sect}[1]{\par\vspace{9pt}{\large\bfseries #1}\par\vspace{4pt}}
+\newcommand{\note}[1]{\par{\footnotesize\color{muted}#1}\par}
+\newcommand{\metric}[2]{\begin{minipage}[t]{.31\textwidth}{\fontsize{29}{34}\selectfont\bfseries\color{blue}#1}\par\small #2\end{minipage}}
+\hypersetup{pdftitle={AI辅助下的多特征尺寸存储器单粒子效应评估 项目简报},pdfauthor={DRAM SEE v3 项目}}
+\begin{document}
+\kicker{项目简报\hfill 2026年10月11日}
+\bigtitle{AI辅助下的多特征尺寸\\存储器单粒子效应评估}
+本项目研究不同栅长DRAM在$\alpha$粒子和质子入射后的变化。已完成4种栅长的仿真，整理了电荷与读出数据，并训练、验证了4个预测模型。存储单元采用1T1C结构。
+
+\vspace{9pt}
+\metric{4}{种栅长}\hfill\metric{64}{个独立粒子事件}\hfill\metric{128}{次响应，包含存储0和1}
+\vspace{12pt}
+
+\sect{仿真流程}
+\begin{center}
+\begin{tikzpicture}[>=Stealth,
+box/.style={rounded corners=3pt,draw=none,fill=soft,text width=3.05cm,minimum height=1.6cm,align=center,inner sep=7pt},
+arr/.style={->,line width=1.1pt,blue}]
+\node[box] (a) {\textbf{设置仿真条件}\\[4pt]\small 栅长、粒子、角度};
+\node[box,right=6mm of a] (b) {\textbf{计算能量沉积}\\[4pt]\small Geant4};
+\node[box,right=6mm of b] (c) {\textbf{计算存储器响应}\\[4pt]\small Sentaurus TCAD};
+\node[box,right=6mm of c] (d) {\textbf{分析数据}\\[4pt]\small 绘图、训练预测模型};
+\draw[arr] (a)--(b);\draw[arr] (b)--(c);\draw[arr] (c)--(d);
+\end{tikzpicture}
+\end{center}
+\note{Geant4计算粒子在材料中的能量沉积，Sentaurus TCAD据此计算存储单元的响应。}
+
+\sect{参数设置}
+\renewcommand{\arraystretch}{1.65}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}p{2.2cm}X@{}}
+\toprule
+栅长 & 0.18、0.25、0.35、0.45 $\mu$m \\
+入射粒子 & $\alpha$粒子、质子；能量均为5 MeV \\
+入射方向 & 0°、30° \\
+存储状态 & 每个粒子事件均计算存储0和存储1两种状态 \\
+随机种子 & 每组栅长、粒子和角度组合使用4个独立种子 \\
+\bottomrule
+\end{tabularx}\par
+
+\sect{已完成工作}
+已建立存储单元和粒子模型，完成批量仿真，整理了电荷变化数据、读出曲线和场分布图。原始输出与运行记录均已保存。
+
+AI助手用于整理条件、编写脚本和分析结果，也参与批量仿真的运行管理。4个预测模型使用本项目的数据训练，训练和测试结果见第3页。
+\vfill
+\note{数据版本：DRAM SEE v3 R50。}
+
+\newpage
+\kicker{项目简报\hfill DRAM SEE v3}
+\bigtitle{仿真结果}
+128次主实验响应已完成。读出裕量用于判断存储值能否正确读出，两个图分别对应存储0和存储1。
+
+\vspace{7pt}
+\begin{center}
+\begin{minipage}{.49\textwidth}\centering \begin{tikzpicture}
+\begin{axis}[width=8.45cm,height=6.6cm,scale only axis=false,
+ xmin=.65,xmax=4.35,ymin=-20,ymax=90,xtick={1,2,3,4},xticklabels={0.18,0.25,0.35,0.45},
+ ytick={-20,0,20,40,60,80},xlabel={栅长（$\mu$m）},ylabel={读出裕量（mV）},
+ title={\bfseries 存储0},title style={yshift=2pt},
+ axis lines=left,axis line style={muted},tick style={muted},tick label style={font=\footnotesize},
+ label style={font=\small},grid=major,grid style={soft},clip=true]
+\addplot[draw=none,fill=soft] coordinates {(.65,-5)(4.35,-5)(4.35,5)(.65,5)}\closedcycle;
+\addplot[dashed,muted,no marks] coordinates {(.65,5)(4.35,5)};
+\addplot[dashed,muted,no marks] coordinates {(.65,-5)(4.35,-5)};
+\addplot+[only marks,mark=*,mark size=2.3pt,color=coral,opacity=.82] coordinates {(1,77.24235442) (1,76.02266114) (1,83.01087297) (1,76.33254168) (2,78.00141145) (2,81.74593241) (2,77.0441109) (2,80.30545417) (3,80.3527069) (3,82.75665164) (3,81.69968658) (3,80.20087505) (4,75.87516939) (4,81.04324073) (4,81.99445533) (4,77.47401672)};
+\addplot+[only marks,mark=triangle*,mark size=2.3pt,color=coral,opacity=.82] coordinates {(1,76.62894808) (1,73.01024035) (1,73.63717296) (1,71.11553597) (2,73.89949774) (2,72.53748733) (2,74.38963488) (2,77.36497075) (3,77.41206688) (3,78.05249466) (3,75.37581345) (3,78.05597851) (4,79.76722521) (4,75.97651776) (4,73.0895869) (4,76.43608401)};
+\addplot+[only marks,mark=*,mark size=2.3pt,color=blue,opacity=.82] coordinates {(1,40.44606802) (1,41.28101228) (1,41.13061191) (1,41.13386289) (2,39.6306009) (2,40.22103403) (2,41.7064217) (2,40.27689909) (3,39.45087224) (3,39.15759326) (3,41.40619225) (3,38.5101583) (4,40.87942068) (4,39.04839499) (4,39.32693936) (4,39.27666257)};
+\addplot+[only marks,mark=triangle*,mark size=2.3pt,color=blue,opacity=.82] coordinates {(1,39.0413921) (1,39.8755276) (1,40.26446448) (1,40.04419787) (2,40.1210161) (2,40.0608128) (2,40.26419252) (2,39.87773815) (3,39.40075857) (3,39.58709926) (3,40.13638107) (3,40.55475893) (4,41.64470753) (4,40.74655702) (4,39.4576409) (4,41.40167103)};
+\end{axis}\end{tikzpicture}\end{minipage}\hfill
+\begin{minipage}{.49\textwidth}\centering \begin{tikzpicture}
+\begin{axis}[width=8.45cm,height=6.6cm,scale only axis=false,
+ xmin=.65,xmax=4.35,ymin=-20,ymax=90,xtick={1,2,3,4},xticklabels={0.18,0.25,0.35,0.45},
+ ytick={-20,0,20,40,60,80},xlabel={栅长（$\mu$m）},ylabel={读出裕量（mV）},
+ title={\bfseries 存储1},title style={yshift=2pt},
+ axis lines=left,axis line style={muted},tick style={muted},tick label style={font=\footnotesize},
+ label style={font=\small},grid=major,grid style={soft},clip=true]
+\addplot[draw=none,fill=soft] coordinates {(.65,-5)(4.35,-5)(4.35,5)(.65,5)}\closedcycle;
+\addplot[dashed,muted,no marks] coordinates {(.65,5)(4.35,5)};
+\addplot[dashed,muted,no marks] coordinates {(.65,-5)(4.35,-5)};
+\addplot+[only marks,mark=*,mark size=2.3pt,color=coral,opacity=.82] coordinates {(1,-6.032992469) (1,-4.648865607) (1,-13.2132076) (1,-4.99912226) (2,-6.700385597) (2,-10.87980487) (2,-5.64436225) (2,-9.260065093) (3,-9.459970178) (3,-12.11944041) (3,-10.94458007) (3,-9.293064037) (4,-4.844630163) (4,-10.46294443) (4,-11.50640883) (4,-6.577257927)};
+\addplot+[only marks,mark=triangle*,mark size=2.3pt,color=coral,opacity=.82] coordinates {(1,-5.900448179) (1,-1.80760777) (1,-2.511097425) (1,0.3107932367) (2,-2.612710944) (2,-1.104604028) (2,-3.156225229) (2,-6.46628879) (3,-6.48881341) (3,-7.19368476) (3,-4.252960846) (3,-7.197521246) (4,-9.184826876) (4,-5.05243771) (4,-1.918344781) (4,-5.552243735)};
+\addplot+[only marks,mark=*,mark size=2.3pt,color=blue,opacity=.82] coordinates {(1,34.16864535) (1,33.27048001) (1,33.43230927) (1,33.42881143) (2,34.8436424) (2,34.21312829) (2,32.62558985) (2,34.15343768) (3,34.57285406) (3,34.88402885) (3,32.49633442) (3,35.57067741) (4,32.60808519) (4,34.54382127) (4,34.24954754) (4,34.30267278)};
+\addplot+[only marks,mark=triangle*,mark size=2.3pt,color=blue,opacity=.82] coordinates {(1,35.65144659) (1,34.74056801) (1,34.31562156) (1,34.55627964) (2,34.28845975) (2,34.35344699) (2,34.13388733) (2,34.55107905) (3,34.61085522) (3,34.41191898) (3,33.82537186) (3,33.37834116) (4,31.78130228) (4,32.73454506) (4,34.10163035) (4,32.03940825)};
+\end{axis}\end{tikzpicture}\end{minipage}
+\end{center}
+\note{橙色为$\alpha$粒子，蓝色为质子；圆点为0°入射，三角为30°入射。每个点表示一次响应，灰色带标出$\pm5$ mV判定区间。}
+
+\sect{读出状态统计}
+\note{128次响应按5 mV判据分类。}
+\begin{center}
+\begin{tikzpicture}[x=.129cm,y=1cm]
+\fill[green] (0,0) rectangle (96,.62);
+\fill[coral] (96,0) rectangle (116,.62);
+\fill[gold] (116,0) rectangle (124,.62);
+\fill[purple] (124,0) rectangle (128,.62);
+\node[white,font=\bfseries] at (48,.31) {96};
+\node[white,font=\bfseries] at (106,.31) {20};
+\node[ink,font=\bfseries] at (120,.31) {8};
+\node[white,font=\bfseries] at (126,.31) {4};
+\end{tikzpicture}
+\end{center}
+\begin{tabularx}{\textwidth}{@{}XXXX@{}}
+\textcolor{green}{\textbf{96 正确读出}} & \textcolor{coral}{\textbf{20 判据误读}} & \textcolor{gold}{\textbf{8 临界}} & \textcolor{purple}{\textbf{4 数值不确定}}
+\end{tabularx}\par
+
+\vspace{12pt}
+\sect{补充验证}
+\begin{minipage}[t]{.48\textwidth}
+{\fontsize{24}{29}\selectfont\bfseries\color{blue}14}\quad\textbf{项氧化层试验}\par
+比较4、5、6 nm氧化层厚度下的电荷与读出变化。
+\end{minipage}\hfill
+\begin{minipage}[t]{.48\textwidth}
+{\fontsize{24}{29}\selectfont\bfseries\color{blue}2}\quad\textbf{个近边界响应}\par
+从全部主实验结果中选取，分别用更小的时间步和更细的网格复核。
+\end{minipage}\par
+\vspace{12pt}
+补充计算已完成。各项结果均保留了对应的原始输出，便于与主实验比较。
+\vfill
+\note{数据来源：主实验响应表及氧化层、边界验证记录。}
+
+\newpage
+\kicker{项目简报\hfill DRAM SEE v3}
+\bigtitle{模型训练与验证}
+采用岭回归训练了4个模型：存储0和存储1各有两个，分别预测电荷变化和读出裕量变化。训练使用0.18、0.35~$\mu$m的数据，测试使用0.25、0.45~$\mu$m的数据。
+
+\vspace{5pt}
+\begin{center}
+\begin{tikzpicture}[>=Stealth,
+box/.style={fill=soft,rounded corners=3pt,text width=4.4cm,minimum height=1.15cm,align=center,inner sep=6pt}]
+\node[box] (a) {\textbf{训练}\\\small 使用64次仿真响应};
+\node[box,right=7mm of a] (b) {\textbf{预测}\\\small 固定模型，保存64条预测};
+\node[box,right=7mm of b] (c) {\textbf{测试}\\\small 与64次新仿真响应比对};
+\draw[->,blue,line width=1pt] (a)--(b);\draw[->,blue,line width=1pt] (b)--(c);
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.49\textwidth}\centering \begin{tikzpicture}\begin{axis}[
+width=8.35cm,height=6.8cm,axis equal image,
+xmin=-5.7,xmax=0,ymin=-5.7,ymax=0,
+xtick={-5,-4,-3,-2,-1,0},ytick={-5,-4,-3,-2,-1,0},
+xlabel={仿真结果（fC）},ylabel={模型预测（fC）},
+title={\bfseries 电荷变化},axis lines=left,axis line style={muted},tick style={muted},
+tick label style={font=\footnotesize},label style={font=\small},grid=major,grid style={soft}]
+\addplot[dashed,muted,no marks,domain=-5.7:0] {x};
+\addplot+[only marks,mark=*,mark size=2.2pt,color=blue,opacity=.8] coordinates {(-4.307341566,-4.306326414) (-4.701460882,-4.667756417) (-4.206550009,-4.214424391) (-4.549837235,-4.528017924) (-3.87519532,-4.050501374) (-3.731534963,-3.913127012) (-3.926871789,-4.099854901) (-4.240336074,-4.398887882) (-0.2390137253,-0.2398189027) (-0.3019591365,-0.3182659735) (-0.460279621,-0.5101257316) (-0.3079144415,-0.3256204053) (-0.2912968873,-0.3095009013) (-0.2848789047,-0.3013945798) (-0.3065599072,-0.3287320568) (-0.2653616995,-0.2766651405)};
+\addplot+[only marks,mark=triangle*,mark size=2.2pt,color=blue,opacity=.8] coordinates {(-4.718299892,-4.729917598) (-5.166062981,-5.127543936) (-4.605127324,-4.628811813) (-4.992558687,-4.973810974) (-4.280153541,-4.469221605) (-4.118453216,-4.317398133) (-4.338422965,-4.523766163) (-4.69321326,-4.854251593) (-0.2571926419,-0.256159271) (-0.3250165019,-0.3424626247) (-0.4957727713,-0.5535366701) (-0.3314372074,-0.350553585) (-0.3169133248,-0.3347406845) (-0.3099228091,-0.3257817357) (-0.3335401629,-0.3559945833) (-0.2886638168,-0.2984512406)};
+\addplot+[only marks,mark=*,mark size=2.2pt,color=coral,opacity=.8] coordinates {(-4.183266649,-4.118440087) (-4.73332113,-4.607920719) (-4.83439383,-4.698001074) (-4.353610296,-4.270189381) (-4.5976599,-4.483071349) (-4.194069027,-4.123199248) (-3.886127725,-3.847324064) (-4.243044929,-4.166943117) (-0.4265400821,-0.4544169838) (-0.2289156413,-0.2177574984) (-0.2589842369,-0.2544859216) (-0.2535570377,-0.2478767679) (-0.5091147595,-0.5412965865) (-0.4122026237,-0.4294533117) (-0.2730927285,-0.2652534845) (-0.4828925787,-0.5112135233)};
+\addplot+[only marks,mark=triangle*,mark size=2.2pt,color=coral,opacity=.8] coordinates {(-4.525862971,-4.473541614) (-5.1353501,-5.006240489) (-5.24850272,-5.104274406) (-4.713864402,-4.638689472) (-4.996732306,-4.8807221) (-4.548413375,-4.488257403) (-4.208260277,-4.187396986) (-4.602648089,-4.53596303) (-0.4543977589,-0.4860069569) (-0.2436300269,-0.2284518396) (-0.2756730875,-0.2684231652) (-0.2698884015,-0.2612304624) (-0.5444112872,-0.5819519716) (-0.4406293575,-0.4599793685) (-0.2917793436,-0.2809084284) (-0.5163113292,-0.5491443706)};
+\end{axis}\end{tikzpicture}\end{minipage}\hfill
+\begin{minipage}{.49\textwidth}\centering \begin{tikzpicture}\begin{axis}[
+width=8.35cm,height=6.8cm,axis equal image,
+xmin=-52,xmax=55,ymin=-52,ymax=55,
+xtick={-40,-20,0,20,40},ytick={-40,-20,0,20,40},
+xlabel={仿真结果（mV）},ylabel={模型预测（mV）},
+title={\bfseries 读出裕量变化},axis lines=left,axis line style={muted},tick style={muted},
+tick label style={font=\footnotesize},label style={font=\small},grid=major,grid style={soft}]
+\addplot[dashed,muted,no marks,domain=-52:55] {x};
+\addplot+[only marks,mark=*,mark size=2.2pt,color=blue,opacity=.8] coordinates {(-40.61212444,-40.50794896) (-44.3566454,-43.90910415) (-39.65482388,-39.64312579) (-42.91616716,-42.59412671) (-36.51021073,-38.08609794) (-35.14820032,-36.79384969) (-37.00034786,-38.55035494) (-39.97568374,-41.3632877) (-2.241313889,-2.241000943) (-2.831747021,-2.979209337) (-4.317134689,-4.784662141) (-2.887612076,-3.048416552) (-2.731729085,-2.895388242) (-2.671525791,-2.819133986) (-2.87490551,-3.076291189) (-2.48845114,-2.586509979)};
+\addplot+[only marks,mark=triangle*,mark size=2.2pt,color=blue,opacity=.8] coordinates {(43.9347197,43.94608129) (48.11413897,47.64106389) (42.87869635,43.00654564) (46.49439919,46.21248493) (39.84704504,41.51492698) (38.33893813,40.10437907) (40.39055933,42.02168467) (43.70062289,45.09212909) (2.390691697,2.373233593) (3.021205814,3.175216158) (4.608744248,5.136642882) (3.080896419,3.250402217) (2.945874348,3.102662095) (2.880887109,3.019427096) (3.10044677,3.300125913) (2.683255054,2.765507381)};
+\addplot+[only marks,mark=*,mark size=2.2pt,color=coral,opacity=.8] coordinates {(-38.94683385,-38.56165332) (-44.11490519,-43.14698149) (-45.06611978,-43.990831) (-40.54568117,-39.98320152) (-42.83888967,-41.9164844) (-39.04818221,-38.55010988) (-36.16125136,-35.96947308) (-39.50774847,-38.95930594) (-3.951085137,-4.238030989) (-2.120059443,-2.021066038) (-2.398603813,-2.365128423) (-2.348327024,-2.303215577) (-4.716371987,-5.04368968) (-3.818221477,-3.997467011) (-2.529305361,-2.46148211) (-4.47333549,-4.762281766)};
+\addplot+[only marks,mark=triangle*,mark size=2.2pt,color=coral,opacity=.8] coordinates {(41.6256839,41.3506936) (47.24399816,46.27597338) (48.28746257,47.18238504) (43.35831166,42.87763395) (45.96588061,45.05267651) (41.83349144,41.42894639) (38.69939851,38.65102276) (42.33329747,41.86942503) (4.172968543,4.482352491) (2.237232462,2.101023992) (2.53150619,2.470594816) (2.478380954,2.404091814) (4.99975145,5.360997444) (4.046508672,4.23479221) (2.679423387,2.581382963) (4.741645485,5.058076206)};
+\end{axis}\end{tikzpicture}\end{minipage}
+\end{center}
+\note{虚线表示预测值与仿真值相等。蓝色为0.25 $\mu$m，橙色为0.45 $\mu$m；圆点为存储0，三角为存储1。}
+
+\sect{测试误差}
+\note{表中为均方根误差，用于衡量预测值与仿真值的差距，数值越小，预测越接近仿真。}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabularx}{\textwidth}{@{}Xlrr@{}}
+\toprule
+预测内容 & 存储状态 & 0.25 $\mu$m & 0.45 $\mu$m \\
+\midrule
+电荷变化（fC） & 存储0 & 0.0883 & 0.0680 \\
+电荷变化（fC） & 存储1 & 0.0946 & 0.0672 \\
+读出裕量变化（mV） & 存储0 & 0.7984 & 0.5194 \\
+读出裕量变化（mV） & 存储1 & 0.8380 & 0.5049 \\
+\bottomrule
+\end{tabularx}\par
+\vspace{9pt}
+与直接用训练数据的平均值预测相比，4个模型在两种测试尺寸上的误差都更小。
+
+\vfill
+\sect{现有材料}
+已整理课程报告、论文和汇报PPT，并附数据表、图件和来源索引。
+\note{图表数据取自已固定的模型预测、仿真结果与测试评分表。}
+\end{document}

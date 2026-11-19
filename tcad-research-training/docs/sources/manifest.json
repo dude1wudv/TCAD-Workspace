@@ -1,0 +1,42 @@
+{
+  "captured_utc": "2026-11-16T02:04:54.934304+00:00",
+  "note": "初次任务截图保留；新增题名截图已由用户确认三课程统一正式题名，目录截图记录新增资料。",
+  "files": [
+    {
+      "action": "source-copy",
+      "path": "E:\\TCAD-Workspace\\tcad-research-training\\docs\\sources\\mentor-final-brief.png",
+      "source": "C:\\Users\\sun\\AppData\\Local\\Temp\\codex-clipboard-c2470ca7-185d-4677-8fb9-b97f7a08be60.png",
+      "bytes": 247195,
+      "sha256": "5798884ffe731ce095ed14782f0ff5760b30e66d49b4668855627eeee43a0f66"
+    },
+    {
+      "action": "source-copy",
+      "path": "E:\\TCAD-Workspace\\tcad-research-training\\docs\\sources\\科研训练_课程教学大纲_2019(1).pdf",
+      "source": "E:\\TCAD-Workspace\\科研训练_课程教学大纲_2019(1).pdf",
+      "bytes": 484116,
+      "sha256": "d76d9eb29a915cf6fce09b61d8c413926cb638897e86f66af4dd97436c316257"
+    },
+    {
+      "action": "source-copy",
+      "path": "E:\\TCAD-Workspace\\tcad-research-training\\docs\\sources\\项目设计课程大纲_李洋2026_AI辅助下的多特征尺寸存储器单粒子效应评估.docx",
+      "source": "E:\\TCAD-Workspace\\项目设计课程大纲_李洋2026_AI辅助下的多特征尺寸存储器单粒子效应评估.docx",
+      "bytes": 22893,
+      "sha256": "6ca28c8af36cab0ce80b8d069bb9d92b5f0ee9ba0e191ec1edf50e07a4953e97"
+    },
+    {
+      "action": "source-copy",
+      "path": "E:\\TCAD-Workspace\\tcad-research-training\\docs\\sources\\mentor-final-title.png",
+      "source": "C:\\Users\\sun\\AppData\\Local\\Temp\\codex-clipboard-fc72b037-28a1-437e-909d-7bfb2798b460.png",
+      "bytes": 5771,
+      "sha256": "ab72e3f77cfd45a4c8f7ece3ce43d4d7cc8f516978c5a18dd69d3cbf7888e01e"
+    },
+    {
+      "action": "source-copy",
+      "path": "E:\\TCAD-Workspace\\tcad-research-training\\docs\\sources\\mentor-added-references.png",
+      "source": "C:\\Users\\sun\\AppData\\Local\\Temp\\codex-clipboard-b8a7ce09-2b69-4d12-8d91-28436b7979f5.png",
+      "bytes": 23298,
+      "sha256": "05e74843907007844c6028ae7668468d94af5ac8f808c9bdadd5c45f9ac16517"
+    }
+  ],
+  "updated_utc": "2026-11-16T02:29:03.590261+00:00"
+}

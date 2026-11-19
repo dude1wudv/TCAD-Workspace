@@ -1,0 +1,15 @@
+{
+  "reason": "Independent review reproduced unbound record.run_id; fix identity chain without altering physical contract or solver source",
+  "created_utc": "2026-10-14T04:17:13.210164+00:00",
+  "files": {
+    "audit_matched.py": "3a9e0f8f30a0915cd425f63e26316e7c53d25dfb63a6b62dff0bc26dfa66e40b",
+    "control.py": "86187d9aad6902b2249062fdec8179e721f62cf6542dd5c39763fc7760732d0e",
+    "independent-evidence.json": "7b1b18d1ea0530282dc4a46f8bdc03d082f3bf50bcddc91dafecac8a387ab8b4",
+    "independent-identity-reproducer.log": "2999422e99ca6021a3e8312c0936d798f666fa9efcb88c11f4e9023b130d0d90",
+    "README.md": "6eee491eac24851b07149a69578238999d9b32ad45259c881c1b1d8583b96f96"
+  },
+  "unchanged_contract_sha256": "ebfda09fc00f1a0df5f870380af7a5fe7f2f4826dbadb5960ae1b2b8201301dc",
+  "unchanged_cpp_sha256": "0e510e397b5dd2ec03bcd14cb70d99dc33b59b469646d2920b0f4137a9161c27",
+  "worker_test_path": "experiments/dram-see-v4/matched-transport-r1/test_independent_review.py",
+  "worker_test_sha256": "90414ebc36bc068a0fd8c7ca6a957cd9194a707b75725cb32ca290876548ef6f"
+}

@@ -1,0 +1,38 @@
+redir /desk /desk/ 308
+route /desk/* {
+    header Cache-Control "private, no-store"
+    header X-Robots-Tag "noindex, nofollow"
+    basic_auth {
+        import /etc/caddy/dram-desk/users
+    }
+    uri strip_prefix /desk
+    @catalog {
+        method GET HEAD
+        path /api/v1/catalog
+    }
+    handle @catalog {
+        header Content-Type application/json
+        respond `{"version":1,"mode":"archive_preview","archive_ids":["WHR-01"],"datasets":[],"models":[],"prediction_enabled":false}` 200
+    }
+    @prediction {
+        method POST
+        path /api/v1/predict-r /api/v1/predict-f
+    }
+    handle @prediction {
+        header Content-Type application/json
+        respond `{"version":1,"status":"model_pending","placeholder":true,"prediction":null,"unit":null}` 503
+    }
+    @prediction_method path /api/v1/predict-r /api/v1/predict-f
+    handle @prediction_method {
+        header Allow POST
+        respond 405
+    }
+    @unknown_api path /api /api/*
+    handle @unknown_api {
+        respond 404
+    }
+    handle {
+        root * /srv/dram-see-desk/current
+        file_server
+    }
+}

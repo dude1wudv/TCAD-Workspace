@@ -1,0 +1,49 @@
+{
+  "schema": "v4-witness-audit-revision-evidence-v1",
+  "prior_revision": "r3-delayed-secondary-time-semantics",
+  "files_sha256": {
+    "audit_witness.py": "2066761124e6ec98df8588e9c676284fc41d336df38e5777745c1d3aa2d0563f",
+    "tests/test_audit_witness.py": "84579ac3eded6c1dac9030980e35a43e45c69fc078e194b3354ca682e3e99559",
+    "README-implementation.md": "05b912a6092e7eeba90baf0dcc40e0fe9960eed6dd08beb1df78979c8522aaa8",
+    "witness-fixed-h-s1-r1.failed-audit-r3.json": "a6b13c51df6486f413911da779bb56ba200d194f62270b05ed22ba32471584e7"
+  },
+  "original_failure": "local_runtime\\dram-see-v4\\transport-probe\\audits\\witness-fixed-h-s1-r1-audit-r3\\audit.json",
+  "missing_direct_inventory_particles": [
+    "O15",
+    "Li7",
+    "Mg26",
+    "Al27",
+    "Si30",
+    "Si28"
+  ],
+  "actual_step_identity": [
+    "ionIoni",
+    2,
+    2
+  ],
+  "actual_generic_ion_identity": [
+    "GenericIon",
+    0,
+    "ionIoni",
+    2,
+    2
+  ],
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/particles/management/include/G4ParticleTableIterator.hh",
+      "meaning": "reset defaults to skip general ions"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/particles/management/src/G4IonTable.cc",
+      "lines": "1612-1633",
+      "meaning": "general ions share GenericIon particle definition ID"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/particles/management/src/G4ParticleDefinition.cc",
+      "lines": "222-225,413-424",
+      "meaning": "process manager is retrieved through shared particle definition instance ID"
+    }
+  ],
+  "restriction": "Only ordinary positive nucleus PDG (no hypernucleus/anti), matching Z/A and Geant4 element name; no predefined light ions; physically plausible positive mass; exact process name/type/subtype must exist for actual GenericIon. Report inherited evidence and native per-ion inventory gap separately.",
+  "future_recorder_fix": "Use inventory iterator.reset(false); not applied to current frozen source and not a reason to rerun events."
+}

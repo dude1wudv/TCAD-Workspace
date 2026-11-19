@@ -1,0 +1,13 @@
+{
+  "schema": "tcad-server-codex-v2",
+  "controller_owner": "server-codex",
+  "workspace": "/home/tcad/projects/tcad-research-training",
+  "new_jobs_authorized": false,
+  "sole_scheduler": false,
+  "plan_file": "/home/tcad/projects/tcad-research-training/plans/dram-se-ddr5-lpddr5/PLAN.md",
+  "max_parallel_jobs": 9,
+  "connection": {
+    "path": "/home/tcad/projects/tcad-research-training/local_runtime/cloud-benchmark/connection-guest.json",
+    "sha256": ""
+  }
+}

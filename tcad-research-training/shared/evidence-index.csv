@@ -1,0 +1,21 @@
+id,path_from_repository,classification,reuse,limits
+v1,experiments/dram-see-v1/report.md,历史探索,方法与限定条件内图表,未校准模型；不作为真实截面
+v2,experiments/dram-see-v2/report.md,历史配对实验,初态、匹配对照与验证方法,配对响应不增加独立事件数
+v3,experiments/dram-see-v3/r50-main/final-delivery-r4.md,历史交付导航,既有报告与失败证据,结论限原冻结设计；非新题目验收
+v4,experiments/dram-see-v4/README.md,历史阶段导航,源接口、机制与校准证据,实时状态查原运行账本
+v4-closeout,experiments/dram-see-v4/LOCAL-CLOSEOUT-STATUS.md,历史观察,原作业身份与追溯,2026-10-21 记录不代表当前状态
+cloud,../output/server-benchmark-20261115/REPORT.md,主任务持续更新,迁移、更新与性能证据,完整结论以最新报告和真实终态为准
+license,../output/server-benchmark-20261115/LICENSE-RELAY.md,运行依赖记录,本机/VM/云端依赖,本次归档不改变或验证隧道
+report-v1,reports/final/README.md,历史稿,方法、图表与来源,须按最新课题检查
+report-r4,reports/final-r4/README.md,历史稿,报告、PPT、证据清单,旧 final 命名非毕业设计定稿
+report-r5,reports/mentor-rewrite-r5/coordination.json,历史导师修改稿,反馈与素材定位,不在整理中覆盖或重写正文
+paper,reports/paper/README.txt,历史稿,论文素材,不作为已验收毕业论文
+mentor-title,docs/sources/mentor-final-title.png,用户确认题名,三课程统一封面与研究名称,不改历史冻结报告题名
+mentor-refs-20261116,shared/literature/mentor-added-20261116.md,文献与讲义拆解,方法和研究背景,文献数值非本项目结果；无原始辐照数据或TCAD工程
+reuse-audit-20261116,shared/evidence/reuse-audit-20261116.json,本地离线核验,快照64项及报告包211项哈希；128响应来源及16组预测评分,未重算大归档；未重新求解或做新科学资格
+reuse-evidence,shared/reuse-evidence.md,复用说明,选定数据与图表的原范围证据及三课程用途,旧失败保留；不冒充真实DDR5校准
+data-dictionary,shared/data-dictionary.md,已有字段与后续合同草案,v3的34字段及v4必备信息；单位与身份粒度,不是已完成的v4合格数据集
+metric-contract,shared/metrics-and-labels.md,已有实现和待冻结口径,符号与窗口；标签与未决；分母及预测指标,导师实验口径及本版v4阈值尚待闭合
+figure-catalog,shared/figure-catalog.md,已核验图表索引,15张图及7张表的三课程共用说明,保留原图条件；新增图须先有合格数据
+figure-catalog-csv,shared/evidence/figure-catalog.csv,图件机器索引,原件及来源清单与哈希；既有图像审阅绑定,复用原审阅而非本轮重新图像验收
+server-24h-plan,shared/server-24h-handoff.md,待执行计划,当前测试后依原owner补资格和有限开发数据,不是启动授权或新队列；并发和资源须实测

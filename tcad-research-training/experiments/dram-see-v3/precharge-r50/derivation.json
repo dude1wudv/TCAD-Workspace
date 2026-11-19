@@ -1,0 +1,40 @@
+{
+  "schema": "r50-source-derivation",
+  "schema_identity": "dram-see-v3-precharge-r50",
+  "circuit_revision": "r50-probe-v1-finite-ramp-rpre50-off1e20-wl0-initialize-read3.05to3.10ns-1.8V-snclamp-release0.6ns",
+  "sources": [
+    {
+      "original": "experiments/dram-see-v3/build_case.py",
+      "original_sha256": "d4f963ad0936d0bbf94ce0126b669bcfa9d0e0105377df8658affebf8bba0dab",
+      "derived": "experiments/dram-see-v3/precharge-r50/build_case.py",
+      "derived_sha256": "6b99ee637d07b29d14bc0ee566b13f5cb99694ad6207b75df4d3552d2122dfef",
+      "diff": "build_case.py.diff",
+      "diff_sha256": "489dea866b6558ba3f4e7fc348418fd415459707354eb0d55dc730d1de8dce7a"
+    },
+    {
+      "original": "experiments/dram-see-v3/audit.py",
+      "original_sha256": "f76ae7afb300dd77ba55e1c46486e911b82640ff302d4b7ee3bb89b59e05b229",
+      "derived": "experiments/dram-see-v3/precharge-r50/audit.py",
+      "derived_sha256": "3e6398ddef3f1d379ba3a45782369cf9754344b646652b4102aad744c6a63708",
+      "diff": "audit.py.diff",
+      "diff_sha256": "128f016d2fa1968a8ca59d4ca421b4f28041a521297e716816456b92f607de89"
+    },
+    {
+      "original": "experiments/dram-see-v3/metrics.py",
+      "original_sha256": "a0de9c2521d7403d7c850efb24f0548e73a9451997c42a53f91185c90ca8cb8c",
+      "derived": "experiments/dram-see-v3/precharge-r50/metrics.py",
+      "derived_sha256": "3d3db64bfca7aff94b5dec56defff9d8563457fa80fde1c4b65ea2115c0da3c0",
+      "diff": "metrics.py.diff",
+      "diff_sha256": "bdf9e822719e75899f2b2d52c319dadae54bd825cb9df25da4d4d214a9607a10"
+    },
+    {
+      "original": "experiments/dram-see-v3/diagnose_precharge.py",
+      "original_sha256": "1d1a496a00bcf65f5f38ef1b49287003bfefa1af860cd4076bcc9e9f2b5ecc0b",
+      "derived": "experiments/dram-see-v3/precharge-r50/inspection.py",
+      "derived_sha256": "c242f7133b521f6aecc9654d4825d563b72ce5e66f2fba22682239354175f881",
+      "diff": "inspection.py.diff",
+      "diff_sha256": "aa1908ce9d71c8b21555569206da9eeb654aed2943d60f8192bca6d983c98077"
+    }
+  ],
+  "scope": "Explicit independent R50 source copies; old code and old data unchanged; no generated physical results"
+}

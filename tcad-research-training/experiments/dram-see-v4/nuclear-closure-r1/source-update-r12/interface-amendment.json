@@ -1,0 +1,122 @@
+{
+  "budget": {
+    "current_corrective": 1,
+    "current_primary": 1,
+    "current_total": 2,
+    "limits": {
+      "corrective": 4,
+      "primary": 14,
+      "total": 18
+    },
+    "minimum_completed_corrective": 2,
+    "minimum_completed_total": 16,
+    "minimum_remaining": {
+      "corrective_zero": 1,
+      "unused_primary_roles": 13
+    },
+    "remaining_repair_margin_after_minimum_completion": 2,
+    "transport_change": 0
+  },
+  "change": {
+    "candidate": "G_native=APD_reference*eta_G through PMI_OpticalQuantumYield",
+    "equation_equivalence": "G_BE-R_SRH-R_Auger in both electron and hole continuity equations",
+    "generation_yield": "G_BE/Nref, never clipped or renormalized",
+    "material": {
+      "allowed": "Silicon",
+      "mesh": "Same native mesh, no remeshing",
+      "source_basis_elsewhere": 0.0,
+      "unknown_semiconductor": "reject"
+    },
+    "metadata": {
+      "meaning": "Fixed numerical metadata for the carrier source path, not incident photons or extra energy deposition",
+      "required_intensity_ratio": 1.0,
+      "spectrum_intensity_W_per_cm2": 1.0,
+      "tdr_intensity_W_per_cm2": 1.0,
+      "wavelength_um": 1.0
+    },
+    "native_reference_rate_cm_minus3_s_minus1": 1e+35,
+    "original": "R_PMI=-G_BE through PMI_Recombination",
+    "route": "OpticalSolver(FromFile(DatasetName=AbsorbedPhotonDensity IdentifyingParameter=(Wavelength))) with OpticalGeneration(AutomaticUpdate QuantumYield(PMIModel=pmi_nuclear_qy_r12) ComputeFromSpectrum(RefreshEveryTime KeepSpectralData))",
+    "thermal": {
+      "eta_T0": 0.0,
+      "eta_T_Eg": 0.0,
+      "temperature_K": 300.0,
+      "thermal_equations": false,
+      "validation": "Native optical heat/thermal fields must establish no added heat feedback; no photon energy-balance claim"
+    },
+    "time": {
+      "interval": "[ReadTime()-ReadTransientStepSize(), ReadTime()]",
+      "required_positive_dt": true,
+      "required_type": "actual PMI_BE",
+      "rollback": "Stateless recomputation, no accepted-charge accumulator or stale interval cache",
+      "undefined": "zero G with unmodified raw time/dt/type"
+    }
+  },
+  "engineering_build": {
+    "max_new_compile_operations": 1,
+    "production_active_entry": "unchanged READ_ONLY_HOLD",
+    "solver_calls": 0
+  },
+  "execution_enabled": false,
+  "implementation_state": {
+    "build_only_entry": "build_candidate_r12.py",
+    "device_campaign": "not released",
+    "kernel_and_adapter": "prepared",
+    "native_basis": "pending documented TDR preparation and native round-trip",
+    "native_field_auditor": "requires independent interface-specific revision; old negative-R reader must not be reused by renaming",
+    "zero_solver_entry": "not released"
+  },
+  "invariants": [
+    "original nuclear_source namespace byte-identical",
+    "all selected event steps in one nonlinear solve",
+    "original xyz, times, zero-length points, w and sigma",
+    "original clipping and no renormalization",
+    "original initial conditions, contacts, doping, circuit, SRH/Auger and carrier equations",
+    "all original scientific thresholds and complete native frames",
+    "no additional events, seeds, physical cases or solver budget"
+  ],
+  "next_solver_proposal": {
+    "after_attempt": "Disable one-shot entry and independently audit; no automatic point submission on merely engineering success",
+    "authorization": "Requires explicit approval of this independent positive-generation interface amendment after all preparation gates; not covered by consumed r10 diagnostic",
+    "corrective": true,
+    "corrective_of": "nc-r1-qualification-zero",
+    "max_new_attempts": 1,
+    "role": "qualification-zero"
+  },
+  "original_contract": {
+    "path": "experiments/dram-see-v4/nuclear-closure-r1/contract.json",
+    "sha256": "ed731d21a8abb74f6540ce1e129711dfccdbb61e4d7c532972c5438586fc7067"
+  },
+  "original_diagnostic_authorization_consumed": true,
+  "original_failure": {
+    "path": "local_runtime/dram-see-v4/nuclear-closure-r1/pmi-root-cause-r10/final-review.json",
+    "sha256": "36bf1c42d8bc1c0843be1bffd13008d7adba6b05c31ce8f49c26f83c571ded13"
+  },
+  "original_thresholds_source": {
+    "path": "experiments/dram-see-v4/nuclear-closure-r1/contract.json",
+    "sha256": "ed731d21a8abb74f6540ce1e129711dfccdbb61e4d7c532972c5438586fc7067"
+  },
+  "required_native_evidence": [
+    "loaded exact ELF and factory",
+    "raw BE callback time/dt/type for every accepted interval; no premature initialization-only destruction",
+    "if native rejection occurs, source recomputed for actual retry interval; if absent, report native rollback as unobserved",
+    "full 0-4ns native curves and every accepted source-window TDR",
+    "OpticalGeneration measured independently of user fields",
+    "APD exact Si basis and metadata scale=1 with unchanged mesh",
+    "no source outside Silicon, no double activation of old recombination PMI",
+    "zero case exact zero source plus complete raw clocks",
+    "positive case original source charge, waveform, centroid, ROI and both electron/hole increases",
+    "matching controls and all five numerical comparisons plus BE circuit conservation"
+  ],
+  "root_cause_scope": "Existing local recombination PMI was called only at initialization, not the 957 actual BE intervals. Its Undef branch zeroed the recorded clock and source; deeper native dispatch policy remains unknown.",
+  "schema": "nuclear-closure-source-interface-amendment-r12",
+  "status": "PROPOSED_NOT_EXECUTION_AUTHORIZED",
+  "stop": [
+    "any missing native clock, assembly timing or source evidence",
+    "basis/tag scale or material not proved",
+    "zero qualification fails",
+    "unknown original attempt or lock owner",
+    "same root cause recurs after repair",
+    "resource or remaining complete-plan budget insufficient"
+  ]
+}

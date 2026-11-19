@@ -1,0 +1,36 @@
+{
+  "schema": "dram-see-v4-original-recovery-contract-r1",
+  "status": "AUTHORIZED_SINGLE_RUN_ENGINEERING_EXCEPTION",
+  "run_id": "20261014T040702Z-v4-source-interface-r5-a1-b1-time-b8fc5db7",
+  "label": "r5-a1-b1-time-r1",
+  "archive_sha256": "ca9b51554f10d4a4ffb846ee4bc1b49aa606d99ab7774287b6844ff5452d01df",
+  "original_manifest_sha256": "8b66b4947aa25164aef91ee3c55e9f17adeecafd26f75e44a02b441265943426",
+  "original_execution_sha256": "933789b5f01e0ca9e3d0504d92fcac558e4c5febb6a185f3dff3a15dcef12770",
+  "run_script_sha256": "6d31f88fe38fc362237a760887deec4bb623d492eda4b732f05d8d7aea0e74d9",
+  "inputs_tar_sha256": "38b8794cf2ef3ae2008d1d30f1b39a0cb768155f80a2a800fde596aadf110876",
+  "remote_directory": "/home/tcad/research-training/runs/20261014T040702Z-v4-source-interface-r5-a1-b1-time-b8fc5db7",
+  "mesh_sha256": "cc289c060e909b62bc4524a5080c985255fad630de335e0049726c63fb12cc97",
+  "collection_receipt": {
+    "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-20261014/collection/20261014T100927Z/receipt.json",
+    "sha256": "b241df513929dfaa65ab924ad833e645c772170be4b0c7a7e49198130af5d69e"
+  },
+  "matched_a0_gate": {
+    "path": "local_runtime/dram-see-v4/interface-completion-r1/gates/a0-b1-time.json",
+    "sha256": "ae2e1ade77d0ed6dba0c60d0047f4167543df3562aef2a45d7a2c3c267d3ebd7",
+    "run_id": "20261014T033236Z-v4-source-interface-r5-a0-b1-time-f9574b96"
+  },
+  "authorization": {
+    "user_answer": "授权该单次工程恢复例外",
+    "scope": "Permit a separate recovered-engineering evidence contract for this run despite absent ENGINEERING_RUN_COMPLETED and unrecoverable original local runner/SSH exit codes. Do not claim that the original execution contract passed.",
+    "facts_preserved": [
+      "Keep all frozen source files, contracts, original manifests/execution files, archive bytes and failures unchanged",
+      "Original runner and execution SSH exit codes remain null forever unless genuine records are recovered",
+      "Separate original_execution_contract_passed=false from recovered_engineering_evidence_passed",
+      "No extra solver call, matrix, event, seed, training, software installation, Git operation, automation, or external message"
+    ]
+  },
+  "new_solver_calls": 0,
+  "original_execution_contract_passed": false,
+  "physical_threshold_changes": false,
+  "original_records_may_be_modified": false
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "dram-see-v4-witness-gate-v1",
+  "stage": "initialization",
+  "passed": true,
+  "contract_sha256": "fd911ffb36e409f44aef5bde8d81506749434fdb84d1900434171b35b9fc91b3",
+  "evidence": [
+    {
+      "request": "witness-init-h-r1",
+      "record_path": "local_runtime/dram-see-v4/transport-probe/runs/witness-init-h-r1/record.json",
+      "record_sha256": "55b840e61526d9dae16aa276e4f681936cd3a45fe6b3e5e9d55116ebb9b91b7c",
+      "audit_path": "local_runtime/dram-see-v4/transport-probe/audits/witness-init-h-r1/audit.json",
+      "audit_sha256": "0ee372fdf9c23c34f8eda5e78889bfef546c701eb32258173b3cdb7fde339487"
+    },
+    {
+      "request": "witness-init-e-r1",
+      "record_path": "local_runtime/dram-see-v4/transport-probe/runs/witness-init-e-r1/record.json",
+      "record_sha256": "264693795952a31017c9ccb9ab7893d9275b11866067a009f786021eeda8dc89",
+      "audit_path": "local_runtime/dram-see-v4/transport-probe/audits/witness-init-e-r1/audit.json",
+      "audit_sha256": "8c96a1cfbb3783bf5c46d698dfc8f836e9f292f8b8797c6a19c4343e91ddff1f"
+    }
+  ],
+  "checked_utc": "2026-10-13T11:42:16.261701+00:00"
+}

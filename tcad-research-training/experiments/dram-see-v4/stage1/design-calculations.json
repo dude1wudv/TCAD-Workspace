@@ -1,0 +1,62 @@
+{
+  "schema": "dram-see-v4-analytic-design-calculations",
+  "kind": "analytical_examples_not_simulation_or_training",
+  "constants": {
+    "elementary_charge_fC": 0.0001602176634,
+    "silicon_density_g_cm3": 2.33,
+    "W_eh_eV": 3.6,
+    "W_eh_status": "Conventional silicon value used only for these examples; physical source contract must record applicability."
+  },
+  "unit_example": {
+    "LET_MeV_cm2_mg": 1,
+    "path_um": 1,
+    "E_MeV": 0.233,
+    "N_pairs": 64722.22222222222,
+    "Q_pair_fC": 10.369643214499998
+  },
+  "one_fC_fixture": {
+    "N_pairs": 6241.509074460763,
+    "E_ion_MeV": 0.022469432668058748,
+    "uniform_LET_pc_per_um": 0.0016666666666666668,
+    "A11_triangular_integral_fC": 1.0
+  },
+  "zero_observation_one_sided_95pct_bounds": [
+    {
+      "fixed_independent_trials": 10,
+      "p_upper": 0.2588655508930523
+    },
+    {
+      "fixed_independent_trials": 100,
+      "p_upper": 0.029513049607039935
+    },
+    {
+      "fixed_independent_trials": 1000,
+      "p_upper": 0.002991249545095296
+    }
+  ],
+  "at_least_one_observation_design_examples": [
+    {
+      "hypothesized_event_probability": 0.01,
+      "n_for_95pct_detection": 299
+    },
+    {
+      "hypothesized_event_probability": 0.001,
+      "n_for_95pct_detection": 2995
+    },
+    {
+      "hypothesized_event_probability": 0.0001,
+      "n_for_95pct_detection": 29956
+    }
+  ],
+  "assumptions": [
+    "Independent identically distributed primary events at one fixed condition",
+    "Fixed-n design, not optional stopping",
+    "Hypothetical p values do not estimate DRAM nuclear-event rates",
+    "Q_pair differs from collected or stored-node charge"
+  ],
+  "sources": [
+    "https://physics.nist.gov/cgi-bin/Star/compos.pl?matno=014&mode=text",
+    "https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/exacbici.htm",
+    "Local SRAM thesis section 3.2.4, printed page45"
+  ]
+}

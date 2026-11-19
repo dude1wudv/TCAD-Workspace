@@ -1,0 +1,504 @@
+{
+  "created_utc": "2026-10-13T15:39:28.817981+00:00",
+  "passed": true,
+  "local_link_count": 96,
+  "broken_links": [],
+  "checks": [
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "mentor-response.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "route-status.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../mechanism-witness/results/campaign-r1/report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../mechanism-witness/results/campaign-r1/all-events.csv",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../source-ledger/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../../../local_runtime/dram-see-v4/source-ledger/",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../source-interface-r2/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../source-interface-r3/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../source-interface-r4/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../device-evidence-r2/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "E:/TCAD-Workspace/tcad-research-training/experiments/dram-see-v4/mechanism-witness/results/campaign-r1/figures-r2/selected-ancestry.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../mechanism-witness/results/campaign-r1/figures-r2/selected-tracks-and-birth-energies.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../source-ledger/interpretation-note.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "E:/TCAD-Workspace/tcad-research-training/experiments/dram-see-v4/stage2/figures-r3-a1-r2/source-measurement.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../source-field-audit-r1/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "E:/TCAD-Workspace/tcad-research-training/experiments/dram-see-v4/stage2/figures-mesh-r1/mesh-diagnostic.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../../../local_runtime/dram-see-v4/source-field-audit-r1/audit-dev/r4-a1-full-bounded-r1/audit.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../../../local_runtime/dram-see-v4/source-interface-r4/audits/r4-a1-b1-mesh-r1/audit.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../../../local_runtime/dram-see-v4/source-interface-r4/comparisons/a1-base-to-mesh-r1/comparison.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "remaining-checks.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "evidence-final-r1/summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "evidence-final-r1/failures.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "evidence-final-r1/protected-check.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../../../local_runtime/dram-see-v4/preflight/stage2-final-idle-r1/record.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\report.md",
+      "target": "../../../local_runtime/dram-see-v4/stage2-live/final-process-idle-r1/scope-assessment.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\mentor-response.md",
+      "target": "../mentor-response.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\mentor-response.md",
+      "target": "report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\mentor-response.md",
+      "target": "../mechanism-witness/results/campaign-r1/report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\mentor-response.md",
+      "target": "../source-ledger/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\mentor-response.md",
+      "target": "../device-evidence-r2/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\route-status.md",
+      "target": "report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\stage2\\remaining-checks.md",
+      "target": "report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage2/remaining-checks.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage2/report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage2/mentor-response.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage2/route-status.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "mechanism-witness/results/campaign-r1/report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-ledger/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-interface-r3/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-interface-r4/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-field-audit-r1/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "device-evidence-r2/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage2/previous-documents/README.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "transport-probe/report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "transport-probe/run-index.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "transport-probe/results/failures.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "transport-probe/environment-spec.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-probe/report.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-probe/run-index.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-probe/results/failures.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-probe/hadronic-check.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "source-probe/source_contract.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/study-notes.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/experiment-design.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/device-evidence.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/transport-design.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/design-register.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/review.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "plan.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "mentor-response.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "device-basis.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "interface-contract.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "work-items.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "planning-review.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "MANIFEST.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "../dram-see-v3/r50-main/final-delivery-r4.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "../../reports/mentor-rewrite-r5/coordination.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\README.md",
+      "target": "stage1/history/initial-planning-20261012.zip",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../witness-contract.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../README-implementation.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../../../../local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s1-r1/audit.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../../../../local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s2-r1/audit.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../../../../local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s3-r1/audit.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../../../../local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-e-s1-r1/audit.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "all-events.csv",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "selected-birth-links.csv",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "selected-tracks.csv",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "selected-steps.csv",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "source-ledger-summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "figures-r2/selected-ancestry.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "figures-r2/selected-tracks-and-birth-energies.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "all-events.csv",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../revisions/audit-r1-before-msc-fix/revision-evidence.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../revisions/audit-r2-before-delayed-secondary-fix/revision-evidence.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../revisions/audit-r3-before-generic-ion-inventory-fix/revision-evidence.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "../../README-implementation.md",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md",
+      "target": "source-ledger-summary.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\device-evidence-r2\\README.md",
+      "target": "../../../local_runtime/dram-see-v4/device-evidence-r2/",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\device-evidence-r2\\README.md",
+      "target": "../../../local_runtime/dram-see-v4/device-evidence-r2/shin2003-p-3.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\device-evidence-r2\\README.md",
+      "target": "../../../local_runtime/dram-see-v4/device-evidence-r2/shin2003-p-4.png",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\device-evidence-r2\\README.md",
+      "target": "../../../local_runtime/dram-see-v4/device-evidence-r2/verification.json",
+      "exists": true
+    },
+    {
+      "document": "experiments\\dram-see-v4\\source-field-audit-r1\\README.md",
+      "target": "../stage2/report.md",
+      "exists": true
+    }
+  ],
+  "document_sha256": {
+    "experiments\\dram-see-v4\\stage2\\report.md": "aa424283a5205973fbbbcf48ed767a8795c22d1dc0ba5aa7a7d659a947079cbf",
+    "experiments\\dram-see-v4\\stage2\\mentor-response.md": "af21c1a9b9dd2d6a008370a3783f8a5277ae54eee4d19c2055e668ad127f2f03",
+    "experiments\\dram-see-v4\\stage2\\route-status.md": "e39dfef8ddb07e9f47812e15dc61049182ed5a990fffbc01e712edf380e8757a",
+    "experiments\\dram-see-v4\\stage2\\remaining-checks.md": "09ee15fa4cd3e1aaf030b70057c2c30ba20c8d63836f798171cd122705308ab7",
+    "experiments\\dram-see-v4\\README.md": "9aebc0eb678145079635a636f7424e9fd1ad1bf513bba9aae5f10abf5b5b131c",
+    "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\report.md": "00ad0c3cf708a5897d3c57aa54ca3faac0e89ac977ce36160e6f89e459b6c595",
+    "experiments\\dram-see-v4\\device-evidence-r2\\README.md": "1ac90ad08472224c55993417f2b7aa7b39aaeb54086ed4db6e7767c3dbd7e628",
+    "experiments\\dram-see-v4\\source-field-audit-r1\\README.md": "d35548e1eb51cdc5363658eac85edc4157d35fe5d7cab890db76f1c59ea3ae92"
+  },
+  "figures_visually_inspected_by_root": {
+    "experiments\\dram-see-v4\\stage2\\figures-mesh-r1\\mesh-diagnostic.png": "30770be1de76ea35bdebd0f6cf98ee2f31901693649562ec99c96d356244f1f8",
+    "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\figures-r2\\selected-ancestry.png": "bedb9267e725e54002dff32ef5ce34b3c26bed646cd403e1e8b1c57cf0dc81da",
+    "experiments\\dram-see-v4\\mechanism-witness\\results\\campaign-r1\\figures-r2\\selected-tracks-and-birth-energies.png": "690ef06d4ee059e5fc484395432609f88a12231368ab8cbf62388980aeb69567"
+  },
+  "code_test_evidence_note": "Focused verification was performed by implementation agents and root; no claim that every test is an independent validation worker run."
+}

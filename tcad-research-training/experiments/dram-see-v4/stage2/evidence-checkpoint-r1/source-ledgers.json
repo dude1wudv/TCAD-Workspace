@@ -1,0 +1,14 @@
+[
+  {
+    "path": "local_runtime/dram-see-v4/source-ledger/format-h5-a0-r1-e0-r1/source_manifest.json",
+    "sha256": "6641a54068d1829079aae5eada8c8bf5b0a2f7181c80fb0075d68d72d2ac11fd"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-ledger/miss-h-e5-a0-r1-e0-r1/source_manifest.json",
+    "sha256": "abd62a895aab63d89439c4c280dfe1d7bf6886d6347854db58af7d3c69463b0c"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-ledger/witness-fixed-h-s1-r1-e3-r2/source_manifest.json",
+    "sha256": "5769cfccb0bfb45aa7ec04695a93d5dbe2121350a96b8b13bf8341199d88bfd2"
+  }
+]

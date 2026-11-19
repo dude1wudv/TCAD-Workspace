@@ -1,0 +1,9 @@
+{
+  "schema": "dram-see-v4-controlled-device-request-r3",
+  "kind": "dc",
+  "gate_top_depth_nm": 80,
+  "sn_junction_depth_nm": 87,
+  "dimension": 3,
+  "variant": "main",
+  "mesh_policy": "dram-see-v4-gradient-mesh-r5"
+}

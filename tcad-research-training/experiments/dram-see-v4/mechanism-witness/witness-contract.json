@@ -1,0 +1,170 @@
+{
+  "schema": "dram-see-v4-nuclear-witness-contract-v1",
+  "geometry": {
+    "geometry_id": "v4-si10mm-nuclear-witness-r1",
+    "world_half_um": [
+      20000.0,
+      20000.0,
+      20000.0
+    ],
+    "silicon_bounds_um": [
+      [
+        -5000.0,
+        5000.0
+      ],
+      [
+        -5000.0,
+        5000.0
+      ],
+      [
+        -5000.0,
+        5000.0
+      ]
+    ],
+    "material": "G4_Si",
+    "production_cut_um": 10.0,
+    "charged_max_step_um": 100.0,
+    "source_um": [
+      0.0,
+      -5001.0,
+      0.0
+    ],
+    "direction": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "energy_MeV": 100.0,
+    "angle_deg": 0.0,
+    "scope": "Independent macroscopic nuclear-mechanism diagnostic, not a DRAM device"
+  },
+  "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+  "requests": [
+    {
+      "label": "witness-init-h-r1",
+      "mode": "init",
+      "arm": "H",
+      "seed": 40131401,
+      "event_count": 0,
+      "stage": "initialization",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-init-e-r1",
+      "mode": "init",
+      "arm": "E",
+      "seed": 40131402,
+      "event_count": 0,
+      "stage": "initialization",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-pilot-h-r1",
+      "mode": "witness",
+      "arm": "H",
+      "seed": 40131501,
+      "event_count": 2,
+      "stage": "pilot",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-pilot-e-r1",
+      "mode": "witness",
+      "arm": "E",
+      "seed": 40131502,
+      "event_count": 2,
+      "stage": "pilot",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-fixed-h-s1-r1",
+      "mode": "witness",
+      "arm": "H",
+      "seed": 40131601,
+      "event_count": 64,
+      "stage": "fixed",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-fixed-h-s2-r1",
+      "mode": "witness",
+      "arm": "H",
+      "seed": 40131602,
+      "event_count": 64,
+      "stage": "fixed",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-fixed-h-s3-r1",
+      "mode": "witness",
+      "arm": "H",
+      "seed": 40131603,
+      "event_count": 64,
+      "stage": "fixed",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    },
+    {
+      "label": "witness-fixed-e-s1-r1",
+      "mode": "witness",
+      "arm": "E",
+      "seed": 40131701,
+      "event_count": 16,
+      "stage": "fixed",
+      "geometry_id": "v4-si10mm-nuclear-witness-r1",
+      "geometry_sha256": "5f876a1d5164773338f733bef40a3327707cded9133f7d0016e6c723ea6fba32",
+      "energy_MeV": 100.0,
+      "angle_deg": 0.0
+    }
+  ],
+  "total_primary_events": 212,
+  "implementation_revision": "transport-witness-r1",
+  "physics": {
+    "H": "QGSP_BIC + ReplacePhysics(G4EmStandardPhysics_option4) + StepLimiterPhysics",
+    "E": "G4EmStandardPhysics_option4 + StepLimiterPhysics"
+  },
+  "gate_order": [
+    "compile and offline auditor tests",
+    "H/E zero-event initialization and process audit",
+    "H/E 2-event format/time pilots",
+    "fixed H 3x64 and E 1x16, serial"
+  ],
+  "witness_rule": "protonInelastic with actual type/subtype registration, traceable descendants and positive silicon ionizing deposition",
+  "selection_rule": "First qualifying H event in frozen requests order, then numeric event_id; all fixed events retained even after a witness is found",
+  "events_for_probability": false,
+  "tcad_mapping": false,
+  "automatic_retry": false,
+  "expand_after_no_witness": false,
+  "solver_threads": 1,
+  "cpu_affinity_count": 1,
+  "csv_arithmetic_tolerances": {
+    "energy_abs_MeV": 1e-12,
+    "energy_relative": 1e-09,
+    "time_abs_ns": 1e-09,
+    "position_abs_um": 1e-09,
+    "direction_norm_abs": 1e-10
+  },
+  "neutron_tracking_cut": "Standard QGSP_BIC 10 us; identify actual neutron process type 7 subtype 403; no added user killing",
+  "energy_scope": "Recorded deposited/NIEL/ionizing component sums; not a closed nuclear rest-mass energy balance",
+  "failure_rule": "Preserve failed/unknown attempts; block dependent stages; read-only reconcile unknown jobs before any new attempt"
+}

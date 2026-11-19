@@ -1,0 +1,39 @@
+{
+  "schema": "r50-main-reporting-source-manifest",
+  "physical_revision": "r50-main-r1",
+  "reporting_revision": "r1",
+  "created_utc": "2026-10-10T17:27:45.054818+00:00",
+  "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+  "scope": "Independent read-only raw R50 report. No runner/controller/prediction/GUI import or first-stage manifest changes.",
+  "files_sha256": {
+    "experiments/dram-see-v3/r50-main/reporting.py": "846f51b96a19f94acff8414dbd0ddc1215c4a103fc0eafa6610088ce7f6b562b",
+    "experiments/dram-see-v3/r50-main/reporting-notes.md": "6d5bf254b85d27dcdb9d279c5439c735f012a5374829bb221ab5f26def3c96af",
+    "experiments/dram-see-v3/r50-main/design.json": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+    "experiments/dram-see-v3/r50-main/plan.md": "c2f08d68394b669b0ab7edb6727523743cd00a93647e132756421d40a8d9db67",
+    "experiments/dram-see-v3/r50-main/audit.py": "acf560c69d7ae849cd6ccc7d136da286f12e32ec94b1e886aa114430b8332bc7",
+    "experiments/dram-see-v3/r50-main/metrics.py": "911daf34a0238ab14f3d3949d2b647a3a2d8dbb976ef9a28f34ff19896764187",
+    "experiments/dram-see-v3/r50-main/numerical.py": "63380f57a9de86fc5cdf99e33d0cd4588c6930a4586355abc59f655dd9001bfd",
+    "experiments/dram-see-v3/r50-main/build_case.py": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+    "experiments/dram-see-v3/event_audit.py": "1690452c509dd555c03aab1f924614e906ec393a3f90a341e927d8e3a2e0b55a",
+    "experiments/dram-see-v3/statistics.py": "14fecd92464ef03c152276c3f18683a8c13adad4524480551d5a640f12f49cb3",
+    "experiments/dram-see-v3/plot_results.py": "bde28797ecd19e18730c1cae54b2cb2f77a28c2663224a180afd78139367993b",
+    "experiments/dram-see-v1/analyze.py": "6b0df38bb4db9ff3a77bfaee1ead5ef3b794bf93999411bf016cc45ae526cabf",
+    "docs/course-project-syllabus.md": "849925f6780143bc8547e6f1718c38773401c0313cee1ea57bd296758ad69ae9"
+  },
+  "pure_reuse": {
+    "statistics": "Original frozen N=4 Wilson/partial-identification functions",
+    "plot_results": "Original immutable snapshot-only data renderer; no source collection",
+    "dram-see-v1/analyze.py": "Bytes/PLT/integration parser only; no legacy electrical results"
+  },
+  "software_validation": {
+    "kind": "SYNTHETIC ONLY; raw audit mocked for reporting logic",
+    "script": "local_runtime/dram-see-v3/r50-report-dev/self_check.py",
+    "script_sha256": "9b26eaf3e0cbafcb16ec89c3d9adc6720f2b131a51304bdf6951d54fd2b867be",
+    "log": "local_runtime/dram-see-v3/r50-report-dev/test-reporting-02.log",
+    "log_sha256": "71ca7cdb559e99afe1ef4d479236a90bae9a61e40420a76f71264539106bdbc7",
+    "tests_passed": 15,
+    "exit_code": 0,
+    "real_raw_report_generated": false,
+    "real_png_visually_reviewed": false
+  }
+}

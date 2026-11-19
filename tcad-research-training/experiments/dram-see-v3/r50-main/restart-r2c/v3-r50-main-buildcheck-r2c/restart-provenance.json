@@ -1,0 +1,22 @@
+{
+  "parent_run": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+  "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+  "time_s": 9.5e-10,
+  "parent_schema": "dram-see-v3-r50-main",
+  "parent_model_contract_sha256": "a04a0e19d66cd0ab5666468b487f968761978e4aa9fe63086105e4cd7cdcad38",
+  "matching_policy": "Only fully audited same R50 revision; all 100-ohm and legacy parents rejected",
+  "actual_full_control_deck_sha256": "4337e52f2e7d7fb1091cd529970204cdd03d59877c6ff1b4b4b33408b543d885",
+  "parent_input_sha256": {
+    "device.cmd": "4337e52f2e7d7fb1091cd529970204cdd03d59877c6ff1b4b4b33408b543d885",
+    "generator-sha256.txt": "ea49162fe08e27b1ad0f3d9150734eab2daf7e80ca9b92ef5b7a95cd7df9be48",
+    "geometry-generator-sha256.txt": "b472ce02b4262d8e90e2c0d89b5726ddc04924cfe8efcf35a8eec3ea0e65eccf",
+    "geometry.scm": "dd9a26f5296c2683046d382dba6b053a0e1546b8019ec5e1cf2c22c93df79b7e",
+    "parameters.json": "e1bb6e663e6e7b2b228effeb69896fc32af95f76cef626f023a86a06bf032511",
+    "project.json": "1dfba2ad3a2400e8da8132a0f40e6a8f4ea62af88fc2efe0cce12d276fde1ec6"
+  },
+  "copied_sha256": {
+    "cell_msh.tdr": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+    "charged_access_des.sav": "4e522523aa0a847f16550ef85aeb0521b06dfc17218a7d0c2fe9494e9c58d845",
+    "charged_circuit_des.sav": "7ff619679db31ae7790644509eca53b3a62a5ff582c1579b6c12dcd651ca37c7"
+  }
+}

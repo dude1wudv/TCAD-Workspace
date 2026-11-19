@@ -1,0 +1,14 @@
+{
+  "schema": "dram-see-v4-transport-gate-v1",
+  "gate": "format",
+  "passed": true,
+  "utc": "2026-10-13T03:54:13.611062+00:00",
+  "contract_sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+  "audit_evidence": [
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/format-h5-a0-r1/audit.json",
+      "sha256": "33dbf31fab8ef6c0392293ac67f774cd6bf7d9f937825b730be1153d8704eb46"
+    }
+  ],
+  "scope": "2-primary complete record/energy sum check; no nuclear mechanism event observed"
+}

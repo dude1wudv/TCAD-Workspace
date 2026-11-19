@@ -1,0 +1,22 @@
+{
+  "schema": "source-field-audit-3d-r1-reference-cost-contract",
+  "reference_mode": "referenced_original_tdr_not_copied",
+  "new_sdevice_calls": 0,
+  "parallel_native_processes": 1,
+  "native_threads": 1,
+  "tdr_payload_duplicate_bytes_remote": 0,
+  "tdr_payload_duplicate_bytes_local_operation": 0,
+  "original_tdrs_retained_remote": true,
+  "original_complete_solver_archive_retained_local": true,
+  "hash_passes_over_original_tdr_payload": 4,
+  "hash_read_bytes_formula": "4 * sum(original_tdr_bytes)",
+  "native_read_bytes": "At least one full native load per frame; implementation/cache dependent, not measured yet",
+  "numeric_commands_per_frame_with_G": 71,
+  "numeric_commands_per_frame_without_G_A0_only": 19,
+  "one_time_geometry_probe_commands": 9,
+  "per_frame_memory_lifetime": "Load one original TDR, measure, release plot then dataset, verify original hash after release",
+  "operation_payload": ["frozen extraction inputs", "original file SHA256 and lstat identities", "native scalar measurements and metadata", "native logs, exits and affinity"],
+  "time_estimate_policy": "Use actual original TDR size and separately measured hashing/native integration throughput. No guaranteed 3D extrapolation from 2D timing.",
+  "storage_policy": "Reserve original solver outputs and full solver archive separately. Only duplicate postprocess TDR payload is removed; no existing evidence is deleted.",
+  "timeout_policy": "Unknown or interrupted native operation is reconciled read-only before any further submission; no automatic retry."
+}

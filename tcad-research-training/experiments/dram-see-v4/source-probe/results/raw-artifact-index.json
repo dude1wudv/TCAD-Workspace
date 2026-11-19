@@ -1,0 +1,189 @@
+{
+  "schema": "dram-see-v4-source-probe-raw-index-v1",
+  "runs": [
+    {
+      "case": "A0",
+      "run_id": "20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4",
+      "files": [
+        {
+          "path": "local_runtime/runs/20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4/inputs.tar",
+          "bytes": 40960,
+          "sha256": "43f89761aa8d68402d0c4385f12f2e5789670babdd9793271b4c7a86bd1b3c58"
+        },
+        {
+          "path": "local_runtime/runs/20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4/results.tar",
+          "bytes": 7290880,
+          "sha256": "bfd3826d57627a3b5c692d0c15d4383517cdc31534e35230a5ac4abf059ec0cb"
+        },
+        {
+          "path": "local_runtime/runs/20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4/manifest.json",
+          "bytes": 1933,
+          "sha256": "e894fbb7703d6ac17228e99cd633df01d0de9c97b0ebb7c639c0563f8e87d425"
+        },
+        {
+          "path": "local_runtime/runs/20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4/run.sh",
+          "bytes": 1001,
+          "sha256": "ad2c2e6cad18270ca3f4146c1000fb6ecd52b55463d31edee034a15e82341165"
+        },
+        {
+          "path": "local_runtime/runs/20261013T022307Z-v4-source-probe-a0-b1-r1-21351db4/console.log",
+          "bytes": 1012181,
+          "sha256": "ecc8703f5c7bd12073117b4f2d146bd14190655dd47d0a8d6f24e3142de35168"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/launches/a0-b1-r1/execution.json",
+          "bytes": 2993,
+          "sha256": "f8ae8721242106e99d951150e9856a0422d2d5307edf503bb29d8711f5f362ce"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/circuit_raw.csv",
+          "bytes": 133098,
+          "sha256": "13c690d0624cb56a2325216f36f10127111d84fdc4f6cf962d07a07d1f3112e2"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/circuit.csv",
+          "bytes": 132182,
+          "sha256": "bc7c14190bb45afce335af19bbfcfbef3b0d81cb0b6dd1f54e1b5837a21ae254"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/device_raw.csv",
+          "bytes": 380992,
+          "sha256": "af8b16f6fea6a91416a79edfcdd8b1948c372a36c2eb2fbdddf5ce98e80afce9"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/device.csv",
+          "bytes": 380614,
+          "sha256": "0ec46567a81f6e82fc673ae7c25602e43eac855c01fe9efff5159ce0403aa58a"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a0-b1-r1/audit.json",
+          "bytes": 17484,
+          "sha256": "2187d55137b327086c56c66273f0e74c18125168b8d5ba1fc5255260500f35f3"
+        }
+      ]
+    },
+    {
+      "case": "A1",
+      "run_id": "20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782",
+      "files": [
+        {
+          "path": "local_runtime/runs/20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782/inputs.tar",
+          "bytes": 40960,
+          "sha256": "f29544ea5be2c65d64b37312e962e866444f6122f1d1a1c17a80f58dd32ee84e"
+        },
+        {
+          "path": "local_runtime/runs/20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782/results.tar",
+          "bytes": 7434240,
+          "sha256": "cad865b77ca162974ec5084931925f928b1fe7391650808208d440d9909506cf"
+        },
+        {
+          "path": "local_runtime/runs/20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782/manifest.json",
+          "bytes": 1933,
+          "sha256": "ec6892e9c7a86a0e0d226008067ed49f948abda39acf7423d99a5eaec9239712"
+        },
+        {
+          "path": "local_runtime/runs/20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782/run.sh",
+          "bytes": 1001,
+          "sha256": "f5fe680f138309f98815a18891f61c439352decf909761e5fda070d1b0e8910c"
+        },
+        {
+          "path": "local_runtime/runs/20261013T023151Z-v4-source-probe-a1-b1-r1-9a5f7782/console.log",
+          "bytes": 1052703,
+          "sha256": "5b464ce17fc34b5399cf67eb0ea2235b7f568e6f776f7a4ae6ddaf042d46fc3b"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/launches/a1-b1-r1/execution.json",
+          "bytes": 3364,
+          "sha256": "c576f47773c3b777c743fde372007d59f37479831b8cc7143390019c562c0006"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/circuit_raw.csv",
+          "bytes": 133308,
+          "sha256": "8f260e6d16353bee02c941c69ad5c10f4c831a44a74696df5b19dda35bd44bb8"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/circuit.csv",
+          "bytes": 132391,
+          "sha256": "2f9140381ddd165692d0968e187b5209962751ba62936905f9213267487a1ce4"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/device_raw.csv",
+          "bytes": 389325,
+          "sha256": "0e2f60a683cb714b3223fa9a39d64907799ba2452a4f9e4289644b2fff4b9feb"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/device.csv",
+          "bytes": 388947,
+          "sha256": "830dc3b24fb59e212723164d63db375cba8a14bef91e47e55ba587372d06badc"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a1-b1-r1/audit.json",
+          "bytes": 17964,
+          "sha256": "4d123b3b676964a257f1ea3a76107334e70761b6296bfc9ed107209f8eaa2281"
+        }
+      ]
+    },
+    {
+      "case": "A4",
+      "run_id": "20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93",
+      "files": [
+        {
+          "path": "local_runtime/runs/20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93/inputs.tar",
+          "bytes": 40960,
+          "sha256": "e79ba593a92a9c19c0e1f1ac2697c434160fea90dd5bb72521d047c6e8969a2d"
+        },
+        {
+          "path": "local_runtime/runs/20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93/results.tar",
+          "bytes": 7434240,
+          "sha256": "e8b90d148f93d701cc8cb83b694f7ff74576dc296eee3927d2fe9e8d683521b2"
+        },
+        {
+          "path": "local_runtime/runs/20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93/manifest.json",
+          "bytes": 1933,
+          "sha256": "1580755da08778c9e5d11359869293aca0d3c6dd35fd84ac7daca365159efdd0"
+        },
+        {
+          "path": "local_runtime/runs/20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93/run.sh",
+          "bytes": 1001,
+          "sha256": "0a03da0f01722bfe694d1c0b46bd0cff79e9b00cb65d937cf7b94f8c6dc94f1d"
+        },
+        {
+          "path": "local_runtime/runs/20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93/console.log",
+          "bytes": 1053667,
+          "sha256": "01d01aeebdea65f5aefc42a44ff4f1f13d05026e1120beb23fd3fbd9e296e20b"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/launches/a4-b1-r1/execution.json",
+          "bytes": 3717,
+          "sha256": "e859a460f6835e3abab80d732b501a2fccfe79bad87b1e7657b8ee74d242c452"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/circuit_raw.csv",
+          "bytes": 133308,
+          "sha256": "8f260e6d16353bee02c941c69ad5c10f4c831a44a74696df5b19dda35bd44bb8"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/circuit.csv",
+          "bytes": 132391,
+          "sha256": "2f9140381ddd165692d0968e187b5209962751ba62936905f9213267487a1ce4"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/device_raw.csv",
+          "bytes": 389325,
+          "sha256": "0e2f60a683cb714b3223fa9a39d64907799ba2452a4f9e4289644b2fff4b9feb"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/device.csv",
+          "bytes": 388947,
+          "sha256": "830dc3b24fb59e212723164d63db375cba8a14bef91e47e55ba587372d06badc"
+        },
+        {
+          "path": "local_runtime/dram-see-v4/source-probe/audits/a4-b1-r1/audit.json",
+          "bytes": 18375,
+          "sha256": "5f96e5a0045fbc7c4a98368ed0e6a8691061bbbb1f91dbfce38ee13fe5632608"
+        }
+      ]
+    }
+  ],
+  "archive_policy": "Original existing-runner archives retained in local_runtime/runs; per-case curve exports and launch records retained in local_runtime/dram-see-v4/source-probe. Paths relative to repository root."
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "dram-see-v4-readiness-summary",
+  "utc": "2026-10-13T02:21:20.974945+00:00",
+  "preflight_records": [
+    {
+      "label": "a0-a1-a4-first",
+      "record": "local_runtime\\dram-see-v4\\preflight\\a0-a1-a4-first\\record.json",
+      "record_sha256": "dc41021f8fd3898afb967fe1f15e5b721375da4719b73180f024c354b2c24086",
+      "stdout_sha256": "7710ae311cc3ac374b1d7730db7a8cd40737659aa8fcd1d93a925b0753e11da0",
+      "ssh_exit_code": 0
+    },
+    {
+      "label": "hadronic-and-parameters",
+      "record": "local_runtime\\dram-see-v4\\preflight\\hadronic-and-parameters\\record.json",
+      "record_sha256": "3b440754364b3652e625fab0dd83c3b94083e6c97a86ca2af6e4b64625daf216",
+      "stdout_sha256": "6fd1c3b37c048524a93d4866ea9aa17194bbd655d052fdddc3dfa0b0e706e12e",
+      "ssh_exit_code": 0
+    }
+  ],
+  "tcad": {
+    "tools_present": true,
+    "active_solvers_observed": 0,
+    "solver_lock": "FREE",
+    "license_not_probed_separately": true,
+    "local_python_controllers_observed": 0,
+    "scope": "At preflight time only, recheck before submission"
+  },
+  "geant4": {
+    "observed_version": "10.7.3",
+    "hadronic_ready": false,
+    "scope": "Current project configuration and three known dataset paths; not an exhaustive whole-host installation search",
+    "missing_from_project_search_paths": [
+      "PhotonEvaporation5.7",
+      "G4PARTICLEXS3.1.1",
+      "G4NDL4.6",
+      "RadioactiveDecay5.6"
+    ],
+    "present_dataset_directories": [
+      "G4ENSDFSTATE2.3",
+      "G4EMLOW7.13 including data-complete"
+    ],
+    "action": "Do not launch hadronic transport or install data. Continue independent TCAD direct-source probes."
+  },
+  "nonblocking_environment_warnings": [
+    "Locale en_US.UTF-8 unavailable in shell",
+    "Existing /etc/profile references a missing devtoolset-8 enable script; explicit TCAD paths are available"
+  ],
+  "installed_anything": false,
+  "heartbeat_changed": false,
+  "simulation_started_at_this_record": false
+}

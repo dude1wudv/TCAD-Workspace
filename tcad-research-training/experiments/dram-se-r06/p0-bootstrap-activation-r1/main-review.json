@@ -1,0 +1,212 @@
+{
+  "schema": "tcad-r06-bootstrap-main-acceptance-v1",
+  "utc": "2026-11-17T17:55:54.140555+00:00",
+  "authorization_read": true,
+  "manifest": {
+    "path": "plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json",
+    "sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+  },
+  "budget": {
+    "path": "plans/dram-se-ddr5-lpddr5/BUDGET-REVISION-r06-20261117.md",
+    "sha256": "b2849f5945754919eb18050acf4870dbd54d56e37a78aea0b9d3c9576dcd0379"
+  },
+  "planned_profile_count": 13,
+  "planned_case_count": 396,
+  "statistics_intent_slots": 214,
+  "statistics_eligible": 0,
+  "block_counts": {
+    "Z": 26,
+    "T": 68,
+    "S": 150,
+    "R": 12,
+    "HR": 28,
+    "HP": 30,
+    "AL": 82
+  },
+  "build_review": {
+    "path": "experiments/dram-se-r06/p0-bootstrap-activation-r1/build-review.json",
+    "sha256": "4e20e6496c5253b00590ed0e60e0b6b75e59c6a971ddcf648db3f0f708e5f329"
+  },
+  "independent_prefix_review": {
+    "path": "experiments/dram-se-r06/p0-bootstrap-activation-r1/independent-prefix-review.json",
+    "sha256": "31ae9c146705ef147e4d88daa1a8585b13eae11647f37341801d4d8ecae7e54a"
+  },
+  "queue_receipt": {
+    "path": "experiments/dram-se-r06/p0-bootstrap-activation-r1/queue-receipt.json",
+    "sha256": "991d3604980af51eab42fa0aff48ee63368ee04fe3aa58ab055cab0f0ea0ff3a"
+  },
+  "queue_readback": {
+    "path": "experiments/dram-se-r06/p0-bootstrap-activation-r1/postpublication-readback.json",
+    "sha256": "c81a8e9bfc39007e5913af5ea5499329163a11d78e36a6ca85406ca35e92a9f8"
+  },
+  "hold_window_analysis": {
+    "path": "experiments/dram-se-r06/p0-d0-hold-window-r1/evidence/analysis.json",
+    "sha256": "fd3f9228fdc89bef68a6486d0e1ca2f5039a594171859d44430ce1a05b4d0dec"
+  },
+  "hold_window_package": {
+    "path": "experiments/dram-se-r06/p0-d0-hold-window-r1/PACKAGE-SHA256SUMS",
+    "sha256": "6e64ba9cfd7000b49b18a5e313f6f984ad85045d7e3e83d9dddc8976565fa0d4"
+  },
+  "hold_window_independent_main_checks": [
+    "b0: six signals x three candidate interpolations recomputed directly from frozen cache with independent bisect",
+    "b0: exact 31.9ns cached row, voltage and signed margin independently confirmed",
+    "b1: six signals x three candidate interpolations recomputed directly from frozen cache with independent bisect",
+    "b1: exact 31.9ns cached row, voltage and signed margin independently confirmed"
+  ],
+  "hold_window_selected_values": {
+    "b0": {
+      "cache": {
+        "path": "local_runtime/dram-se-r04/mc2-zero-b0-native-r1/extraction.json",
+        "sha256": "9cd425eb2edb56e4bd98cd223da82931425b6919185879b5c11f5af25abf3caa"
+      },
+      "run_id": "auto-r04-l08-p000-nodal-whr-b0-zero-mc2-v1-64be04d60e604e04",
+      "read_raw_row_1based": 593,
+      "read_BL_V": "0.556235089929007",
+      "signed_margin_V": "0.043764910070993",
+      "22ns": {
+        "method": "linear_interpolation_between_actual_cached_rows",
+        "time_ns": "22",
+        "values_V": {
+          "v(sn1)": "-0.002132069161385902134847807840",
+          "v(sn2)": "-0.002125431682352317138441296208",
+          "v(bl)": "0.5999926651957327703099301056",
+          "v(wl1)": "0E-14",
+          "v(wl2)": "0E-14",
+          "v(drive)": "0.60000000000000"
+        },
+        "neighbors": [
+          {
+            "raw_row_1based": 450,
+            "time_token_s": "2.16183768096996E-08",
+            "values_V": {
+              "v(sn1)": "-0.00213206927784982",
+              "v(sn2)": "-0.00212543179937687",
+              "v(bl)": "0.599983873941786",
+              "v(wl1)": "0.0",
+              "v(wl2)": "0.0",
+              "v(drive)": "0.6"
+            },
+            "cached_canonical_row_token_sha256": "9f772af30b45a1a7c84eb26f4b525ed176abc086faaa576b38346598fe203505"
+          },
+          {
+            "raw_row_1based": 451,
+            "time_token_s": "2.21183768096996E-08",
+            "values_V": {
+              "v(sn1)": "-0.00213206912525962",
+              "v(sn2)": "-0.00212543164605213",
+              "v(bl)": "0.599995392180418",
+              "v(wl1)": "0.0",
+              "v(wl2)": "0.0",
+              "v(drive)": "0.6"
+            },
+            "cached_canonical_row_token_sha256": "d3d3df11681b0ea3ae685c2139e630502ba956fbf826ff91125b4c6007ebeab9"
+          }
+        ],
+        "right_weight": "0.7632463806008",
+        "bracket_width_ns": "0.5000000000000",
+        "neighbor_secant_V_per_ns": {
+          "v(sn1)": "3.051804E-10",
+          "v(sn2)": "3.0664948E-10",
+          "v(bl)": "0.000023036477264",
+          "v(wl1)": "0E+12",
+          "v(wl2)": "0E+12",
+          "v(drive)": "0E+12"
+        },
+        "delay_to_read_ns": "9.9",
+        "elapsed_since_WL1_release_ns": "3.9",
+        "elapsed_since_drive_ramp_end_ns": "3.8",
+        "BL_bias_from_0p6_V": "-0.0000073348042672296900698944",
+        "BL_max_actual_neighbor_abs_bias_V": "0.000016126058214",
+        "SN1_delta_from_18p2ns_V": "8.4532883807865152192160E-8",
+        "SN1_delta_to_30ns_V": "2.423642192134847807840E-9"
+      }
+    },
+    "b1": {
+      "cache": {
+        "path": "local_runtime/dram-se-r04/mc2-zero-b1-native-r1/extraction.json",
+        "sha256": "cb09f89a1db3913df2ac21cc88e6022190548b98a65364f705c3c8ffe6953160"
+      },
+      "run_id": "auto-r04-l08-p000-nodal-whr-b1-zero-mc2-v1-4305462e206c4c2f",
+      "read_raw_row_1based": 638,
+      "read_BL_V": "0.626057299430457",
+      "signed_margin_V": "0.026057299430457",
+      "22ns": {
+        "method": "linear_interpolation_between_actual_cached_rows",
+        "time_ns": "22",
+        "values_V": {
+          "v(sn1)": "1.024454404446997911181624672",
+          "v(sn2)": "1.024405829256700888183753280",
+          "v(bl)": "0.6000036856333623340092634592",
+          "v(wl1)": "0E-14",
+          "v(wl2)": "0E-14",
+          "v(drive)": "0.60000000000000"
+        },
+        "neighbors": [
+          {
+            "raw_row_1based": 454,
+            "time_token_s": "2.16458582653424E-08",
+            "values_V": {
+              "v(sn1)": "1.02445440444692",
+              "v(sn2)": "1.02440582925748",
+              "v(bl)": "0.600007459399226",
+              "v(wl1)": "0.0",
+              "v(wl2)": "0.0",
+              "v(drive)": "0.6"
+            },
+            "cached_canonical_row_token_sha256": "7797a8ad4c2e53562c91862d1226d4b5e3689fcc83ada153d7746f6a74f0b7e1"
+          },
+          {
+            "raw_row_1based": 455,
+            "time_token_s": "2.21458582653424E-08",
+            "values_V": {
+              "v(sn1)": "1.02445440444703",
+              "v(sn2)": "1.02440582925638",
+              "v(bl)": "0.600002131354697",
+              "v(wl1)": "0.0",
+              "v(wl2)": "0.0",
+              "v(drive)": "0.6"
+            },
+            "cached_canonical_row_token_sha256": "5264ef6e478d4119e6448b8a821dd4e2ba70c83d7f04432538d0aa1dd0c27a2f"
+          }
+        ],
+        "right_weight": "0.7082834693152",
+        "bracket_width_ns": "0.5000000000000",
+        "neighbor_secant_V_per_ns": {
+          "v(sn1)": "2.2E-13",
+          "v(sn2)": "-2.2E-12",
+          "v(bl)": "-0.000010656089058",
+          "v(wl1)": "0E+12",
+          "v(wl2)": "0E+12",
+          "v(drive)": "0E+12"
+        },
+        "delay_to_read_ns": "9.9",
+        "elapsed_since_WL1_release_ns": "3.9",
+        "elapsed_since_drive_ramp_end_ns": "3.8",
+        "BL_bias_from_0p6_V": "0.0000036856333623340092634592",
+        "BL_max_actual_neighbor_abs_bias_V": "0.000007459399226",
+        "SN1_delta_from_18p2ns_V": "-8.2027092088818375328E-8",
+        "SN1_delta_to_30ns_V": "5.2088818375328E-14"
+      }
+    }
+  },
+  "storage": {
+    "path": "experiments/dram-se-r06/p0-bootstrap-activation-r1/storage-observation.json",
+    "sha256": "805e04c72ddafdebcb8445c31e1a5b0e7c4a5b40554b3a1f4745b32cfc48d13b"
+  },
+  "acceptance_scope": "verified original compile, prepared/admitted/queued two P0 zero first-BE probes, and accepted old zero descriptive timing analysis only",
+  "o2_scientific_gate_passed": false,
+  "formal_timing_frozen": false,
+  "r06_D0_qualified": false,
+  "formal_case_credit": 0,
+  "old_four_mc2_event_labels": "unknown",
+  "old_r05_pending": "remain deferred; no repair proposal for superseded production",
+  "next_wake_condition": "original verified collected and released new zero-prefix result, or a genuinely new original failure diagnostic",
+  "not_done": [
+    "new prefix native numerical/logging acceptance",
+    "source-active short pair and source integral",
+    "representative long logging comparison",
+    "r06 D0 and all other Z qualification",
+    "new timing freeze",
+    "formal training and holdout access"
+  ]
+}

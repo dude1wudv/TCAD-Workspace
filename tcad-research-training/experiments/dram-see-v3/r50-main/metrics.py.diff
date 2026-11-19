@@ -1,0 +1,38 @@
+--- dram-see-v3/metrics.py
++++ dram-see-v3/r50-main/metrics.py
+@@ -8,7 +8,7 @@
+ HERE = Path(__file__).resolve().parent
+ _spec = importlib.util.spec_from_file_location('_v3_archive_audit_for_metrics', HERE / 'audit.py')
+ audit_module = importlib.util.module_from_spec(_spec)
+-_spec.loader.exec_module(audit_module)
++exec(compile((HERE / 'audit.py').read_bytes(), str(HERE / 'audit.py'), 'exec'), audit_module.__dict__)
+ THRESHOLDS_V = audit_module.THRESHOLDS_V
+ sample = audit_module.sample
+ classification = audit_module.classification
+@@ -18,7 +18,7 @@
+     if not isinstance(bundle, dict) or not {'parameters', 'circuit', 'summary'} <= set(bundle):
+         raise ValueError('Need complete audited curve bundle')
+     p = bundle['parameters']
+-    if p.get('schema') != 'dram-see-v3' or bundle['summary'].get('audit_status') != 'NUMERICAL_CONTRACT_PASSED':
++    if p.get('schema') != 'dram-see-v3-r50-main' or bundle['summary'].get('audit_status') != 'R50_MAIN_NUMERICAL_CONTRACT_PASSED':
+         raise ValueError('Curve source has not passed the v3 raw audit')
+     if bundle['summary'].get('parameters') != p:
+         raise ValueError('Curve/summary parameters differ')
+@@ -76,7 +76,7 @@
+     dcontrol = sample(cc, 'v(bl)', 4e-9) - sample(cn, 'v(bl)', 4e-9)
+     margin, margin_control = sign * d, sign * dcontrol
+     delta_q = ps['capacitance_F'] * (sample(cs, 'v(sn)', 2.8e-9) - sample(cc, 'v(sn)', 2.8e-9)) * 1e15
+-    result = {'schema': 'dram-see-v3-matched-metrics', 'stored_bit': ps['stored_bit'],
++    result = {'schema': 'dram-see-v3-r50-main-matched-metrics', 'physical_revision': 'r50-main-r1', 'stored_bit': ps['stored_bit'],
+               'matching_contract_sha256': ps['matching_contract_sha256'],
+               'sources': {'signal': _source(signal), 'control': _source(control), 'neutral': _source(neutral)},
+               'deltaQ_fC': delta_q, 'D4_V': d, 'M4_V': margin, 'control_D4_V': dcontrol,
+@@ -122,7 +122,7 @@
+     physical_classes = {str(e): classification(sign * (bps - bpr), e) for e in THRESHOLDS_V}
+     offline_classes = {str(e): classification(sign * (bos - bor), e) for e in THRESHOLDS_V}
+     passed = all(abs(value) <= .0001 for value in differences.values()) and physical_classes == offline_classes
+-    return {'schema': 'dram-see-v3-reference-validation',
++    return {'schema': 'dram-see-v3-r50-main-reference-validation', 'physical_revision': 'r50-main-r1',
+             'status': 'PASSED' if passed else 'FAILED', 'passed': passed, 'tolerance_V': .0001,
+             'differences_4ns': differences, 'physical_classification': physical_classes,
+             'offline_classification': offline_classes, 'classification_agreement': physical_classes == offline_classes,

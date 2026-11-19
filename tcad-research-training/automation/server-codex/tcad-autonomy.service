@@ -1,0 +1,39 @@
+[Unit]
+Description=Server-local Codex for the existing TCAD research workflow
+After=network-online.target tcad-magpie-web.service
+Wants=network-online.target
+ConditionPathExists=/etc/tcad-autonomy/policy.json
+
+[Service]
+Type=simple
+User=tcad
+Group=tcad
+Environment=HOME=/home/tcad
+Environment=PATH=/opt/tcad-autonomy/python/bin:/usr/local/bin:/usr/bin:/bin
+WorkingDirectory=/home/tcad/projects/tcad-research-training
+ExecStart=/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-autonomy/current/controller.py --policy /etc/tcad-autonomy/policy.json serve
+UMask=0077
+Restart=on-failure
+RestartSec=30s
+RestartPreventExitStatus=2
+TimeoutStopSec=25min
+KillMode=control-group
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/tcad/projects/tcad-research-training /var/lib/tcad-autonomy
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+CPUQuota=100%
+MemoryHigh=2G
+MemoryMax=4G
+TasksMax=256
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

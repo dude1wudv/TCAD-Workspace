@@ -1,0 +1,453 @@
+{
+  "dimension": 2,
+  "epoch_s": 7.61e-08,
+  "full_simulation_window_s": [
+    0.0,
+    8.82e-08
+  ],
+  "is_native_measurement": false,
+  "material_mask": {
+    "bounds_xz_um": [
+      -1.0,
+      0.0,
+      1.0,
+      1.0
+    ],
+    "kind": "bcat_center_section",
+    "outer_trench": {
+      "center_z_um": 0.142,
+      "radius_um": 0.012,
+      "top_um": 0.0
+    }
+  },
+  "moment_convention": "Absolute physical x/z unnormalized first moments; relative moments subtract frozen r0*Q explicitly",
+  "native_qualified": false,
+  "numerical_variant": "main",
+  "original_projection_contract_sha256": "cfafa9a4e6429d83c93e94f7de47c550ad4e558c1ed2694a747a99f74d1dce37",
+  "particle": "alpha",
+  "partition_closure": [
+    {
+      "charge_residual_fC": 8.570033571686508e-12,
+      "rois": [
+        "XSN",
+        "XGate",
+        "XBL"
+      ]
+    },
+    {
+      "charge_residual_fC": -2.220446049250313e-16,
+      "rois": [
+        "ZShallow",
+        "ZJunction",
+        "ZBulk"
+      ]
+    }
+  ],
+  "partitions": [
+    [
+      "XSN",
+      "XGate",
+      "XBL"
+    ],
+    [
+      "ZShallow",
+      "ZJunction",
+      "ZBulk"
+    ]
+  ],
+  "projection_implementation_sha256": "f8e18b4c319dc10e170c5945b5b5b9ef7fa999f35ced4e21bf3f7267e97f1db4",
+  "r0_xz_um": [
+    -0.052,
+    0.0
+  ],
+  "raw_area_integral_unit": "cm^-3 s^-1 um^2",
+  "raw_to_fC_per_s": 3.2043532679999995e-18,
+  "removed_axis_partitions": "Original y partitions have no 2D domain and are not marked passed",
+  "roi_contract": {
+    "coordinate_definition": "Native X is physical x; native Y is physical z; physical y is omitted, not measured zero",
+    "core_half_width_um": 0.025,
+    "gate_top_depth_nm": 80,
+    "geometry_contract_sha256": "c2eb53cd124983dca4f50f36521dd01c9987d4745d906e2ee7489a7315711dad",
+    "middle_z_definition": "Frozen model sti_depth_nm used only as the existing near-junction ROI marker; no STI is added to this central section",
+    "model_sha256": "fb2e8b8d0bcaa902b9517090b95d43ab9cc54c66aa8fba131b16b75d5bf805f9",
+    "native_geometry_verified_by_this_pure_function": false,
+    "partitions": [
+      [
+        "XSN",
+        "XGate",
+        "XBL"
+      ],
+      [
+        "ZShallow",
+        "ZJunction",
+        "ZBulk"
+      ]
+    ],
+    "response": {
+      "bounds_xz_um": [
+        -1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "kind": "bcat_center_section",
+      "outer_trench": {
+        "center_z_um": 0.142,
+        "radius_um": 0.012,
+        "top_um": 0.0
+      }
+    },
+    "rois_xz_um": {
+      "BL": [
+        0.032,
+        0.0,
+        0.072,
+        0.1375
+      ],
+      "Channel": [
+        -0.032,
+        0.087,
+        0.032,
+        0.2
+      ],
+      "Core": [
+        -0.077,
+        0.0,
+        -0.026999999999999996,
+        1.0
+      ],
+      "SN": [
+        -0.072,
+        0.0,
+        -0.032,
+        0.087
+      ],
+      "Total": [
+        -1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "XBL": [
+        0.012,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "XGate": [
+        -0.012,
+        0.0,
+        0.012,
+        1.0
+      ],
+      "XSN": [
+        -1.0,
+        0.0,
+        -0.012,
+        1.0
+      ],
+      "ZBulk": [
+        -1.0,
+        0.2,
+        1.0,
+        1.0
+      ],
+      "ZJunction": [
+        -1.0,
+        0.087,
+        1.0,
+        0.2
+      ],
+      "ZShallow": [
+        -1.0,
+        0.0,
+        1.0,
+        0.087
+      ]
+    },
+    "schema": "dram-see-v4-parameterized-2d-roi-contract-r1",
+    "sn_junction_depth_nm": 87,
+    "source_origin_xz_um": [
+      -0.052,
+      0.0
+    ],
+    "time_defaults_used": false
+  },
+  "roi_contract_sha256": "3036dc4064babadb9c2348ba588d4eee8e358f6704d817fab654dfb4bf08849d",
+  "rois": {
+    "BL": {
+      "absolute_moments_fC_um": [
+        7.169967907694784e-05,
+        0.00011514685702734823
+      ],
+      "all_time_charge_fC": 0.0016740797187355402,
+      "box_xz_um": [
+        0.032,
+        0.0,
+        0.072,
+        0.1375
+      ],
+      "centroid_xz_um": [
+        0.0428293099035354,
+        0.06878218267545858
+      ],
+      "coarse_refined_charge_difference_fC": 0.0,
+      "relative_moments_fC_um": [
+        0.00015875182445119592,
+        0.00011514685702734823
+      ],
+      "silicon_area_um2": 0.0055
+    },
+    "Channel": {
+      "absolute_moments_fC_um": [
+        -0.0005051803472666996,
+        0.00539577169173685
+      ],
+      "all_time_charge_fC": 0.03613578051020785,
+      "box_xz_um": [
+        -0.032,
+        0.087,
+        0.032,
+        0.2
+      ],
+      "centroid_xz_um": [
+        -0.013980059103026523,
+        0.1493193620160666
+      ],
+      "coarse_refined_charge_difference_fC": 8.847783616872107e-13,
+      "relative_moments_fC_um": [
+        0.0013738802392641084,
+        0.00539577169173685
+      ],
+      "silicon_area_um2": 0.005685805328941537
+    },
+    "Core": {
+      "absolute_moments_fC_um": [
+        -0.03898727123015274,
+        0.3761538537895187
+      ],
+      "all_time_charge_fC": 0.7497552159644758,
+      "box_xz_um": [
+        -0.077,
+        0.0,
+        -0.026999999999999996,
+        1.0
+      ],
+      "centroid_xz_um": [
+        -0.052,
+        0.5017022166436536
+      ],
+      "coarse_refined_charge_difference_fC": 1.1330381077812035e-11,
+      "relative_moments_fC_um": [
+        0.0,
+        0.3761538537895187
+      ],
+      "silicon_area_um2": 0.05
+    },
+    "SN": {
+      "absolute_moments_fC_um": [
+        -0.0027657057297903334,
+        0.0023143044802581714
+      ],
+      "all_time_charge_fC": 0.05318664864981411,
+      "box_xz_um": [
+        -0.072,
+        0.0,
+        -0.032,
+        0.087
+      ],
+      "centroid_xz_um": [
+        -0.052,
+        0.04351288413556134
+      ],
+      "coarse_refined_charge_difference_fC": 0.0,
+      "relative_moments_fC_um": [
+        0.0,
+        0.0023143044802581714
+      ],
+      "silicon_area_um2": 0.003479999999999999
+    },
+    "Total": {
+      "absolute_moments_fC_um": [
+        -0.07486486570550364,
+        0.7211418764555049
+      ],
+      "all_time_charge_fC": 1.4201725088290207,
+      "box_xz_um": [
+        -1.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "centroid_xz_um": [
+        -0.05271533228539412,
+        0.50778470359922
+      ],
+      "coarse_refined_charge_difference_fC": 8.781197990970213e-12,
+      "relative_moments_fC_um": [
+        -0.0010158952463945807,
+        0.7211418764555049
+      ],
+      "silicon_area_um2": 1.9963658053289415
+    },
+    "XBL": {
+      "absolute_moments_fC_um": [
+        0.0013158648844302729,
+        0.025389779339278388
+      ],
+      "all_time_charge_fC": 0.050607269605372804,
+      "box_xz_um": [
+        0.012,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "centroid_xz_um": [
+        0.026001499284414503,
+        0.5017022166432555
+      ],
+      "coarse_refined_charge_difference_fC": 6.936812235736056e-13,
+      "relative_moments_fC_um": [
+        0.003947442903909659,
+        0.025389779339278388
+      ],
+      "silicon_area_um2": 0.988
+    },
+    "XGate": {
+      "absolute_moments_fC_um": [
+        -0.00022287871694429487,
+        0.06626300451842275
+      ],
+      "all_time_charge_fC": 0.11485861901716247,
+      "box_xz_um": [
+        -0.012,
+        0.0,
+        0.012,
+        1.0
+      ],
+      "centroid_xz_um": [
+        -0.001940461402474217,
+        0.57690929148749
+      ],
+      "coarse_refined_charge_difference_fC": 2.852024172383949e-13,
+      "relative_moments_fC_um": [
+        0.005749769471948153,
+        0.06626300451842275
+      ],
+      "silicon_area_um2": 0.020365805328941534
+    },
+    "XSN": {
+      "absolute_moments_fC_um": [
+        -0.07595785187345523,
+        0.62948909259936
+      ],
+      "all_time_charge_fC": 1.2547066202150554,
+      "box_xz_um": [
+        -1.0,
+        0.0,
+        -0.012,
+        1.0
+      ],
+      "centroid_xz_um": [
+        -0.06053833673120824,
+        0.5017022166436536
+      ],
+      "coarse_refined_charge_difference_fC": 1.8961276992968124e-11,
+      "relative_moments_fC_um": [
+        -0.010713107622272356,
+        0.62948909259936
+      ],
+      "silicon_area_um2": 0.988
+    },
+    "ZBulk": {
+      "absolute_moments_fC_um": [
+        -0.06004496527532936,
+        0.6940844898196425
+      ],
+      "all_time_charge_fC": 1.154710870679411,
+      "box_xz_um": [
+        -1.0,
+        0.2,
+        1.0,
+        1.0
+      ],
+      "centroid_xz_um": [
+        -0.052,
+        0.6010894219877361
+      ],
+      "coarse_refined_charge_difference_fC": 0.0,
+      "relative_moments_fC_um": [
+        1.2330000691204385e-158,
+        0.6940844898196425
+      ],
+      "silicon_area_um2": 1.6
+    },
+    "ZJunction": {
+      "absolute_moments_fC_um": [
+        -0.008386430996677663,
+        0.02216191115621026
+      ],
+      "all_time_charge_fC": 0.1529552948697557,
+      "box_xz_um": [
+        -1.0,
+        0.087,
+        1.0,
+        0.2
+      ],
+      "centroid_xz_um": [
+        -0.054829295081408366,
+        0.14489142840776806
+      ],
+      "coarse_refined_charge_difference_fC": 8.78128125769706e-12,
+      "relative_moments_fC_um": [
+        -0.00043275566345036593,
+        0.02216191115621026
+      ],
+      "silicon_area_um2": 0.22445380532894157
+    },
+    "ZShallow": {
+      "absolute_moments_fC_um": [
+        -0.006433469433496616,
+        0.004895475479651972
+      ],
+      "all_time_charge_fC": 0.11250634327985388,
+      "box_xz_um": [
+        -1.0,
+        0.0,
+        1.0,
+        0.087
+      ],
+      "centroid_xz_um": [
+        -0.057183170707927854,
+        0.043512884135561335
+      ],
+      "coarse_refined_charge_difference_fC": 0.0,
+      "relative_moments_fC_um": [
+        -0.0005831395829442148,
+        0.004895475479651972
+      ],
+      "silicon_area_um2": 0.17191199999999998
+    }
+  },
+  "schema": "dram-see-v4-parameterized-alpha2d-source-reference-r1",
+  "sigma_s": 2e-13,
+  "source_field_unit": "cm^-3 s^-1",
+  "source_step_limit_s": 4e-14,
+  "source_window_s": [
+    7.60984e-08,
+    7.61016e-08
+  ],
+  "tolerances": {
+    "active_generation_fraction": 0.001,
+    "centroid_abs_um": 0.002,
+    "final_time_abs_s": 1e-18,
+    "offline_charge_abs_fC": 1e-06,
+    "offline_charge_relative": 0.001,
+    "partition_relative": 0.05,
+    "roi_fraction_abs": 0.05,
+    "source_main_dt_s": 4e-14,
+    "source_relative": 0.05,
+    "time_centroid_abs_s": 4e-14,
+    "waveform_relative": 0.05
+  }
+}

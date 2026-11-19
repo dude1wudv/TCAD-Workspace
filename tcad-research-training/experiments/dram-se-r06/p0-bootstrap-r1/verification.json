@@ -1,0 +1,51 @@
+{
+  "schema": "tcad-r06-p0-bootstrap-offline-verification-v1",
+  "created_at": "2026-11-17T17:21:28.948719+00:00",
+  "status": "passed_offline_only",
+  "checks": [
+    {
+      "command": [
+        "C:\\Users\\sun\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-se-r06\\p0-bootstrap-r1",
+        "-p",
+        "test_bootstrap.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "log": "verification-1.log"
+    },
+    {
+      "command": [
+        "C:\\Users\\sun\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\python.exe",
+        "-B",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-se-r06\\p0-bootstrap-r1\\check.py",
+        "source"
+      ],
+      "exit_code": 0,
+      "log": "verification-2.log"
+    },
+    {
+      "command": [
+        "C:/Program Files/Git/bin/bash.exe",
+        "-n",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-se-r06\\p0-bootstrap-r1\\compile-in-original-vm.sh"
+      ],
+      "exit_code": 0,
+      "log": "verification-3.log"
+    }
+  ],
+  "main_gate_sha256": "c071a47ec4eee565aebfddd42f72cccd51a10d9b57655c00f6a241d035760797",
+  "native_compilation": false,
+  "native_execution": false,
+  "server_writes": false,
+  "queue_changes": false,
+  "scientific_acceptance": false,
+  "initial_integration_failures": "Main gate returned additional admission binding, then added intents parameter while under active development; test now exercises its public verify interface. ResourceWarning file handles corrected."
+}

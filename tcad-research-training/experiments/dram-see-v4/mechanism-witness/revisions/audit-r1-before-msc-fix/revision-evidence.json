@@ -1,0 +1,76 @@
+{
+  "schema": "v4-witness-audit-revision-evidence-v1",
+  "prior_revision": "r1",
+  "files_sha256": {
+    "audit_witness.py": "d99ad8cc9e9d373fc982387ed76882a4a0659d85b1f4374e38e6ceb6ffa8928d",
+    "tests/test_audit_witness.py": "33416d571b91898bef09b6c89dc6ba49fc757281c15f80e62fc4698aa79d73fe",
+    "README-implementation.md": "f350a97bc8e383321a92fd4610311107f60388d63ca60e7318678c41f7b1a52e",
+    "witness-pilot-h-r1.failed-audit.json": "36a98554e69b66157ab9d44084479927c69f3d9fbfa35fd82501817abddfd00d"
+  },
+  "failure_original_path": "local_runtime\\dram-see-v4\\transport-probe\\audits\\witness-pilot-h-r1\\audit.json",
+  "raw_input_sha256": {
+    "steps.csv": "a89580f87c6dcb3b01d080467e9a66281873eab2d69331a1ae8c3827cf4103cc",
+    "execution.log": "6ba5fc1026021787f8cfed94b0277a9f2812f55eae1b140ddf5a64d30a586414",
+    "processes.csv": "379c7a3e2be7f00d1d7577c09c2657fab6d1708e87fee261585ca44b08e64564",
+    "record.json": "1203d25be21be17de855d25f23dd2b103a1f315cae098109d8156150bc4a9455"
+  },
+  "steps": 453,
+  "inequality_failures": [
+    {
+      "event_id": "0",
+      "track_id": "1",
+      "step_id": "89",
+      "particle": "proton",
+      "post_process": "hIoni",
+      "pre_volume": "Si",
+      "step_um": "35.182301387844781",
+      "chord_um": "35.182327164108557",
+      "pre_ke_MeV": "89.746328792501387",
+      "post_ke_MeV": "89.655918190075269",
+      "ratio": 1.0000007326485978,
+      "excess_um": 2.5776263775867392e-05
+    },
+    {
+      "event_id": "0",
+      "track_id": "1",
+      "step_id": "100",
+      "particle": "proton",
+      "post_process": "StepLimiter",
+      "pre_volume": "Si",
+      "step_um": "99.999844544394165",
+      "chord_um": "100.00079429935622",
+      "pre_ke_MeV": "88.311286554315458",
+      "post_ke_MeV": "88.154067259432097",
+      "ratio": 1.000009497564385,
+      "excess_um": 0.0009497549620505197
+    },
+    {
+      "event_id": "1",
+      "track_id": "1",
+      "step_id": "84",
+      "particle": "proton",
+      "post_process": "StepLimiter",
+      "pre_volume": "Si",
+      "step_um": "99.999849224834392",
+      "chord_um": "99.999958768573322",
+      "pre_ke_MeV": "89.828152463413574",
+      "post_ke_MeV": "89.717470884266177",
+      "ratio": 1.000001095439041,
+      "excess_um": 0.00010954373892957392
+    }
+  ],
+  "actual_proton_msc": "WentzelVIUni; DispFlag:1; process type2/subtype10",
+  "reason": "GetStepLength records separately proposed true transport length; MSC changes endpoint by independent sampled lateral displacement. No universal chord<=recorded-step inequality follows.",
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/electromagnetic/utils/src/G4VMultipleScattering.cc",
+      "lines": "445-501"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/track/src/G4ParticleChangeForMSC.cc",
+      "lines": "75-87"
+    }
+  ],
+  "change": "Remove invalid universal inequality, no tolerance changes; preserve exact chord reconstruction, nonnegative values, per-track sums, charged Si recorded-step limit, and record exceedance diagnostics.",
+  "unproven": "The raw record does not expose each sampled MSC displacement; causal assignment for an individual step is an inference, not a separately logged measurement."
+}

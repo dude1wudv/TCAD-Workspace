@@ -1,0 +1,86 @@
+\documentclass[UTF8,a4paper,zihao=-4,fontset=fandol]{ctexart}
+\input{style.tex}
+\hypersetup{pdftitle={DRAM单粒子读出响应与冻结预测验证}}
+\begin{document}
+\begin{center}
+{\LARGE\bfseries\color{ink}DRAM单粒子读出响应与冻结预测验证\par}
+\vspace{.5em}{指导教师：李洋\qquad 2026年10月11日}
+\end{center}
+\subsection*{摘要}
+采用Geant4与TCAD计算简化1T1C单元的粒子响应。四种栅长、两类粒子和两个方向共64个独立事件，按存储0/1得到128个配对响应。5 mV判据下，96项正确、20项判据误读、8项临界、4项数值不确定。四个岭回归模型在测试前固定，独立测试的电荷RMSE为0.067155至0.094644 fC，裕量损失RMSE为0.504929至0.838043 mV。氧化层变体的响应差异较小；边界细化有一项分类跨界，表明连续量稳定不足以确定阈值附近类别。结果适用于本次未校准二维模型和固定入射条件。
+\smallnote{关键词：DRAM；单粒子效应；Geant4；TCAD；读出裕量；岭回归}
+
+\section{引言}
+DRAM读出依靠存储电容与位线的电荷共享\cite{keeth2001}。粒子在硅中产生载流子后，漂移、扩散、复合及端口收集共同改变节点电压\cite{label1996}。生成电荷总量与存储节点净变化不同，需要同时观察粒子增量和读出差分。
+
+陈善强、师立勤用TCAD与Geant4评估SRAM单粒子效应\cite{chen2011}；Xu等研究了用于电路仿真的单粒子瞬态回归模型\cite{xu2021}。不同激励方式的二极管瞬态比较还表明，电荷产生的空间分布会影响响应\cite{ryder2021}。本研究采用总量等效源，在统一电学条件下比较尺寸和位值，并用未参加拟合的尺寸检验固定预测。
+
+\begin{figure}[H]\centering\workflowdiagram\caption{计算与评价流程。}\end{figure}
+\atable{progress}{主矩阵分组。每个栅长包含两粒子、两方向及各4个事件。}{p:matrix}
+
+\pageheading{器件与粒子源}
+\begin{table}[H]\centering\small\caption{二维1T1C模型参数。各数值为探索设定。}\paramtable\end{table}
+器件采用漂移扩散模型，联立泊松、电子与空穴连续性方程和电路方程，计入Fermi统计、OldSlotboom带隙修正、掺杂和电场相关迁移率、SRH与Auger复合；瞬态使用后向欧拉离散。源漏深度参数不等于净掺杂结深，四个栅长也不表示商业工艺代际。
+
+Geant4 10.7.3使用电磁option4及步长限制\cite{g4em}。$5\,\mathrm{MeV}$的$\alpha$粒子或质子从$(L+0.45,0,0)\um$入射，方向为$(-\sin\theta,\cos\theta,0)$，$\theta=0^\circ/30^\circ$。材料为硅和外部真空；有限直径迹长度为
+\begin{equation}\ell=\begin{cases}1.2\um,&\theta=0^\circ,\\\min\!\left(1.2/\cos\theta,(L+0.45)/\sin\theta\right)\um,&\theta=30^\circ.\end{cases}\end{equation}
+其中$L$以$\mu\mathrm m$计。$0.18\um$、$30^\circ$的径迹从侧边退出，长度$1.26\um$。
+\begin{equation}E_{\rm ion}=\sum_j\max(0,E_{{\rm dep},j}-E_{{\rm NIEL},j}),\qquad Q_{\rm dep}=q\frac{10^6E_{\rm ion}[\mathrm{MeV}]}{W[\mathrm{eV}]},\quad W=3.6\,\mathrm{eV}.\end{equation}
+取$q=1.602176634\times10^{-19}\,\mathrm C$。TCAD将总量沿直径迹均匀分配，横向高斯尺度$0.03\um$，线电荷密度$Q_{\rm dep}/\ell$以$\mathrm{pC}/\mu\mathrm m$传入。源积分须计入$1\um$有效厚度，并满足$|Q_{\rm src}-Q_{\rm dep}|/Q_{\rm dep}\leq5\%$；零沉积单独检查。该检查核对注入总量，不恢复完整三维沉积分布。
+\begin{table}[H]\centering\small\caption{保持与读出时序。}\timingtable\end{table}
+
+\pageheading{读出评价与响应曲线}
+用$e,c,n$分别表示事件、同存储位无粒子对照和中性参考，$b\in\{0,1\}$表示存储位。
+\metricdefs
+$M_c$由对照BL和相同中性参考计算。$\Delta Q$表示存储电容相对对照的变化，$\Delta M>0$表示裕量下降。中性参考决定绝对读出差分，同位对照提取粒子增量。
+
+初态误差须不超过$1\mV$，预充误差不超过$10\,\mu\mathrm V$；检查还覆盖$4\ns$终点、有限数据、KCL、四端口闭合及电荷积分。匹配参考先与双支路模型比较两侧BL及其差分。历史理想参考留下约12.37 mV偏移；预充电阻由100 Ω改为50 Ω后，独立检查的误差从$-13.297362$变为$-4.731204\,\mu\mathrm V$，据此确定统一主模型。
+\fig{readout-l018.png}{1}{$0.18\um$下两种位值的SN与BL响应。粒子、角度、同位对照和中性参考分别标示。}{p:curves}
+在四栅长范围内，$\alpha$存储1的裕量为$-13.213$至$0.311\mV$，质子存储1为$31.781$至$35.651\mV$。$\alpha$存储0的$\Delta M$为负，表示相对于无粒子对照的裕量增加。逐分组范围见附表数据。
+
+\pageheading{分类结果}
+判据采用$M>\epsilon$为正确、$M<-\epsilon$为误读、$|M|\leq\epsilon$为临界。主阈值$\epsilon=5\mV$，同时比较$2.5/10\mV$。接近边界但未完成规定细化，或细化后分类改变的响应，保留为数值不确定。
+\atable{thresholds}{完整128响应在三阈值下的状态。}{p:thresholds}
+\fig{stratum-counts.png}{.95}{5 mV判据下的各分层响应数。每行分母为4，同一事件的0/1配对不增加独立事件数。}{p:counts}
+\smallnote{主矩阵全部完成，最终无缺失响应。阈值改变主要在$\alpha$存储1的误读与临界状态之间重新分配；数值不确定分别为1、4、1项。}
+
+\pageheading{测试前固定的预测}
+训练集为$L=0.18/0.35\um$，$0.25\um$与$0.45\um$分别留作域内和外推测试。对两位的$\Delta Q$与$\Delta M$分别拟合，特征为$(Q_{\rm dep},Q_{\rm dep}/L,Q_{\rm dep}\sin\theta)$。
+
+八个物理工况做留一交叉验证，每折留出完整工况的4个事件，标准化只使用该折训练数据。候选$\lambda=0,0.01,0.1,1,10$，按八折RMSE平均选择，四模型均取0.1；截距不惩罚。模型及64条预测在首次测试TCAD求解前固定，测试后未重训。
+\begin{table}[H]\centering\small\caption{独立测试误差。每行$n=16$，无缺失或无效响应。}\scoretable\end{table}
+\fig{prediction-residuals.png}{.90}{留出和外推残差的合并展示。分区数值见表，均值模型作为固定基准。}{p:prediction}
+训练阶段四目标的岭回归交叉验证RMSE依次为0.102888 fC、0.955160 mV、0.112903 fC、1.012491 mV。独立测试的八项RMSE均小于相应均值基准；原评分与数值检查后的连续目标评分一致。
+
+\pageheading{氧化层与数值细化}
+固定$0.25\um$、垂直入射的一个$\alpha$和一个质子事件，对$4/6\,\mathrm{nm}$厚度重建网格及匹配参考；$5\,\mathrm{nm}$复用主结果。14次新计算得到8个事件响应，未增加独立事件数。
+\fig{oxide-sensitivity.png}{1}{固定硅入口事件下的氧化层比较。细小差异采用下表数值解释。}{p:oxide}
+\atable{oxide}{相对于5 nm结果的变化。}{p:oxidetable}
+最大绝对变化为约0.005783687 fC和0.112560497 mV，分类保持。幅度小于0.01 fC和0.5 mV验收容差，但容差并非统计误差条；未对每个厚度追加独立细化和统计校准，不作微小效应显著性判断。
+
+\atable{boundary}{两个边界目标的半步长和0.7网格比较。}{p:boundary}
+\pageheading{读出边界与电场分布}
+边界目标按完整128响应距三阈值的最小距离选取。四项连续比较均通过，最大电压差0.032654 mV、电荷差0.003490 fC；事件202610304的半步长结果在5 mV处跨界。它与3项未选近界响应合计为4项数值不确定。
+全部384个响应--阈值对中，8项细化稳定、1项跨界、5项近界待确认、370项界外未细化，无连续量失败。
+\fig{threshold-window-l045.png}{1}{$0.45\um$响应的3.8至4 ns裕量窗口。}{p:window}
+\fig{native-event-window.png}{.96}{SVisual原生窗口：$0.18\um$、$\alpha$、$30^\circ$、事件202610311、存储1，$4\ns$电场幅值，单位V/cm。}{p:native}
+粒子产生电荷、端口收集电荷与电容净变化受不同过程控制。电场图用于查看器件场分布，分类结论来自匹配参考下的BL差分及数值检查。
+
+\pageheading{讨论与结论}
+主阈值下，误读和未定状态集中于$\alpha$存储1。四个固定回归模型在独立尺寸测试中均低于均值基准误差，说明所选沉积、尺寸和方向特征对本组连续响应有预测作用。模型仍需真实Geant4沉积和无粒子基线，低残差也不能唯一确定微观电荷收集机制。
+
+每层只有4个独立事件。分类统计保留固定分母，对临界和不确定项给出最佳/最差范围及Wilson 95\%区间；零次明确误读不足以支持零风险结论。数值细化中出现的跨界说明，连续量误差容差和阈值分类需要分开评价。
+
+模型限制集中在二维平面结构、理想电容、准静态初态与总量等效径迹。所选质子电磁配置未验证核反应次级粒子效应，氧化层变化未重算完整材料栈输运。结果限于固定能量、入口、方向和栅长；实际写入、保持、感放锁存与恢复尚需器件数据校准，本文不据此估算商业DRAM失效率或持久位翻转截面。
+
+本研究完成128个配对响应和64条固定测试预测的评价。后续实验应先校准器件与读出电路，再扩展能量、入射位置和独立样本。阈值附近仍应保留分类不确定，不能仅凭连续量差异较小将其清除。
+
+\subsection*{计算记录与方法披露}
+历史计算保留7条FAILED，其中主矩阵4次原始工程失败经相同输入重试后得到有效响应，原退出码未观测时仍为null。重试和18次扩展均不增加独立N。累计求解100022.07 s，包含失败和历史版本。
+
+AI用于文献整理、脚本辅助、结果检查及文稿改写；指标与评分由固定程序计算。没有人工对照实验，也不据此报告AI加速率。逐事件结果、固定评分、失败记录和图件来源保存在随附数据\cite{project}。
+
+\clearpage
+\bibliographystyle{unsrt}
+{\small\bibliography{../assets/references}}
+\end{document}

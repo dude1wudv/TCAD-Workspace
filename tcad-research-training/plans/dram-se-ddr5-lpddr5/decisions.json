@@ -1,0 +1,179 @@
+{
+  "plan_id": "dram-se-ddr5-lpddr5",
+  "revision": "0.6",
+  "current_execution_authorization": {
+    "date": "2026-11-17",
+    "source": "explicit_user_approval_of_complete_plan_and_deployment_without_further_stage_questions",
+    "document": "EXECUTION-AUTHORIZATION-r06-20261117.md",
+    "execution_authorized": true,
+    "automatic_advancement_requires_scientific_evidence": true,
+    "repeat_user_approval_required": false,
+    "controller_owner": "server-codex",
+    "default_parallel_capacity": 4,
+    "default_task_threads": 2,
+    "virtual_machine_cpus": 9,
+    "virtual_machine_memory_GiB": 28,
+    "maximum_planned_cases": 396,
+    "statistics_intended_slots": 214,
+    "currently_statistics_eligible": 0,
+    "formal_training_authorized_after_valid_development_data": true,
+    "scientific_acceptance": "not_assessed",
+    "deployment_status": "pending_receipt"
+  },
+  "confirmation_method": "prior_local_dialog_plus_current_request_user_input_and_chat",
+  "confirmed_at": "2026-11-16T02:48:47.9585571-07:00",
+  "confirmed_choices": {
+    "route_roles": {
+      "ddr5": "engineering_error_rate_and_external_validation",
+      "lpddr5": "tcad_structure_and_mechanism"
+    },
+    "language_module": "existing_llm_via_magpie_with_retrieval_and_tools",
+    "trained_models": "mechanism_residual_response_mlp_and_presimulation_cross_section_mlp_with_baselines_and_ablation",
+    "language_model_finetuning": "not_in_current_scope",
+    "delivery": "server_web_application_and_reproducible_model_package",
+    "deadline": null,
+    "schedule_policy": "milestones_then_measured_cost_estimate",
+    "resource_update_after_dialog": {
+      "source": "explicit_user_message",
+      "message": "服务器现在升级成9核可以9个并行计算了",
+      "available_solver_cpus": 9,
+      "maximum_parallel_tasks": 9,
+      "threads_per_task": 1,
+      "remote_profile_verified_in_this_turn": false
+    },
+    "input_energy_semantics": "incident_kinetic_energy",
+    "energy_scan_policy": "broad_range_below_and_above_literature_points",
+    "device_parameter_scope": [
+      "device_length_width",
+      "channel_geometry",
+      "p_n_region_type_and_doping",
+      "other_source_based_device_parameters"
+    ],
+    "incident_direction_included": true,
+    "first_new_simulation_species": "proton",
+    "auto_reply_policy": "predict_first_with_background_simulation_when_needed",
+    "auto_reply_policy_source": "2026-11-16 request_user_input: 先预测，必要时补仿真（推荐）",
+    "predictor_network_choice": "轻量多头MLP（推荐）",
+    "predictor_physics_choice": "机理模型＋残差修正",
+    "predictor_split_choice": "3折分组CV（推荐）",
+    "predictor_choices_source": "2026-11-16 request_user_input returned answers"
+  },
+  "latest_user_direction": "服务器继续自主仿真；按当前速度估算首月产能并缩减首批仿真，保留宽能区、多器件参数和角度计划的代表性覆盖。",
+  "execution_authorized": true,
+  "note": "仿真已按execution_authorization启动授权推进；本轮确认和写入预测训练设计，不启动正式训练或部署。具体实现初值和搜索配置是项目设计，不冒称文献给定参数。",
+  "prior_confirmation_method": "local_windows_selection_dialog",
+  "revision_0_4_user_inputs": {
+    "date": "2026-11-16",
+    "dialog_returned_answers": true,
+    "energy_definition": "入射能量为输入（推荐）",
+    "prediction_targets": "老师让预测模型训练的时候做物理规则强化，最终输出预测大致结果，你看着办",
+    "energy_range_policy": "文献上下一大段区间，批量获取数据便于训练模型",
+    "device_type_clarification": "器件长宽，沟道长度，P、N型等器件参数",
+    "chat_expansion": "器件也是，不光是一种参数，不同器件参数、入射角度、器件类型等都纳入"
+  },
+  "revision_0_4_assistant_design_choices": {
+    "selected_under_delegated_design_judgment_not_verbatim_user_numbers": true,
+    "proton_energy_range_MeV": [
+      1,
+      200
+    ],
+    "device_profile_target": 48,
+    "condition_target": 384,
+    "main_response_target": 9216,
+    "listed_transient_first_batch": 9408,
+    "independent_statistics_start_responses": 3072,
+    "model_architecture": "event_response_neural_network_plus_aggregation_plus_pre_simulation_neural_network",
+    "physics_rule_details": "MODEL-AND-TOOLS.md",
+    "exact_manifest_materialized": false
+  },
+  "execution_authorization": {
+    "date": "2026-11-16",
+    "user_message": "启动服务器仿真，我们这边继续商量获得仿真数据后怎么完成自然语言处理和预测模型训练",
+    "scope": "r04_proton_modeling_simulation_repairs_and_data_collection",
+    "formal_training_design": "continue_in_local_dialogue",
+    "max_parallel_tasks": 9,
+    "handoff_file": "EXECUTION.md"
+  },
+  "post_data_workflow": {
+    "design_file": "POST-DATA-WORKFLOW.md",
+    "auto_policy_confirmed": true,
+    "formal_training_started": false,
+    "training_release_cadence": "batch_candidates_with_stable_serving_version",
+    "training_release_cadence_confirmed": true,
+    "training_release_cadence_source": "2026-11-16 request_user_input: 分批训练候选版本（推荐）",
+    "training_authorization": "design_only_in_this_dialogue"
+  },
+  "r06_local_redesign_2026_11_17": {
+    "source": "DESIGN-REVIEW-20261117.md plus user interactive alignment (A1-A4)",
+    "status": "execution_authorized_pending_scientific_gates",
+    "design": "方案B：10开发profile（4锚点+6锚点感知maximin_LHS）+3留出profile（1长栅长外推+2逐轴范围内稀疏组合留出）+自适应阈值+显式辐照分配+动态主动学习",
+    "manifest": "month-one-cases-r06.json",
+    "case_count": 396,
+    "source_time_ns_initial": 22.0,
+    "hold_window_ns": [18.2, 30.0],
+    "deck_timing_version": "r06-hold-window-v1",
+    "stored_bit_policy": "b1_priority_approximately_25_percent_matched_b0_stratified_subset",
+    "threshold_scales": [3, 10, 30],
+    "threshold_adaptive_bracketing": true,
+    "threshold_b0_scales": [10, 30],
+    "development_radiations": ["G0", "G1", "G2", "G3", "G4", "G5", "C0", "C1"],
+    "sealed_radiations": ["C2", "C3"],
+    "approved_server_actions": ["O1_benchmark_complete_keep_r4_batch", "O2", "O3"],
+    "rejected_server_actions": [],
+    "p0_additional_gates": [
+      "diagnose_mc2_presource_1e-19A_pairing_mismatch",
+      "all_13_profiles_z_block_source_free_whr_qualification"
+    ],
+    "geant4_batch_policy": "wave_bounded_by_geometry_with_immediate_retention_compression",
+    "handoff_and_predictor_contract": "R06-HANDOFF-AND-PREDICTOR-CONTRACT.md",
+    "p0_release": "automatic_evidence_review",
+    "server_sync": false,
+    "formal_training_started": false
+  },
+  "predictor_training_design": {
+    "version": "1.0",
+    "date": "2026-11-16",
+    "file": "PREDICTOR-TRAINING.md",
+    "user_confirmed_choices": {
+      "architecture": "lightweight_multihead_mlp",
+      "physics_integration": "mechanism_plus_residual",
+      "development_validation": "three_fold_grouped_cv"
+    },
+    "implementation_choices_under_confirmed_direction": {
+      "not_additional_verbatim_user_confirmations": true,
+      "R": "calibrated_low_order_mechanism_plus_64_64_residual_mlp",
+      "F": "32_32_direct_mlp_with_two_nonnegative_state_cross_section_heads",
+      "mechanism_calibration_inside_training_fold": true,
+      "inner_R_cross_fitting_folds": 2,
+      "joint_search_configs": 12,
+      "search_seeds_count": 1,
+      "selected_configuration_seeds_count": 3,
+      "development_conditions": 8,
+      "sealed_test_conditions": {
+        "new_combinations": 4,
+        "high_energy": 2,
+        "unseen_device_parameters": 2,
+        "reserve_profile_conditions": 2
+      }
+    },
+    "simulation_matrix_changed": true,
+    "formal_training_authorized": false,
+    "formal_training_started": false,
+    "server_runtime_changed_in_this_dialogue": false
+  },
+  "budget_reduction_2026_11_17": {
+    "source": "current_user_direction_and_measured_long_task_cost",
+    "document": "BUDGET-REDUCTION-20261117.md",
+    "core_conditions": 16,
+    "reserve_conditions": 2,
+    "maximum_conditions": 18,
+    "core_main_responses": 384,
+    "maximum_main_responses": 432,
+    "reusable_profile_controls": 12,
+    "independent_statistics_start_responses": 0,
+    "deferred_independent_statistics_ceiling": 3072,
+    "active_tasks_unchanged_until_collected": true,
+    "future_resource_validation": "after_active_batch_drains_validate_one_task_two_cores_then_two_tasks_then_four_tasks",
+    "do_not_assume_multicore_speedup": true
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "axes": {
+    "x": "source-to-drain lateral",
+    "y": "positive into silicon",
+    "z": "extruded device width"
+  },
+  "boundaries": {
+    "implementation": "Leave uncontacted outer faces without electrodes; verify native mesh contact areas and solver boundary inventory.",
+    "uncontacted_faces": "Homogeneous natural Neumann electrostatic potential boundary (zero normal potential derivative) and zero normal electron/hole current; no artificial z electrodes.",
+    "z_contact_names": [],
+    "z_faces_um": [
+      -0.5,
+      0.5
+    ]
+  },
+  "contacts": [
+    {
+      "axis": "y",
+      "coordinate_um": 0.0,
+      "face_probe_um": [
+        0.1,
+        0.0,
+        0.0
+      ],
+      "max_um": [
+        0.3,
+        0.0,
+        0.5
+      ],
+      "min_um": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "name": "source",
+      "region": "R.Si"
+    },
+    {
+      "axis": "y",
+      "coordinate_um": 0.0,
+      "face_probe_um": [
+        0.75,
+        0.0,
+        0.0
+      ],
+      "max_um": [
+        0.85,
+        0.0,
+        0.5
+      ],
+      "min_um": [
+        0.55,
+        0.0,
+        -0.5
+      ],
+      "name": "drain",
+      "region": "R.Si"
+    },
+    {
+      "axis": "y",
+      "coordinate_um": -0.005,
+      "face_probe_um": [
+        0.425,
+        -0.005,
+        0.0
+      ],
+      "max_um": [
+        0.55,
+        -0.005,
+        0.5
+      ],
+      "min_um": [
+        0.3,
+        -0.005,
+        -0.5
+      ],
+      "name": "gate",
+      "region": "R.Ox"
+    },
+    {
+      "axis": "y",
+      "coordinate_um": 1.2,
+      "face_probe_um": [
+        0.425,
+        1.2,
+        0.0
+      ],
+      "max_um": [
+        0.85,
+        1.2,
+        0.5
+      ],
+      "min_um": [
+        0.0,
+        1.2,
+        -0.5
+      ],
+      "name": "body",
+      "region": "R.Si"
+    }
+  ],
+  "coordinate_system": "AsIs",
+  "dimension": 3,
+  "doping": {
+    "body": {
+      "region": "R.Si",
+      "species": "BoronActiveConcentration",
+      "value_cm3": 1e+17
+    },
+    "source_drain": {
+      "baselines": [
+        {
+          "id": "S.Base",
+          "max_um": [
+            0.27,
+            0.0,
+            0.5
+          ],
+          "min_um": [
+            0.0,
+            0.0,
+            -0.5
+          ]
+        },
+        {
+          "id": "D.Base",
+          "max_um": [
+            0.85,
+            0.0,
+            0.5
+          ],
+          "min_um": [
+            0.5800000000000001,
+            0.0,
+            -0.5
+          ]
+        }
+      ],
+      "depth_um": 0.12,
+      "evaluation": "Eval",
+      "lateral_gauss_factor": 0.4,
+      "peak_position_um": 0.0,
+      "peak_value_cm3": 1e+20,
+      "positive_normal": [
+        0,
+        1,
+        0
+      ],
+      "reference_window": "Closed Polygon; corner order (xmin,0,zmin),(xmin,0,zmax),(xmax,0,zmax),(xmax,0,zmin),repeat first; right-hand normal +y; Positive placement.",
+      "replace": "NoReplace",
+      "species": "ArsenicActiveConcentration",
+      "value_at_depth_cm3": 1e+17
+    },
+    "transport_rule": "Electrical dopants do not add Geant4 material species in this representative model. Transport uses the declared bulk Si and SiO2.",
+    "z_rule": "Lateral Gaussian decays only outside the primary domain (Smesh UG p182). The polygon spans the complete z width, so the inherited xy analytical profile is constant in z inside silicon. Native mesh slice verification is still required."
+  },
+  "extent_um": {
+    "max": [
+      0.85,
+      1.2,
+      0.5
+    ],
+    "min": [
+      0.0,
+      -0.005,
+      -0.5
+    ]
+  },
+  "geometry_id": "planar-l025-extruded-w100-3d-r1",
+  "material_density_status": "Nominal standard material values for the shared geometric model; actual Geant4 material inventory must match before using transport output.",
+  "material_scope": "Only explicit Si and gate oxide solids; contacts are ideal boundary conditions with zero volume, not metal layers. No unmodelled BEOL, passivation, capacitor body, polysilicon gate or surrounding package is inferred.",
+  "schema": "dram-see-v4-shared-geometry-3d-r1",
+  "solids": [
+    {
+      "density_g_cm3": 2.33,
+      "geant4_material": "G4_Si",
+      "id": "R.Si",
+      "max_um": [
+        0.85,
+        1.2,
+        0.5
+      ],
+      "min_um": [
+        0.0,
+        0.0,
+        -0.5
+      ],
+      "sde_material": "Silicon",
+      "shape": "cuboid"
+    },
+    {
+      "density_g_cm3": 2.2,
+      "geant4_material": "G4_SILICON_DIOXIDE",
+      "id": "R.Ox",
+      "max_um": [
+        0.55,
+        0.0,
+        0.5
+      ],
+      "min_um": [
+        0.3,
+        -0.005,
+        -0.5
+      ],
+      "sde_material": "Oxide",
+      "shape": "cuboid"
+    }
+  ],
+  "status": "representative extruded geometry; not a calibrated commercial DRAM or a 90 nm model",
+  "syntax_evidence": {
+    "sde_ug_pages": [
+      232,
+      242,
+      243,
+      553,
+      567,
+      568,
+      574
+    ],
+    "sdevice_ug_pages": [
+      58,
+      59
+    ],
+    "smesh_ug_pages": [
+      37,
+      175,
+      181,
+      182
+    ]
+  },
+  "tcad_ready_for_real_transport_events": false,
+  "units": {
+    "concentration": "cm^-3",
+    "density": "g/cm^3",
+    "length": "um"
+  }
+}

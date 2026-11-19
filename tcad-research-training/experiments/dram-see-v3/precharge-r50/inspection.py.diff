@@ -1,0 +1,576 @@
+--- dram-see-v3/diagnose_precharge.py
++++ dram-see-v3/precharge-r50/inspection.py
+@@ -1,184 +1,18 @@
+-"""Authorized four-case precharge diagnosis; never repairs the failed main slot.
++"""Explicit R50 adaptation of original independent component inspection.
+ 
+-freeze only records a plan. execute requires that exact plan and dispatches via
+-run.prepare/run.record under the existing controller lock. No retry, threshold
+-change, main-stage mutation, model freeze, or GUI operation is provided here.
++Never promotes failed raw data into a passed metrics bundle. See inspection.py.diff.
+ """
+-import argparse
+-import hashlib
+ import importlib.util
+ import json
+ import math
+-import os
+ from pathlib import Path
+ import re
+-import sys
+ import tarfile
+-
+-sys.dont_write_bytecode = True
+ HERE = Path(__file__).resolve().parent
+-ROOT = HERE.parents[1]
+-LOCAL = ROOT / 'local_runtime/dram-see-v3'
+-AUTH = LOCAL / 'diagnostic-authorization.json'
+-ORIGINAL_TAG = 'v3-l018-alpha-a0-s202610303-b0'
+-ORIGINAL_RUN = '20261010T145140Z-v3-l018-alpha-a0-s202610303-b0-294913e5'
+ PRECHARGE_ERROR = 'Precharge error exceeds 10 uV'
+-VARIATIONS = ((.5, 1.), (1., .7))
+-NEUTRALS = ('20261010T133708Z-v3-neutral-l018-ox5-s0p5-m1-a45241b2',
+-            '20261010T141914Z-v3-neutral-l018-ox5-s1-m0p7-e13776c2')
+-LOADED = {}
+-ACTIVE_CONTEXT = {}
+-SELF_SOURCE_SHA256 = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+-
+-
+-def source_module(name, path, register=False):
+-    """Execute source bytes, never load a possibly stale bytecode cache."""
+-    path = Path(path)
+-    content = path.read_bytes()
+-    spec = importlib.util.spec_from_file_location(name, path)
+-    result = importlib.util.module_from_spec(spec)
+-    if register:
+-        sys.modules[name] = result
+-    exec(compile(content, str(path), 'exec'), result.__dict__)
+-    LOADED[path.relative_to(ROOT).as_posix()] = hashlib.sha256(content).hexdigest()
+-    return result
+-
+-
+-# run imports common by name; common imports tcad by name. Preload both from
+-# original source bytes instead of delegating those imports to a pyc loader.
+-source_module('tcad', ROOT / 'scripts/tcad.py', True)
+-source_module('common', HERE / 'common.py', True)
+-C = source_module('_v3_precharge_controller', HERE / 'run.py')
+-A = source_module('_v3_precharge_audit', HERE / 'audit.py')
+-N = source_module('_v3_precharge_comparison', HERE / 'numerical.py')
+-
+-
+-def canonical_hash(value):
+-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()).hexdigest()
+-
+-
+-def read_json(path):
+-    return json.loads(Path(path).read_text(encoding='utf8'))
+-
+-
+-def relative(path):
+-    return Path(path).resolve().relative_to(ROOT).as_posix()
+-
+-
+-def repo_path(name):
+-    path = (ROOT / name).resolve()
+-    if not path.is_relative_to(ROOT):
+-        raise ValueError('Evidence path escapes repository')
+-    return path
+-
+-
+-def folder(label):
+-    if label != 'r1':
+-        raise ValueError('Only the authorized diagnostic label r1 is allowed')
+-    return LOCAL / 'diagnostics' / ('precharge-additional-' + label)
+-
+-
+-def sources():
+-    if C.sha(Path(__file__)) != SELF_SOURCE_SHA256:
+-        raise ValueError('Diagnostic controller source changed after process start')
+-    values = C.source_hashes()
+-    for path in (Path(__file__), HERE / 'numerical.py', HERE.parent / 'dram-see-v2/event_audit.py',
+-                 HERE.parent / 'dram-readout-offset-d1/build.py'):
+-        values[relative(path)] = C.sha(path)
+-    for name, digest in LOADED.items():
+-        if C.sha(ROOT / name) != digest:
+-            raise ValueError('Loaded source changed during this process: ' + name)
+-        values[name] = digest
+-    return values
+-
+-
+-def authorized():
+-    auth = read_json(AUTH)
+-    fixed = {'schema': 'dram-see-v3-explicit-diagnostic-authorization', 'authorized': True,
+-             'max_new_runs': 4, 'diagnostic_budget_s': 3600, 'global_budget_s': 86400,
+-             'next_run_estimate_s': 900, 'original_tag': ORIGINAL_TAG, 'original_run_id': ORIGINAL_RUN,
+-             'new_independent_events': 0, 'main_matrix_resume_authorized': False,
+-             'changing_thresholds_or_original_failure_authorized': False}
+-    if any(auth.get(key) != value for key, value in fixed.items()) or auth.get('user_message') != '授权':
+-        raise ValueError('Explicit diagnostic authorization is missing or differs')
+-    if auth.get('design_sha256') != C.sha(C.DESIGN):
+-        raise ValueError('Authorization design changed')
+-    proposal = repo_path(auth['proposal_path'])
+-    if proposal != HERE / 'diagnostic-proposal.md' or C.sha(proposal) != auth['proposal_sha256']:
+-        raise ValueError('Authorized proposal changed')
+-    if C.sha(repo_path(auth['proposal_snapshot'])) != auth['proposal_sha256']:
+-        raise ValueError('Authorized proposal snapshot changed')
+-    old_path = repo_path(auth['ledger_before_path'])
+-    if C.sha(old_path) != auth['ledger_before_sha256']:
+-        raise ValueError('Authorization ledger snapshot changed')
+-    before = read_json(old_path)
+-    original = before['runs'][ORIGINAL_TAG]
+-    if (canonical_hash(original) != auth['original_failed_record_sha256'] or original.get('state') != 'FAILED'
+-            or original.get('run_id') != ORIGINAL_RUN or original.get('runner_exit_code') != 0
+-            or original.get('failure_reason') != repr(ValueError(PRECHARGE_ERROR))):
+-        raise ValueError('Authorized original failure is not the exact collected precharge failure')
+-    design = C.design()
+-    if design['execution']['solver_budget_s'] != 86400:
+-        raise ValueError('Global frozen budget changed')
+-    events = [event for event in design['events'] if event['label'] == 'l018-alpha-a0-s202610303']
+-    if len(events) != 1 or any(events[0][key] != value for key, value in
+-            {'gate_length_um': .18, 'particle': 'alpha', 'angle_deg': 0, 'seed': 202610303, 'energy_MeV': 5., 'replicate': 3, 'split': 'train'}.items()):
+-        raise ValueError('Diagnostic original event differs from the frozen design')
+-    return auth, before, design, events[0]
+-
+-
+-def cases(label, event):
+-    result = []
+-    for index, (step, mesh) in enumerate(VARIATIONS):
+-        stem = C.safe_tag(f'v3-diag-precharge-{label}-s{step:g}-m{mesh:g}')
+-        neutral_tag = C.safe_tag(C.tag_neutral(.18, step=step, mesh=mesh))
+-        for role in ('control', 'event'):
+-            result.append({'tag': stem + '-' + role, 'role': role, 'step': step, 'mesh': mesh,
+-                           'neutral_tag': neutral_tag, 'neutral_run': NEUTRALS[index],
+-                           'parent_tag': stem + '-control' if role == 'event' else None,
+-                           'kwargs': {'length': .18, 'bit': 0, 'oxide_nm': 5., 'step': step, 'mesh': mesh,
+-                                      'reference': 'offline', 'neutral': False,
+-                                      **({'event': relative(HERE / 'data/geant4' / event['label'] / 'event.json')} if role == 'event' else {})},
+-                           'estimate_s': 900})
+-    return result
+-
+-
+-def ledger_unchanged(before, current, allowed):
+-    """Only new diagnostic rows and their appended failure records are legal."""
+-    allowed = set(allowed)
+-    if set(before) != set(current):
+-        raise ValueError('Original ledger top-level keys changed')
+-    for key in before:
+-        if key not in ('runs', 'failures') and before[key] != current[key]:
+-            raise ValueError('Original ledger section changed: ' + key)
+-    for tag, value in before['runs'].items():
+-        if current['runs'].get(tag) != value:
+-            raise ValueError('Original ledger row changed: ' + tag)
+-    if not set(current['runs']) - set(before['runs']) <= allowed:
+-        raise ValueError('Unrelated new ledger runs appeared')
+-    prior = before.get('failures', [])
+-    failure_rows = current.get('failures', [])
+-    if failure_rows[:len(prior)] != prior or len(failure_rows) < len(prior):
+-        raise ValueError('Original failure history changed')
+-    extra = failure_rows[len(prior):]
+-    if (len({row.get('tag') for row in extra}) != len(extra)
+-            or any(row.get('tag') not in allowed or row.get('state') != 'FAILED'
+-                   or current['runs'].get(row.get('tag')) != row for row in extra)):
+-        raise ValueError('Unexpected/mutated diagnostic failure history')
+-
+-
+-def bind_run(run_id, evidence):
+-    root = A.run_folder(run_id)
+-    for name in ('manifest.json', 'inputs.tar', 'results.tar'):
+-        path = root / name
+-        evidence[relative(path)] = C.sha(path)
+-
+-
+-def event_matches_original(event, parameters):
+-    directory = HERE / 'data/geant4' / event['label']
+-    actual = {'source-' + name: C.sha(directory / name) for name in ('event.json', 'events.csv', 'steps.csv')}
+-    if actual != parameters.get('source_evidence_sha256'):
+-        raise ValueError('Current Geant4 files are not byte-identical to the original failed event')
++_spec = importlib.util.spec_from_file_location('_r50_inspection_audit', HERE / 'audit.py')
++A = importlib.util.module_from_spec(_spec)
++exec(compile((HERE / 'audit.py').read_bytes(), str(HERE / 'audit.py'), 'exec'), A.__dict__)
+ 
+ 
+ def inspect_run(run_id, ledger_row=None):
+@@ -188,7 +22,7 @@
+     The returned curve is private calculation input; the JSON record is explicit
+     about failure and ineligibility for training even when the raw audit passes.
+     """
+-    record = {'run_id': run_id, 'diagnostic_only': True, 'training_or_prediction_eligible': False, 'checks': {}}
++    record = {'run_id': run_id, 'physical_revision_probe_only': True, 'diagnostic_only': True, 'training_or_prediction_eligible': False, 'checks': {}}
+     def checked(name, action):
+         try:
+             result = action()
+@@ -204,13 +38,13 @@
+         summary = None
+         record.update(raw_audit_state='FAILED', raw_audit_status=None, raw_audit_error=repr(exc))
+     run_folder, manifest = A.manifest_checked(run_id)  # strict COLLECTED/SSH0, never a recovery exception
+-    record.update(archive_sha256=C.sha(run_folder / 'results.tar'), manifest_sha256=C.sha(run_folder / 'manifest.json'),
+-                  inputs_archive_sha256=C.sha(run_folder / 'inputs.tar'), engineering_state=manifest['state'],
++    record.update(archive_sha256=A.sha(run_folder / 'results.tar'), manifest_sha256=A.sha(run_folder / 'manifest.json'),
++                  inputs_archive_sha256=A.sha(run_folder / 'inputs.tar'), engineering_state=manifest['state'],
+                   ssh_exit_code=manifest['ssh_exit_code'], runner_exit_code=(ledger_row or {}).get('runner_exit_code'))
+     with tarfile.open(run_folder / 'results.tar') as archive:
+         log = A.completion_checked(archive, manifest)
+         p = json.loads(A.read(archive, 'parameters.json'))
+-        if p.get('schema') != 'dram-see-v3':
++        if p.get('schema') != 'dram-see-v3-precharge-r50':
+             p, bridge = A.legacy_parameters(archive, p, run_id)
+             record['legacy_bridge'] = bridge
+         A.parameters_checked(p, archive)
+@@ -262,357 +96,3 @@
+         and (ledger_row or {}).get('failure_reason') == repr(ValueError(PRECHARGE_ERROR)))
+     return {'record': record, 'parameters': p, 'circuit': circuit, 'summary': summary}
+ 
+-
+-def reusable(bundle):
+-    record = bundle['record']
+-    if record['raw_audit_state'] != 'PASSED' or not record['independent_checks_passed']:
+-        raise ValueError('Required reused source did not pass the unchanged raw audit')
+-    return bundle
+-
+-
+-def match(*bundles):
+-    contracts = [A.matching_key(bundle['parameters']) for bundle in bundles]
+-    meshes = [bundle['record'].get('mesh_sha256') for bundle in bundles]
+-    if any(value != contracts[0] for value in contracts) or any(not value or value != meshes[0] for value in meshes):
+-        raise ValueError('Full matching contract or actual mesh bytes differ')
+-
+-
+-def recipe(case, parameters, neutral, parent=None):
+-    N._recipe_parameters(case, parameters, parent)
+-    if A.matching_key(parameters) != A.matching_key(neutral['parameters']):
+-        raise ValueError('Prepared diagnostic input does not completely match the frozen neutral')
+-    if case['role'] == 'event':
+-        if any(parameters.get(key) != value for key, value in {'particle': 'alpha', 'seed': 202610303, 'energy_MeV': 5., 'angle_deg': 0}.items()):
+-            raise ValueError('Diagnostic event source identity differs')
+-    elif parameters.get('charge_pc') != 0 or parameters.get('particle') or parameters.get('source_evidence_sha256'):
+-        raise ValueError('Diagnostic control is not unirradiated')
+-
+-
+-def observation(signal, control, neutral):
+-    """Calculate diagnostics directly; never forge a passing metrics bundle."""
+-    match(signal, control, neutral)
+-    ps, pc, pn = [bundle['parameters'] for bundle in (signal, control, neutral)]
+-    if (ps['stored_bit'] != 0 or pc['stored_bit'] != 0 or ps['neutral'] or pc['neutral'] or not pn['neutral']
+-            or pc.get('charge_pc') != 0 or pn.get('charge_pc') != 0):
+-        raise ValueError('Invalid signal/control/neutral diagnostic roles')
+-    rows = {role: bundle['record'] for role, bundle in zip(('signal', 'control', 'neutral'), (signal, control, neutral))}
+-    ds = rows['signal']['BL_4ns_V'] - rows['neutral']['BL_4ns_V']
+-    dc = rows['control']['BL_4ns_V'] - rows['neutral']['BL_4ns_V']
+-    metrics = {'stored_bit': 0, 'deltaQ_fC': ps['capacitance_F'] * (rows['signal']['SN_2p8ns_V'] - rows['control']['SN_2p8ns_V']) * 1e15,
+-               'D4_V': ds, 'M4_V': -ds, 'control_D4_V': dc, 'control_M4_V': -dc, 'deltaM_V': ds - dc,
+-               'classification': {str(e): A.classification(-ds, e) for e in A.THRESHOLDS_V},
+-               'control_classification': {str(e): A.classification(-dc, e) for e in A.THRESHOLDS_V},
+-               'sources': {role: {key: row[key] for key in ('run_id', 'archive_sha256', 'mesh_sha256', 'matching_contract_sha256')} for role, row in rows.items()}}
+-    return {'diagnostic_only': True, 'training_or_prediction_eligible': False, 'metrics': metrics,
+-            'raw_audit_states': {role: row['raw_audit_state'] for role, row in rows.items()},
+-            'readout_BL_V': {role: row['BL_4ns_V'] for role, row in rows.items()},
+-            'readout_REF_V': {role: row['REF_4ns_V'] for role, row in rows.items()},
+-            'precharge': {role: row['precharge'] for role, row in rows.items()}}
+-
+-
+-def freeze(label='r1'):
+-    """No preflight/SSH, preparation or solver call is made by freeze."""
+-    with C.controller_lock():
+-        path = folder(label) / 'plan.json'
+-        if path.exists():
+-            return {'plan': relative(path), 'plan_sha256': C.sha(path), 'state': 'FROZEN_EXISTING', 'details': check_plan(path)}
+-        if path.parent.exists():
+-            raise ValueError('Partial diagnostic freeze exists; inspect, never overwrite')
+-        auth, before, design, event = authorized()
+-        planned = cases(label, event)
+-        ledger_unchanged(before, C.load(), [])
+-        C.budget()
+-        C.check_preservation()
+-        evidence = {relative(AUTH): C.sha(AUTH), relative(C.DESIGN): C.sha(C.DESIGN)}
+-        for key in ('proposal_path', 'proposal_snapshot', 'ledger_before_path'):
+-            evidence[auth[key]] = C.sha(repo_path(auth[key]))
+-        evidence.update(N.event_files(event))
+-        original = inspect_run(ORIGINAL_RUN, before['runs'][ORIGINAL_TAG])
+-        event_matches_original(event, original['parameters'])
+-        if original['record']['precharge_only_scientific_failure'] is not True:
+-            raise ValueError('Original failure is not exclusively the authorized precharge-contract failure')
+-        frozen_neutrals = {}
+-        for index, (step, mesh) in enumerate(VARIATIONS):
+-            tag = planned[index * 2]['neutral_tag']
+-            row = before['runs'].get(tag, {})
+-            if row.get('state') != 'VERIFIED' or row.get('run_id') != NEUTRALS[index]:
+-                raise ValueError('Authorized reused neutral is not VERIFIED')
+-            neutral = reusable(inspect_run(row['run_id'], row))
+-            p = neutral['parameters']
+-            if any(p.get(key) != value for key, value in {'neutral': True, 'gate_length_um': .18, 'oxide_nm': 5., 'step_scale': step, 'mesh_scale': mesh, 'target_voltage_V': .5}.items()):
+-                raise ValueError('Reused neutral differs from authorized numerical condition')
+-            comparable = set(A.matching_key(p)) - {'step_scale', 'mesh_scale', 'geometry_sha256'}
+-            if any(p['matching_contract'][key] != original['parameters']['matching_contract'].get(key) for key in comparable):
+-                raise ValueError('Reused neutral changed physical matching contract')
+-            frozen_neutrals[tag] = neutral['record']
+-            bind_run(row['run_id'], evidence)
+-        baselines = {}
+-        for tag in (C.tag_base(.18, 0), C.tag_neutral(.18)):
+-            row = before['runs'][tag]
+-            if row.get('state') != 'VERIFIED':
+-                raise ValueError('Original matched baseline is not VERIFIED')
+-            baselines[tag] = reusable(inspect_run(row['run_id'], row))
+-            bind_run(row['run_id'], evidence)
+-        baseline = observation(original, baselines[C.tag_base(.18, 0)], baselines[C.tag_neutral(.18)])
+-        bind_run(ORIGINAL_RUN, evidence)
+-        source_hashes = sources()
+-        for name, digest in source_hashes.items():
+-            target = path.parent / 'source-snapshot' / name
+-            target.parent.mkdir(parents=True, exist_ok=True)
+-            with target.open('xb') as stream:
+-                stream.write((ROOT / name).read_bytes())
+-            if C.sha(target) != digest:
+-                raise ValueError('Source changed while freezing diagnostic revision')
+-        plan = {'schema': 'dram-see-v3-precharge-diagnostic-plan', 'label': label, 'utc': C.now(),
+-                'design_sha256': C.sha(C.DESIGN), 'source_sha256': source_hashes, 'inputs': {},
+-                'frozen_files_sha256': evidence, 'authorization': auth, 'authorization_sha256': C.sha(AUTH),
+-                'planned_cases': planned, 'event': event, 'original_failure': original['record'],
+-                'original_observation': baseline, 'neutral_sources': frozen_neutrals,
+-                'diagnostic_budget_s': 3600, 'global_budget_s': 86400, 'next_run_estimate_s': 900,
+-                'max_new_runs': 4, 'new_independent_events': 0, 'diagnostic_only': True,
+-                'main_matrix_resume_authorized': False,
+-                'policy': 'Never replace the original failed slot; prepare each event only after its own control passes raw audit and full neutral/actual-mesh matching.'}
+-        C.write_json(path, plan, exclusive=True)
+-        C.write_json(path.with_name('plan-sha256.json'), {'sha256': C.sha(path)}, exclusive=True)
+-        check_plan(path)
+-        return {'state': 'FROZEN', 'plan': relative(path), 'plan_sha256': C.sha(path), 'planned_new_runs': 4, 'solver_submissions': 0}
+-
+-
+-def check_plan(path):
+-    path = Path(path)
+-    if read_json(path.with_name('plan-sha256.json')).get('sha256') != C.sha(path):
+-        raise ValueError('Diagnostic plan binding changed')
+-    plan = C.check_execution(path)
+-    auth, before, design, event = authorized()
+-    if (plan.get('schema') != 'dram-see-v3-precharge-diagnostic-plan' or path != folder(plan['label']) / 'plan.json'
+-            or plan.get('authorization') != auth or plan.get('authorization_sha256') != C.sha(AUTH)
+-            or plan.get('event') != event or plan.get('planned_cases') != cases(plan['label'], event)
+-            or plan.get('source_sha256') != sources()
+-            or any(plan.get(key) != value for key, value in {'diagnostic_budget_s': 3600, 'global_budget_s': 86400,
+-                    'next_run_estimate_s': 900, 'max_new_runs': 4, 'new_independent_events': 0,
+-                    'diagnostic_only': True, 'main_matrix_resume_authorized': False}.items())):
+-        raise ValueError('Diagnostic plan authority/recipe/source differs')
+-    for name, digest in plan['source_sha256'].items():
+-        if C.sha(path.parent / 'source-snapshot' / name) != digest:
+-            raise ValueError('Diagnostic source snapshot changed')
+-    for name, digest in plan['frozen_files_sha256'].items():
+-        if C.sha(repo_path(name)) != digest:
+-            raise ValueError('Frozen diagnostic evidence changed: ' + name)
+-    ledger_unchanged(before, C.load(), [case['tag'] for case in plan['planned_cases']])
+-    return plan
+-
+-
+-def budget_guard(plan):
+-    ledger = C.load()
+-    global_used = C.budget()
+-    rows = [ledger['runs'][case['tag']] for case in plan['planned_cases'] if case['tag'] in ledger['runs']]
+-    if len(rows) >= 4:
+-        raise ValueError('All four diagnostic attempts already exist')
+-    diagnostic_used = sum(row.get('charged_solver_s', row.get('elapsed_s', 0)) for row in rows)
+-    if any(not isinstance(value, (int, float)) or not math.isfinite(value) or value < 0 for value in (diagnostic_used, global_used)):
+-        raise ValueError('Invalid recorded solver budget')
+-    if diagnostic_used + 900 > 3600 or global_used + 900 > 86400:
+-        raise ValueError('Insufficient diagnostic/global reserve for next 900 s case; no solver terminated')
+-    return {'diagnostic_used_s': diagnostic_used, 'global_used_s': global_used, 'next_reserved_s': 900}
+-
+-
+-def case_freeze(path, case):
+-    return Path(path).parent / 'case-freezes' / (case['tag'] + '.json')
+-
+-
+-def check_case(path, case, row=None):
+-    execution_path = case_freeze(path, case)
+-    execution = C.check_execution(execution_path)
+-    plan = read_json(path)
+-    if (execution.get('diagnostic_plan') != relative(path) or execution.get('diagnostic_plan_sha256') != C.sha(path)
+-            or execution.get('case') != case or execution.get('source_sha256') != plan['source_sha256']
+-            or set(execution.get('inputs', {})) != {case['tag']}):
+-        raise ValueError('Diagnostic case input is not bound to its exact authorized plan')
+-    if row is not None and (row.get('execution_freeze') != relative(execution_path)
+-            or row.get('execution_freeze_sha256') != C.sha(execution_path)
+-            or row.get('input_sha256') != execution['inputs'][case['tag']]):
+-        raise ValueError('Existing diagnostic attempt input/freeze provenance differs')
+-    return execution_path
+-
+-
+-def status(path, state, records, reason=None):
+-    plan = read_json(path)
+-    result = {'schema': 'dram-see-v3-precharge-diagnostic-progress', 'utc': C.now(), 'state': state,
+-              'reason': reason, 'plan_sha256': C.sha(path), 'diagnostic_only': True,
+-              'main_matrix_resume_authorized': False, 'new_independent_events': 0,
+-              **ACTIVE_CONTEXT,
+-              'cases': [{**case, **records.get(case['tag'], {'state': 'UNSUBMITTED'})} for case in plan['planned_cases']]}
+-    C.write_json(Path(path).parent / 'status.json', result)
+-    return result
+-
+-
+-def accepted_case(path, case, row, neutral, parent):
+-    check_case(path, case, row)
+-    if row.get('state') not in ('VERIFIED', 'FAILED'):
+-        raise ValueError('Prior diagnostic state is unresolved; no retry: ' + case['tag'])
+-    bundle = inspect_run(row['run_id'], row)
+-    C.write_json(Path(path).parent / 'audits' / (case['tag'] + '.json'), bundle['record'], exclusive=True)
+-    recipe(case, bundle['parameters'], neutral, parent)
+-    match(bundle, neutral)
+-    if row.get('parameters') != bundle['parameters'] or row.get('input_sha256') != bundle['record']['input_sha256']:
+-        raise ValueError('Diagnostic archived input and ledger metadata differ')
+-    if row['state'] == 'VERIFIED':
+-        reusable(bundle)
+-        if row.get('audit_archive_sha256') != bundle['record']['archive_sha256']:
+-            raise ValueError('Verified diagnostic archive identity changed')
+-    elif bundle['record']['precharge_only_scientific_failure'] is not True:
+-        raise ValueError('Failure is not an exclusively collected precharge-contract failure; reconcile before continuation')
+-    return bundle
+-
+-
+-def completed_case(path, case, row, neutral, parent):
+-    """Re-audit a prior attempt without mutating its ledger row or evidence."""
+-    audit_path = Path(path).parent / 'audits' / (case['tag'] + '.json')
+-    if not audit_path.exists():
+-        return accepted_case(path, case, row, neutral, parent)
+-    # Same checks as a new completion, but immutable evidence cannot be rewritten.
+-    check_case(path, case, row)
+-    if row.get('state') not in ('VERIFIED', 'FAILED'):
+-        raise ValueError('Prior diagnostic state is unresolved; no retry')
+-    bundle = inspect_run(row['run_id'], row)
+-    recipe(case, bundle['parameters'], neutral, parent)
+-    match(bundle, neutral)
+-    if read_json(audit_path) != bundle['record'] or row.get('parameters') != bundle['parameters'] or row.get('input_sha256') != bundle['record']['input_sha256']:
+-        raise ValueError('Prior diagnostic raw audit/input evidence changed')
+-    if row['state'] == 'VERIFIED':
+-        reusable(bundle)
+-        if row.get('audit_archive_sha256') != bundle['record']['archive_sha256']:
+-            raise ValueError('Prior verified archive identity changed')
+-    elif bundle['record']['precharge_only_scientific_failure'] is not True:
+-        raise ValueError('Historical diagnostic failure is not the allowed collected precharge failure')
+-    return bundle
+-
+-
+-def finish(path, plan, records, bundles, neutrals):
+-    comparisons = []
+-    for index in range(0, 4, 2):
+-        control, event = plan['planned_cases'][index:index + 2]
+-        if event['tag'] not in bundles:
+-            comparisons.append({'variation': {'step': event['step'], 'mesh': event['mesh']},
+-                                'state': 'BLOCKED_PARENT_FAILED', 'diagnostic_only': True, 'observation': None})
+-            continue
+-        refined = observation(bundles[event['tag']], bundles[control['tag']], neutrals[event['neutral_tag']])
+-        design = C.design()
+-        comparison = N.compare_observations(plan['original_observation'], refined,
+-            tuple(value / 1000 for value in design['thresholds_mV']),
+-            design['gates']['numerical_readout_change_mV'] / 1000, design['gates']['numerical_deltaQ_change_fC'])
+-        comparisons.append({'variation': {'step': event['step'], 'mesh': event['mesh']},
+-                            'state': records[event['tag']]['state'], 'diagnostic_only': True,
+-                            'training_or_prediction_eligible': False, 'observation': refined, 'comparison': comparison,
+-                            'interpretation': 'Tolerance comparison of diagnostic values; original FAILED response remains FAILED regardless of this result.'})
+-    ledger = C.load()
+-    report = {'schema': 'dram-see-v3-additional-precharge-diagnosis', 'plan_sha256': C.sha(path),
+-              'authorization_sha256': plan['authorization_sha256'], 'diagnostic_only': True,
+-              'state': 'DIAGNOSTIC_COMPLETE', 'new_independent_events': 0,
+-              'original_tag': ORIGINAL_TAG, 'original_state': ledger['runs'][ORIGINAL_TAG]['state'],
+-              'original_failure': plan['original_failure'], 'original_observation': plan['original_observation'],
+-              'cases': records, 'comparisons': comparisons, 'global_solver_s': C.budget(),
+-              'diagnostic_solver_s': sum(ledger['runs'][case['tag']].get('charged_solver_s', ledger['runs'][case['tag']].get('elapsed_s', 0))
+-                  for case in plan['planned_cases'] if case['tag'] in ledger['runs']),
+-              'main_matrix_resume_authorized': False, 'training_or_prediction_eligible': False,
+-              'scope': 'Additional numerical diagnosis only; fixed original thresholds/event; neither a replacement sample nor a repaired main-matrix scientific gate.'}
+-    target = Path(path).parent / 'diagnostic.json'
+-    if target.exists():
+-        if read_json(target) != report:
+-            raise ValueError('Completed diagnostic summary is immutable')
+-    else:
+-        C.write_json(target, report, exclusive=True)
+-    status(path, report['state'], records)
+-    return report
+-
+-
+-def execute(label='r1'):
+-    path = folder(label) / 'plan.json'
+-    if not path.is_file():
+-        raise ValueError('freeze must finish before execute; execute does not create a plan')
+-    records, bundles = {}, {}
+-    with C.controller_lock():
+-        ACTIVE_CONTEXT.update(controller_pid=os.getpid(), controller_parent_pid=os.getppid(),
+-                              controller_started_utc=C.now(), current_case=None)
+-        try:
+-            plan = check_plan(path)
+-            status(path, 'CHECKING_PREREQUISITES', records)
+-            C.check_preservation()
+-            C.budget()
+-            C.preflight('diagnostic-precharge-' + label)
+-            neutrals = {tag: reusable(inspect_run(row['run_id'], C.load()['runs'][tag])) for tag, row in plan['neutral_sources'].items()}
+-            for tag, bundle in neutrals.items():
+-                if bundle['record'] != plan['neutral_sources'][tag]:
+-                    raise ValueError('Frozen neutral audit changed')
+-            for case in plan['planned_cases']:
+-                check_plan(path)
+-                tag = case['tag']
+-                ACTIVE_CONTEXT['current_case'] = tag
+-                row = C.load()['runs'].get(tag)
+-                parent = None
+-                if case['parent_tag']:
+-                    prior = records[case['parent_tag']]
+-                    if prior['state'] == 'PRECHARGE_FAILED':
+-                        if row:
+-                            raise ValueError('An event exists despite its failed diagnostic control')
+-                        records[tag] = {'state': 'BLOCKED_PARENT_FAILED', 'diagnostic_only': True,
+-                                        'reason': 'Required own control failed unchanged precharge audit; no event submitted'}
+-                        status(path, 'DIAGNOSING', records)
+-                        continue
+-                    parent = C.resolve(case['parent_tag'])
+-                    match(bundles[case['parent_tag']], neutrals[case['neutral_tag']])
+-                if row is None:
+-                    reservation = budget_guard(plan)
+-                    # All source, budget and prerequisite checks happen before preparing another immutable input.
+-                    execution_path = case_freeze(path, case)
+-                    if execution_path.exists():
+-                        check_case(path, case)
+-                    else:
+-                        kwargs = dict(case['kwargs'])
+-                        if parent:
+-                            kwargs['parent'] = parent
+-                        hashes = C.prepare(tag, **kwargs)
+-                        parameters = read_json(LOCAL / 'inputs' / tag / 'parameters.json')
+-                        recipe(case, parameters, neutrals[case['neutral_tag']], parent)
+-                        C.write_json(execution_path, {'utc': C.now(), 'design_sha256': plan['design_sha256'],
+-                            'source_sha256': plan['source_sha256'], 'inputs': {tag: hashes}, 'case': case,
+-                            'diagnostic_plan': relative(path), 'diagnostic_plan_sha256': C.sha(path),
+-                            'diagnostic_only': True, 'budget_reservation': reservation}, exclusive=True)
+-                    recipe(case, read_json(LOCAL / 'inputs' / tag / 'parameters.json'), neutrals[case['neutral_tag']], parent)
+-                    check_plan(path)
+-                    budget_guard(plan)
+-                    status(path, 'SUBMITTING_CASE', records)
+-                    try:
+-                        C.record(tag, execution_path, estimate_s=900)
+-                    except Exception as exc:
+-                        row = C.load()['runs'].get(tag)
+-                        # An exact error is necessary, not sufficient: completed_case also
+-                        # requires runner0, strict manifest/completion0 and all independent checks.
+-                        if type(exc) is not ValueError or str(exc) != PRECHARGE_ERROR or not row or row.get('state') != 'FAILED':
+-                            raise
+-                    row = C.load()['runs'][tag]
+-                bundle = completed_case(path, case, row, neutrals[case['neutral_tag']], parent)
+-                bundles[tag] = bundle
+-                records[tag] = {'state': 'VERIFIED_DIAGNOSTIC' if row['state'] == 'VERIFIED' else 'PRECHARGE_FAILED',
+-                                'raw_audit_state': bundle['record']['raw_audit_state'], 'diagnostic_only': True,
+-                                'training_or_prediction_eligible': False, 'run_id': row['run_id'],
+-                                'archive_sha256': bundle['record']['archive_sha256'],
+-                                'audit_file': relative(path.parent / 'audits' / (tag + '.json')),
+-                                'audit_sha256': C.sha(path.parent / 'audits' / (tag + '.json'))}
+-                check_plan(path)
+-                status(path, 'DIAGNOSING', records)
+-            check_plan(path)
+-            ACTIVE_CONTEXT['current_case'] = None
+-            return finish(path, plan, records, bundles, neutrals)
+-        except Exception as exc:
+-            status(path, 'STOPPED_REQUIRES_RECONCILIATION', records, repr(exc))
+-            raise
+-
+-
+-if __name__ == '__main__':
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('action', choices=('freeze', 'execute'))
+-    parser.add_argument('--label', default='r1')
+-    args = parser.parse_args()
+-    result = freeze(args.label) if args.action == 'freeze' else execute(args.label)
+-    print(json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False))

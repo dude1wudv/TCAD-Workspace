@@ -1,0 +1,3 @@
+phase,index,name,physics_type
+"post_zero_event_init","0","G4EmStandard_opt4","2"
+"post_zero_event_init","1","stepLimiter","0"

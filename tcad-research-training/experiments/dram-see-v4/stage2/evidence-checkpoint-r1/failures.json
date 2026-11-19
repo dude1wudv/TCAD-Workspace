@@ -1,0 +1,109 @@
+{
+  "scope": "All retained audit and execution failures in this campaign; later corrections do not erase them.",
+  "records": [
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/source-interface-r2/audits/r2-a1-b1-base-r1/audit.json",
+      "sha256": "ac3b565b837a8011c132360036fb845fa7a922e7e52ded3af890dffdb40f450a",
+      "passed": false,
+      "schema": "dram-see-v4-source-interface-r2-audit",
+      "run_id": "20261013T115652Z-v4-source-interface-r2-a1-b1-base-9aee36a9",
+      "errors": [
+        {
+          "check": "spatial_and_temporal_generation",
+          "error": "Missing native ROI dataset: Total; inspect the actual PLT header"
+        }
+      ],
+      "checks": {
+        "spatial_and_temporal_generation": {
+          "passed": false,
+          "error": "Missing native ROI dataset: Total; inspect the actual PLT header"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/source-interface-r2/audits/r2-a1-b1-base-r1-fields-r2/audit.json",
+      "sha256": "cec7c8c93d0f6a93de0f63466cb93f2f3b64cf4c5146d475a71ec33fea681b26",
+      "passed": false,
+      "schema": "dram-see-v4-source-interface-r2-audit",
+      "run_id": "20261013T115652Z-v4-source-interface-r2-a1-b1-base-9aee36a9",
+      "errors": [
+        {
+          "check": "spatial_and_temporal_generation",
+          "error": "Native total generated charge differs from precomputed domain charge by >5%"
+        }
+      ],
+      "checks": {
+        "spatial_and_temporal_generation": {
+          "passed": false,
+          "error": "Native total generated charge differs from precomputed domain charge by >5%"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s1-r1-audit-r3/audit.json",
+      "sha256": "a6b13c51df6486f413911da779bb56ba200d194f62270b05ed22ba32471584e7",
+      "passed": false,
+      "schema": "dram-see-v4-witness-audit-v1",
+      "run_id": "witness-fixed-h-s1-r1",
+      "errors": [
+        {
+          "check": "stable_births_process_identity_points_and_termination",
+          "error": "Post-step process absent from actual particle registry"
+        }
+      ],
+      "checks": {
+        "stable_births_process_identity_points_and_termination": {
+          "passed": false,
+          "error": "Post-step process absent from actual particle registry"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/witness-pilot-h-r1/audit.json",
+      "sha256": "36a98554e69b66157ab9d44084479927c69f3d9fbfa35fd82501817abddfd00d",
+      "passed": false,
+      "schema": "dram-see-v4-witness-audit-v1",
+      "run_id": "witness-pilot-h-r1",
+      "errors": [
+        {
+          "check": "stable_births_process_identity_points_and_termination",
+          "error": "Endpoint chord exceeds actual path length"
+        }
+      ],
+      "checks": {
+        "stable_births_process_identity_points_and_termination": {
+          "passed": false,
+          "error": "Endpoint chord exceeds actual path length"
+        }
+      }
+    },
+    {
+      "kind": "operation",
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r1/operation.json",
+      "sha256": "b99a0b96e43edf8b339088cf8a0264741d5fb4c8e6b9b78b3648201a36eeec90",
+      "label": "r2-a1-tdr-diagnostic-r1",
+      "state": "FAILED_COLLECTED",
+      "ssh_exit_code": 2,
+      "remote_exit_code": 2,
+      "collection_exit_code": 0,
+      "started_utc": "2026-10-13T12:19:38.476091+00:00",
+      "finished_utc": "2026-10-13T12:19:59.849302+00:00"
+    },
+    {
+      "kind": "operation",
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r2/operation.json",
+      "sha256": "20c45c63d2b3ff32f412afec99d94846af84789be64f459cafbe790a251cb39a",
+      "label": "r2-a1-tdr-diagnostic-r2",
+      "state": "FAILED_COLLECTED",
+      "ssh_exit_code": 1,
+      "remote_exit_code": 1,
+      "collection_exit_code": 0,
+      "started_utc": "2026-10-13T12:23:42.135416+00:00",
+      "finished_utc": "2026-10-13T12:24:01.768909+00:00"
+    }
+  ]
+}

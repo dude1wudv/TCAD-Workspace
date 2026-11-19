@@ -1,0 +1,76 @@
+{
+  "schema": "tcad-r06-pmi-build-consumption-v1",
+  "utc": "2026-11-17T17:50:45.381210+00:00",
+  "task_id": "r06-p0-o2-cmi-build-r1",
+  "run_id": "auto-r06-p0-o2-cmi-build-r1-8fcbf3ff83ef4722",
+  "status": "original_compile_verified_only",
+  "operation": {
+    "path": "local_runtime/cloud-benchmark/centos79-guest-20261116/dram-see-v4/transport-probe/operations/auto-r06-p0-o2-cmi-build-r1-8fcbf3ff83ef4722/operation.json",
+    "sha256": "208bb083a758834f0d75017ebb0ee126e87459520f1e22128663dfa8553ffcab"
+  },
+  "archive": {
+    "path": "local_runtime/cloud-benchmark/centos79-guest-20261116/dram-see-v4/transport-probe/operations/auto-r06-p0-o2-cmi-build-r1-8fcbf3ff83ef4722/results.tar",
+    "sha256": "589b86668f15bdf678fa05d0a05f4d774bf39e733d6b3793f363d67990b97c81"
+  },
+  "archive_bytes": 276480,
+  "verified_index_members": 31,
+  "returned_directory": "experiments/dram-se-r06/p0-bootstrap-r1/build-returned-r1",
+  "returned_files": {
+    "_collection-members.json": "f6f18a795dd31417b6cb87d735cbaa5aaa5230edf0065b77b7edd44b04ef203b",
+    "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+    "build-inputs.sha256": "efd34fe28545d24628239cccd9b24ab84ac905b186185e5601435701e5facf20",
+    "build-receipt.json": "003e750e922b23fc3df518ed64fd948f2b6a614643f57156e5f97d04b636e29a",
+    "build-request.json": "9b8b23cdce3a6ecbb397893e5fbad5d9974417d7ba933735aa0d6dbd473472aa",
+    "cmi-exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "cmi.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cmi.stdout.txt": "de3b367d74cdb65179f26aca933ea16420deabf1a3c3456d690f1966f901e81f",
+    "compile-in-original-vm.sh": "18a0cb4e6144ff3a89504ab2674a05112ee13d05a4d37d9a34e522a41ba4111d",
+    "execution.log": "6137cc67a54d19b4da794cc08f7ddd8426607823d75a3ee1818c2fbbecc90c05",
+    "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "exported-symbols.txt": "68b29be3b7ef404f8b49b7bc8a36b6798d8e73d7286260145774634a02219f00",
+    "finished-utc.txt": "f8a1dcf52238b9d36f7258bfb79ee5763f1d918f0c8fb8d499ebbc676c4dabcd",
+    "launch-pid.txt": "1683534ec83ee0054816f5219647b5faad87a33a2f599a5625bdc92e937f1324",
+    "launch.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "linked-libraries.txt": "2d6450c4da422be768c59f5767f0f6ed4cde7a088bdafaf8f1938283d51bbfce",
+    "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+    "operation-task-exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "parallel-slot-collection-evidence.json": "73ed718bd0607cfec8cb24c7fde87aad07ff65fa9994d1c11ff1c6574cb1bbd2",
+    "parallel-slot-evidence.json": "4ec50832c5b272809ec9974e2638680a392c67425979998a05d55d95d524c238",
+    "pmi_r04_nodal.C": "3d735507c8d7f976c217bcb2c6eb679bae70fb426f99adca0959a9e6a7a6c549",
+    "pmi_r04_nodal.o": "2bfc129d7495a301f0c643bb2cda03c9267b08a477628868c86276e740e64df3",
+    "pmi_r04_nodal.so.linux64": "bb77b42878a41dbe2efc603409479b6e8d512da5996a2cb1b3b46eab411ce594",
+    "process-identity.json": "c0a727eafbfe8cb5015220cc01f834ff4b53e28d7e80d00ff1ba6a43d743c437",
+    "run.sh": "573d375dec3db42716256b08f49e502d045374d3f9cbaa6bcd0953342654d700",
+    "shared-lock-evidence.txt": "35e455edf7466ba909e384a72d8ced9a1da5f20224533972bc03f85a25f8a467",
+    "started-utc.txt": "520e1018e33c2ee571e0a0b23e46143a7d04ac3cf5e12c0a8418dadef0416072",
+    "task.sh": "f665c1b96edd766170b67f1881752a2ea67d0cc5b950383d18087bd0a6b39b49",
+    "vendor-headers.sha256": "8fd59af5d95d13017705a8de798d27674060e36440d3145fbd384ebac4cbb5ec",
+    "verified-build-inputs.txt": "ecfb960670d8912095b6be6ebdcc5834eb399421b530bd17ebf0f0ebfd7f78ed",
+    "verified-vendor-headers.txt": "bd1db7b7fbe9e78845bac04de42d26791693bfe57d264eea9efab5f675128f8e",
+    "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+  },
+  "build_receipt": {
+    "path": "experiments/dram-se-r06/p0-bootstrap-r1/build-returned-r1/build-receipt.json",
+    "sha256": "003e750e922b23fc3df518ed64fd948f2b6a614643f57156e5f97d04b636e29a"
+  },
+  "new_elf_sha256": "bb77b42878a41dbe2efc603409479b6e8d512da5996a2cb1b3b46eab411ce594",
+  "new_source_sha256": "3d735507c8d7f976c217bcb2c6eb679bae70fb426f99adca0959a9e6a7a6c549",
+  "consumed_original_verified_collection": true,
+  "original_slot_released": true,
+  "input_identity_matches_original_intent": true,
+  "compiler_or_solver_called_by_consumer": false,
+  "queue_modified": false,
+  "scientific_gate_passed": false,
+  "formal_case_credit": 0,
+  "statistics_eligible": false,
+  "verifiers": [
+    {
+      "path": "scripts/tcad.py",
+      "sha256": "b9357fade5a7daa174513ca7afcbdf9b5104ae9fff1e59293af46e97fc80932f"
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/operation.py",
+      "sha256": "50ebcad30f6ffceeed135042ac9b97f41d7f077295db1af451a0addcc59d8243"
+    }
+  ]
+}

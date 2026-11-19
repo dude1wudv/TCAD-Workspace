@@ -1,0 +1,20 @@
+{
+  "run_id": "witness-fixed-h-s1-r1",
+  "event_id": 3,
+  "totals": {
+    "step_count": 88,
+    "track_count": 16,
+    "silicon_ionizing_MeV": 40.41779593491412,
+    "non_silicon_ionizing_MeV": 1.072847732627654e-28,
+    "assigned_silicon_charge_fC": 1798.7902290194324,
+    "domain_out_fC": 0.0,
+    "kernel_out_fC": 0.0004189357669424716,
+    "window_out_fC": 0.0,
+    "candidate_in_fC": 1798.7898100836655,
+    "pending_point_kernel_fC": 0.0,
+    "closure_error_fC": 0.0,
+    "quadrature_difference_fC": 4.9463206237206184e-15,
+    "tolerance_fC": 1.7987902290194324
+  },
+  "tcad_ready": false
+}

@@ -1,0 +1,81 @@
+{
+  "captured_at": "2026-11-17T17:11:29.017996+00:00",
+  "server_root": "/home/tcad/course-workspace",
+  "read_only_ssh_alias": "tcad-tail",
+  "prefix_inputs": [
+    {
+      "path": "experiments/dram-se-r04/electrical/mc2-prefix-diagnostic-r1/inputs/r04-l08-mc2-prefix-b0-zero-a-v1",
+      "files": {
+        "SHA256SUMS.json": "05be6779253e806ff62e1877da2557bac67c6d3c18d6ad239115fa02efdd8f56",
+        "cell_msh.tdr": "058a547770051c4047899c2e4faa76eab4da4d1b3d0642d94c9c5962375f4475",
+        "device.cmd": "86f7adbce44e243288e49757172bc3e6b3ae6391f2425999d57439328420d1c7",
+        "input-hashes.sha256": "64b512192d6ce5e24826d03a3f0e6b5aa133c9d089c744ffa74a2794f9ba97be",
+        "nodal-source.dat": "9aaa4bb9c6823c08384fdb53340b7e5d7361337f66e60c0bf66ceef3dafc5e25",
+        "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+        "pmi_r04_nodal.C": "6c2360c8b75840561fb61a61dccc8fddde0d4e14061f65cbd1a6f748bdb77b75",
+        "pmi_r04_nodal.so.linux64": "ca05ab0350b27777fbce6a7aedea2b0c811bedb8bdee7581433af18804c98f65",
+        "project.json": "7f41b4641d2cecdbd919342a2213fcf2f4173dc6da4b61f18753f68dd5f7d8c0",
+        "protocol.json": "0ab813567b100e8b371bdfff918dc3369124c605e4af40828ccbcbe9d43065b5",
+        "provenance.json": "df2c76ef2b05e28a9b5ce4e53a201161e28c8285106e484bd466247b886698fa",
+        "reference-apd.plx": "2093cf6eaa3a24a2771da846c4fe3008cbd79e90afc3a2e1c47d0fbd7898349a",
+        "reference-spectrum.txt": "2f5d4beaba4c97d042a0427733ec38a192ce784308fa83ab63efbe24a566911f",
+        "source-original.dat": "c5475fc5c212cd65be92b499d81573c804b1f257780608b9d446f1e394933d85",
+        "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+      },
+      "source_header": "R04_NODAL_SOURCE 1 10170 0 0",
+      "final_times_s": [
+        "1e-13"
+      ]
+    },
+    {
+      "path": "experiments/dram-se-r04/electrical/mc2-prefix-diagnostic-r1/inputs/r04-l08-mc2-prefix-b0-zero-b-v1",
+      "files": {
+        "SHA256SUMS.json": "968b681627905fd6ce2102d7faa35f47233944f608f5d4d0ec4ef2a7d06e3d4f",
+        "cell_msh.tdr": "058a547770051c4047899c2e4faa76eab4da4d1b3d0642d94c9c5962375f4475",
+        "device.cmd": "86f7adbce44e243288e49757172bc3e6b3ae6391f2425999d57439328420d1c7",
+        "input-hashes.sha256": "838cbda7f9305cb0f4b44d7db9a5c654fb141777c050b7fc7d3c27c179efcfaf",
+        "nodal-source.dat": "9aaa4bb9c6823c08384fdb53340b7e5d7361337f66e60c0bf66ceef3dafc5e25",
+        "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+        "pmi_r04_nodal.C": "6c2360c8b75840561fb61a61dccc8fddde0d4e14061f65cbd1a6f748bdb77b75",
+        "pmi_r04_nodal.so.linux64": "ca05ab0350b27777fbce6a7aedea2b0c811bedb8bdee7581433af18804c98f65",
+        "project.json": "d93a18d49eadf5c4ac6ad263dcaefeca543f18d533a72e13b4c435b8945c366b",
+        "protocol.json": "a3503ca818741e6e7ffae91515c44151efb32fbc1a71b537709667b6eccfd960",
+        "provenance.json": "d191251533600451c4638c12b9cd99ced318aa9f6310f9da3d33f9ab38d2d9aa",
+        "reference-apd.plx": "2093cf6eaa3a24a2771da846c4fe3008cbd79e90afc3a2e1c47d0fbd7898349a",
+        "reference-spectrum.txt": "2f5d4beaba4c97d042a0427733ec38a192ce784308fa83ab63efbe24a566911f",
+        "source-original.dat": "c5475fc5c212cd65be92b499d81573c804b1f257780608b9d446f1e394933d85",
+        "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+      },
+      "source_header": "R04_NODAL_SOURCE 1 10170 0 0",
+      "final_times_s": [
+        "1e-13"
+      ]
+    },
+    {
+      "path": "experiments/dram-se-r04/electrical/mc2-prefix-diagnostic-r1/inputs/r04-l08-mc2-prefix-b0-event0-v1",
+      "files": {
+        "SHA256SUMS.json": "be26c30f9d52139e1765bb9367c23b93086fa043efe7320a0717ccfbdc5a0823",
+        "cell_msh.tdr": "058a547770051c4047899c2e4faa76eab4da4d1b3d0642d94c9c5962375f4475",
+        "device.cmd": "86f7adbce44e243288e49757172bc3e6b3ae6391f2425999d57439328420d1c7",
+        "input-hashes.sha256": "87b0057c885ae3c366f0b809906ff34e59798c15fcd991aceb3343f4d59966ed",
+        "nodal-source.dat": "fe3f6cb8cb9114c3d510529502ac289fd2dd09d3d901621c7c62b2a3141387b1",
+        "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+        "pmi_r04_nodal.C": "6c2360c8b75840561fb61a61dccc8fddde0d4e14061f65cbd1a6f748bdb77b75",
+        "pmi_r04_nodal.so.linux64": "ca05ab0350b27777fbce6a7aedea2b0c811bedb8bdee7581433af18804c98f65",
+        "project.json": "f0a1766fb94d534628e44ab984c5f9766397873190d7cba514fb941732b5eed1",
+        "protocol.json": "6fca13d334c38d10fdb90f94f69272d39226271cbe0ba086fe2217a1d9312303",
+        "provenance.json": "f8ff37f356f52d04e2a07a70f611bea8ea828fb910f02d605334732d8ced9879",
+        "reference-apd.plx": "2093cf6eaa3a24a2771da846c4fe3008cbd79e90afc3a2e1c47d0fbd7898349a",
+        "reference-spectrum.txt": "2f5d4beaba4c97d042a0427733ec38a192ce784308fa83ab63efbe24a566911f",
+        "source-original.dat": "1da9ce894bcc61432bfee21dc9355c62c864591e57db3384cc43d6cfd515b78b",
+        "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+      },
+      "source_header": "R04_NODAL_SOURCE 1 10170 48 316",
+      "final_times_s": [
+        "1e-13"
+      ]
+    }
+  ],
+  "confirmed_15p2ns_decks": [],
+  "source_note": "Frozen mc2 PMI has per-instance atomic callbacks; original kernel candidate differs."
+}

@@ -1,0 +1,14 @@
+{
+  "measured_data_only": true,
+  "missing_frames_filled": false,
+  "input_sha256": {
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-field-audit-r1\\audit-dev\\r4-a1-full-bounded-r1\\audit.json": "ed0ece3924cc1014fdcb5e079f38026b4527f580b03285c4e2a12167be5a5838",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r4\\audits\\r4-a1-b1-mesh-r1\\audit.json": "f0205aa04c8746f74dec74e70f86586dcf097ee6de12ab3a2a7156f5651284ca",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-field-audit-r1\\audit-dev\\old-five-final-audit\\frames.csv": "6836ab931e46d4a96b559be02a13c30ad0827d1d2fbc3abb1ec130c64eaa0cc1",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r4\\comparisons\\a1-base-to-mesh-r1\\comparison.json": "d93864b6b3b30b34b8782d47129f1bd6ce726f646f2f6309cfdf7eeaf3df16ec",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-field-audit-r1\\audit-dev\\r4-a1-full-bounded-r1\\frames.csv": "d21bf903a8bfdfd0ccdd60f8c2e597ce0e8cf3fd1a0a517d18724afff8b904c7",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r4\\audits\\r4-a1-b1-mesh-r1\\device.csv": "4d3422b0de405a1a98847934e59839cb060b58b154df505f0936c1e396d7adb8",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r4\\comparisons\\a1-base-to-mesh-r1\\control-relative-curves.csv": "856c0f52d7f98a99df657ae928880cc26180ac7c94707132465abba826cb0a50",
+    "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v4\\stage2\\plot_mesh_result.py": "917d1547063c6c069e1138a5605eb450cb4165d80b43b92f8cd7815a1a629783"
+  }
+}

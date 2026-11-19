@@ -1,0 +1,46 @@
+{
+  "schema": "dram-see-v4-source-probe-failure-ledger-v1",
+  "scope": "A0/A1/A4 bit1 real solver attempts and readiness blockers; synthetic negative tests are not solver failures",
+  "state": "FINAL_FOR_THREE_COMPLETED_ATTEMPTS",
+  "solver_failures": [],
+  "precondition_blockers": [
+    {
+      "id": "HADRONIC_DATA_NOT_READY",
+      "status": "OPEN",
+      "candidate": "QGSP_BIC + EM Opt4",
+      "core_candidate_missing_in_checked_paths": [
+        "PhotonEvaporation5.7",
+        "G4PARTICLEXS3.1.1"
+      ],
+      "conditional_missing_in_checked_paths": {
+        "HP low-energy neutron": "G4NDL4.6",
+        "if radioactive decay is enabled": "RadioactiveDecay5.6"
+      },
+      "allhp_charged_particle_data": "Not established; ParticleHP/TENDL support requires separate check",
+      "scope": "Known project data, data-complete and installation share/data paths; not a whole-host absence proof",
+      "readiness_evidence": "readiness.json",
+      "hadronic_runs_started": 0,
+      "installed_anything": false
+    }
+  ],
+  "tooling_notes": [
+    {
+      "id": "PREFLIGHT_PROCESS_FILTER",
+      "status": "RESOLVED",
+      "detail": "Exact ps comm filter failed to observe the live A1 process. Evidence from /proc cwd established the owned sdevice process, --threads 1 and CPU0. Future preflight inventory uses /proc comm prefix matching. An empty earlier ps result was not accepted as solver completion.",
+      "evidence": [
+        "local_runtime/dram-see-v4/preflight/a1-live/",
+        "local_runtime/dram-see-v4/preflight/a1-owned-process/"
+      ]
+    },
+    {
+      "id": "HASH_REVIEW_ENCODING",
+      "status": "RESOLVED",
+      "detail": "One read-only hash-review command exited 1 on Windows default GBK decoding. Repeated with explicit UTF-8, exit0 and all 8 protected anchors unchanged. No solver/input changes."
+    }
+  ],
+  "synthetic_negative_tests": "local_runtime/dram-see-v4/source-probe/validation/logs/source-probe-unittest.log",
+  "automatic_retries": 0,
+  "real_solver_attempts": 3,
+  "solver_failure_count": 0
+}

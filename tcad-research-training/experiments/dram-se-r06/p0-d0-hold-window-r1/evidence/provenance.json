@@ -1,0 +1,482 @@
+{
+  "schema": "dram-se-r06-old-zero-analysis-provenance-r1",
+  "analyzer_sha256": "c14c76524d73a1925896ef16e4f8b3caa2f2eb729c78355156ec70d17d3403cf",
+  "states": [
+    {
+      "state": "b0",
+      "run_id": "auto-r04-l08-p000-nodal-whr-b0-zero-mc2-v1-64be04d60e604e04",
+      "task_id": "r04-l08-p000-nodal-whr-b0-zero-mc2-v1",
+      "cache_directory": "local_runtime/dram-se-r04/mc2-zero-b0-native-r1",
+      "cache_sha256": {
+        "extraction.json": "9cd425eb2edb56e4bd98cd223da82931425b6919185879b5c11f5af25abf3caa",
+        "receipt.json": "398dd5b18b9f444283503a7e700e6763a4004c1b26faaa38a1c43db1fe16d731"
+      },
+      "input_directory": "experiments/dram-se-r04/electrical/multicore-zero-control-r1/inputs/r04-l08-p000-nodal-whr-b0-zero-mc2-v1",
+      "input_sha256": {
+        "SHA256SUMS.json": "fffdb25b4a4af1d60a6546ca16abe5997d09a12e4c31a69b9f8bdb13ca291116",
+        "admission-contract.json": "346545cc7e98fdb0528f4ba5ebe682a71f95cf5d48e34d35e66371a2fe5761ca",
+        "cell_msh.tdr": "058a547770051c4047899c2e4faa76eab4da4d1b3d0642d94c9c5962375f4475",
+        "device.cmd": "5c7ade552ae5dc39c109df0c7540d3a499e29a8549c24b0cfa5cee16957cf901",
+        "input-hashes.sha256": "59ea9d0b5cb635db7952ba9475b4809e01fec8ead6f02863ed0dbcde0ee3f2f7",
+        "nodal-source.dat": "9aaa4bb9c6823c08384fdb53340b7e5d7361337f66e60c0bf66ceef3dafc5e25",
+        "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+        "pmi_r04_nodal.C": "6c2360c8b75840561fb61a61dccc8fddde0d4e14061f65cbd1a6f748bdb77b75",
+        "pmi_r04_nodal.so.linux64": "ca05ab0350b27777fbce6a7aedea2b0c811bedb8bdee7581433af18804c98f65",
+        "project.json": "201299884d8bdba061419b2d20321db1f80b3679da47e103ba5c73d7040293db",
+        "protocol.json": "4cca47e3d0ae3ff0e072ca502603fb62efe807450f5d66dfe37d21e5d10caf8b",
+        "provenance.json": "41b11f8ecef14046efea3effec1c3f4825bf4d18258f157c74407ccb8431c7f4",
+        "reference-apd.plx": "2093cf6eaa3a24a2771da846c4fe3008cbd79e90afc3a2e1c47d0fbd7898349a",
+        "reference-spectrum.txt": "2f5d4beaba4c97d042a0427733ec38a192ce784308fa83ab63efbe24a566911f",
+        "source-original.dat": "c5475fc5c212cd65be92b499d81573c804b1f257780608b9d446f1e394933d85",
+        "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+      },
+      "historical_hashes_from_receipt_not_reaudited": {
+        "manifest_sha256": "6963562894a8c5ac685f1e279ba1e40820fb52d7061d024853824b3351f8a9a9",
+        "archive_sha256": "b72368e81b77410f37016ac4aaf64f12b0ae896e6584d6de1a31bdf8e6966e74",
+        "inputs_archive_sha256": "52f25ab240cc0d17899e45960d9954bda355c2eddd9502f9aad455ba411247e8",
+        "submission_intent_sha256": "5eee7aed72d2f283bedbe96f5a64e2e5f1df8fd80c843e52a18caa18d64ea317"
+      },
+      "input_digest_from_frozen_intent": "456c02d8f52250408fb7863274ab14780e807c74eca36578ab2522b7f4959c5c",
+      "frozen_mc2_reader_sha256": {
+        "extract.py": "42d84e5d40f560bd3d775b4c4ee2683317f04433ac4786ceef95577df82d18d7",
+        "archive.py": "31616964957dfc6ba71183a191f8c0f49da0dcf313ebcd2a7ae99040584fdf9f",
+        "numeric.py": "efbc7037573c1654d80155e181f142d566dea41a32713e14426fc06b6e744910",
+        "contract.json": "77dc9ea2e4b63cb3f5c78d060afd962b68ac3b23c8904195d3df12f1aae0a8b8"
+      },
+      "device_model_id": "l08-saddle-fin-r04-baseline-v1",
+      "old_per_instance_atomic_log_lines": [
+        {
+          "line_1based": 5,
+          "text": "#include <atomic>"
+        },
+        {
+          "line_1based": 12,
+          "text": "std::atomic<std::uint64_t> callbacks_{0};"
+        },
+        {
+          "line_1based": 57,
+          "text": "const std::uint64_t n = callbacks_.fetch_add(1, std::memory_order_relaxed) + 1;"
+        }
+      ],
+      "Optics_PMI_still_enabled": true,
+      "source_header": "R04_NODAL_SOURCE 1 10170 0 0",
+      "source_record_counts": {
+        "units": 1,
+        "N": 10170
+      },
+      "source_units_directive": "units um s cm3 cm^-3_s^-1 pairs",
+      "native_source_cache": {
+        "actual_native_generation_pairs": {
+          "IntegrSemiconductor OpticalGeneration": "0E-41",
+          "IntegrSemiconductor OpticalGenerationFromSpectrum": "0E-41",
+          "IntegrSemiconductor OpticalGenerationFromSpectrumUnscaled": "0E-41"
+        },
+        "relative_error": null,
+        "native_loaded_counts": [
+          "10170",
+          "0",
+          "0"
+        ],
+        "cache_zero_through_35ns": true,
+        "TDR_point_fields_decoded": false,
+        "all_assembly_calls_and_retry_rollback_verified": false
+      },
+      "row_count": 683,
+      "accepted_BE_count": 682,
+      "rejected_or_unconverged_attempt_count": 25,
+      "excluded_zero_duration_event_count": 27,
+      "finite_values_strict_order_and_accepted_clock_alignment_verified": true,
+      "legacy_plugin_segments": [
+        {
+          "segment_1based": 9,
+          "start_s": "1.4998999999999998e-08",
+          "end_s": "1.4999999999999999e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 10,
+          "start_s": "1.4999999999999999e-08",
+          "end_s": "1.5000499999999999e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 11,
+          "start_s": "1.5000499999999999e-08",
+          "end_s": "1.5001e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 12,
+          "start_s": "1.5001e-08",
+          "end_s": "1.5001099999999999e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 13,
+          "start_s": "1.5001099999999999e-08",
+          "end_s": "1.5002999999999999e-08",
+          "plugin_required": true
+        }
+      ],
+      "protocol": {
+        "assumptions": {
+          "Cstore_each_F": "2E-14",
+          "Cbl_F": "2E-13",
+          "Vplate_V": "0.6",
+          "VDD_V": "1.2",
+          "Vwl_on_V": "2.5",
+          "Vwl_off_V": "0.0",
+          "driver_on_ohm": "1000.0",
+          "driver_off_ohm": "1000000000000000.0",
+          "note": "Circuit capacitances, driver resistances and full timing are explicit project representative assumptions, not L08 disclosed values; no old BCAT geometry/labels reused"
+        },
+        "initialization": {
+          "SN1_V": "0.6",
+          "SN2_V": "0.6",
+          "clamp_during_DC_only": true,
+          "common_SN_clamp_targets_for_both_patterns": true,
+          "full_initial_state_identical": false,
+          "pattern_dependent_BL_equilibrium": "vdrive is 0V or 1.2V already during initialization; internal DC states may differ",
+          "loaded_written_state": false,
+          "release": "Unset(sn1) and Unset(sn2) before any Transient"
+        },
+        "write": {
+          "patterns": [
+            "00",
+            "11"
+          ],
+          "BL_V": "1.2*bit",
+          "WL2_on_ns": [
+            "2.1",
+            "10.0"
+          ],
+          "WL2_edges_ns": [
+            "2.0",
+            "2.1",
+            "10.0",
+            "10.1"
+          ],
+          "WL1_on_ns": [
+            "10.3",
+            "18.0"
+          ],
+          "WL1_edges_ns": [
+            "10.2",
+            "10.3",
+            "18.0",
+            "18.1"
+          ],
+          "note": "SN2 written first, SN1 second through same shared BL, no target-bit SN clamp"
+        },
+        "hold": {
+          "start_ns": "18.1",
+          "end_ns": "30.0",
+          "BL_precharge_V": "0.6",
+          "BL_transition_ns": [
+            "18.1",
+            "18.2"
+          ]
+        },
+        "read": {
+          "target": "SN1",
+          "driver_disconnect_ns": "30.0",
+          "WL1_edges_ns": [
+            "30.1",
+            "30.2",
+            "32.0",
+            "32.1"
+          ],
+          "sample_ns": "31.9",
+          "reference_V": "0.6",
+          "reported": "signed BL read margin and actual SN waveforms; no upset label",
+          "SN2_read": false,
+          "sense_amplifier": false,
+          "destructive_charge_sharing": true,
+          "read_restoration": false
+        },
+        "transient": {
+          "final_ns": "35.0",
+          "integrator": "BE",
+          "main_max_step_ns": "0.5",
+          "edge_max_step_ns": "0.02",
+          "observation_windows_ns": [
+            [
+              "9.9",
+              "10.0"
+            ],
+            [
+              "17.9",
+              "18.0"
+            ],
+            [
+              "29.9",
+              "30.0"
+            ],
+            [
+              "31.8",
+              "31.9"
+            ],
+            [
+              "34.9",
+              "35.0"
+            ]
+          ],
+          "observation_max_step_ns": "0.02",
+          "mesh_refinement": false,
+          "time_refinement": "only original 10.3–17.9ns segment split around 14.999–15.003ns",
+          "source_window_endpoints_s": [
+            "1.4998999999999998e-08",
+            "1.4999999999999999e-08",
+            "1.5000499999999999e-08",
+            "1.5001e-08",
+            "1.5001099999999999e-08",
+            "1.5002999999999999e-08"
+          ],
+          "source_initial_step_s": "1E-13",
+          "source_max_step_s": "2.5E-13"
+        }
+      },
+      "cache_status": "observations_only_requires_scientific_interpretation",
+      "cache_pairing_status": "control_observations_not_particle_label",
+      "is_scientific_acceptance": false
+    },
+    {
+      "state": "b1",
+      "run_id": "auto-r04-l08-p000-nodal-whr-b1-zero-mc2-v1-4305462e206c4c2f",
+      "task_id": "r04-l08-p000-nodal-whr-b1-zero-mc2-v1",
+      "cache_directory": "local_runtime/dram-se-r04/mc2-zero-b1-native-r1",
+      "cache_sha256": {
+        "extraction.json": "cb09f89a1db3913df2ac21cc88e6022190548b98a65364f705c3c8ffe6953160",
+        "receipt.json": "b35e320601fc93bd32c81f5ba6fd5bb91ed950e3a6f9fa543a6883aa521b7908"
+      },
+      "input_directory": "experiments/dram-se-r04/electrical/multicore-zero-control-r1/inputs/r04-l08-p000-nodal-whr-b1-zero-mc2-v1",
+      "input_sha256": {
+        "SHA256SUMS.json": "8d3fe52cedfe4fbcdab76bec33262f7c2ea4fb1c66b8d229b5c02976b20dca34",
+        "admission-contract.json": "ab57b06beae3a02fe147c9679f1aea04dbf314a30f69703491fa04b4097c7754",
+        "cell_msh.tdr": "058a547770051c4047899c2e4faa76eab4da4d1b3d0642d94c9c5962375f4475",
+        "device.cmd": "e95e9e2a36e6ab421708795474c58e9624e20455498a09788e6f344b7c848cf5",
+        "input-hashes.sha256": "b68855dd7045d6de099465fc2ede37c1bad975751e4f59ecfd488912a48596ac",
+        "nodal-source.dat": "9aaa4bb9c6823c08384fdb53340b7e5d7361337f66e60c0bf66ceef3dafc5e25",
+        "nodal_source.hpp": "1f44e48e0acbb3e9a384b6152df78cb751ebeb42fbf953c66858a061ca511c92",
+        "pmi_r04_nodal.C": "6c2360c8b75840561fb61a61dccc8fddde0d4e14061f65cbd1a6f748bdb77b75",
+        "pmi_r04_nodal.so.linux64": "ca05ab0350b27777fbce6a7aedea2b0c811bedb8bdee7581433af18804c98f65",
+        "project.json": "383d5ba483753d2fd843bb4c9fef1a720714dfaf9b64814a89ccdfbe3e6b97a5",
+        "protocol.json": "4cca47e3d0ae3ff0e072ca502603fb62efe807450f5d66dfe37d21e5d10caf8b",
+        "provenance.json": "9cc040cda41403186a605f4ce01489251328fb5956f4de65256c67973d557ce3",
+        "reference-apd.plx": "2093cf6eaa3a24a2771da846c4fe3008cbd79e90afc3a2e1c47d0fbd7898349a",
+        "reference-spectrum.txt": "2f5d4beaba4c97d042a0427733ec38a192ce784308fa83ab63efbe24a566911f",
+        "source-original.dat": "c5475fc5c212cd65be92b499d81573c804b1f257780608b9d446f1e394933d85",
+        "voxel_source.hpp": "59384de0544c0bdfc212d6c5b875eef35cccbad5f2bb30ef9726ee50a9e6bede"
+      },
+      "historical_hashes_from_receipt_not_reaudited": {
+        "manifest_sha256": "bae9deee54ae1f9c746dcde75371d84d81e7da9728722a52c642668fee169e90",
+        "archive_sha256": "9e1ae4a6fd004910bb87048636546452b66311785336a6662bede67069e89955",
+        "inputs_archive_sha256": "8f76396af877c71beb7ed56b8dd6c26f5d0793c41acf5d9667f6a0ede93c1961",
+        "submission_intent_sha256": "f9e1a8eef390b5a02a579ed5034d8c2282ff87af83a5c8406dd7067770d2b605"
+      },
+      "input_digest_from_frozen_intent": "b40b75adf02a6b01e450b304b8b4efe19247c39b9a88fa417c2e8e2d51616148",
+      "frozen_mc2_reader_sha256": {
+        "extract.py": "42d84e5d40f560bd3d775b4c4ee2683317f04433ac4786ceef95577df82d18d7",
+        "archive.py": "31616964957dfc6ba71183a191f8c0f49da0dcf313ebcd2a7ae99040584fdf9f",
+        "numeric.py": "efbc7037573c1654d80155e181f142d566dea41a32713e14426fc06b6e744910",
+        "contract.json": "77dc9ea2e4b63cb3f5c78d060afd962b68ac3b23c8904195d3df12f1aae0a8b8"
+      },
+      "device_model_id": "l08-saddle-fin-r04-baseline-v1",
+      "old_per_instance_atomic_log_lines": [
+        {
+          "line_1based": 5,
+          "text": "#include <atomic>"
+        },
+        {
+          "line_1based": 12,
+          "text": "std::atomic<std::uint64_t> callbacks_{0};"
+        },
+        {
+          "line_1based": 57,
+          "text": "const std::uint64_t n = callbacks_.fetch_add(1, std::memory_order_relaxed) + 1;"
+        }
+      ],
+      "Optics_PMI_still_enabled": true,
+      "source_header": "R04_NODAL_SOURCE 1 10170 0 0",
+      "source_record_counts": {
+        "units": 1,
+        "N": 10170
+      },
+      "source_units_directive": "units um s cm3 cm^-3_s^-1 pairs",
+      "native_source_cache": {
+        "actual_native_generation_pairs": {
+          "IntegrSemiconductor OpticalGeneration": "0E-41",
+          "IntegrSemiconductor OpticalGenerationFromSpectrum": "0E-41",
+          "IntegrSemiconductor OpticalGenerationFromSpectrumUnscaled": "0E-41"
+        },
+        "relative_error": null,
+        "native_loaded_counts": [
+          "10170",
+          "0",
+          "0"
+        ],
+        "cache_zero_through_35ns": true,
+        "TDR_point_fields_decoded": false,
+        "all_assembly_calls_and_retry_rollback_verified": false
+      },
+      "row_count": 735,
+      "accepted_BE_count": 734,
+      "rejected_or_unconverged_attempt_count": 44,
+      "excluded_zero_duration_event_count": 27,
+      "finite_values_strict_order_and_accepted_clock_alignment_verified": true,
+      "legacy_plugin_segments": [
+        {
+          "segment_1based": 9,
+          "start_s": "1.4998999999999998e-08",
+          "end_s": "1.4999999999999999e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 10,
+          "start_s": "1.4999999999999999e-08",
+          "end_s": "1.5000499999999999e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 11,
+          "start_s": "1.5000499999999999e-08",
+          "end_s": "1.5001e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 12,
+          "start_s": "1.5001e-08",
+          "end_s": "1.5001099999999999e-08",
+          "plugin_required": true
+        },
+        {
+          "segment_1based": 13,
+          "start_s": "1.5001099999999999e-08",
+          "end_s": "1.5002999999999999e-08",
+          "plugin_required": true
+        }
+      ],
+      "protocol": {
+        "assumptions": {
+          "Cstore_each_F": "2E-14",
+          "Cbl_F": "2E-13",
+          "Vplate_V": "0.6",
+          "VDD_V": "1.2",
+          "Vwl_on_V": "2.5",
+          "Vwl_off_V": "0.0",
+          "driver_on_ohm": "1000.0",
+          "driver_off_ohm": "1000000000000000.0",
+          "note": "Circuit capacitances, driver resistances and full timing are explicit project representative assumptions, not L08 disclosed values; no old BCAT geometry/labels reused"
+        },
+        "initialization": {
+          "SN1_V": "0.6",
+          "SN2_V": "0.6",
+          "clamp_during_DC_only": true,
+          "common_SN_clamp_targets_for_both_patterns": true,
+          "full_initial_state_identical": false,
+          "pattern_dependent_BL_equilibrium": "vdrive is 0V or 1.2V already during initialization; internal DC states may differ",
+          "loaded_written_state": false,
+          "release": "Unset(sn1) and Unset(sn2) before any Transient"
+        },
+        "write": {
+          "patterns": [
+            "00",
+            "11"
+          ],
+          "BL_V": "1.2*bit",
+          "WL2_on_ns": [
+            "2.1",
+            "10.0"
+          ],
+          "WL2_edges_ns": [
+            "2.0",
+            "2.1",
+            "10.0",
+            "10.1"
+          ],
+          "WL1_on_ns": [
+            "10.3",
+            "18.0"
+          ],
+          "WL1_edges_ns": [
+            "10.2",
+            "10.3",
+            "18.0",
+            "18.1"
+          ],
+          "note": "SN2 written first, SN1 second through same shared BL, no target-bit SN clamp"
+        },
+        "hold": {
+          "start_ns": "18.1",
+          "end_ns": "30.0",
+          "BL_precharge_V": "0.6",
+          "BL_transition_ns": [
+            "18.1",
+            "18.2"
+          ]
+        },
+        "read": {
+          "target": "SN1",
+          "driver_disconnect_ns": "30.0",
+          "WL1_edges_ns": [
+            "30.1",
+            "30.2",
+            "32.0",
+            "32.1"
+          ],
+          "sample_ns": "31.9",
+          "reference_V": "0.6",
+          "reported": "signed BL read margin and actual SN waveforms; no upset label",
+          "SN2_read": false,
+          "sense_amplifier": false,
+          "destructive_charge_sharing": true,
+          "read_restoration": false
+        },
+        "transient": {
+          "final_ns": "35.0",
+          "integrator": "BE",
+          "main_max_step_ns": "0.5",
+          "edge_max_step_ns": "0.02",
+          "observation_windows_ns": [
+            [
+              "9.9",
+              "10.0"
+            ],
+            [
+              "17.9",
+              "18.0"
+            ],
+            [
+              "29.9",
+              "30.0"
+            ],
+            [
+              "31.8",
+              "31.9"
+            ],
+            [
+              "34.9",
+              "35.0"
+            ]
+          ],
+          "observation_max_step_ns": "0.02",
+          "mesh_refinement": false,
+          "time_refinement": "only original 10.3–17.9ns segment split around 14.999–15.003ns",
+          "source_window_endpoints_s": [
+            "1.4998999999999998e-08",
+            "1.4999999999999999e-08",
+            "1.5000499999999999e-08",
+            "1.5001e-08",
+            "1.5001099999999999e-08",
+            "1.5002999999999999e-08"
+          ],
+          "source_initial_step_s": "1E-13",
+          "source_max_step_s": "2.5E-13"
+        }
+      },
+      "cache_status": "observations_only_requires_scientific_interpretation",
+      "cache_pairing_status": "control_observations_not_particle_label",
+      "is_scientific_acceptance": false
+    }
+  ]
+}

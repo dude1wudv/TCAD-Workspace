@@ -1,0 +1,151 @@
+--- original/gui_evidence.py
++++ r50-main/gui_evidence.py
+@@ -1,4 +1,4 @@
+-"""Explicit v3 native 4 ns field export and real owned SVisual window capture.
++"""Explicit R50-main native 4 ns field export and real owned SVisual window capture.
+ 
+ No solver dispatch, automatic sample selection, resume, or window closing.
+ Existing/partial evidence directories always require read-only reconciliation.
+@@ -19,9 +19,10 @@
+ 
+ sys.dont_write_bytecode = True
+ HERE = Path(__file__).resolve().parent
+-ROOT = HERE.parents[1]
++BASE = HERE.parent
++ROOT = BASE.parents[1]
+ LOCAL = ROOT / 'local_runtime/dram-see-v3'
+-CAPTURE = HERE.parent / 'dram-see-v2/capture_guest_window.py'
++CAPTURE = BASE.parent / 'dram-see-v2/capture_guest_window.py'
+ CAPTURE_SHA = '4fbdf4bd625bb3a9faf1ed0c73cf7b9cf9fbfb213d1f4814529ea8ac8ae7d280'
+ MEMBER = 'final_access_des.tdr'
+ VISUAL = '/usr/synopsys/sentaurus/W-2024.09/bin/svisual'
+@@ -34,8 +35,8 @@
+     return result
+ 
+ 
+-common = _module('_v3_gui_common', HERE / 'common.py')
+-audit = _module('_v3_gui_audit', HERE / 'audit.py')
++common = _module('_r50_gui_common', BASE / 'common.py')
++audit = _module('_r50_gui_audit', HERE / 'audit.py')
+ 
+ 
+ def sha(path):
+@@ -47,12 +48,44 @@
+ 
+ 
+ def dependencies():
+-    paths = [Path(__file__), HERE / 'common.py', HERE / 'audit.py', HERE / 'build_case.py',
+-             HERE / 'event_audit.py', CAPTURE, ROOT / 'scripts/tcad.py',
+-             HERE.parent / 'dram-see-v1/analyze.py', HERE.parent / 'dram-see-v1/build_case.py',
+-             HERE.parent / 'dram-see-v2/audit.py', HERE.parent / 'dram-see-v2/build_case.py',
+-             HERE.parent / 'dram-see-v2/event_audit.py', HERE.parent / 'dram-readout-offset-d1/audit.py']
+-    return {path.relative_to(ROOT).as_posix(): sha(path) for path in paths}
++    manifest = HERE / 'gui-source-manifest.json'
++    frozen = json.loads(manifest.read_text(encoding='utf8'))
++    if frozen.get('schema') != 'dram-see-v3-r50-main-gui-sources':
++        raise ValueError('Wrong GUI source manifest')
++    current = {name: sha(ROOT / name) for name in frozen['files_sha256']}
++    if current != frozen['files_sha256']:
++        raise ValueError('GUI source bytes changed; review a new version before capture')
++    return {**current, manifest.relative_to(ROOT).as_posix(): sha(manifest)}
++
++
++def check_selected_case(tag, row):
++    """Bind the two preregistered objects to their accepted first-segment inputs."""
++    if tag not in ('v3-r50-main-physical-l018-b1', 'v3-r50-main-l018-alpha-a30-s202610311-b1'):
++        raise ValueError('Native evidence is restricted to the two fixed R50-main targets')
++    if (row.get('state') != 'VERIFIED' or row.get('runner_exit_code') != 0
++            or row.get('physical_revision') != 'r50-main-r1' or row.get('physical_revision_probe_only') is not False):
++        raise ValueError('Need verified original R50-main role and zero runner exit')
++    plan_path = LOCAL / 'physical-revisions/r50-main-r1/plan.json'
++    plan = json.loads(plan_path.read_text(encoding='utf8'))
++    marker = json.loads(plan_path.with_name('plan-sha256.json').read_text(encoding='utf8'))
++    if (marker.get('sha256') != sha(plan_path) or plan.get('schema') != 'dram-see-v3-r50-main-execution-plan'
++            or plan.get('design_sha256') != sha(HERE / 'design.json')):
++        raise ValueError('R50-main execution/design evidence differs')
++    for name, digest in plan['source_sha256'].items():
++        if sha(ROOT / name) != digest or sha(plan_path.parent / 'source-snapshot' / name) != digest:
++            raise ValueError('R50-main frozen source differs')
++    cases = [case for case in plan['planned_cases'] if case['tag'] == tag]
++    frozen = plan_path.parent / 'case-freezes' / (tag + '.json')
++    execution = json.loads(frozen.read_text(encoding='utf8'))
++    if (len(cases) != 1 or execution.get('case') != cases[0]
++            or execution.get('main_plan_sha256') != sha(plan_path)
++            or execution.get('main_plan') != plan_path.relative_to(ROOT).as_posix()
++            or execution.get('source_sha256') != plan['source_sha256']
++            or execution.get('inputs') != {tag: row.get('input_sha256')}
++            or row.get('execution_freeze') != frozen.relative_to(ROOT).as_posix()
++            or row.get('execution_freeze_sha256') != sha(frozen)):
++        raise ValueError('Native target case is not bound to the frozen main execution')
++    return {'plan_sha256': sha(plan_path), 'case_freeze_sha256': sha(frozen), 'design_sha256': sha(HERE / 'design.json')}
+ 
+ 
+ def remote(ssh, operation_root, label, script, payload=None, timeout=30):
+@@ -85,10 +118,10 @@
+ def render_tcl(source, target, rid, tdr_hash):
+     if any(character in source + target for character in '{}\r\n'):
+         raise ValueError('Remote paths are unsafe in a literal Tcl path')
+-    marker = 'V3_NATIVE_FIELD_EXPORT_COMPLETED ' + rid + ' ' + tdr_hash
++    marker = 'V3_R50_MAIN_NATIVE_FIELD_EXPORT_COMPLETED ' + rid + ' ' + tdr_hash
+     script = '''set data [load_file {SOURCE/final_access_des.tdr}]
+ set plot [create_plot -dataset $data]
+-set_plot_prop -plot $plot -title {v3 actual 4 ns signal E-field (not a readout curve) | RID | V/cm, coordinates um}
++set_plot_prop -plot $plot -title {v3 R50-main actual 4 ns signal E-field (not a readout curve) | RID | V/cm, coordinates um}
+ foreach f [list_fields -plot $plot -show] {set_field_prop -plot $plot -geom $data $f -hide -hide_bands}
+ set_field_prop -plot $plot -geom $data Abs(ElectricField-V) -show -show_bands -scale log -levels 41
+ zoom_plot -plot $plot -reset
+@@ -159,7 +192,7 @@
+ 
+ def _owned_session(rid):
+     local = HERE / 'figures/native' / rid
+-    operation_root = LOCAL / 'gui-operations' / rid
++    operation_root = LOCAL / 'r50-gui-operations' / rid
+     if local.exists() or operation_root.exists():
+         raise ValueError('Native evidence or partial operation already exists; inspect, never relaunch automatically')
+     ledger = json.loads((LOCAL / 'ledger.json').read_text(encoding='utf8'))
+@@ -169,8 +202,16 @@
+     if len(rows) != 1 or rows[0][1].get('state') != 'VERIFIED' or rows[0][1].get('inherited'):
+         raise ValueError('Need one explicitly selected VERIFIED v3 ledger run')
+     tag = rows[0][0]
++    accepted_source = check_selected_case(tag, rows[0][1])
+     summary = audit.audit(rid, export=False)
+-    if summary.get('parameters', {}).get('schema') != 'dram-see-v3' or abs(summary.get('final_time_s', 0) - 4e-9) > 1e-18:
++    if (summary.get('input_sha256') != rows[0][1].get('input_sha256')
++            or summary.get('archive_sha256') != rows[0][1].get('audit_archive_sha256')
++            or summary.get('parameters') != rows[0][1].get('parameters')):
++        raise ValueError('Audited native source differs from the original verified ledger inputs/archive')
++    if (summary.get('parameters', {}).get('schema') != 'dram-see-v3-r50-main'
++            or summary['parameters'].get('physical_revision') != 'r50-main-r1'
++            or summary['parameters'].get('physical_revision_probe_only') is not False
++            or abs(summary.get('final_time_s', 0) - 4e-9) > 1e-18):
+         raise ValueError('Need audited v3 result through 4 ns')
+     with tarfile.open(ROOT / 'local_runtime/runs' / rid / 'results.tar') as archive:
+         tdr_hash = hashlib.sha256(audit.read(archive, MEMBER)).hexdigest()
+@@ -184,7 +225,7 @@
+     common.preflight('gui-' + rid)
+     local.mkdir(parents=True, exist_ok=False)
+     operation_root.mkdir(parents=True, exist_ok=False)
+-    request = {'schema': 'dram-see-v3-gui-request', 'run_id': rid, 'ledger_tag': tag,
++    request = {'schema': 'dram-see-v3-r50-main-gui-request', 'run_id': rid, 'ledger_tag': tag,
+                'archive_sha256': summary['archive_sha256'], 'tdr_sha256': tdr_hash,
+                'depended_source_files_sha256': dependency_hashes,
+                'state': 'RESERVED_NOT_YET_LAUNCHED', 'utc': now()}
+@@ -192,7 +233,7 @@
+     try:
+         cfg, ssh, _ = common.tcad.connection()
+         source = cfg['remote_root'].rstrip('/') + '/runs/' + rid
+-        target_parent = cfg['remote_root'].rstrip('/') + '/dram-see-v3/gui'
++        target_parent = cfg['remote_root'].rstrip('/') + '/dram-see-v3/r50-main-gui'
+         target = target_parent + '/' + rid
+         tcl, marker = render_tcl(source, target, rid, tdr_hash)
+ 
+@@ -265,7 +306,8 @@
+         source_check('source-hash-after')
+         if dependencies() != dependency_hashes or sha(CAPTURE) != CAPTURE_SHA:
+             raise ValueError('GUI/audit/capture implementation changed during evidence capture')
+-        evidence = {'schema': 'dram-see-v3-native-field-evidence', 'run_id': rid, 'ledger_tag': tag,
++        evidence = {'schema': 'dram-see-v3-r50-main-native-field-evidence', 'run_id': rid, 'ledger_tag': tag,
++                    'accepted_case_source': accepted_source, 'physical_revision': 'r50-main-r1',
+                     'archive_sha256': summary['archive_sha256'], 'tdr_member': MEMBER, 'tdr_sha256': tdr_hash,
+                     'remote_source_sha256_before_load': tdr_hash, 'remote_source_sha256_after_capture': tdr_hash,
+                     'native_loaded_file': source + '/' + MEMBER, 'condition': summary['parameters'],

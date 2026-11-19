@@ -1,0 +1,9 @@
+phase,couple_index,material,particle,range_cut_um,energy_cut_MeV,energy_cut_available
+"post_zero_event_init","0","G4_Galactic","gamma","0.01","0.00098999999999999999","1"
+"post_zero_event_init","0","G4_Galactic","e-","0.01","0.00098999999999999999","1"
+"post_zero_event_init","0","G4_Galactic","e+","0.01","0.00098999999999999999","1"
+"post_zero_event_init","0","G4_Galactic","proton","0.01","1.0000000000000002e-06","1"
+"post_zero_event_init","1","G4_Si","gamma","0.01","0.00098999999999999999","1"
+"post_zero_event_init","1","G4_Si","e-","0.01","0.00098999999999999999","1"
+"post_zero_event_init","1","G4_Si","e+","0.01","0.00098999999999999999","1"
+"post_zero_event_init","1","G4_Si","proton","0.01","1.0000000000000002e-06","1"

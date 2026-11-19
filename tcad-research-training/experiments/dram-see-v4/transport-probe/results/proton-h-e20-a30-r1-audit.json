@@ -1,0 +1,3290 @@
+{
+  "schema": "dram-see-v4-transport-audit-v1",
+  "mode": "events",
+  "run_dir": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\transport-probe\\runs\\proton-h-e20-a30-r1",
+  "passed": true,
+  "status": "TRANSPORT_RECORD_PROBE_PASSED",
+  "checks": {
+    "real_exits_and_frozen_hashes": {
+      "passed": true
+    },
+    "binary_source_environment_data_provenance": {
+      "passed": true
+    },
+    "initialized_mode_request_and_geometry": {
+      "passed": true
+    },
+    "serial_affinity": {
+      "passed": true
+    },
+    "actual_physics_inventory": {
+      "passed": true
+    },
+    "primary_events_tracks_steps_and_zero_events": {
+      "passed": true
+    },
+    "receipt_stable": {
+      "passed": true
+    }
+  },
+  "errors": [],
+  "audit_code_sha256": "cb1b6f9c499ff429b18c71ffa63b21213c6205f7c683d120bba26a020f5f1d8f",
+  "tolerances": {
+    "energy_abs_MeV": 1e-12,
+    "energy_relative": 1e-09,
+    "time_abs_ns": 1e-09,
+    "position_abs_um": 1e-09,
+    "direction_norm_abs": 1e-10
+  },
+  "limits": [
+    "Arithmetic and provenance validation, not Geant4 physics calibration or statistical convergence.",
+    "No full rest-mass/nuclear-excitation/escaped-energy balance is claimed.",
+    "All primary events, zero silicon deposition, all tracked descendants and all recorded steps remain in denominator.",
+    "QGSP_BIC standard neutron tracking cut at 10000 ns is retained and counted; delayed histories beyond it are outside scope.",
+    "No TCAD source mapping, joint injection, DRAM response or particle event-rate estimate."
+  ],
+  "physics_calibrated": false,
+  "full_mass_energy_conservation_verified": false,
+  "record_sha256": "b88f39f9bdd3bae0b8c1a634eccf70ceec11e2387e209772fad1ec63aa7fcfd1",
+  "run_id": "proton-h-e20-a30-r1",
+  "exit_codes": {
+    "runner_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0
+  },
+  "runner_exit_code_scope": "SSH process exit; not an additional independent solver subprocess exit",
+  "raw_archive": {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a30-r1/results.tar",
+    "sha256": "cea89508426b06a40d1d0163ba6e236d7ca531bf90c19af74c4ba9a560e15ff5"
+  },
+  "input_sha256": {
+    "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+    "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+    "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+    "input-hashes.sha256": "74eebb64f989fbb03af77e94629d901cc5a999ff3b850fa1b533e8913bfd0978",
+    "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+    "request.json": "ef8671c49cd0e706a1baa82867e1c6667ddd89330fc07951b5bc447022dcd2d4",
+    "task.sh": "5840f26441890560a7fa53276862003e3c82e58aefbcf7fa559ae4c68ffda075",
+    "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+    "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+  },
+  "output_sha256": {
+    "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+    "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+    "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+    "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+    "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+    "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+    "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+    "events.csv": "4aed4198a5eb054400f0aeaa1cd1a22583d20be3a1cb5b33bfbcaee69c68f7af",
+    "execution.log": "3cd260da25d717826095976b13a99fab249f40ddaea5e54f851eac424706a9f2",
+    "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+    "input-hashes.sha256": "74eebb64f989fbb03af77e94629d901cc5a999ff3b850fa1b533e8913bfd0978",
+    "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+    "metadata.json": "08b7c6f545c02f879862c09eac19176210dc247df16a08d2541254233613a112",
+    "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+    "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+    "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+    "request.json": "ef8671c49cd0e706a1baa82867e1c6667ddd89330fc07951b5bc447022dcd2d4",
+    "run.sh": "690f3b141402156d2dede9a0db09e1edf679db8ea13e7027f33fbfadcde6bcec",
+    "started-utc.txt": "d8ed1191977b3c338f25a5d09921aa98cfa5baabc5785723a235916e1e22310d",
+    "status-history.jsonl": "4273496780fbe7b1034e4c6cb06a9b269879309bc48566d732054ec3f89df564",
+    "status.json": "fb1ec11394df6225806f9f64e321dfd24c3cfebb92380d810699861f5612c059",
+    "steps.csv": "926eef8b6785ed45e8fb9dc2dd5c31123c20fe84c7eafaf497e49e9186ddace6",
+    "task.sh": "5840f26441890560a7fa53276862003e3c82e58aefbcf7fa559ae4c68ffda075",
+    "tracks.csv": "095eea1c9ff03db67e6210ac6f557b035dcb03e0a7603dc3845ebc9e120ec3d5",
+    "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+    "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+  },
+  "probe_contract_sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+  "request": {
+    "label": "proton-h-e20-a30-r1",
+    "mode": "thin",
+    "arm": "H",
+    "energy_MeV": 20,
+    "angle_deg": 30,
+    "seed": 40131206,
+    "event_count": 2,
+    "geometry_id": "v4-thin-si-l025-r1",
+    "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+    "miss": 0,
+    "stage": "small-events"
+  },
+  "binary_evidence": "actual_local_binary_hash",
+  "binary_sha256": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+  "environment_sha256": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+  "dataset_inventory_sha256": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+  "source_sha256": {
+    "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+  },
+  "data_binding": {
+    "required_for_arm": {
+      "G4LEDATA": "G4EMLOW7.13",
+      "G4ENSDFSTATEDATA": "G4ENSDFSTATE2.3",
+      "G4LEVELGAMMADATA": "PhotonEvaporation5.7",
+      "G4PARTICLEXSDATA": "G4PARTICLEXS3.1.1"
+    },
+    "inventory": [
+      {
+        "env": "G4LEDATA",
+        "path": "/home/tcad/research-training/dram-see-v1/software/data-complete/G4EMLOW7.13",
+        "file_count": 11209,
+        "bytes": 489005134,
+        "content_manifest_sha256": "910435bdeb62f9951f43a78a1d81cd7fb6013f53e18a7d02b3d770ffe0917c98"
+      },
+      {
+        "env": "G4ENSDFSTATEDATA",
+        "path": "/home/tcad/research-training/dram-see-v1/software/data/G4ENSDFSTATE2.3",
+        "file_count": 3,
+        "bytes": 1788263,
+        "content_manifest_sha256": "0f632edf73f960138cce994e1213b39bcc94320860a57374cb6fc590b684d6f6"
+      },
+      {
+        "env": "G4LEVELGAMMADATA",
+        "path": "/home/tcad/research-training/dram-see-v4/software/data/PhotonEvaporation5.7",
+        "file_count": 3110,
+        "bytes": 37449830,
+        "content_manifest_sha256": "3c297e48a194d2099b5cd1ce4327ded787d9a3df7fa1f8eb43ca46563f433818"
+      },
+      {
+        "env": "G4PARTICLEXSDATA",
+        "path": "/home/tcad/research-training/dram-see-v4/software/data/G4PARTICLEXS3.1.1",
+        "file_count": 2000,
+        "bytes": 22482907,
+        "content_manifest_sha256": "f21a696fdab229815ae5a0a77cd823b24360e67f70b2da96cba27f3cb9aa1eb6"
+      }
+    ],
+    "scope": "Original recorded content-manifest hashes, not a new read of remote dataset bytes."
+  },
+  "metadata": {
+    "schema": "v4-transport-probe-r1",
+    "mode": "thin",
+    "arm": "H",
+    "energy_MeV": 20,
+    "angle_deg": 30,
+    "seed": 40131206,
+    "events_requested": 2,
+    "miss": false,
+    "geant4_version": "$Name: geant4-10-07-patch-03 $",
+    "geant4_version_number": 1073,
+    "run_manager": "G4RunManager",
+    "multithreaded_run_manager": false,
+    "requested_threads": 1,
+    "compiler": "10.2.0",
+    "rng_engine": "MixMaxRng",
+    "production_cut_um": 0.01,
+    "max_step_um": 0.02,
+    "max_step_region": "Si",
+    "step_limiter_charged_only": true,
+    "primary_particle": "proton",
+    "beam_position_um": [
+      0.7005773502691895,
+      -0.001,
+      0
+    ],
+    "beam_direction": [
+      -0.49999999999999994,
+      0.8660254037844387,
+      0
+    ],
+    "surface_position_um": [
+      0.7,
+      0,
+      0
+    ],
+    "silicon_bounds_um": {
+      "x": [
+        0,
+        0.85
+      ],
+      "y": [
+        0,
+        1.2
+      ],
+      "z": [
+        -0.5,
+        0.5
+      ]
+    },
+    "world_half_extent_um": 10,
+    "standard_neutron_time_limit_ns": 10000,
+    "user_track_killing": false,
+    "initialization_method": "Initialize_then_BeamOn_0",
+    "inventory_phases": [
+      "post_zero_event_init",
+      "post_events"
+    ],
+    "units": {
+      "length": "um",
+      "time": "ns",
+      "energy": "MeV",
+      "charge": "eplus",
+      "direction": "unit_vector"
+    },
+    "scope": "Interface and mechanism records only; E retains Opt4 nuclear stopping/NIEL; H retains standard 10us neutron tracking limit; no SEE probability or TCAD response",
+    "cut_semantics": "Production cut is a secondary-production range threshold, not a stop-track cutoff or max step; BeamOn(0) builds tables without particle events",
+    "ancestry_semantics": "Reconstruct creator ancestry from parent_id and creator_type/subtype; primary_hadronic_seen flags track primary type-fHadronic interactions in actual event order, not creator ancestry",
+    "output_precision_digits": 17
+  },
+  "status_record": {
+    "schema": "v4-transport-probe-status-r1",
+    "state": "COMPLETED",
+    "events_requested": 2,
+    "events_completed": 2,
+    "tracks_completed": 2,
+    "steps_recorded": 144,
+    "beam_on_called": true,
+    "initialized": true,
+    "zero_event_beam_on_called": true,
+    "nonzero_event_beam_on_called": true,
+    "physics_tables_built": true,
+    "error": null
+  },
+  "geometry": {
+    "silicon_bounds_um": {
+      "x": [
+        0,
+        0.85
+      ],
+      "y": [
+        0,
+        1.2
+      ],
+      "z": [
+        -0.5,
+        0.5
+      ]
+    },
+    "world_half_extent_um": 10,
+    "beam_position_um": [
+      0.7005773502691895,
+      -0.001,
+      0
+    ],
+    "beam_direction": [
+      -0.49999999999999994,
+      0.8660254037844387,
+      0
+    ],
+    "surface_position_um": [
+      0.7,
+      0,
+      0
+    ]
+  },
+  "serial_evidence": {
+    "run_manager": "G4RunManager",
+    "requested_threads": 1,
+    "observed_threads": [
+      1
+    ],
+    "observed_cpu_lists": [
+      "0"
+    ]
+  },
+  "physics_inventory": {
+    "constructors": [
+      {
+        "phase": "post_zero_event_init",
+        "index": "0",
+        "name": "G4EmStandard_opt4",
+        "physics_type": "2"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "1",
+        "name": "G4GammaLeptoNuclearPhys",
+        "physics_type": "3"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "2",
+        "name": "Decay",
+        "physics_type": "4"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "3",
+        "name": "hElasticWEL_CHIPS_XS",
+        "physics_type": "5"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "4",
+        "name": "hInelastic QGSP_BIC",
+        "physics_type": "6"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "5",
+        "name": "stopping",
+        "physics_type": "7"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "6",
+        "name": "IonElasticPhysics",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "7",
+        "name": "ionInelasticFTFP_BIC",
+        "physics_type": "8"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "8",
+        "name": "neutronTrackingCut",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "9",
+        "name": "stepLimiter",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_events",
+        "index": "0",
+        "name": "G4EmStandard_opt4",
+        "physics_type": "2"
+      },
+      {
+        "phase": "post_events",
+        "index": "1",
+        "name": "G4GammaLeptoNuclearPhys",
+        "physics_type": "3"
+      },
+      {
+        "phase": "post_events",
+        "index": "2",
+        "name": "Decay",
+        "physics_type": "4"
+      },
+      {
+        "phase": "post_events",
+        "index": "3",
+        "name": "hElasticWEL_CHIPS_XS",
+        "physics_type": "5"
+      },
+      {
+        "phase": "post_events",
+        "index": "4",
+        "name": "hInelastic QGSP_BIC",
+        "physics_type": "6"
+      },
+      {
+        "phase": "post_events",
+        "index": "5",
+        "name": "stopping",
+        "physics_type": "7"
+      },
+      {
+        "phase": "post_events",
+        "index": "6",
+        "name": "IonElasticPhysics",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_events",
+        "index": "7",
+        "name": "ionInelasticFTFP_BIC",
+        "physics_type": "8"
+      },
+      {
+        "phase": "post_events",
+        "index": "8",
+        "name": "neutronTrackingCut",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_events",
+        "index": "9",
+        "name": "stepLimiter",
+        "physics_type": "0"
+      }
+    ],
+    "proton_processes": [
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "0",
+        "process": "Transportation",
+        "process_type": "1",
+        "process_subtype": "91",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "1",
+        "process": "msc",
+        "process_type": "2",
+        "process_subtype": "10",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "2",
+        "process": "hIoni",
+        "process_type": "2",
+        "process_subtype": "2",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "3",
+        "process": "hBrems",
+        "process_type": "2",
+        "process_subtype": "3",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "4",
+        "process": "hPairProd",
+        "process_type": "2",
+        "process_subtype": "4",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "5",
+        "process": "CoulombScat",
+        "process_type": "2",
+        "process_subtype": "1",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "6",
+        "process": "nuclearStopping",
+        "process_type": "2",
+        "process_subtype": "8",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "7",
+        "process": "hadElastic",
+        "process_type": "4",
+        "process_subtype": "111",
+        "hadronic_model_count": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "8",
+        "process": "protonInelastic",
+        "process_type": "4",
+        "process_subtype": "121",
+        "hadronic_model_count": "3"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "9",
+        "process": "StepLimiter",
+        "process_type": "7",
+        "process_subtype": "401",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "10",
+        "process": "UserSpecialCut",
+        "process_type": "7",
+        "process_subtype": "402",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "0",
+        "process": "Transportation",
+        "process_type": "1",
+        "process_subtype": "91",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "1",
+        "process": "msc",
+        "process_type": "2",
+        "process_subtype": "10",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "2",
+        "process": "hIoni",
+        "process_type": "2",
+        "process_subtype": "2",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "3",
+        "process": "hBrems",
+        "process_type": "2",
+        "process_subtype": "3",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "4",
+        "process": "hPairProd",
+        "process_type": "2",
+        "process_subtype": "4",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "5",
+        "process": "CoulombScat",
+        "process_type": "2",
+        "process_subtype": "1",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "6",
+        "process": "nuclearStopping",
+        "process_type": "2",
+        "process_subtype": "8",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "7",
+        "process": "hadElastic",
+        "process_type": "4",
+        "process_subtype": "111",
+        "hadronic_model_count": "1"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "8",
+        "process": "protonInelastic",
+        "process_type": "4",
+        "process_subtype": "121",
+        "hadronic_model_count": "3"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "9",
+        "process": "StepLimiter",
+        "process_type": "7",
+        "process_subtype": "401",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "10",
+        "process": "UserSpecialCut",
+        "process_type": "7",
+        "process_subtype": "402",
+        "hadronic_model_count": "0"
+      }
+    ],
+    "hadronic_models": [
+      {
+        "phase": "post_zero_event_init",
+        "particle": "GenericIon",
+        "pdg": "0",
+        "process": "ionElastic",
+        "model_index": "0",
+        "model": "NNDiffuseElastic",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "GenericIon",
+        "pdg": "0",
+        "process": "ionInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "GenericIon",
+        "pdg": "0",
+        "process": "ionInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "He3",
+        "pdg": "1000020030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "He3",
+        "pdg": "1000020030",
+        "process": "He3Inelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "He3",
+        "pdg": "1000020030",
+        "process": "He3Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "alpha",
+        "pdg": "1000020040",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "alpha",
+        "pdg": "1000020040",
+        "process": "alphaInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "alpha",
+        "pdg": "1000020040",
+        "process": "alphaInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "anti_He3Inelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "anti_alphaInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "anti_deuteronInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "anti_lambdaInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "anti_lambdaInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "anti_neutronInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_omega-",
+        "pdg": "-3334",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_omega-",
+        "pdg": "-3334",
+        "process": "anti_omega-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_omega-",
+        "pdg": "-3334",
+        "process": "anti_omega-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "anti_protonInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "anti_sigma+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "anti_sigma+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma-",
+        "pdg": "-3112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma-",
+        "pdg": "-3112",
+        "process": "anti_sigma-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma-",
+        "pdg": "-3112",
+        "process": "anti_sigma-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_sigma0",
+        "pdg": "-3212",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "anti_tritonInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi-",
+        "pdg": "-3312",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi-",
+        "pdg": "-3312",
+        "process": "anti_xi-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi-",
+        "pdg": "-3312",
+        "process": "anti_xi-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "anti_xi0Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "anti_xi0Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "deuteron",
+        "pdg": "1000010020",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "deuteron",
+        "pdg": "1000010020",
+        "process": "dInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "deuteron",
+        "pdg": "1000010020",
+        "process": "dInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "e+",
+        "pdg": "-11",
+        "process": "electronNuclear",
+        "model_index": "0",
+        "model": "G4ElectroVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "e-",
+        "pdg": "11",
+        "process": "electronNuclear",
+        "model_index": "0",
+        "model": "G4ElectroVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "gamma",
+        "pdg": "22",
+        "process": "photonNuclear",
+        "model_index": "0",
+        "model": "GammaNPreco",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "200"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "gamma",
+        "pdg": "22",
+        "process": "photonNuclear",
+        "model_index": "1",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "199",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "gamma",
+        "pdg": "22",
+        "process": "photonNuclear",
+        "model_index": "2",
+        "model": "TheoFSGenerator",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "kaon+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "kaon+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "kaon+Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "kaon-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "kaon-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "kaon-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "kaon0LInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "kaon0LInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "kaon0LInelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "kaon0SInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "kaon0SInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "kaon0SInelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "lambdaInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "lambdaInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "lambdaInelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "mu+",
+        "pdg": "-13",
+        "process": "muonNuclear",
+        "model_index": "0",
+        "model": "G4MuonVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "mu-",
+        "pdg": "13",
+        "process": "muonNuclear",
+        "model_index": "0",
+        "model": "G4MuonVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "mu-",
+        "pdg": "13",
+        "process": "muMinusCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticCHIPS",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "neutronInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "neutronInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "neutronInelastic",
+        "model_index": "2",
+        "model": "Binary Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "nCapture",
+        "model_index": "0",
+        "model": "nRadCapture",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "omega-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "omega-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "omega-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticGlauber",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "pi+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "pi+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "pi+Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticGlauber",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "pi-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "pi-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "pi-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticCHIPS",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "protonInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "protonInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "protonInelastic",
+        "model_index": "2",
+        "model": "Binary Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "sigma+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "sigma+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "sigma+Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "sigma-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "sigma-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "sigma-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "triton",
+        "pdg": "1000010030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "triton",
+        "pdg": "1000010030",
+        "process": "tInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "triton",
+        "pdg": "1000010030",
+        "process": "tInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "xi-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "xi-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "xi-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "xi0Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "xi0Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "xi0Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "GenericIon",
+        "pdg": "0",
+        "process": "ionElastic",
+        "model_index": "0",
+        "model": "NNDiffuseElastic",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "GenericIon",
+        "pdg": "0",
+        "process": "ionInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "GenericIon",
+        "pdg": "0",
+        "process": "ionInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "He3",
+        "pdg": "1000020030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "He3",
+        "pdg": "1000020030",
+        "process": "He3Inelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "He3",
+        "pdg": "1000020030",
+        "process": "He3Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "alpha",
+        "pdg": "1000020040",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "alpha",
+        "pdg": "1000020040",
+        "process": "alphaInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "alpha",
+        "pdg": "1000020040",
+        "process": "alphaInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "anti_He3Inelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_He3",
+        "pdg": "-1000020030",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "anti_alphaInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_alpha",
+        "pdg": "-1000020040",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "anti_deuteronInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_deuteron",
+        "pdg": "-1000010020",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "anti_lambdaInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "anti_lambdaInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_lambda",
+        "pdg": "-3122",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "anti_neutronInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_neutron",
+        "pdg": "-2112",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_omega-",
+        "pdg": "-3334",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_omega-",
+        "pdg": "-3334",
+        "process": "anti_omega-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_omega-",
+        "pdg": "-3334",
+        "process": "anti_omega-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "anti_protonInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_proton",
+        "pdg": "-2212",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "anti_sigma+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "anti_sigma+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma+",
+        "pdg": "-3222",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma-",
+        "pdg": "-3112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma-",
+        "pdg": "-3112",
+        "process": "anti_sigma-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma-",
+        "pdg": "-3112",
+        "process": "anti_sigma-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_sigma0",
+        "pdg": "-3212",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100.09999999999999"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "hadElastic",
+        "model_index": "1",
+        "model": "AntiAElastic",
+        "min_energy_MeV": "100",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "anti_tritonInelastic",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_triton",
+        "pdg": "-1000010030",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi-",
+        "pdg": "-3312",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi-",
+        "pdg": "-3312",
+        "process": "anti_xi-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi-",
+        "pdg": "-3312",
+        "process": "anti_xi-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "anti_xi0Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "anti_xi0Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "anti_xi0",
+        "pdg": "-3322",
+        "process": "hFritiofCaptureAtRest",
+        "model_index": "0",
+        "model": "FTFP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "deuteron",
+        "pdg": "1000010020",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "deuteron",
+        "pdg": "1000010020",
+        "process": "dInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "deuteron",
+        "pdg": "1000010020",
+        "process": "dInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "e+",
+        "pdg": "-11",
+        "process": "electronNuclear",
+        "model_index": "0",
+        "model": "G4ElectroVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "e-",
+        "pdg": "11",
+        "process": "electronNuclear",
+        "model_index": "0",
+        "model": "G4ElectroVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "gamma",
+        "pdg": "22",
+        "process": "photonNuclear",
+        "model_index": "0",
+        "model": "GammaNPreco",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "200"
+      },
+      {
+        "phase": "post_events",
+        "particle": "gamma",
+        "pdg": "22",
+        "process": "photonNuclear",
+        "model_index": "1",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "199",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "gamma",
+        "pdg": "22",
+        "process": "photonNuclear",
+        "model_index": "2",
+        "model": "TheoFSGenerator",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "kaon+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "kaon+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon+",
+        "pdg": "321",
+        "process": "kaon+Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "kaon-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "kaon-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "kaon-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon-",
+        "pdg": "-321",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "kaon0LInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "kaon0LInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0L",
+        "pdg": "130",
+        "process": "kaon0LInelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "kaon0SInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "kaon0SInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "kaon0S",
+        "pdg": "310",
+        "process": "kaon0SInelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "lambdaInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "lambdaInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "lambda",
+        "pdg": "3122",
+        "process": "lambdaInelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "mu+",
+        "pdg": "-13",
+        "process": "muonNuclear",
+        "model_index": "0",
+        "model": "G4MuonVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "mu-",
+        "pdg": "13",
+        "process": "muonNuclear",
+        "model_index": "0",
+        "model": "G4MuonVDNuclearModel",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "1000000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "mu-",
+        "pdg": "13",
+        "process": "muMinusCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticCHIPS",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "neutronInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "neutronInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "neutronInelastic",
+        "model_index": "2",
+        "model": "Binary Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "neutron",
+        "pdg": "2112",
+        "process": "nCapture",
+        "model_index": "0",
+        "model": "nRadCapture",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "omega-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "omega-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "omega-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "omega-",
+        "pdg": "3334",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticGlauber",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "pi+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "pi+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi+",
+        "pdg": "211",
+        "process": "pi+Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticGlauber",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "pi-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "pi-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "pi-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "pi-",
+        "pdg": "-211",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticCHIPS",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "protonInelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "protonInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process": "protonInelastic",
+        "model_index": "2",
+        "model": "Binary Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "sigma+Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "sigma+Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma+",
+        "pdg": "3222",
+        "process": "sigma+Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "sigma-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "sigma-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "sigma-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "sigma-",
+        "pdg": "3112",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "triton",
+        "pdg": "1000010030",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "triton",
+        "pdg": "1000010030",
+        "process": "tInelastic",
+        "model_index": "0",
+        "model": "Binary Light Ion Cascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "triton",
+        "pdg": "1000010030",
+        "process": "tInelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "xi-Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "xi-Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "xi-Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi-",
+        "pdg": "3312",
+        "process": "hBertiniCaptureAtRest",
+        "model_index": "0",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "hadElastic",
+        "model_index": "0",
+        "model": "hElasticLHEP",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "xi0Inelastic",
+        "model_index": "0",
+        "model": "QGSP",
+        "min_energy_MeV": "12000",
+        "max_energy_MeV": "100000000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "xi0Inelastic",
+        "model_index": "1",
+        "model": "FTFP",
+        "min_energy_MeV": "3000",
+        "max_energy_MeV": "25000"
+      },
+      {
+        "phase": "post_events",
+        "particle": "xi0",
+        "pdg": "3322",
+        "process": "xi0Inelastic",
+        "model_index": "2",
+        "model": "BertiniCascade",
+        "min_energy_MeV": "0",
+        "max_energy_MeV": "6000"
+      }
+    ],
+    "energy_cut_unavailable_rows": 0,
+    "cut_scope": "Initialize plus BeamOn(0) builds tables without primary events; unavailable energy tables fail.",
+    "model_range_scope": "Reported global model limits, not material-specific coverage."
+  },
+  "event_summary": {
+    "primary_event_denominator": 2,
+    "tracks": 2,
+    "steps": 144,
+    "zero_si_events": 0,
+    "events_with_hadronic_steps": 0,
+    "track_species_counts": {
+      "proton": 2
+    },
+    "hadronic_creator_track_counts": {},
+    "hadronic_interaction_step_counts": {},
+    "si_ionizing_MeV": 0.008300372730062785,
+    "escaped_track_count": 2,
+    "escaped_kinetic_energy_MeV": 39.991699627269924,
+    "neutron_tracking_cut_steps": 0,
+    "neutron_tracking_cut_tracks": 0,
+    "scope": "Descriptive counts for fixed probes; no event-probability or full nuclear mass-energy closure estimate."
+  },
+  "derived_track_lineage": [
+    {
+      "event_id": 0,
+      "track_id": 1,
+      "creator_lineage_has_hadronic": false,
+      "meaning": "At least one creator process in the parent chain has Geant4 process type 4; not every post-interaction primary step."
+    },
+    {
+      "event_id": 1,
+      "track_id": 1,
+      "creator_lineage_has_hadronic": false,
+      "meaning": "At least one creator process in the parent chain has Geant4 process type 4; not every post-interaction primary step."
+    }
+  ]
+}

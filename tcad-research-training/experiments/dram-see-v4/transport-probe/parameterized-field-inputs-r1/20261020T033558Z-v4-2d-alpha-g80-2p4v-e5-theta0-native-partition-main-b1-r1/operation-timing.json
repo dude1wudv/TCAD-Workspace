@@ -1,0 +1,225 @@
+{
+  "charge_window_s": [
+    7.60984e-08,
+    8.1e-08
+  ],
+  "driver_isolate_s": 6.92e-08,
+  "hold_window_s": [
+    6.92e-08,
+    8.1e-08
+  ],
+  "mathematical_source_window_s": [
+    7.60984e-08,
+    7.61016e-08
+  ],
+  "native_observation_window_s": [
+    7.60984e-08,
+    7.61016e-08
+  ],
+  "origin": "prescribed_input",
+  "precharge_time_s": 6.92e-08,
+  "precharge_transition_window_s": [
+    6.72e-08,
+    6.73e-08
+  ],
+  "read_fall_window_s": [
+    8.52e-08,
+    8.53e-08
+  ],
+  "read_rise_window_s": [
+    8.11e-08,
+    8.12e-08
+  ],
+  "read_window_s": [
+    8.51e-08,
+    8.52e-08
+  ],
+  "schema": "dram-see-v4-2d-operation-timing-r1",
+  "segments": [
+    {
+      "decrement": 2.0,
+      "end_s": 2e-09,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 0.0,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 2.1e-09,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 2e-09,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 6.71e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 2.1e-09,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 6.72e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 6.71e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 6.73e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 6.72e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 6.92e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 6.73e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 7.60984e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 6.92e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 7.61016e-08,
+      "increment": 1.3,
+      "initial_step_s": 4e-15,
+      "max_step_s": 4e-14,
+      "min_step_s": 1e-18,
+      "start_s": 7.60984e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.1e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 7.61016e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.11e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 8.1e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.12e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 8.11e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.51e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 8.12e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.52e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 8.51e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.53e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-11,
+      "min_step_s": 1e-18,
+      "start_s": 8.52e-08,
+      "time_integrator": "BE"
+    },
+    {
+      "decrement": 2.0,
+      "end_s": 8.82e-08,
+      "increment": 1.3,
+      "initial_step_s": 1e-13,
+      "max_step_s": 1e-10,
+      "min_step_s": 1e-18,
+      "start_s": 8.53e-08,
+      "time_integrator": "BE"
+    }
+  ],
+  "selection_provenance": {
+    "description": "Development selection: 2x the complete measured DC inverse-current estimate; round write plateau up to 5 ns and read plateau up to 1 ns. Validate both actual transient bits; static estimates are not acceptance.",
+    "references": {
+      "dc-1p8v-complete.json": "43fae1a694d570094c4a64f37a3216f86abc89db798e751bc4133c1e923b940a",
+      "dc-2p4v-complete.json": "e4e5257f98df2b6fba70ca2ccdd849ab3d073098ccc9df6bfe31a2e40795e067",
+      "original-bit1-failure.json": "52032179dc8d0ae2a5d9465d88d09894764b3942371d5e6e5886c6b0b72d4250",
+      "selection-decision.json": "385f6a2ed8c86316db40898b09914a7fe452feed10895de501f94d0cab311e49"
+    }
+  },
+  "simulation_window_s": [
+    0.0,
+    8.82e-08
+  ],
+  "source_epoch_s": 7.61e-08,
+  "time_unit": "s",
+  "timing_id": "operating-2p4v-write65ns-read4ns-r1",
+  "voltage_levels_V": {
+    "body_V": 0.0,
+    "gate_high_V": 2.4,
+    "gate_low_V": -0.5,
+    "neutral_sn_V": 0.6,
+    "plate_V": 0.6,
+    "precharge_V": 0.6,
+    "write0_V": 0.0,
+    "write1_V": 1.2
+  },
+  "write_end_s": 6.71e-08,
+  "write_fall_window_s": [
+    6.71e-08,
+    6.72e-08
+  ],
+  "write_rise_window_s": [
+    2e-09,
+    2.1e-09
+  ]
+}

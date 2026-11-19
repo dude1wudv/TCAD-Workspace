@@ -1,0 +1,43 @@
+{
+  "stage": "study_and_experiment_design",
+  "started_at": "2026-10-12T17:53:27.531219-08:00",
+  "user_instruction": "逐步落实计划，启动任务，先来学习和设计之后的实验",
+  "active_scope": "Literature study and concrete experiment design; no solver or training launched this stage.",
+  "previous_planning_files": [
+    {
+      "path": "device-basis.md",
+      "sha256": "df9458765648e38fb5fd3682efbcc198a815cf11428e92623f7cee67f8cbdd70"
+    },
+    {
+      "path": "interface-contract.md",
+      "sha256": "dee4f4438166cf8c2d15b351a49e1373347a1ab18de1bb8bc3cc6d1ce7d677c1"
+    },
+    {
+      "path": "MANIFEST.md",
+      "sha256": "5e6d2d2c853932d8620441a617c0ec11b20561d1737b3340598c9df802d23527"
+    },
+    {
+      "path": "mentor-response.md",
+      "sha256": "26c7f44f8743e3e08b7b34f441cf64f68531da8aa0fa71eaddf14d1b60ca27dd"
+    },
+    {
+      "path": "plan.md",
+      "sha256": "3a2e8147bbcc48e8b2c95960a833a91a82998be08308c65b10b0911cf9107500"
+    },
+    {
+      "path": "planning-review.json",
+      "sha256": "64ab8c106c845f924a4a446763bd5d8813126955701a86c84b39401898069121"
+    },
+    {
+      "path": "README.md",
+      "sha256": "2b0939885c57008c7753e559d4d59f9d9d739bc5110fee6bcbcadced29315db0"
+    },
+    {
+      "path": "work-items.md",
+      "sha256": "3c65bec189150a08178412731139e049496dd278ff47d98fd93fd72d37e0126a"
+    }
+  ],
+  "protected_v3_anchors_ref": "../planning-review.json",
+  "owner": "root",
+  "old_heartbeat_resumed": false
+}

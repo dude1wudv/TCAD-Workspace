@@ -1,0 +1,65 @@
+{
+  "schema": "tcad-r06-launch-preflight-diagnosis-v1",
+  "utc": "2026-11-17T17:57:48.399832+00:00",
+  "run_id": "auto-r06-p0-d0-o2-zero-prefix-a-r1-2f24d43e305e4322",
+  "task_id": "r06-p0-d0-o2-zero-prefix-a-r1",
+  "classification": "engineering_launch_unknown_not_numerical_failure",
+  "read_only_reproduction_matches_original_stderr": true,
+  "original_stderr": "ERROR: Multicore shared pool does not admit Geant4 operations; use the original single-core profile in an idle pool\n",
+  "first_blocking_local_record": {
+    "path": "local_runtime/cloud-benchmark/centos79-guest-20261116/dram-see-v4/transport-probe/operations/auto-r05-l08-d0-c0-proton-v1-ceb6efbf106c41d9/operation.json",
+    "sha256": "c3906ef0384bb75a54768e968fd940c072edb44d5a3f0f45c2c76dd64c870134",
+    "state": "FAILED_BEFORE_LAUNCH",
+    "message": "Multicore shared pool does not admit Geant4 operations; use the original single-core profile in an idle pool"
+  },
+  "unrecognized_failed_before_launch_records": [
+    {
+      "path": "local_runtime/cloud-benchmark/centos79-guest-20261116/dram-see-v4/transport-probe/operations/auto-r05-l08-d0-c0-proton-v1-ceb6efbf106c41d9/operation.json",
+      "sha256": "c3906ef0384bb75a54768e968fd940c072edb44d5a3f0f45c2c76dd64c870134",
+      "label": "auto-r05-l08-d0-c0-proton-v1-ceb6efbf106c41d9",
+      "state": "FAILED_BEFORE_LAUNCH",
+      "parallel_slot_released": null,
+      "terminal_reconciliation": {}
+    },
+    {
+      "path": "local_runtime/cloud-benchmark/centos79-guest-20261116/dram-see-v4/transport-probe/operations/auto-r05-l08-d0-c1-proton-v1-ee6e30e52b6b4e86/operation.json",
+      "sha256": "dd0feb02c1b3a207867e7f78b1f45a70bf4c65be9427435cc4823f16e589d134",
+      "label": "auto-r05-l08-d0-c1-proton-v1-ee6e30e52b6b4e86",
+      "state": "FAILED_BEFORE_LAUNCH",
+      "parallel_slot_released": null,
+      "terminal_reconciliation": {}
+    }
+  ],
+  "mechanism": "parallel_assert_local complete-state whitelist omits FAILED_BEFORE_LAUNCH; it attempts to reinterpret original r3 operation policy under the new r4 TCAD configuration, and parallel_policy rejects operation kind on multicore before local new-run directory creation",
+  "evidence_bindings": {
+    "scripts/tcad.py": "b9357fade5a7daa174513ca7afcbdf9b5104ae9fff1e59293af46e97fc80932f",
+    "automation/server-codex/runtime.py": "9cc7fbdc6ebc22605ca2db9231078356bb47a344f6c8706b1f43776bf01f20ed",
+    "local_runtime/cloud-benchmark/connection-local-centos79-mc2-four.json": "93bd322f12efe93fc8205a7a7559a8b1b54eda4873923aef5e8485081adc45a3",
+    "experiments/dram-se-r06/p0-bootstrap-activation-r1/original-submission-readback.json": "e9b53c3a7d3d4979b35e51135a450652bd5d40359e0866d78f63a6926bfdc15c"
+  },
+  "code_anchors": {
+    "scripts/tcad.py": [
+      895,
+      904,
+      921,
+      1435,
+      2016,
+      2029,
+      2032
+    ],
+    "automation/server-codex/runtime.py": [
+      481,
+      488,
+      493,
+      824,
+      834,
+      835
+    ]
+  },
+  "safety_boundary": "Local reproduction identifies this guard defect, but does not certify the uncertain new run as unlaunched or authorize replay; original Runtime must reconcile that exact ID using original evidence",
+  "required_maintenance": "Teach the original runner local preflight to recognize only verified terminal unlaunched receipts without reinterpreting historical profiles; preserve rejection of incomplete/unknown receipts. Independently resolve the already committed new TCAD intent along its original ID before further scheduling. Add focused regression coverage for verified terminal vs incomplete records.",
+  "changes_made_to_runner_controller_policy_profiles_queue_or_ledger": false,
+  "ssh_run_collect_status_or_lease_calls": false,
+  "repair_task_created": false,
+  "scientific_gate_passed": false
+}

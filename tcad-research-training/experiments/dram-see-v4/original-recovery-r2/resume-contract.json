@@ -1,0 +1,27 @@
+{
+  "schema": "dram-see-v4-cleanup-origin-resume-contract-r2",
+  "adopt_label": "r5-a6-b1-time-r1",
+  "new_solver_calls_for_resume": 0,
+  "old_owner": {
+    "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-20261014/continuation/execution.json",
+    "sha256": "926fb638edccaaf310967fcbe14443ec62d531d848ff903770de46a0eba6fe75"
+  },
+  "failure": {
+    "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-20261014/cleanup-recovery-r2/20261014T121119Z/failure.json",
+    "sha256": "e54d760bb0efc8e5e0227629ba8e2366af16cc506dfdd6bf9ac3434ff14159ef"
+  },
+  "a6_gate": {
+    "path": "local_runtime/dram-see-v4/interface-completion-r1/gates/a6-b1-time.json",
+    "sha256": "88ae4ba0f7a191484ff2c00bb1f36427494cea238d4da3354f6c85726cbef6bd"
+  },
+  "a6_outcome": {
+    "path": "local_runtime/dram-see-v4/interface-completion-r1/outcomes/r5-a6-b1-time-r1.json",
+    "sha256": "c0342cedced2d7ee7d3387c97e00277f365680a71f1ad6b7164022a2d92eb798"
+  },
+  "original_r1_release": {
+    "path": "experiments/dram-see-v4/original-recovery-r1/release.json",
+    "sha256": "5f36ce180ce52c525e8bc023d50f18c8d080ad9f1d5c1f565af642f66bb8076f"
+  },
+  "physical_threshold_changes": false,
+  "resume_reason": "A6 passed; frozen cleanup origin checker needs explicit original/r1 origin validation before continuation."
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "dram-see-v4-single-original-recovery-release-r1",
+  "passed": true,
+  "created_utc": "2026-10-14T10:28:41.892007+00:00",
+  "files_sha256": {
+    "experiments/dram-see-v4/original-recovery-r1/acceptance.py": "29314dd3de9c8ef56d027a9325719ba2ad85a89094e0272433d46ef914cd058e",
+    "experiments/dram-see-v4/original-recovery-r1/campaign_runner.py": "1d2af4bcde61dc137686e1b575f5e09e8d3e819b947708302dde939a33dd7cb5",
+    "experiments/dram-see-v4/original-recovery-r1/continue.py": "67dcaf038aca91bba33107968f3673a53a2264dfe5de4fba8e62942142cabdb8",
+    "experiments/dram-see-v4/original-recovery-r1/contract.json": "db5cd9a4151301e64ade23c9c7ddc454e8ddf7ce7f3e980970882928b7a8a46d",
+    "experiments/dram-see-v4/original-recovery-r1/dispatch.py": "2a98ec62d555fc134ebfb987309947f572dcfa538e034531619f3075a796926f",
+    "experiments/dram-see-v4/original-recovery-r1/fields_bridge.py": "6a8cdbb563b3ccfe7e31858e1063532ee3debaedfda54abcf91dbd8b6dd490ce",
+    "experiments/dram-see-v4/original-recovery-r1/make_report.py": "6391d34c4a1457016f06364e91b6991faa757bad031a4317334b25ac0554aa4e",
+    "experiments/dram-see-v4/original-recovery-r1/pilot_control.py": "b571e50996cd5dac94b40bee672a235307b598f761c153e5dceeafeb858244d7",
+    "experiments/dram-see-v4/original-recovery-r1/pilot_runner.py": "707971b3abc4f30e431740a4558ac5ca09f827a693de1af988e6913f5267b649",
+    "experiments/dram-see-v4/original-recovery-r1/README.md": "ebd1bd40ff2a165cef675508eadf9841d20ed38894470118efc4752610a83981",
+    "experiments/dram-see-v4/original-recovery-r1/recovered_audit.py": "22f98fd951057ca2d21b3813ad61096581e1504b6fbccf5484c2736a31ff11aa",
+    "experiments/dram-see-v4/original-recovery-r1/recovery_proof.py": "d6442546700d11c95b7ba5e9699a62a31e4adad323612cc4e00157acdb34967a",
+    "experiments/dram-see-v4/original-recovery-r1/test_dispatch.py": "300d410675ab80d65f9cf2a2d9729f9f5dc0866dd2a9a4a2214875482db98fee",
+    "experiments/dram-see-v4/original-recovery-r1/test_recovered_audit.py": "77adc6527e0ef63a65fd795e37043f542fcdbb108d6666279529d2f1c9d292f7",
+    "experiments/dram-see-v4/original-recovery-r1/test_recovery_integration.py": "6b975b42657148c1a405e54a7ab7f695a473a7a6089656a151a19e67fcc428f0"
+  },
+  "validation_evidence": [
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-review-20261014/evidence.json",
+      "sha256": "7d60a10abac5a71aafd92ff7ed3d879a306e47df91cb97c99be42a8410e24cd4"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-dispatch-review-20261014/evidence.json",
+      "sha256": "40ff9ced09682813c68698118f31b66f2e9d23ce374b4936ce3700a6ee12a457"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-validation-20261014/evidence.json",
+      "sha256": "5f478a9de37d68e9fb4df7e5bf6c629e71b5b36513e739e5896b36b8f381e646"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-20261014/root-implementation-acceptance.json",
+      "sha256": "9d51ac5f058fc383a8af43024ba17b22462099788c1197006c63a322ceb9ae5b"
+    }
+  ],
+  "original_release": {
+    "path": "experiments/dram-see-v4/three-dimensional-pilot-r1/release.json",
+    "sha256": "e30ca832214a2cd5c418ef7195c5e8152ec82e9601e8a8f2e5711d50f864d7aa"
+  },
+  "original_execution_contract_passed": false,
+  "recovered_engineering_contract": {
+    "path": "experiments/dram-see-v4/original-recovery-r1/contract.json",
+    "sha256": "db5cd9a4151301e64ade23c9c7ddc454e8ddf7ce7f3e980970882928b7a8a46d"
+  },
+  "physical_threshold_changes": false,
+  "scope": "Only the authorized original A1 recovery and explicit serial continuation of existing frozen campaigns"
+}

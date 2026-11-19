@@ -1,0 +1,22 @@
+{
+  "schema": "dram-see-v3-r50-main-followup-derivation",
+  "sources": [
+    {
+      "original": "experiments/dram-see-v3/prediction.py",
+      "original_sha256": "6ad5d360c7196b95d15319babeac1946cf9ca35d13c3fd35fd197b3bb07349d7",
+      "derived": "experiments/dram-see-v3/r50-main/prediction.py",
+      "derived_sha256": "d6d580d402ff8cb784ecdde454dd8d6218c175a6c669edab2ebd71fc9198dd51",
+      "diff": "prediction.py.diff",
+      "diff_sha256": "ed176097dfa2423e5f3535d6b4e273719266c24959d4214173d324136e1daae6"
+    },
+    {
+      "original": "experiments/dram-see-v3/transport.py",
+      "original_sha256": "d7b0fa3fe12717d06e0a7e2da269e5e100148a188f0d0f244714c386f6d623fd",
+      "derived": "experiments/dram-see-v3/r50-main/transport_adapter.py",
+      "derived_sha256": "d9af134f9a6ffa97aec5ee9e3bf6169125d26df3e00c5d414e5445de3945d8d2",
+      "diff": "transport_adapter.py.diff",
+      "diff_sha256": "cdece912888807b45cdee063ec5998267374509c7b95e7f6360a904f85eaae03"
+    }
+  ],
+  "scope": "Pure algorithms identical except output schema; transport identical except raw-byte import and same original v3 storage path"
+}

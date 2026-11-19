@@ -1,0 +1,20 @@
+{
+  "captured_at": "2026-11-17T17:21:27.263057+00:00",
+  "original_prefix_inputs": [
+    {
+      "path": "experiments/dram-se-r04/electrical/mc2-prefix-diagnostic-r1/inputs/r04-l08-mc2-prefix-b0-zero-a-v1",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-se-r04/electrical/mc2-prefix-diagnostic-r1/inputs/r04-l08-mc2-prefix-b0-zero-b-v1",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-se-r04/electrical/mc2-prefix-diagnostic-r1/inputs/r04-l08-mc2-prefix-b0-event0-v1",
+      "unchanged": true
+    }
+  ],
+  "controller_service_state": "inactive",
+  "server_writes": false,
+  "solver_called": false
+}

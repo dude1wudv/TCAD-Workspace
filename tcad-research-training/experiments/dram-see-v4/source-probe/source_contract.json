@@ -1,0 +1,29 @@
+{
+  "schema": "dram-see-v4-source-probe-contract",
+  "revision": 1,
+  "scope": "Synthetic deterministic source-interface probes on the inherited uncalibrated 0.25 um 2D cell; not a new DRAM technology or particle-probability dataset",
+  "execution_scope": {"initial_cases": ["A0", "A1", "A4"], "initial_stored_bits": [1], "supported_stored_bits": [0, 1], "scheduler": "main-agent-only", "builder_executes_solver": false},
+  "units": {"coordinates": "um", "length": "um", "wt_hi": "um", "time": "s", "s_hi": "s", "source_charge": "fC", "deck_let": "pC/um", "energy_per_pair": "eV", "generation": "pairs/cm^3/s"},
+  "device": {"gate_length_um": 0.25, "oxide_nm": 5.0, "silicon_x_um": [0.0, 0.85], "silicon_y_um": [0.0, 1.2], "dimension": 2, "effective_thickness_um": 1.0, "mesh_scale": 1.0, "step_scale": 1.0},
+  "kernel": {"shape": "Gaussian", "start_mode": "StartPoint", "start_um": [0.425, 0.3], "direction": [0.0, 1.0], "length_um": 0.6, "wt_hi_um": 0.03, "time_s": 1e-9, "s_hi_s": 2e-12, "time_domain_s": [0.0, 4e-9], "temporal_formula": "exp(-((t-t0)/(2*s_hi))^2)/(s_hi*sqrt(pi)*(1+erf(t0/(2*s_hi)))) for t>=0", "transverse_formula": "exp(-((x-x0)/wt_hi)^2)/(sqrt(pi)*wt_hi)", "longitudinal_formula": "1/length for start_y<=y<start_y+length; zero otherwise", "normalization": "No posterior renormalization; integrate the prescribed finite track, transverse Gaussian, effective thickness and time window"},
+  "heavyion_parameters": {"s_hi": 2e-12, "a_1": 0.0, "a_2": 0.0, "a_3": 0.0, "a_4": 0.0, "k_hi": 1.0, "c_1": 0.0, "c_2": 1.0, "c_3": 0.0, "c_4": 1.0},
+  "installed_parameter_difference": {"evidence": "local_runtime/dram-see-v4/preflight/hadronic-and-parameters/stdout.txt", "observed_default_c_2": 0.0, "observed_default_c_3": 1.0, "observed_default_c_4": 0.0, "chosen_c_2": 1.0, "chosen_c_3": 0.0, "chosen_c_4": 1.0, "reason": "Explicit table-143 coefficients make (c_2+c_3*l)^c_4 identically one; this is a chosen configuration, not a claim that the installed defaults match the table", "parameter_block_body": "braces, following the actual installed Silicon.par", "named_header": "HeavyIon(\"Ion1\"), following guide page 816; combined syntax awaits real parser verification"},
+  "cases": {"A0": {"total_charge_fC": 0.0, "track_charges_fC": []}, "A1": {"total_charge_fC": 1.0, "track_charges_fC": [1.0]}, "A4": {"total_charge_fC": 1.0, "track_charges_fC": [0.5, 0.5]}},
+  "conversion": {"elementary_charge_C": 1.602176634e-19, "silicon_eV_per_pair": 3.6, "fC_to_pC": 0.001},
+  "offline_tolerances": {"charge_abs_fC": 1e-6, "charge_relative": 0.001},
+  "audit_tolerances": {"source_relative": 0.05, "zero_charge_fC": 1e-6, "final_time_abs_s": 1e-18, "pair_generated_charge_abs_fC": 1e-4, "pair_generation_curve_relative": 0.001, "pair_voltage_abs_V": 1e-5, "pair_current_abs_A": 1e-12, "pair_current_relative": 0.001},
+  "tolerance_scope": "Frozen by main agent for this capability probe; source_relative reuses the historical interface threshold provisionally and is not new-size validation; never relax after observing a failure",
+  "evidence": [
+    {"path": "local_runtime/dram-see-v1/sdevice_ug.pdf", "pages": [73, 74, 88, 813, 814, 816, 1728, 1729], "purpose": "Parameter file loading, named HeavyIon syntax, Gaussian time/space kernels, explicit coefficients and units; local licensed reference only"},
+    {"path": "local_runtime/dram-see-v1/heavyion-reference.txt", "purpose": "Existing text extract of installed W-2024.09 radiation chapter"},
+    {"path": "local_runtime/dram-see-v4/preflight/hadronic-and-parameters/stdout.txt", "purpose": "Main-agent read-only observation of installed HeavyIon parameter braces and defaults; recorded disagreement with guide table 143"},
+    {"path": "experiments/dram-see-v3/r50-main/build_case.py", "purpose": "Read-only reuse of _geometry and _single_device; full initialization, inherited 50-ohm precharge and readout"}
+  ],
+  "decisions_before_implementation": [
+    {"id": "SP-001", "decision": "Use named Ion1 for A1 and named Ion1 plus Ion2 for A4; supply all ten table-143 parameters explicitly", "source": "main-agent authorization and W-2024.09 page 816", "boundary": "Documentation-backed syntax still requires real parser/solver verification"},
+    {"id": "SP-002", "decision": "Freeze s_hi at 2e-12 s and t0 at 1e-9 s", "source": "main-agent freeze; table 143 historical default", "boundary": "Interface pulse setting, not calibrated secondary arrival physics"},
+    {"id": "SP-003", "decision": "A0 requests generation output but has no HeavyIon; retains a nonempty synthetic event identity with empty tracks", "source": "main-agent/auditor interface agreement", "boundary": "A missing generation dataset is structural-zero evidence only, not measured numerical zero"},
+    {"id": "SP-004", "decision": "Build only under local_runtime/dram-see-v4/source-probe with immutable exclusive output directories; use the existing scripts/tcad.py runner externally", "source": "user scope and repository runner convention"},
+    {"id": "SP-005", "decision": "No track splitting in A4; each original half-charge appears exactly once", "source": "frozen A4 definition", "boundary": "Later step splitting must check overlap/end kernels and cannot duplicate whole-track LET on each segment"}
+  ]
+}

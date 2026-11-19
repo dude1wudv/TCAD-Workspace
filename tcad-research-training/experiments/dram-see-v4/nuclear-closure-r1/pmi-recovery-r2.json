@@ -1,0 +1,51 @@
+{
+  "compiled_only": true,
+  "evidence": [
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/pmi-build-r2/diagnosis.json",
+      "sha256": "e91371d0ca848cc6713945ce955a7e937d65268967cc0d0b14df2e42de9113d2"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/pmi-build-r2/native-library-resolution.json",
+      "sha256": "1fde6650826ed6db6e7d567d215acd492e1ee46180e4f15f1a7cc17d5be2a631"
+    }
+  ],
+  "new_label": "nc-r1-pmi-link-r2",
+  "old_label": "nc-r1-pmi-build",
+  "original": {
+    "archive": {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/nc-r1-pmi-build/results.tar",
+      "sha256": "4766762237ee1e13fdfc43a4a34275f9ba507d3f55a307e782aa487ae8ee8576"
+    },
+    "attempt": {
+      "path": "local_runtime/dram-see-v4/nuclear-closure-r1/attempts/nc-r1-pmi-build.json",
+      "sha256": "0d113f3e2a03d5187a4a84977a96c55ada2818a2f570a111e4e6b10f08e4c7e3"
+    },
+    "binary": {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/nc-r1-pmi-build/collected/pmi_nuclear_source.so.linux64",
+      "sha256": "5b40a51255082695f28966f51e4230d0895dc7c2df2d389f186be8f894a17cbd"
+    },
+    "operation": {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/nc-r1-pmi-build/operation.json",
+      "sha256": "fbec3153bd376d54f0e8ad0eb710b98350094fdd5e24f552be6d2c5b80611c4f"
+    },
+    "source": {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/nc-r1-pmi-build/collected/pmi_nuclear_source.C",
+      "sha256": "2eab722cb20b1b66258fbbcd7d02b29436c5b4b243369143d6cc83dc7de3290c"
+    },
+    "vectors": {
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/nc-r1-pmi-build/collected/native-oracle-vectors.json",
+      "sha256": "43e6568f622da601c7a9dfd4d65cf73d8aacefca9c77581309ba35d873a2f40f"
+    }
+  },
+  "qualified": false,
+  "reason": "Known post-link parent-shell runtime search mismatch; original Cmi ELF reused",
+  "repeat_same_cause_failure": "pause affected branch; never rerun this label",
+  "runtime_hashes": {
+    "/usr/synopsys/sentaurus/W-2024.09/bin/GENERIC": "bcc3e38aeeb10d5629cebe07c12f8b0e38ecada41c7a354ec153f9241abd3681",
+    "/usr/synopsys/sentaurus/W-2024.09/tcad/W-2024.09/linux64/lib/libgcc_s.so.1": "1d1793d89976480eb1e7c4f37b5c454cebe3e467dbb37969c91a8263447c8589",
+    "/usr/synopsys/sentaurus/W-2024.09/tcad/W-2024.09/linux64/lib/libstdc++.so.6": "da0bad850ae80febec69c40428daf7ee93657df7acac5977da9a8b3392b1b9f1"
+  },
+  "schema": "nuclear-closure-pmi-recovery-r2",
+  "sdk": "/usr/synopsys/sentaurus/W-2024.09/tcad/W-2024.09/linux64"
+}

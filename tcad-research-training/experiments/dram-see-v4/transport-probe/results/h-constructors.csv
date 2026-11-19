@@ -1,0 +1,11 @@
+phase,index,name,physics_type
+"post_zero_event_init","0","G4EmStandard_opt4","2"
+"post_zero_event_init","1","G4GammaLeptoNuclearPhys","3"
+"post_zero_event_init","2","Decay","4"
+"post_zero_event_init","3","hElasticWEL_CHIPS_XS","5"
+"post_zero_event_init","4","hInelastic QGSP_BIC","6"
+"post_zero_event_init","5","stopping","7"
+"post_zero_event_init","6","IonElasticPhysics","0"
+"post_zero_event_init","7","ionInelasticFTFP_BIC","8"
+"post_zero_event_init","8","neutronTrackingCut","0"
+"post_zero_event_init","9","stepLimiter","0"

@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f6fa" />
+    <meta name="description" content="DRAM 单粒子效应研究的公开仿真遥测、服务健康与科研计划进度。" />
+    <title>仿真状态看板 · xjtu.shop</title>
+    <script>
+      const systemTheme = matchMedia('(prefers-color-scheme: dark)');
+      const applyStatusTheme = (theme) => {
+        document.documentElement.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').content = theme === 'dark' ? '#101722' : '#f3f6fa';
+      };
+      let statusTheme;
+      try { statusTheme = localStorage.getItem('xjtu-status-theme'); } catch {}
+      applyStatusTheme(['light', 'dark'].includes(statusTheme) ? statusTheme : systemTheme.matches ? 'dark' : 'light');
+    </script>
+    <style>
+      :root { color-scheme: light; background: #f3f6fa; }
+      :root[data-theme="dark"] { color-scheme: dark; background: #101722; }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/status.js"></script>
+  </body>
+</html>

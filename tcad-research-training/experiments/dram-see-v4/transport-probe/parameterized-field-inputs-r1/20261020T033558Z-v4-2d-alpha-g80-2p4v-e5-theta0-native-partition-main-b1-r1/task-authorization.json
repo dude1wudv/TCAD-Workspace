@@ -1,0 +1,11 @@
+{
+  "instruction": "已授权首g80 E5正入射完整alpha的原生数组表达修复；原101节点和100区间、能量/电荷/时序保持，真实matched r13 A0，原runner/owner/共享锁串行单核单线程，只记实际用量。",
+  "plan_path": "experiments/dram-see-v4/CONTINUOUS-GOAL-PLAN.md",
+  "plan_sha256": "85660d65b4a65d58971a285d6ccf351a99a90634634fb158f3725db0c9525831",
+  "role_ids": [
+    "B2D-Aalpha-native-partition-r1-main-b1"
+  ],
+  "schema": "dram-see-v4-current-user-authorization-r1",
+  "source": "current_user_instruction",
+  "synthetic": false
+}

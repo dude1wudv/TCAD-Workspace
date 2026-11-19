@@ -1,0 +1,135 @@
+{
+  "schema": "dram-see-v4-study-design-review-r1",
+  "checked_at": "2026-10-12T18:06:21.913265-08:00",
+  "document_and_analytic_checks_passed": true,
+  "checks": {
+    "protected_eight_anchors_unchanged": true,
+    "local_links_resolve": true,
+    "execution_disabled": true,
+    "twelve_unique_A_cases": true,
+    "proton_16_configurations_160_primaries": true,
+    "smoke_separate": true,
+    "all_cases_unrun": true,
+    "A2_length_and_unit_direction": true,
+    "LET_triangle_integrates_to_one_fC": true,
+    "fixed_n_zero_event_bounds": true,
+    "hypothetical_detection_sample_sizes_minimal": true,
+    "critical_device_values_unfilled": true,
+    "source_keys_unique": true,
+    "initial_plan_snapshot_matches_start_hashes": true
+  },
+  "missing_links": [],
+  "local_link_count": 54,
+  "protected_anchors": [
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/models.json",
+      "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/training-data.json",
+      "sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/responses.csv",
+      "sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+      "unchanged": true
+    },
+    {
+      "path": "reports/final-r4/delivery-manifest.json",
+      "sha256": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/documents/course-report.tex",
+      "sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/documents/research-paper.tex",
+      "sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/slides/output/dram-see-v3-mentor-r4.pptx",
+      "sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/qa/package-manifest.json",
+      "sha256": "4fa21e87acd7386cf96035f4d3251b5f5cd4462f56564cfb9da8ca09380328e7",
+      "unchanged": true
+    }
+  ],
+  "root_evidence_review": [
+    "Read source-audit.json and opened original Shin/Park PDF text",
+    "Confirmed named HeavyIon evidence in local manual excerpt",
+    "Confirmed Geant4 env declarations and legacy 5MeV event bound",
+    "Reviewed source geometry and independent fixed-n arithmetic",
+    "Checked fixed-matrix ridge conservation redundancy algebra and its stated assumptions"
+  ],
+  "scientific_status": "Design review only; device, source and predictive hypotheses remain unvalidated",
+  "gate_status": {
+    "G1": "partial_evidence_not_passed",
+    "G2": "not_executed",
+    "G3": "not_executed",
+    "G4": "not_executed"
+  },
+  "activity": {
+    "simulations": 0,
+    "training_runs": 0,
+    "vm_commands": 0,
+    "software_installed": false,
+    "git_commit_or_push": false,
+    "heartbeat_mutated": false,
+    "messages_sent_to_others": false
+  },
+  "not_verified": [
+    "Live tool/physics data readiness",
+    "Device figure pixels and digitized measurement curves",
+    "Device parameter identifiability and actual calibration",
+    "Multiple HeavyIon runtime and time kernel",
+    "Scientific adequacy of probe size",
+    "Predictive performance and event probabilities"
+  ],
+  "method": "Minimal documentation and analytical consistency verification; no test/build/lint suite or solver run. Read-only source investigation by same-family agents is evidence gathering, not independent scientific validation.",
+  "files": [
+    {
+      "path": "stage1/design-calculations.json",
+      "sha256": "24dcb0a87c0a229d8fe2473f87a19832386b57fcb1d9a854e562330ce50a93e7"
+    },
+    {
+      "path": "stage1/design-register.json",
+      "sha256": "fca32b01679b6d5b6df765531a6427df439714c0d2a52b72435f97d348edcf0e"
+    },
+    {
+      "path": "stage1/device-evidence.md",
+      "sha256": "f5d4dc682f678dc4d9d06c407a918de8c725c1a5eac5ace10239782661deeb40"
+    },
+    {
+      "path": "stage1/experiment-design.md",
+      "sha256": "0a7e6873fb314fc8c40e27c3bff375116e2d576a25535c49a40f12ccc8102f21"
+    },
+    {
+      "path": "stage1/history/initial-planning-20261012.zip",
+      "sha256": "ae4743e5ad23c64e32b40cf9d57cf4108a88376670f6b2e5b8ad706cdfdd9e10"
+    },
+    {
+      "path": "stage1/source-register.json",
+      "sha256": "bf31c56315ab2e79dc4e1eee3236de8288f275c4f08f40a6ed9840d7f5de5603"
+    },
+    {
+      "path": "stage1/start-record.json",
+      "sha256": "2a06be5a653764885273a91831d2b9be3f2e1c687081c7ca53649a7bd30dc5f7"
+    },
+    {
+      "path": "stage1/study-notes.md",
+      "sha256": "50e3d4e6cfa76744d2ccdcfbc4c5638991340e4d07bdb3b6dea0a6929e67059c"
+    },
+    {
+      "path": "stage1/transport-design.md",
+      "sha256": "aec06f2d3debcb38db23400c745c5585c1ba241aaa429f40f0b94b7ad2086450"
+    }
+  ]
+}

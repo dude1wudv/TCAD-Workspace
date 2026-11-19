@@ -1,0 +1,42 @@
+{
+  "generator_sha256": "109eaa8373c227ba66a7ad3d0fd49e04ccc6baba46523d8918855aea30807d11",
+  "inputs": [
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/format-h5-a0-r1/steps.csv",
+      "sha256": "a312fe61152135003435b601357b9efcdbe5c27ef82944781e7b3a8d77b702f6"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e1-a0-r1/events.csv",
+      "sha256": "eded7856c872f8c917b77af011340711ab05ddf52c3f380e2168fa26a0b67e00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e5-a0-r1/events.csv",
+      "sha256": "eab4dd6f7bdf64550eb9970d56c1d7bffa46b1bb27836141a24aada77f824f49"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e20-a0-r1/events.csv",
+      "sha256": "89004ce74d3cd993663c7b46cffe64e6c4db51ba212978fef358e85a7db79e3f"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e100-a0-r1/events.csv",
+      "sha256": "acb8255e0987af38978d616ac78c02dae40cc8b8398993e61c019edb9680d273"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e1-a30-r1/events.csv",
+      "sha256": "b1f0e4ab566bce01f65e58e1ad828002d4f8d444baef6d747376a5da9d9f14cf"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e5-a30-r1/events.csv",
+      "sha256": "694e02493e04fed629aa6c7ed4e1b22af003ffe4dc3793e327a5e7716e75c564"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e20-a30-r1/events.csv",
+      "sha256": "4aed4198a5eb054400f0aeaa1cd1a22583d20be3a1cb5b33bfbcaee69c68f7af"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e100-a30-r1/events.csv",
+      "sha256": "69d4cd80f1a4c2b6f18e8ed4ec7ef4ce5ccd0cabba882023c9020a64ab9453f0"
+    }
+  ],
+  "scope": "Actual complete audited records. Tracks shown only for Si steps; raw records retain world steps and full z. Descriptive tiny samples, no probability or device response claim."
+}

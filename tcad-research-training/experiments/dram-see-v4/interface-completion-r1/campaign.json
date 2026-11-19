@@ -1,0 +1,279 @@
+{
+  "schema": "dram-see-v4-interface-completion-campaign-r1",
+  "authority": "User approved complete 2D plan, 17 primary plus 4 corrective attempts, cross-day serial execution and verified successful duplicate TDR cleanup.",
+  "historical_attempts_at_freeze": 5,
+  "maximum_global_attempts": 26,
+  "maximum_new_attempts": 21,
+  "primary_roles": 17,
+  "reserve_attempts": 4,
+  "local_reserve_GiB": 80,
+  "remote_minimum_free_after_peak_GiB": 8,
+  "roles": [
+    {
+      "position": 1,
+      "role_id": "a4-b1-main",
+      "case_id": "A4",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1"
+      ],
+      "comparison_mode": "equivalent",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a4-b1-main"
+    },
+    {
+      "position": 2,
+      "role_id": "a5-b1-main",
+      "case_id": "A5",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1",
+        "a4-b1-main"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a5-b1-main"
+    },
+    {
+      "position": 3,
+      "role_id": "a0-b1-fine",
+      "case_id": "A0",
+      "stored_bit": 1,
+      "variant": "fine",
+      "requires": [
+        "reuse-main-b1"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-fine"
+    },
+    {
+      "position": 4,
+      "role_id": "a6-b1-main",
+      "case_id": "A6",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1",
+        "a4-b1-main",
+        "a5-b1-main"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a6-b1-main"
+    },
+    {
+      "position": 5,
+      "role_id": "a7-b1-main",
+      "case_id": "A7",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1",
+        "a4-b1-main",
+        "a5-b1-main"
+      ],
+      "comparison_mode": "equivalent",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a7-b1-main"
+    },
+    {
+      "position": 6,
+      "role_id": "a2-b1-main",
+      "case_id": "A2",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a2-b1-main"
+    },
+    {
+      "position": 7,
+      "role_id": "a3-b1-main",
+      "case_id": "A3",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a3-b1-main"
+    },
+    {
+      "position": 8,
+      "role_id": "a8s2-b1-main",
+      "case_id": "A8S2",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1",
+        "a4-b1-main"
+      ],
+      "comparison_mode": "segment",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a8s2-b1-main"
+    },
+    {
+      "position": 9,
+      "role_id": "a8s4-b1-main",
+      "case_id": "A8S4",
+      "stored_bit": 1,
+      "variant": "main",
+      "requires": [
+        "reuse-main-b1",
+        "a4-b1-main"
+      ],
+      "comparison_mode": "segment",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a8s4-b1-main"
+    },
+    {
+      "position": 10,
+      "role_id": "a0-b0-main",
+      "case_id": "A0",
+      "stored_bit": 0,
+      "variant": "main",
+      "requires": [],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b0-main"
+    },
+    {
+      "position": 11,
+      "role_id": "a1-b0-main",
+      "case_id": "A1",
+      "stored_bit": 0,
+      "variant": "main",
+      "requires": [
+        "a0-b0-main",
+        "reuse-main-b1"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b0-main"
+    },
+    {
+      "position": 12,
+      "role_id": "a4-b0-main",
+      "case_id": "A4",
+      "stored_bit": 0,
+      "variant": "main",
+      "requires": [
+        "a0-b0-main",
+        "a1-b0-main",
+        "a4-b1-main"
+      ],
+      "comparison_mode": "equivalent",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a4-b0-main"
+    },
+    {
+      "position": 13,
+      "role_id": "a0-b1-time",
+      "case_id": "A0",
+      "stored_bit": 1,
+      "variant": "time",
+      "requires": [
+        "reuse-main-b1"
+      ],
+      "comparison_mode": null,
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-time"
+    },
+    {
+      "position": 14,
+      "role_id": "a1-b1-time",
+      "case_id": "A1",
+      "stored_bit": 1,
+      "variant": "time",
+      "requires": [
+        "reuse-main-b1",
+        "a0-b1-time"
+      ],
+      "comparison_mode": "refinement",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-time"
+    },
+    {
+      "position": 15,
+      "role_id": "a6-b1-time",
+      "case_id": "A6",
+      "stored_bit": 1,
+      "variant": "time",
+      "requires": [
+        "a6-b1-main",
+        "a0-b1-time",
+        "a1-b1-time"
+      ],
+      "comparison_mode": "refinement",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a6-b1-time"
+    },
+    {
+      "position": 16,
+      "role_id": "a1-b1-fine",
+      "case_id": "A1",
+      "stored_bit": 1,
+      "variant": "fine",
+      "requires": [
+        "reuse-main-b1",
+        "a0-b1-fine"
+      ],
+      "comparison_mode": "refinement",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-fine"
+    },
+    {
+      "position": 17,
+      "role_id": "a5-b1-fine",
+      "case_id": "A5",
+      "stored_bit": 1,
+      "variant": "fine",
+      "requires": [
+        "a5-b1-main",
+        "a0-b1-fine",
+        "a1-b1-fine"
+      ],
+      "comparison_mode": "refinement",
+      "project": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a5-b1-fine"
+    }
+  ],
+  "historical_records": [
+    {
+      "path": "local_runtime/dram-see-v4/source-interface-r2/launches/r2-a0-b1-base-r1/execution.json",
+      "sha256": "2c264307220baa31d6f4308af7c44bfa5cf4a900ca6460fda7ed234a2c992abe"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-interface-r2/launches/r2-a1-b1-base-r1/execution.json",
+      "sha256": "3e930c91b53b9d72214fff04dab19397a0127c6cc72978975bcfc0bf408aa735"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-interface-r3/launches/r3-a1-b1-base-r1/execution.json",
+      "sha256": "c39f82328b47c2450e35f9b0b936d1c92703a4f67e2541a4c44490040f606e2d"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-interface-r4/launches/r4-a0-b1-mesh-r1/execution.json",
+      "sha256": "912e23c092c91a031847889e98edddbe94051946238efc98faceb4a210cf6c5b"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/source-interface-r4/launches/r4-a1-b1-mesh-r1/execution.json",
+      "sha256": "9f2c5ac0947b556590085e8fd7c0eacc9b4b83622b6901b4733c06e2f3c70753"
+    }
+  ],
+  "profiles": {
+    "main": {
+      "mesh_scale": 0.5,
+      "pulse_max_step_s": 5e-13
+    },
+    "time": {
+      "mesh_scale": 0.5,
+      "pulse_max_step_s": 2.5e-13
+    },
+    "fine": {
+      "mesh_scale": 0.25,
+      "pulse_max_step_s": 5e-13
+    }
+  },
+  "default_resource_forecast": {
+    "main_raw_GiB": 0.65,
+    "time_raw_GiB": 1.3,
+    "fine_raw_GiB": 2.6,
+    "remote_peak_multiplier": 3,
+    "local_peak_multiplier": 4,
+    "basis": "Conservative initial forecasts; measured same-profile archives may increase these estimates, never silently decrease before finer-grid probe."
+  },
+  "old_heartbeat": "paused",
+  "solver_threads": 1,
+  "scheduler": "root",
+  "automatic_retry": false
+}

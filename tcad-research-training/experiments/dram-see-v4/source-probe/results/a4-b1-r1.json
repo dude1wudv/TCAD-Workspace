@@ -1,0 +1,499 @@
+{
+  "schema": "dram-see-v4-source-probe-audit",
+  "passed": true,
+  "status": "SOURCE_PROBE_RUN_CHECKS_PASSED",
+  "checks": {
+    "manifest_and_frozen_inputs": {
+      "passed": true
+    },
+    "execution_and_archived_input_provenance": {
+      "passed": true
+    },
+    "frozen_source_and_model_contract": {
+      "passed": true
+    },
+    "finite_complete_raw_curves": {
+      "passed": true
+    },
+    "source_charge_and_dimension": {
+      "passed": true
+    },
+    "response_and_circuit_conservation": {
+      "passed": true
+    },
+    "archive_safety_and_stability": {
+      "passed": true
+    }
+  },
+  "errors": [],
+  "limits": [
+    "Synthetic LET source-interface probes, not real particle-transport events.",
+    "Uncalibrated inherited 2D device, effective thickness 1 um and AreaFactor=1.",
+    "No mesh/time-step convergence or critical-readout classification validation.",
+    "No 3D source validation, nuclear reaction, event probability, training or calibration.",
+    "No matched neutral-cell readout reference or upset/margin classification.",
+    "Terminal/capacitor conservation uses the inherited R50 BE circuit contract."
+  ],
+  "scientific_calibration_passed": false,
+  "numerical_convergence_validated": false,
+  "audit_tolerances": {
+    "source_relative": 0.05,
+    "zero_charge_fC": 1e-06,
+    "final_time_abs_s": 1e-18,
+    "pair_generated_charge_abs_fC": 0.0001,
+    "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-05,
+    "pair_current_abs_A": 1e-12,
+    "pair_current_relative": 0.001
+  },
+  "audit_code_sha256": "d79c0c0989a15e074e39d6ec721b39b5430ded7d4b8f8b6c6f3de122f9fba1c1",
+  "parser_source_sha256": {
+    "experiments/dram-see-v3/r50-main/audit.py": "acf560c69d7ae849cd6ccc7d136da286f12e32ec94b1e886aa114430b8332bc7",
+    "experiments/dram-see-v3/r50-main/build_case.py": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+    "experiments/dram-see-v1/analyze.py": "6b0df38bb4db9ff3a77bfaee1ead5ef3b794bf93999411bf016cc45ae526cabf"
+  },
+  "run_path": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\runs\\20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93",
+  "run_id": "20261013T024112Z-v4-source-probe-a4-b1-r1-36613e93",
+  "manifest_sha256": "1580755da08778c9e5d11359869293aca0d3c6dd35fd84ac7daca365159efdd0",
+  "engineering_evidence": {
+    "state": "COLLECTED",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "archive_transfer_exit_code": null,
+    "archive_transfer_exit_evidence": "Runner COLLECTED transition is checked; runner does not persist a separate archive-transfer exit code."
+  },
+  "archive_sha256": "e8b90d148f93d701cc8cb83b694f7ff74576dc296eee3927d2fe9e8d683521b2",
+  "input_sha256": {
+    "device.cmd": "7b7d77432a94f0bcd9899c01ab27c54a36906d275319a42229755aadf2ed818f",
+    "generator-sha256.txt": "9e49ad7c8546afef541ddd4aefdd8e551a1b98694c081b72b00a3d2aaa0c6d21",
+    "geometry.scm": "38edde3447505e95fa6ee952991ca731933d52a47166b51f44a339fc785cde17",
+    "heavyion.par": "1c33c8711082c86d76d118858ff74d4f3ab79657baa9149cc570514d4a2dc3e1",
+    "input-manifest.json": "a3b50afbb3cc0e4394ec772aa3a66867d465654d93bd9154df59cfaaf9ce1f17",
+    "offline-source-check.json": "c69e81871b4b293fe3d9994d85a212dcc1c31d7d9fe20407f94983a774389de2",
+    "parameters.json": "b0ea2647013275b0e15e6bcc2045e6800d668dab8eb4536d57cd8dfa7286f043",
+    "project.json": "7e0aead53acdc78dafe893cc354ef246b462e2f2fbb663aa0260a613e2e6acfc",
+    "source-contract.json": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb",
+    "source-spec.json": "5cd7ecd7630da72e2916203349a8affa94f29bfd873a69ffd53c82b1f9359e25"
+  },
+  "inputs_tar_sha256": "e79ba593a92a9c19c0e1f1ac2697c434160fea90dd5bb72521d047c6e8969a2d",
+  "project_path": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-probe\\inputs\\v4-source-probe-a4-b1-r1",
+  "solver_log_member": "transient_des.log",
+  "run_script_sha256": "0a03da0f01722bfe694d1c0b46bd0cff79e9b00cb65d937cf7b94f8c6dc94f1d",
+  "solver_finished": true,
+  "newton_retries": 0,
+  "solver_wallclock_s": 475.42,
+  "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+  "parameters": {
+    "base_control_deck_sha256": "4337e52f2e7d7fb1091cd529970204cdd03d59877c6ff1b4b4b33408b543d885",
+    "bitline_capacitance_F": 1e-13,
+    "capacitance_F": 1e-14,
+    "case_id": "A4",
+    "charge_pc": 0.001,
+    "circuit_revision": "r50-main-r1-finite-ramp-rpre50-off1e20-wl0-initialize-read3.05to3.10ns-1.8V-snclamp-release0.6ns",
+    "clamp_release_s": 6e-10,
+    "effective_thickness_um": 1.0,
+    "event_id": "synthetic-v4-source-probe-a4",
+    "execution_authorization": "Main agent only; initial real probe limited to bit 1 A0/A1/A4",
+    "gate_length_um": 0.25,
+    "geometry_sha256": "38edde3447505e95fa6ee952991ca731933d52a47166b51f44a339fc785cde17",
+    "hold_end_s": 2.8e-09,
+    "initialization": "Inherited ideal SN clamp; no calibrated transistor write",
+    "matching_contract": {
+      "base_control_deck_sha256": "4337e52f2e7d7fb1091cd529970204cdd03d59877c6ff1b4b4b33408b543d885",
+      "bitline_capacitance_F": 1e-13,
+      "capacitance_F": 1e-14,
+      "circuit_revision": "r50-main-r1-finite-ramp-rpre50-off1e20-wl0-initialize-read3.05to3.10ns-1.8V-snclamp-release0.6ns",
+      "clamp_release_s": 6e-10,
+      "effective_thickness_um": 1.0,
+      "gate_length_um": 0.25,
+      "geometry_sha256": "38edde3447505e95fa6ee952991ca731933d52a47166b51f44a339fc785cde17",
+      "hold_end_s": 2.8e-09,
+      "mesh_scale": 1.0,
+      "neutral": false,
+      "oxide_nm": 5.0,
+      "physics": "Fermi OldSlotboom Mobility(DopingDep HighFieldSaturation Enormal) SRH(DopingDep) Auger; Digits5 ErrRef1e7; BE Blocked ParDiSo; gate_work_function4.6",
+      "precharge_V": 0.5,
+      "precharge_end_s": 3e-09,
+      "precharge_ramp_end_s": 2.9e-09,
+      "precharge_resistance_off_ohm": 1e+20,
+      "precharge_resistance_on_ohm": 50.0,
+      "prestrike_s": 9.5e-10,
+      "read_sample_s": 4e-09,
+      "reference_capacitance_F": 1e-13,
+      "reference_mode": "offline",
+      "step_scale": 1.0,
+      "stored_bit": 1,
+      "strike_s": 1e-09,
+      "target_voltage_V": 0.9,
+      "temperature_K": 300,
+      "wordline_read_V": 1.8,
+      "wordline_rise_end_s": 3.1e-09,
+      "wordline_rise_start_s": 3.05e-09
+    },
+    "matching_contract_sha256": "28f0672ad9216f0630214cc2c8c1340fe87bae37b6cc16bfbb1651115798f7b7",
+    "mesh_scale": 1.0,
+    "neutral": false,
+    "oxide_nm": 5.0,
+    "parent_run": null,
+    "physics": "Fermi OldSlotboom Mobility(DopingDep HighFieldSaturation Enormal) SRH(DopingDep) Auger; Digits5 ErrRef1e7; BE Blocked ParDiSo; gate_work_function4.6",
+    "precharge_V": 0.5,
+    "precharge_end_s": 3e-09,
+    "precharge_ramp_end_s": 2.9e-09,
+    "precharge_resistance_off_ohm": 1e+20,
+    "precharge_resistance_on_ohm": 50.0,
+    "prestrike_s": 9.5e-10,
+    "read_sample_s": 4e-09,
+    "reference_capacitance_F": 1e-13,
+    "reference_mode": "offline",
+    "schema": "dram-see-v4-source-probe",
+    "scope": "Synthetic deterministic source-interface probes on the inherited uncalibrated 0.25 um 2D cell; not a new DRAM technology or particle-probability dataset",
+    "source_charge_fC": 1.0,
+    "source_code_sha256": {
+      "experiments/dram-see-v1/build_case.py": "7a22e53bc939b236b0b612f42e382b952c362042b28e187414e481e77b9916bd",
+      "experiments/dram-see-v3/r50-main/build_case.py": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+      "experiments/dram-see-v4/source-probe/build_probe.py": "3ead51ba029e642a8a1fca4dfe0ab2afa69a269a7ea4d1d2d05c1ffbd2851a00",
+      "experiments/dram-see-v4/source-probe/source_contract.json": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb",
+      "local_runtime/dram-see-v1/heavyion-reference.txt": "5bafcbd86ca09e1081f00fddf849cbefb58218bb96aebaa7e868b103ce300960",
+      "local_runtime/dram-see-v4/preflight/hadronic-and-parameters/stdout.txt": "6fd1c3b37c048524a93d4866ea9aa17194bbd655d052fdddc3dfa0b0e706e12e",
+      "scripts/tcad.py": "8a08d895d788f053da8d07cc29dd7c745ede9b5f3b29b757ad012ca79f7779d5"
+    },
+    "source_contract_file": "source-contract.json",
+    "source_contract_sha256": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb",
+    "source_count": 2,
+    "source_spec_file": "source-spec.json",
+    "source_spec_sha256": "5cd7ecd7630da72e2916203349a8affa94f29bfd873a69ffd53c82b1f9359e25",
+    "step_scale": 1.0,
+    "stored_bit": 1,
+    "strike_s": 1e-09,
+    "synthetic": true,
+    "target_voltage_V": 0.9,
+    "temperature_K": 300,
+    "total_charge_fC": 1.0,
+    "wordline_read_V": 1.8,
+    "wordline_rise_end_s": 3.1e-09,
+    "wordline_rise_start_s": 3.05e-09
+  },
+  "source_spec": {
+    "case_id": "A4",
+    "dimension": 2,
+    "event_id": "synthetic-v4-source-probe-a4",
+    "schema": "dram-see-v4-source-spec",
+    "source_total_fC": 1.0,
+    "synthetic": true,
+    "tracks": [
+      {
+        "direction": [
+          0.0,
+          1.0
+        ],
+        "length_um": 0.6,
+        "let_pC_per_um": 0.0008333333333333334,
+        "parent_id": 0,
+        "q_fC": 0.5,
+        "s_hi_s": 2e-12,
+        "source_name": "Ion1",
+        "start_um": [
+          0.425,
+          0.3
+        ],
+        "time_s": 1e-09,
+        "track_id": 1,
+        "wt_hi_um": 0.03
+      },
+      {
+        "direction": [
+          0.0,
+          1.0
+        ],
+        "length_um": 0.6,
+        "let_pC_per_um": 0.0008333333333333334,
+        "parent_id": 0,
+        "q_fC": 0.5,
+        "s_hi_s": 2e-12,
+        "source_name": "Ion2",
+        "start_um": [
+          0.425,
+          0.3
+        ],
+        "time_s": 1e-09,
+        "track_id": 2,
+        "wt_hi_um": 0.03
+      }
+    ],
+    "units": {
+      "coordinates": "um",
+      "deck_let": "pC/um",
+      "energy_per_pair": "eV",
+      "generation": "pairs/cm^3/s",
+      "length": "um",
+      "s_hi": "s",
+      "source_charge": "fC",
+      "time": "s",
+      "wt_hi": "um"
+    }
+  },
+  "source_contract_sha256": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb",
+  "case_id": "A4",
+  "event_id": "synthetic-v4-source-probe-a4",
+  "circuit_samples": 728,
+  "circuit_datasets": [
+    "time",
+    "v(bl)",
+    "v(wl)",
+    "v(sn)",
+    "v(ref)",
+    "i(access,sn)",
+    "i(access,bl)",
+    "i(cstore,sn)",
+    "i(cbl,bl)",
+    "i(cref,ref)",
+    "i(rsn,sn)",
+    "i(rbl,bl)",
+    "i(rref,ref)",
+    "i(rpre,bl)"
+  ],
+  "device_samples": 728,
+  "device_datasets": [
+    "time",
+    "source OuterVoltage",
+    "source InnerVoltage",
+    "source QuasiFermiPotential",
+    "source DisplacementCurrent",
+    "source eCurrent",
+    "source hCurrent",
+    "source TotalCurrent",
+    "source Charge",
+    "gate OuterVoltage",
+    "gate InnerVoltage",
+    "gate QuasiFermiPotential",
+    "gate DisplacementCurrent",
+    "gate eCurrent",
+    "gate hCurrent",
+    "gate TotalCurrent",
+    "gate Charge",
+    "body OuterVoltage",
+    "body InnerVoltage",
+    "body QuasiFermiPotential",
+    "body DisplacementCurrent",
+    "body eCurrent",
+    "body hCurrent",
+    "body TotalCurrent",
+    "body Charge",
+    "drain OuterVoltage",
+    "drain InnerVoltage",
+    "drain QuasiFermiPotential",
+    "drain DisplacementCurrent",
+    "drain eCurrent",
+    "drain hCurrent",
+    "drain TotalCurrent",
+    "drain Charge",
+    "IntegrSemiconductor HeavyIonGeneration"
+  ],
+  "final_time_s": 4e-09,
+  "radiation": {
+    "target_fC": 1.0,
+    "generated_fC": 1.009915237729964,
+    "generated_pairs": 6303.39512072777,
+    "absolute_error_fC": 0.009915237729964055,
+    "relative_error": 0.009915237729964055,
+    "generation_dataset": "IntegrSemiconductor HeavyIonGeneration",
+    "generation_evidence": "raw_spatial_generation_integral",
+    "numerical_zero_field_observed": false,
+    "raw_spatial_time_integral": 6303395120727770.0,
+    "integration": "trapezoid on original accepted times after duplicate-time cleanup",
+    "units": {
+      "density": "cm^-3 s^-1",
+      "spatial_measure": "um^3 (2D effective thickness 1 um)",
+      "time": "s",
+      "um3_to_cm3": 1e-12,
+      "elementary_charge_C": 1.602176634e-19,
+      "formula": "Q[fC] = integral(G_integrated dt) * 1e-12 * e[C] * 1e15"
+    },
+    "pair_charge_convention": "one elementary charge per electron-hole pair; no factor of two",
+    "dimension_scope": "Inherited normalization checked structurally, not an independent 3D volume calibration.",
+    "source_parameter_file": "heavyion.par"
+  },
+  "voltages": {
+    "prestrike": {
+      "time_s": 9.5e-10,
+      "v(sn)": 0.899999999689649,
+      "v(bl)": 0.0,
+      "v(ref)": 0.5,
+      "v(wl)": 0.0
+    },
+    "hold_end": {
+      "time_s": 2.8e-09,
+      "v(sn)": 0.865885828766757,
+      "v(bl)": 0.0,
+      "v(ref)": 0.5,
+      "v(wl)": 0.0
+    },
+    "precharge_end": {
+      "time_s": 3e-09,
+      "v(sn)": 0.865960975258481,
+      "v(bl)": 0.499999999667947,
+      "v(ref)": 0.5,
+      "v(wl)": 0.0
+    },
+    "read": {
+      "time_s": 4e-09,
+      "v(sn)": 0.546436629996802,
+      "v(bl)": 0.546436629996854,
+      "v(ref)": 0.5,
+      "v(wl)": 1.8
+    }
+  },
+  "terminal_currents": {
+    "source": {
+      "TotalCurrent": {
+        "peak_abs_A": 0.00012812858822078,
+        "full_integral_trapezoid_fC": -4.104098506204674
+      },
+      "eCurrent": {
+        "peak_abs_A": 0.0001277155439276,
+        "full_integral_trapezoid_fC": -4.087204216854387
+      },
+      "hCurrent": {
+        "peak_abs_A": 6.87438654300304e-20,
+        "full_integral_trapezoid_fC": 5.100077713243322e-14
+      },
+      "DisplacementCurrent": {
+        "peak_abs_A": 9.25836608854334e-07,
+        "full_integral_trapezoid_fC": -0.016894289350336426
+      }
+    },
+    "drain": {
+      "TotalCurrent": {
+        "peak_abs_A": 7.72567199282248e-05,
+        "full_integral_trapezoid_fC": 3.544483078581993
+      },
+      "eCurrent": {
+        "peak_abs_A": 7.73371261756215e-05,
+        "full_integral_trapezoid_fC": 3.585696542540831
+      },
+      "hCurrent": {
+        "peak_abs_A": 6.28434567887045e-20,
+        "full_integral_trapezoid_fC": 2.324127292962561e-13
+      },
+      "DisplacementCurrent": {
+        "peak_abs_A": 1.02796785948697e-06,
+        "full_integral_trapezoid_fC": -0.041213463959070246
+      }
+    },
+    "gate": {
+      "TotalCurrent": {
+        "peak_abs_A": 5.20047143038456e-05,
+        "full_integral_trapezoid_fC": 1.3923719967883095
+      },
+      "eCurrent": {
+        "peak_abs_A": 0.0,
+        "full_integral_trapezoid_fC": 0.0
+      },
+      "hCurrent": {
+        "peak_abs_A": 0.0,
+        "full_integral_trapezoid_fC": 0.0
+      },
+      "DisplacementCurrent": {
+        "peak_abs_A": 5.20047143038456e-05,
+        "full_integral_trapezoid_fC": 1.3923719967883095
+      }
+    },
+    "body": {
+      "TotalCurrent": {
+        "peak_abs_A": 9.98101058018956e-06,
+        "full_integral_trapezoid_fC": -0.832756569165633
+      },
+      "eCurrent": {
+        "peak_abs_A": 3.66041153021179e-06,
+        "full_integral_trapezoid_fC": 0.38001571000961915
+      },
+      "hCurrent": {
+        "peak_abs_A": 1.31180178609147e-05,
+        "full_integral_trapezoid_fC": -1.212837258343186
+      },
+      "DisplacementCurrent": {
+        "peak_abs_A": 2.67970737460485e-07,
+        "full_integral_trapezoid_fC": 6.497916793382187e-05
+      }
+    }
+  },
+  "conservation": {
+    "BE_charge_checks": {
+      "hold_sn": {
+        "capacitor_gain_fC": -0.3411417092289204,
+        "terminal_inflow_fC": -0.34114170922693166,
+        "residual_fC": 1.988742504011043e-12
+      },
+      "precharge_sn": {
+        "capacitor_gain_fC": 0.0007514649172402077,
+        "terminal_inflow_fC": 0.0007514649173960613,
+        "residual_fC": 1.5585362861392227e-13
+      },
+      "precharge_bl": {
+        "capacitor_gain_fC": 49.999999966794704,
+        "terminal_inflow_fC": 49.99999996678976,
+        "residual_fC": 4.945377440890297e-12
+      },
+      "read_sn": {
+        "capacitor_gain_fC": -3.1952434526167903,
+        "terminal_inflow_fC": -3.1952434524786053,
+        "residual_fC": 1.3818501898299473e-10
+      },
+      "read_bl": {
+        "capacitor_gain_fC": 4.6436630328907045,
+        "terminal_inflow_fC": 4.643663032890957,
+        "residual_fC": 2.5224267119483557e-13
+      },
+      "read_ref": {
+        "capacitor_gain_fC": 0.0,
+        "terminal_inflow_fC": -5.000000000000001e-15,
+        "residual_fC": 5.000000000000001e-15
+      }
+    },
+    "max_kcl_A": {
+      "hold_sn": 1.4776274232278437e-15,
+      "precharge_sn": 1.9996652514648497e-15,
+      "precharge_bl": 4.4905190407365493e-17,
+      "read_sn": 7.94488936239164e-15,
+      "read_bl": 2.94485221349093e-16,
+      "read_ref": 0.0
+    },
+    "read_port_integrals_fC": {
+      "access": {
+        "source": {
+          "TotalCurrent": -4.643663032890962,
+          "eCurrent": -4.614262097355502,
+          "hCurrent": 4.405614860645131e-14,
+          "DisplacementCurrent": -0.029400935535501844
+        },
+        "drain": {
+          "TotalCurrent": 3.1952434524785995,
+          "eCurrent": 3.235377510653701,
+          "hCurrent": 4.4303318555260694e-14,
+          "DisplacementCurrent": -0.04013405817514528
+        },
+        "gate": {
+          "TotalCurrent": 1.4660036226730706,
+          "eCurrent": 0.0,
+          "hCurrent": 0.0,
+          "DisplacementCurrent": 1.4660036226730706
+        },
+        "body": {
+          "TotalCurrent": -0.01758404226071374,
+          "eCurrent": -6.66076876927565e-13,
+          "hCurrent": -0.017584042404834896,
+          "DisplacementCurrent": 1.4478719699392092e-10
+        }
+      }
+    },
+    "four_terminal_closure": {
+      "access": {
+        "capacitor_gain_fC": 1.4484195802739142,
+        "source_drain_inflow_fC": 1.4484195804123625,
+        "gate_body_inflow_fC": 1.448419580412357,
+        "residual_fC": 1.3844836388443582e-10
+      }
+    },
+    "tolerance_basis": "Unchanged inherited R50 conservation checks; see parser_source_sha256."
+  }
+}

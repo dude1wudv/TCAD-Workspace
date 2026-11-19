@@ -1,0 +1,8 @@
+{
+  "control.py": "ac5fee03ed6b051cfe51736d915379a226274d401e65de2baad5c3a4dfff880f",
+  "campaign_runner.py": "7200aa56b4ab252580b8f53a62d65667beeabe66bb76af4e81a074d06b6a1163",
+  "acceptance.py": "9a781a9aff7a53b28ea9a058a7397e61e80a58fe2c3a5eeec3441a475073b0ad",
+  "campaign.json": "50b5121c5ccbada7b65b4a36ff9eb25ee2e9b6dc700bacdde14af8bb085be7e0",
+  "report.py": "6baf6d9b0f66378e20abbdfbd2c11162a1119d82c7f1acd881603a9c1b7f25b3",
+  "test_control.py": "0263a4df0ad58031b91ab72d9ee1c4258b06fb6cb78afc6fe24179a90b3c0c6c"
+}

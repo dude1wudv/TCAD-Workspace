@@ -1,0 +1,20 @@
+{
+  "schema": "dram-see-v3-r50-main-restart-source-manifest",
+  "physical_revision": "r50-main-r1",
+  "files_sha256": {
+    "experiments/dram-see-v3/r50-main/restart-r2/controller.py": "aae4bc5ebae95d0f24dc149168e8d4d423ed231532bbd53188105b44c234bf0e",
+    "experiments/dram-see-v3/r50-main/restart-r2/build_case.py": "c6d068e902bc6041e3da41da6e1e00dcfc2a8d4a3a4561683c32f5e156f66839",
+    "experiments/dram-see-v3/r50-main/restart-r2/audit.py": "b8e258446ead6b4db858b3b02298224df92a72dabdff408126e777189f866005",
+    "experiments/dram-see-v3/r50-main/restart-r2/event_audit.py": "1690452c509dd555c03aab1f924614e906ec393a3f90a341e927d8e3a2e0b55a",
+    "experiments/dram-see-v3/r50-main/restart-r2/design.json": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+    "experiments/dram-see-v3/r50-main/restart-r2/plan.md": "c2f08d68394b669b0ab7edb6727523743cd00a93647e132756421d40a8d9db67",
+    "experiments/dram-see-v3/r50-main/restart-r2/design.sha256": "046c17c983280f857f9ff740917aad614da0e2746c988f7154f6f04660a44607",
+    "experiments/dram-see-v3/common.py": "a34c708bf4bc74da5d41c06d9778623eea9c9d3d4c573a2cfa66f0b848f01d50",
+    "experiments/dram-see-v3/run.py": "865829bc951090dec379bd901db39f1d703e47485fe74d133c40f1c1f66bf9ca",
+    "scripts/tcad.py": "8a08d895d788f053da8d07cc29dd7c745ede9b5f3b29b757ad012ca79f7779d5",
+    "experiments/dram-see-v1/analyze.py": "6b0df38bb4db9ff3a77bfaee1ead5ef3b794bf93999411bf016cc45ae526cabf",
+    "experiments/dram-see-v1/build_case.py": "7a22e53bc939b236b0b612f42e382b952c362042b28e187414e481e77b9916bd",
+    "experiments/dram-see-v2/build_case.py": "861ddb0188dc5a4f70846b66da7302647dd92fbbad15c42a5087f29f6b3ed46b",
+    "experiments/dram-readout-offset-d1/build.py": "ea93df2861321a2ea1870084210c8bed5e858dd5b0f2857e35905cd8f3d6272b"
+  }
+}

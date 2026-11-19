@@ -1,0 +1,220 @@
+{
+  "schema": "dram-see-v4-r13-alpha-evidence-v1",
+  "status": "OFFLINE_EVIDENCE_ONLY_NOT_RELEASED",
+  "retrieval_timestamp_policy": "Individual saved-file modification times are recorded below; retrieval is distinct from this later offline calculation",
+  "astar_request": {
+    "method": "POST",
+    "url": "https://physics.nist.gov/cgi-bin/Star/ap_table-t.pl",
+    "fields": {
+      "prog": "ASTAR",
+      "matno": "014",
+      "Energies": "5",
+      "ShowDefault": "on"
+    },
+    "rows": 121
+  },
+  "sources": {
+    "form": "https://physics.nist.gov/PhysRefData/Star/Text/ASTAR-t.html",
+    "methods": "https://physics.nist.gov/PhysRefData/Star/Text/programs.html",
+    "density": "https://physics.nist.gov/cgi-bin/Star/compos.pl?matno=014",
+    "radial_temporal_abstract": "https://research.ibm.com/publications/theoretical-determination-of-the-temporal-and-spatial-structure-of-a-particle-induced-electron-hole-pair-generation-in-silicon",
+    "radial_temporal_doi": "10.1109/23.903811"
+  },
+  "constants": {
+    "density_g_cm3": 2.33,
+    "silicon_eV_per_pair": 3.6,
+    "elementary_charge_C": 1.602176634e-19,
+    "fC_per_MeV_electronic": 44.50490649999999,
+    "epsilon_evidence": "SDevice W-2024.09 UG Table 141 pp810-811; project modeling convention, not ASTAR output or an exact universal material constant"
+  },
+  "selected_rows": [
+    {
+      "energy_MeV": 3.0,
+      "electronic_MeV_cm2_g": 842.4,
+      "nuclear_MeV_cm2_g": 0.7476,
+      "total_tabulated_MeV_cm2_g": 843.2,
+      "csda_g_cm2": 0.002848,
+      "projected_g_cm2": 0.002768,
+      "detour": 0.9719,
+      "density_g_cm3": 2.33,
+      "electronic_MeV_cm2_mg": 0.8423999999999999,
+      "electronic_MeV_um": 0.19627920000000001,
+      "nuclear_MeV_um": 0.00017419080000000004,
+      "electronic_fC_um": 8.7353874438948,
+      "electronic_pC_um": 0.0087353874438948,
+      "csda_um": 12.223175965665234,
+      "projected_um": 11.879828326180258
+    },
+    {
+      "energy_MeV": 5.0,
+      "electronic_MeV_cm2_g": 617.4,
+      "nuclear_MeV_cm2_g": 0.4805,
+      "total_tabulated_MeV_cm2_g": 617.9,
+      "csda_g_cm2": 0.005651,
+      "projected_g_cm2": 0.005566,
+      "detour": 0.9848,
+      "density_g_cm3": 2.33,
+      "electronic_MeV_cm2_mg": 0.6174,
+      "electronic_MeV_um": 0.1438542,
+      "nuclear_MeV_um": 0.00011195649999999999,
+      "electronic_fC_um": 6.402217720632298,
+      "electronic_pC_um": 0.006402217720632298,
+      "csda_um": 24.25321888412017,
+      "projected_um": 23.88841201716738
+    },
+    {
+      "energy_MeV": 7.0,
+      "electronic_MeV_cm2_g": 492.7,
+      "nuclear_MeV_cm2_g": 0.3581,
+      "total_tabulated_MeV_cm2_g": 493.1,
+      "csda_g_cm2": 0.009303,
+      "projected_g_cm2": 0.00921,
+      "detour": 0.9901,
+      "density_g_cm3": 2.33,
+      "electronic_MeV_cm2_mg": 0.49269999999999997,
+      "electronic_MeV_um": 0.1147991,
+      "nuclear_MeV_um": 8.34373e-05,
+      "electronic_fC_um": 5.109123211784149,
+      "electronic_pC_um": 0.0051091232117841485,
+      "csda_um": 39.927038626609445,
+      "projected_um": 39.527896995708154
+    }
+  ],
+  "csda_reference": {
+    "method": "RK4 on piecewise-linear interpolation of frozen ASTAR Se and Sn versus energy",
+    "dE_ds": "-rho*1e-4*(Se(E)+Sn(E)) MeV/um",
+    "dEe_ds": "rho*1e-4*Se(E) MeV/um",
+    "reference_step_um": 0.0001,
+    "arithmetic_refinement_step_um": 5e-05,
+    "largest_step_halving_charge_difference_fC": 4.693985330983529e-14,
+    "largest_energy_balance_error_MeV": 3.2544293323590046e-14,
+    "limitations": "Offline straight-line CSDA model, not a measured or Geant4 event; no straggling, delta-electron tracks, oxide/package transport, or nuclear secondary ionization; table interpolation error is separate from RK4 error"
+  },
+  "nominal_profile": {
+    "energy_at_first_Si_surface_MeV": 5.0,
+    "direction": "+z",
+    "path_length_um": 1.0,
+    "profile_nodes": 101,
+    "spacing_um": 0.01,
+    "untruncated_line_charge_fC": 6.468053389410294,
+    "linear_profile_trapezoid_charge_fC": 6.468053411906473,
+    "linear_profile_charge_relative_error": 3.4780447512340314e-09,
+    "deck_status": "Not generated or qualified; per-material 3D truncation and source coordinates pending geometry contract; no amplitude renormalization"
+  },
+  "method_example_profile": {
+    "energy_at_first_Si_surface_MeV": 5.0,
+    "direction": "+z",
+    "path_length_um": 0.4,
+    "profile_nodes": 41,
+    "spacing_um": 0.01,
+    "untruncated_line_charge_fC": 2.571377735259099,
+    "linear_profile_trapezoid_charge_fC": 2.571377744202439,
+    "linear_profile_charge_relative_error": 3.4780342552692376e-09,
+    "deck_status": "Not generated or qualified; per-material 3D truncation and source coordinates pending geometry contract; no amplitude renormalization"
+  },
+  "source_assumptions": {
+    "radial_w_um": 0.05,
+    "temporal_sigma_s": 2e-13,
+    "radial_convention": "normalized exp(-r^2/w^2)/(pi*w^2); each transverse coordinate sigma=w/sqrt(2)",
+    "evidence_limit": "IBM author abstract establishes approximate scales only; radius-to-Wt_hi convention and sigma=.2ps are explicit modeling assumptions, not a fit or commercial calibration",
+    "source_window_sigma": 8,
+    "maximum_step_s": 4e-14,
+    "refined_maximum_step_s": 2e-14,
+    "centroid_abs_um": 0.002,
+    "time_centroid_abs_s": 4e-14,
+    "centroid_rule": "min(0.01um,w/10,active_width/10), active_width=0.02um explicit geometry assumption",
+    "time_refinement_policy": "All transient maximum-step constraints multiplied by 0.5; physical waveforms, sigma and sample times unchanged",
+    "main_ramp_maximum_step_s": 1e-11,
+    "refined_ramp_maximum_step_s": 5e-12,
+    "main_hold_maximum_step_s": 1e-10,
+    "refined_hold_maximum_step_s": 5e-11
+  },
+  "provenance": [
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/astar-silicon-response.html",
+      "sha256": "c441db76f5374dfc88d0dcf1e9b9483d90c9c322ec2df908ca13156a7ac7fa5e",
+      "size_bytes": 12376,
+      "saved_file_mtime_utc": "2026-10-16T04:36:55.599332+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/astar-form.html",
+      "sha256": "c24d4061760a43bb855bb08fb382673755d64879216544bf7ffa580f5b958951",
+      "size_bytes": 8020,
+      "saved_file_mtime_utc": "2026-10-16T04:36:43.500496+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/silicon-composition.html",
+      "sha256": "c7ab8dce0899a0037365c1ca798e3cec1a6f5f9ba43448d2b2be796c441c17a6",
+      "size_bytes": 16442,
+      "saved_file_mtime_utc": "2026-10-16T04:37:31.119911+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/astar-methods.html",
+      "sha256": "a1ca16b5c99983cd1ed20443f6d25b658c35c0e5d9a18ee74825d6fbe06f3b50",
+      "size_bytes": 15349,
+      "saved_file_mtime_utc": "2026-10-16T04:37:32.522774+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/astar-appendix.html",
+      "sha256": "c7dab8711eee4a166051eec4047967108f364a1d333e483a38a1dc968be095ea",
+      "size_bytes": 6315,
+      "saved_file_mtime_utc": "2026-10-16T04:37:33.526390+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/ibm-oldiges-2000.html",
+      "sha256": "8b7ca91c228946fdc67ddd883d91e076070199383ab0006148297f4d98d8140d",
+      "size_bytes": 35371,
+      "saved_file_mtime_utc": "2026-10-16T04:40:56.546513+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v1/sdevice_ug.pdf",
+      "sha256": "98f37002013ccc2e73c0316e3ea66fd7d06fd773abac7caaa3d362ea85d5c5b0",
+      "size_bytes": 28095219,
+      "saved_file_mtime_utc": "2026-10-09T16:31:11.230506+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v1/heavyion-reference.txt",
+      "sha256": "5bafcbd86ca09e1081f00fddf849cbefb58218bb96aebaa7e868b103ce300960",
+      "size_bytes": 12164,
+      "saved_file_mtime_utc": "2026-10-09T16:31:41.041467+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/preflight/hadronic-and-parameters/stdout.txt",
+      "sha256": "6fd1c3b37c048524a93d4866ea9aa17194bbd655d052fdddc3dfa0b0e706e12e",
+      "size_bytes": 2097,
+      "saved_file_mtime_utc": "2026-10-13T02:14:28.078896+00:00"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-3d-r1/source_contract.json",
+      "sha256": "d4dd0ae1caaa82c66469a470fcf48cbdaedf7d01254113bd02a91014343765e4",
+      "size_bytes": 12939,
+      "saved_file_mtime_utc": "2026-10-14T04:12:00.459292+00:00"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-interface-3d-r1/oracle.py",
+      "sha256": "376b693a366c454d3f55b4e9916a4633234627d89590163071f4ba2c987a5884",
+      "size_bytes": 3878,
+      "saved_file_mtime_utc": "2026-10-14T04:11:20.283406+00:00"
+    },
+    {
+      "path": "experiments/dram-see-v4/source-field-audit-3d-r1/audit_fields.py",
+      "sha256": "62a9273e780ef7d01ca18af3fc4b2e2a74fc5a54052a2652a27ccdd4bc2b1717",
+      "size_bytes": 45231,
+      "saved_file_mtime_utc": "2026-10-14T04:14:52.168407+00:00"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/course-plan-r13/alpha-evidence/extract_alpha_evidence.py",
+      "sha256": "60c77b578dc715b02c9c3d9a9523b167fc4213e84718d392612b7268c36279d8",
+      "size_bytes": 10372,
+      "saved_file_mtime_utc": "2026-10-16T04:49:18.490808+00:00"
+    }
+  ],
+  "native_calls": {
+    "ssh": 0,
+    "tcad": 0,
+    "geant4": 0,
+    "compile": 0,
+    "postprocess": 0,
+    "training": 0
+  }
+}

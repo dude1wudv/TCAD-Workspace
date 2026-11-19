@@ -1,0 +1,54 @@
+{
+  "schema": "dram-se-r06-old-zero-hold-window-verification-r1",
+  "status": "offline_analysis_verified_not_scientific_acceptance",
+  "commands": [
+    {
+      "command": "python3 -B experiments/dram-se-r06/p0-d0-hold-window-r1/analyze.py --write",
+      "exit_code": 0
+    },
+    {
+      "command": "python3 -B experiments/dram-se-r06/p0-d0-hold-window-r1/analyze.py --check",
+      "exit_code": 0
+    }
+  ],
+  "independent_spotcheck": {
+    "method": "direct cache JSON plus stdlib bisect/binary64 interpolation, CSV original-row matching, independent signed read margin",
+    "checks": [
+      {
+        "state": "b0",
+        "selected_actual_rows_checked": 77,
+        "candidate_brackets_checked": 3,
+        "SN1_BL_interpolation_float_decimal_max_allowed_difference_V": 4e-16,
+        "exact_31p9ns_read_row": 593
+      },
+      {
+        "state": "b1",
+        "selected_actual_rows_checked": 116,
+        "candidate_brackets_checked": 3,
+        "SN1_BL_interpolation_float_decimal_max_allowed_difference_V": 4e-16,
+        "exact_31p9ns_read_row": 638
+      }
+    ],
+    "exit_code": 0
+  },
+  "development_notes": [
+    "Initial source-body count check stopped on the legitimate units directive; parser now explicitly checks its exact text and 10170 N nodes. No evidence written by that failed attempt.",
+    "Initial hash-index lexical check stopped because cached hash keys use E-8 while original time tokens use E-08; changed to exact Decimal key comparison with strict order, uniqueness and endpoint equality. Failure log retained locally. No physical criterion or cache was changed."
+  ],
+  "scope": {
+    "cache_files_verified": 4,
+    "input_files_verified": 32,
+    "solver_runs": 0,
+    "gate_evaluations": 0,
+    "Z_completion_credit": 0,
+    "scientific_acceptance": false
+  },
+  "artifact_sha256": {
+    "analyze.py": "c14c76524d73a1925896ef16e4f8b3caa2f2eb729c78355156ec70d17d3403cf",
+    "README.md": "98a47a5a1b41c89e30179cb0c18298bda9ba1a9594429277592008889c38e4f0",
+    "evidence/analysis.json": "fd3f9228fdc89bef68a6486d0e1ca2f5039a594171859d44430ce1a05b4d0dec",
+    "evidence/provenance.json": "e4512c35d1f7777d029ab0914fe6a466f9a43b62e09564280258800ecb4aedad",
+    "evidence/candidate-points.csv": "24b1659ad1af1620ae7ef005244045176673ce7c6e4cfc682c933566fb19304a",
+    "evidence/actual-trace-selected.csv": "9e087a376580c71f5fc193cf0a4f7f128ce70e170c21b9c46c6aaf08c7d5506a"
+  }
+}

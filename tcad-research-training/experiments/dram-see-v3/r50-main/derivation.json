@@ -1,0 +1,40 @@
+{
+  "schema": "r50-main-source-derivation",
+  "schema_identity": "dram-see-v3-r50-main",
+  "circuit_revision": "r50-main-r1-finite-ramp-rpre50-off1e20-wl0-initialize-read3.05to3.10ns-1.8V-snclamp-release0.6ns",
+  "sources": [
+    {
+      "original": "experiments/dram-see-v3/build_case.py",
+      "original_sha256": "d4f963ad0936d0bbf94ce0126b669bcfa9d0e0105377df8658affebf8bba0dab",
+      "derived": "experiments/dram-see-v3/r50-main/build_case.py",
+      "derived_sha256": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+      "diff": "build_case.py.diff",
+      "diff_sha256": "e55eaa2cb986a91a75007827ecc4946b4ac2ba5bce73aa6e9efe1feead08ed8a"
+    },
+    {
+      "original": "experiments/dram-see-v3/audit.py",
+      "original_sha256": "f76ae7afb300dd77ba55e1c46486e911b82640ff302d4b7ee3bb89b59e05b229",
+      "derived": "experiments/dram-see-v3/r50-main/audit.py",
+      "derived_sha256": "acf560c69d7ae849cd6ccc7d136da286f12e32ec94b1e886aa114430b8332bc7",
+      "diff": "audit.py.diff",
+      "diff_sha256": "8e1aefa4e8113d862d54dbe2fd945b6ccbedf6b65403f9e477f10f0304af1a66"
+    },
+    {
+      "original": "experiments/dram-see-v3/metrics.py",
+      "original_sha256": "a0de9c2521d7403d7c850efb24f0548e73a9451997c42a53f91185c90ca8cb8c",
+      "derived": "experiments/dram-see-v3/r50-main/metrics.py",
+      "derived_sha256": "911daf34a0238ab14f3d3949d2b647a3a2d8dbb976ef9a28f34ff19896764187",
+      "diff": "metrics.py.diff",
+      "diff_sha256": "ce2f67ab432aa2f893c1278bbc4391ab79584a3f0b284ac1a18de570dfa26eb7"
+    },
+    {
+      "original": "experiments/dram-see-v3/numerical.py",
+      "original_sha256": "91ac28d33904ab17f33d9ef0135e104fcde950ebb1b1fb1e874e1389edb1e481",
+      "derived": "experiments/dram-see-v3/r50-main/numerical.py",
+      "derived_sha256": "63380f57a9de86fc5cdf99e33d0cd4588c6930a4586355abc59f655dd9001bfd",
+      "diff": "numerical.py.diff",
+      "diff_sha256": "1c9819a2d3289436c832a63beb994eb11cf7b96ec2882ce7218ba824171cc987"
+    }
+  ],
+  "scope": "Explicit independent copies; only both Rpre on-resistances change physically; complete version isolation; no computed physical results"
+}

@@ -1,0 +1,136 @@
+\documentclass[UTF8,fontset=fandol,11pt,a4paper]{ctexart}
+\usepackage[left=21mm,right=21mm,top=19mm,bottom=20mm]{geometry}
+\usepackage{amsmath,booktabs,tabularx,array,xcolor,fancyhdr}
+\usepackage[hidelinks,unicode]{hyperref}
+\renewcommand{\familydefault}{\sfdefault}
+\renewcommand{\CJKfamilydefault}{\CJKsfdefault}
+\definecolor{ink}{HTML}{172E3A}\definecolor{blue}{HTML}{287A9A}\definecolor{muted}{HTML}{677A83}
+\color{ink}\setlength{\parindent}{0pt}\setlength{\parskip}{7pt}\linespread{1.25}
+\setlength{\emergencystretch}{2em}\renewcommand{\arraystretch}{1.5}
+\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{.3pt}
+\fancyfoot[L]{\scriptsize\color{muted}DRAM SEE v3\quad 课程配套材料}
+\fancyfoot[R]{\scriptsize\color{muted}\thepage\,/\,4}
+\newcommand{\titleline}[1]{{\small\bfseries\color{blue}课程配套材料}\par\vspace{6pt}{\LARGE\bfseries #1}\par\vspace{8pt}}
+\newcommand{\parttitle}[1]{\par\vspace{10pt}{\large\bfseries #1}\par\vspace{3pt}}
+\newcommand{\smallnote}[1]{\par{\small\color{muted}#1}\par}
+\hypersetup{pdftitle={AI辅助下的多特征尺寸存储器单粒子效应评估 课程配套材料},pdfauthor={}}
+\begin{document}
+\titleline{设计方案与工作进度}
+本课题比较不同栅长DRAM在粒子入射后的电荷变化和读出结果，并用仿真数据训练预测模型。计算采用Geant4和Sentaurus TCAD，AI助手参与脚本编写、参数整理及数据分析。
+
+\parttitle{研究安排}
+\begin{tabularx}{\textwidth}{@{}>{\bfseries}p{2.3cm}X@{}}
+\toprule
+研究对象 & 1T1C DRAM单元，即一个晶体管与一个存储电容。\\
+尺寸比较 & 栅长0.18、0.25、0.35、0.45~$\mu$m。\\
+粒子条件 & $\alpha$粒子和质子，能量5 MeV，入射角0°和30°。\\
+数据规模 & 每组条件4个随机种子，共64个独立事件；分别计算存储0和1，得到128次响应。\\
+补充计算 & 比较4、5、6 nm氧化层厚度；选取2个接近读出判定边界的响应，检查时间步和网格的影响。\\
+\bottomrule
+\end{tabularx}
+
+\parttitle{计算方法}
+Geant4提供粒子在材料中的沉积信息，再换算为TCAD中的电荷源。TCAD计算存储节点电压及读出信号，每个粒子响应均配有相同条件下的无粒子对照。
+
+器件建模、粒子输运和数据拟合分别使用已有的专业软件及数值方法。每次计算保留输入、输出和记录，能够按工况查找对应结果。
+
+\parttitle{已完成进度}
+\begin{tabularx}{\textwidth}{@{}p{3.8cm}X@{}}
+\toprule
+工作 & 结果\\\midrule
+器件与粒子模型 & 完成基础模型、无粒子对照及初态检查。\\
+主实验 & 完成128次响应，覆盖全部预定条件。\\
+模型训练与测试 & 用64次响应训练4个模型，另64次响应用于测试。\\
+氧化层与边界验证 & 完成14项氧化层试验和2个边界对象的细化计算。\\
+资料整理 & 完成曲线、场分布图、结果表、报告和汇报PPT。\\
+\bottomrule
+\end{tabularx}
+\vfill
+\smallnote{完整方法、结果和参考文献见课程报告；本册用于准备汇报及安排作品演示。}
+
+\newpage
+\titleline{预测模型的训练与验证}
+4个模型均采用岭回归。存储0和存储1各训练两个模型，分别预测电荷变化$\Delta Q$和读出裕量变化$\Delta M$。
+
+\parttitle{训练数据与输入}
+训练使用0.18、0.35~$\mu$m的64次响应。按存储状态分开后，每个模型使用32条训练数据。输入来自粒子沉积、栅长和入射角，具体为：
+\begin{center}
+\begin{tabular}{ll}\toprule
+输入项 & 表达式\\\midrule
+沉积电荷 & $Q_{\mathrm{dep}}$\\
+沉积电荷与栅长的组合 & $Q_{\mathrm{dep}}/L$\\
+沉积电荷与入射角的组合 & $Q_{\mathrm{dep}}\sin\theta$\\\bottomrule
+\end{tabular}
+\end{center}
+
+\parttitle{训练参数的选择}
+训练数据共有8组“栅长、粒子、角度”组合。每次留出一整组的4条数据，用其余28条拟合，再检查留出组的误差，共进行8轮。
+
+比较的岭回归参数为0、0.01、0.1、1、10。以8轮的平均误差选择参数，4个模型最终均选中0.1。输入的标准化参数也仅由当轮训练数据计算。
+
+\parttitle{新尺寸测试}
+模型确定后，先保存0.25、0.45~$\mu$m的64条预测，再运行对应的TCAD测试。0.25~$\mu$m位于训练尺寸之间，0.45~$\mu$m超过训练尺寸范围。测试完成后逐条比较预测与仿真值。
+
+\begin{tabularx}{\textwidth}{@{}Xlrr@{}}\toprule
+预测内容 & 状态 & 0.25~$\mu$m & 0.45~$\mu$m\\\midrule
+电荷变化（fC） & 存储0 & 0.0883 & 0.0680\\
+电荷变化（fC） & 存储1 & 0.0946 & 0.0672\\
+读出裕量变化（mV） & 存储0 & 0.7984 & 0.5194\\
+读出裕量变化（mV） & 存储1 & 0.8380 & 0.5049\\\bottomrule
+\end{tabularx}
+\smallnote{表中为均方根误差。4个模型在两种测试尺寸上的误差都小于直接使用训练数据平均值预测的误差。}
+\vfill
+\smallnote{预测输入包括真实Geant4沉积信息，比较结果对应本项目的器件模型和参数范围。}
+
+\newpage
+\titleline{作品演示安排}
+演示使用已完成的仿真结果，按照一个工况的计算过程查看输入、数据和图像。以下为演示顺序。
+
+\parttitle{1\quad 参数与模型}
+用项目简报介绍4种栅长、两种粒子和两个入射方向。打开器件场分布图，说明存储节点、读出信号和粒子沉积在仿真中的作用。
+
+\parttitle{2\quad 自然语言参数设置}
+展示已实现的参数映射功能：把尺寸、粒子、方向等文字要求转换为参数清单，预览工况并定位对应结果。说明程序如何处理缺少参数或含糊的请求。
+
+\parttitle{3\quad 一组仿真数据}
+在主实验响应表中选定一行，核对栅长、粒子、角度和存储状态。结合对应的读出曲线，说明粒子响应与无粒子对照之间的差别。
+
+\parttitle{4\quad 读出结果}
+介绍5 mV判据下的统计：96次正确读出、20次判据误读、8次临界、4次数值不确定。临界表示读出裕量接近零；数值不确定表示边界附近的分类还受到数值验证状态的影响。
+
+\parttitle{5\quad 预测与仿真比较}
+展示预测散点图和误差表，说明训练尺寸与测试尺寸如何分开。用第2页的训练过程回答模型数量、输入变量和参数选择的问题。
+
+\parttitle{6\quad 补充验证}
+展示氧化层厚度对比图，以及边界对象采用更小时间步和更细网格后的结果。细化计算中有1项出现5 mV分类跨界，统计中已保留相应的不确定性。
+
+\vfill
+\smallnote{演示所用文件位于交付文件夹的“06\_数据与图表”。这些步骤是现场演示的安排。}
+
+\newpage
+\titleline{汇报说明与讨论记录}
+\parttitle{AI工具的用途}
+AI助手参与理解题目、整理仿真条件、编写脚本、分析输出和起草材料。粒子输运由Geant4计算，器件响应由Sentaurus TCAD计算；4个岭回归模型使用本项目的数据训练，用来预测数值结果。
+
+\parttitle{常见问题}
+\textbf{64个事件和128次响应有什么区别？}\par
+同一个粒子事件分别施加到存储0和存储1的单元上，因此形成两次响应。网格细化、时间步检查及工程重试都沿用原事件，不增加独立事件数。
+
+\textbf{为什么分别训练4个模型？}\par
+存储0和存储1的响应不同，电荷变化与读出裕量变化也使用不同单位。按存储状态和预测内容分别拟合，便于比较每个模型的误差。
+
+\textbf{怎样验证预测结果？}\par
+用0.18、0.35~$\mu$m的数据训练，固定模型和预测后，再计算0.25、0.45~$\mu$m的测试结果。每条预测都有对应的仿真值，误差表汇总了这些差值。
+
+\textbf{误读的含义是什么？}\par
+这里的误读按指定时刻的读出信号和阈值判断。结果反映当前二维模型的响应，不等同于商业器件的永久位翻转率。
+
+\parttitle{查阅材料}
+项目简报适合快速了解进展；课程报告介绍方案和完整结果；论文按研究问题、方法和结果组织。PPT用于汇报，数据表和原始图件另放在同一文件夹中。
+
+\parttitle{教师意见与修改记录}
+\smallnote{讨论日期：\underline{\hspace{3.5cm}}\hfill 记录人：\underline{\hspace{3.5cm}}}
+\vspace{14pt}\hrule\vspace{24pt}\hrule\vspace{24pt}\hrule
+\vfill
+\smallnote{课程考核由导师评价、项目报告和答辩或作品演示组成，权重分别为20\%、20\%、60\%。}
+\end{document}

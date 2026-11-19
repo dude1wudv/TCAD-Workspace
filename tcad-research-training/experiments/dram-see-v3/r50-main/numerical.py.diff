@@ -1,0 +1,389 @@
+--- dram-see-v3/numerical.py
++++ dram-see-v3/r50-main/numerical.py
+@@ -1,215 +1,5 @@
+-"""Frozen, resumable numerical checks; all real dispatch goes through run.record."""
+-import argparse
+-import hashlib
+-import importlib.util
+-import json
++"""Exact pure preregistered numerical comparison; no ledger or source loader."""
+ import math
+-from pathlib import Path
+-import re
+-import sys
+-
+-HERE = Path(__file__).resolve().parent
+-if str(HERE) not in sys.path:
+-    sys.path.insert(0, str(HERE))
+-
+-
+-def _module(name, path):
+-    spec = importlib.util.spec_from_file_location(name, path)
+-    result = importlib.util.module_from_spec(spec)
+-    exec(compile(Path(path).read_bytes(), str(path), 'exec'), result.__dict__)
+-    return result
+-
+-
+-C = _module('_v3_extensions_controller', HERE / 'run.py')
+-ROOT, LOCAL = C.ROOT, C.LOCAL
+-
+-
+-def source_hashes():
+-    result = C.source_hashes()
+-    for name in ('numerical.py', 'oxide.py'):
+-        path = HERE / name
+-        result[path.relative_to(ROOT).as_posix()] = C.sha(path)
+-    return result
+-
+-
+-def event_tag(event, bit):
+-    return 'v3-' + event['label'] + '-b' + str(bit)
+-
+-
+-def refined_tag(event, bit, step, mesh):
+-    return C.safe_tag('v3-num-' + event['label'] + f'-b{bit}-s{step:g}-m{mesh:g}')
+-
+-
+-def event_files(event):
+-    directory = HERE / 'data/geant4' / event['label']
+-    files = {name: (directory / name).read_bytes() for name in ('steps.csv', 'events.csv')}
+-    C.module('event_audit').validate_bytes((directory / 'event.json').read_bytes(), files,
+-        {key: event[key] for key in ('gate_length_um', 'particle', 'energy_MeV', 'angle_deg', 'seed')})
+-    return {(directory / name).relative_to(ROOT).as_posix(): C.sha(directory / name)
+-            for name in ('event.json', 'steps.csv', 'events.csv')}
+-
+-
+-def require_stage(name):
+-    if C.load()['stages'].get(name, {}).get('state') != 'VERIFIED':
+-        raise ValueError('Required verified stage missing: ' + name)
+-
+-
+-def stage_folder(stage, label):
+-    if not re.fullmatch(r'[a-z0-9][a-z0-9-]*', label):
+-        raise ValueError('Unsafe extension label')
+-    return LOCAL / 'extensions' / (stage + '-' + label)
+-
+-
+-def check_plan(path):
+-    path = Path(path)
+-    binding = path.with_name('plan-sha256.json')
+-    if not binding.exists() or json.loads(binding.read_text(encoding='utf8')).get('sha256') != C.sha(path):
+-        raise ValueError('Immutable extension plan binding missing or changed')
+-    plan = C.check_execution(path)
+-    required_sources = {(HERE / name).relative_to(ROOT).as_posix() for name in ('numerical.py', 'oxide.py')}
+-    if not required_sources <= set(plan['source_sha256']):
+-        raise ValueError('Extension execution omitted its own implementation hashes')
+-    for name, digest in plan['frozen_files_sha256'].items():
+-        if C.sha(ROOT / name) != digest:
+-            raise ValueError('Frozen extension source evidence changed: ' + name)
+-    return plan
+-
+-
+-def freeze_plan(stage, label, cases, context, frozen_files):
+-    path = stage_folder(stage, label) / 'plan.json'
+-    if path.exists():
+-        return path, check_plan(path)
+-    tags = [item['tag'] for item in cases]
+-    if len(set(tags)) != len(tags):
+-        raise ValueError('Extension plan has duplicate case tags')
+-    body = {'schema': 'dram-see-v3-extension-execution', 'stage': stage, 'label': label,
+-            'utc': C.now(), 'design_sha256': C.sha(C.DESIGN), 'source_sha256': source_hashes(),
+-            'inputs': {}, 'planned_cases': cases, 'context': context,
+-            'frozen_files_sha256': frozen_files,
+-            'input_policy': 'Each dependent input gets a separate immutable execution freeze after its control is verified'}
+-    C.write_json(path, body, exclusive=True)
+-    C.write_json(path.with_name('plan-sha256.json'), {'sha256': C.sha(path)}, exclusive=True)
+-    return path, body
+-
+-
+-def _record_status(path, state, reason=None):
+-    plan = json.loads(Path(path).read_text(encoding='utf8'))
+-    ledger = C.load()
+-    cases = []
+-    for item in plan['planned_cases']:
+-        row = ledger['runs'].get(item['tag'])
+-        cases.append({'tag': item['tag'], 'role': item['role'],
+-                      'state': row['state'] if row else 'UNSUBMITTED',
+-                      'run_id': row.get('run_id') if row else None,
+-                      'failure_reason': row.get('failure_reason') if row else None})
+-    status = {'schema': 'dram-see-v3-extension-progress', 'utc': C.now(), 'stage': plan['stage'],
+-              'state': state, 'reason': reason, 'plan_sha256': C.sha(path), 'cases': cases,
+-              'planned_responses_retained': True, 'new_independent_events': 0}
+-    C.write_json(Path(path).parent / 'status.json', status)
+-    return status
+-
+-
+-def _recipe_parameters(case, actual, parent=None):
+-    aliases = {'length': 'gate_length_um', 'bit': 'stored_bit', 'oxide_nm': 'oxide_nm',
+-               'step': 'step_scale', 'mesh': 'mesh_scale', 'neutral': 'neutral', 'reference': 'reference_mode'}
+-    expected = {'length': .25, 'bit': 1, 'oxide_nm': 5., 'step': 1., 'mesh': 1.,
+-                'neutral': False, 'reference': 'offline', **case['kwargs']}
+-    for argument, key in aliases.items():
+-        if key == 'stored_bit' and expected['neutral']:
+-            value = None
+-        else:
+-            value = expected[argument]
+-        if actual.get(key) != value:
+-            raise ValueError('Existing extension input has different ' + key + ': ' + case['tag'])
+-    if actual.get('source_event') != expected.get('event') or actual.get('parent_run') != parent:
+-        raise ValueError('Existing extension event/parent differs: ' + case['tag'])
+-
+-
+-def _matching_prerequisites(case):
+-    tags = case.get('matching_tags', [])
+-    if not tags:
+-        return
+-    audit = C.module('audit')
+-    summaries = [audit.audit(C.resolve(tag), export=False) for tag in tags]
+-    meshes = [summary['mesh_sha256'] for summary in summaries]
+-    if any(not isinstance(digest, str) or len(digest) != 64 for digest in meshes) or len(set(meshes)) != 1:
+-        raise ValueError('Matching controls/neutral have different actual meshes before event dispatch')
+-    contracts = [audit.matching_key(summary['parameters']) for summary in summaries]
+-    if any(contract != contracts[0] for contract in contracts):
+-        raise ValueError('Matching control/reference contracts differ before event dispatch')
+-
+-
+-def execute_cases(path, limit=None):
+-    """Caller holds the existing controller lock; never retry an attempted case."""
+-    if limit is not None and (type(limit) is not int or limit < 0):
+-        raise ValueError('Limit must be a nonnegative integer')
+-    plan = check_plan(path)
+-    submitted = 0
+-    try:
+-        C.budget()  # Detect unsettled/orphan runs before even preparing another input.
+-        for case in plan['planned_cases']:
+-            check_plan(path)
+-            tag = case['tag']
+-            row = C.load()['runs'].get(tag)
+-            parent = C.resolve(case['parent_tag']) if case.get('parent_tag') else None
+-            if row:
+-                if row['state'] != 'VERIFIED':
+-                    raise ValueError('Prior extension attempt is unresolved; no resubmission: ' + tag)
+-                if not row.get('execution_freeze') or not row.get('execution_freeze_sha256'):
+-                    raise ValueError('Existing extension has no immutable execution provenance: ' + tag)
+-                previous = ROOT / row['execution_freeze']
+-                if C.sha(previous) != row['execution_freeze_sha256']:
+-                    raise ValueError('Existing extension execution freeze changed')
+-                C.check_execution(previous)
+-                summary = C.module('audit').audit(C.resolve(tag), export=False)
+-                _recipe_parameters(case, summary['parameters'], parent)
+-                continue
+-            if limit is not None and submitted >= limit:
+-                return _record_status(path, 'PENDING_LIMIT')
+-            _matching_prerequisites(case)
+-            frozen_path = LOCAL / 'execution-freezes' / (plan['stage'] + '-' + plan['label'] + '-' + tag + '.json')
+-            if frozen_path.exists():
+-                execution = C.check_execution(frozen_path)
+-                if execution.get('extension_plan_sha256') != C.sha(path) or set(execution['inputs']) != {tag}:
+-                    raise ValueError('Pending input is not bound to this exact extension plan')
+-            else:
+-                kwargs = dict(case['kwargs'])
+-                if parent:
+-                    kwargs['parent'] = parent
+-                hashes = C.prepare(tag, **kwargs)
+-                execution = {'utc': C.now(), 'design_sha256': plan['design_sha256'],
+-                             'source_sha256': plan['source_sha256'], 'inputs': {tag: hashes},
+-                             'extension_plan': Path(path).relative_to(ROOT).as_posix(),
+-                             'extension_plan_sha256': C.sha(path), 'case': case}
+-                C.write_json(frozen_path, execution, exclusive=True)
+-            parameters = json.loads((LOCAL / 'inputs' / tag / 'parameters.json').read_text(encoding='utf8'))
+-            _recipe_parameters(case, parameters, parent)
+-            C.record(tag, frozen_path, estimate_s=case['estimate_s'])
+-            submitted += 1
+-            _record_status(path, 'RUNNING_STAGE')
+-        return _record_status(path, 'CASES_VERIFIED')
+-    except Exception as exc:
+-        _record_status(path, 'REQUIRES_RECONCILIATION', repr(exc))
+-        raise
+-
+-
+-def observation(signal, control, neutral):
+-    metrics = C.module('metrics')
+-    bundles = {role: metrics.audit_module.load_curves(run_id)
+-               for role, run_id in zip(('signal', 'control', 'neutral'), (signal, control, neutral))}
+-    paired = metrics.compute_curves(*(bundles[role] for role in ('signal', 'control', 'neutral')))
+-    return {'metrics': paired, 'readout_BL_V': {role: metrics.sample(bundle['circuit'], 'v(bl)', 4e-9)
+-                                              for role, bundle in bundles.items()},
+-            'SN_diagnostics_V': {role: {'hold': metrics.sample(bundle['circuit'], 'v(sn)', 2.8e-9),
+-                                       'read': metrics.sample(bundle['circuit'], 'v(sn)', 4e-9)}
+-                                 for role, bundle in bundles.items()}}
+-
+-
+-def original_observation(event, bit):
+-    length = event['gate_length_um']
+-    return observation(C.resolve(event_tag(event, bit)), C.resolve(C.tag_base(length, bit)),
+-                       C.resolve(C.tag_neutral(length)))
+-
+ 
+ def _number(value):
+     if isinstance(value, bool) or not isinstance(value, (float, int)) or not math.isfinite(value):
+@@ -248,169 +38,3 @@
+             'baseline_metrics': baseline['metrics'], 'refined_metrics': refined['metrics'],
+             'rule': 'Continuous tolerance failure blocks expansion; classification crossing remains numerical uncertainty'}
+ 
+-
+-def boundary_ranking(responses, count=2, thresholds_V=(.0025, .005, .01)):
+-    """Rank the complete fixed denominator. Missing/failed values cannot be replaced."""
+-    ids = [row['response_id'] for row in responses]
+-    if len(ids) != len(set(ids)):
+-        raise ValueError('Duplicate main response in boundary population')
+-    unavailable = [row for row in responses if row['state'] != 'VERIFIED']
+-    ranked = []
+-    for row in responses:
+-        if row['state'] != 'VERIFIED':
+-            continue
+-        margin = _number(row['M4_V'])
+-        distance = min(abs(margin - sign * threshold) for threshold in thresholds_V for sign in (-1, 1))
+-        ranked.append({**row, 'distance_V': distance})
+-    ranked.sort(key=lambda row: (row['distance_V'], row['event']['condition_id'], row['event']['replicate'], row['stored_bit']))
+-    complete = not unavailable and len(ranked) >= count
+-    return {'selection_status': 'FROZEN' if complete else 'BLOCKED_UNRESOLVED',
+-            'population_count': len(responses), 'unavailable': unavailable,
+-            'ranking': ranked, 'selected': ranked[:count] if complete else [],
+-            'sorting': ['distance_V', 'condition_id', 'replicate', 'stored_bit']}
+-
+-
+-def _baseline_snapshot(targets):
+-    baseline, files = {}, {}
+-    for target in targets:
+-        event, bit = target['event'], target['stored_bit']
+-        files.update(event_files(event))
+-        baseline[event_tag(event, bit)] = original_observation(event, bit)
+-    return baseline, files
+-
+-
+-def _cases(targets, variations):
+-    result = {}
+-    for target in targets:
+-        event, bit = target['event'], target['stored_bit']
+-        length = event['gate_length_um']
+-        for variation in variations:
+-            step, mesh = variation['step'], variation['mesh']
+-            control = C.safe_tag(C.tag_base(length, bit, step=step, mesh=mesh))
+-            neutral = C.safe_tag(C.tag_neutral(length, step=step, mesh=mesh))
+-            signal = refined_tag(event, bit, step, mesh)
+-            for tag, role, kwargs, parent in [
+-                (control, 'control', {'length': length, 'bit': bit, 'step': step, 'mesh': mesh}, None),
+-                (neutral, 'neutral', {'length': length, 'neutral': True, 'step': step, 'mesh': mesh}, None),
+-                (signal, 'event', {'length': length, 'bit': bit, 'step': step, 'mesh': mesh,
+-                                   'event': (HERE / 'data/geant4' / event['label'] / 'event.json').relative_to(ROOT).as_posix()}, control)]:
+-                case = {'tag': tag, 'role': role, 'kwargs': kwargs, 'parent_tag': parent,
+-                        'matching_tags': [control, neutral] if role == 'event' else [],
+-                        'estimate_s': 900 if mesh < 1 or step < 1 else 600}
+-                if tag in result and result[tag] != case:
+-                    raise ValueError('Conflicting shared refinement case')
+-                result[tag] = case
+-    return list(result.values())
+-
+-
+-def _immutable_result(path, body):
+-    if Path(path).exists():
+-        if json.loads(Path(path).read_text(encoding='utf8')) != body:
+-            raise ValueError('Completed extension evidence is immutable: ' + str(path))
+-    else:
+-        C.write_json(path, body, exclusive=True)
+-
+-
+-def _finish(plan_path, plan):
+-    check_plan(plan_path)
+-    d = C.design()
+-    comparisons = []
+-    for target in plan['context']['targets']:
+-        event, bit = target['event'], target['stored_bit']
+-        identifier = event_tag(event, bit)
+-        baseline = original_observation(event, bit)
+-        if baseline != plan['context']['baseline'][identifier]:
+-            raise ValueError('Frozen original numerical observation changed')
+-        for variation in plan['context']['variations']:
+-            step, mesh = variation['step'], variation['mesh']
+-            refined = observation(C.resolve(refined_tag(event, bit, step, mesh)),
+-                                  C.resolve(C.tag_base(event['gate_length_um'], bit, step=step, mesh=mesh)),
+-                                  C.resolve(C.tag_neutral(event['gate_length_um'], step=step, mesh=mesh)))
+-            result = compare_observations(baseline, refined, tuple(x / 1000 for x in d['thresholds_mV']),
+-                                          d['gates']['numerical_readout_change_mV'] / 1000,
+-                                          d['gates']['numerical_deltaQ_change_fC'])
+-            comparisons.append({'response_id': identifier, 'event': event, 'stored_bit': bit,
+-                                'variation': variation, **result})
+-    passed = all(row['continuous_passed'] for row in comparisons)
+-    stable = all(row['classification_stable'] for row in comparisons)
+-    mode = plan['context']['mode']
+-    evidence = HERE / 'data/numerical' / (mode + '.json')
+-    report = {'schema': 'dram-see-v3-numerical-validation', 'stage': plan['stage'],
+-              'execution_plan': Path(plan_path).relative_to(ROOT).as_posix(), 'execution_plan_sha256': C.sha(plan_path),
+-              'design_sha256': plan['design_sha256'], 'continuous_passed': passed, 'classification_stable': stable,
+-              'state': 'VERIFIED' if passed else 'NUMERICAL_FAILED', 'comparisons': comparisons,
+-              'selection': plan['context'].get('selection'), 'new_independent_events': 0,
+-              'scope': 'Matched numerical refinements; preserve classification crossings and unresolved near-boundary cases'}
+-    _immutable_result(evidence, report)
+-    ledger = C.load()
+-    ledger['stages']['numerical_' + mode] = {'state': report['state'], 'utc': C.now(),
+-        'continuous_passed': passed, 'classification_stable': stable,
+-        'evidence': evidence.relative_to(ROOT).as_posix(), 'evidence_sha256': C.sha(evidence)}
+-    C.save(ledger)
+-    _record_status(plan_path, report['state'])
+-    if not passed:
+-        raise ValueError('Numerical continuous tolerances failed; preserve evidence and stop expansion')
+-    return report
+-
+-
+-def execute(mode='preregistered', label='r1', limit=None):
+-    if mode not in ('preregistered', 'boundary'):
+-        raise ValueError('Unknown numerical stage')
+-    with C.controller_lock():
+-        d = C.design()
+-        C.check_preservation()
+-        require_stage('pilot')
+-        if mode == 'boundary':
+-            C.check_prediction_freeze()
+-            require_stage('test')
+-            require_stage('numerical_preregistered')
+-        stage = 'numerical-' + mode
+-        path = stage_folder(stage, label) / 'plan.json'
+-        if path.exists():
+-            plan = check_plan(path)
+-        else:
+-            selection = None
+-            if mode == 'preregistered':
+-                fixed = d['numerical']['preregistered']
+-                event = next(event for event in d['events'] if all(event[key] == fixed[other]
+-                    for key, other in [('gate_length_um', 'length_um'), ('particle', 'particle'),
+-                                       ('angle_deg', 'angle_deg'), ('replicate', 'replicate')]))
+-                targets = [{'event': event, 'stored_bit': fixed['stored_bit']}]
+-            else:
+-                responses = []
+-                ledger = C.load()
+-                for event in d['events']:
+-                    for bit in (0, 1):
+-                        identifier = event_tag(event, bit)
+-                        row = ledger['runs'].get(identifier)
+-                        record = {'response_id': identifier, 'event': event, 'stored_bit': bit,
+-                                  'state': row['state'] if row else 'MISSING'}
+-                        if record['state'] == 'VERIFIED':
+-                            original = original_observation(event, bit)
+-                            record['M4_V'] = original['metrics']['M4_V']
+-                            record['metric_sources'] = original['metrics']['sources']
+-                        elif row:
+-                            record['failure_reason'] = row.get('failure_reason')
+-                        responses.append(record)
+-                selection = boundary_ranking(responses, d['numerical']['additional_count'], tuple(x / 1000 for x in d['thresholds_mV']))
+-                if selection['selection_status'] != 'FROZEN':
+-                    C.write_json(stage_folder(stage, label) / 'selection-blocked.json', selection)
+-                    raise ValueError('Complete main response ranking unavailable; no replacement selection')
+-                targets = [{'event': row['event'], 'stored_bit': row['stored_bit']} for row in selection['selected']]
+-            baseline, frozen = _baseline_snapshot(targets)
+-            context = {'mode': mode, 'targets': targets, 'variations': d['numerical']['variations'],
+-                       'baseline': baseline, 'selection': selection}
+-            path, plan = freeze_plan(stage, label, _cases(targets, d['numerical']['variations']), context, frozen)
+-        status = execute_cases(path, limit)
+-        if status['state'] != 'CASES_VERIFIED':
+-            return status
+-        return _finish(path, plan)
+-
+-
+-if __name__ == '__main__':
+-    parser = argparse.ArgumentParser()
+-    parser.add_argument('mode', choices=('preregistered', 'boundary'))
+-    parser.add_argument('--label', default='r1')
+-    parser.add_argument('--limit', type=int)
+-    args = parser.parse_args()
+-    print(json.dumps(execute(args.mode, args.label, args.limit), indent=2))

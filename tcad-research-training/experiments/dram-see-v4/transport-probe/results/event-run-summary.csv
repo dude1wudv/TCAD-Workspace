@@ -1,0 +1,12 @@
+label,arm,energy_MeV,angle_deg,seed,stage,miss,primary_event_denominator,tracks,steps,zero_si_events,events_with_hadronic_steps,si_ionizing_MeV,neutron_tracking_cut_tracks
+format-h5-a0-r1,H,5,0,40131101,format-probe,0,2,10,214,0,0,0.03851657463383904,0
+proton-h-e1-a0-r1,H,1,0,40131201,small-events,0,2,15,196,0,0,0.09989652120997927,0
+proton-h-e1-a30-r1,H,1,30,40131202,small-events,0,2,8,196,0,0,0.11218015660992656,0
+proton-h-e5-a0-r1,H,5,0,40131203,small-events,0,2,9,204,0,0,0.0303899160109257,0
+proton-h-e5-a30-r1,H,5,30,40131204,small-events,0,2,6,160,0,0,0.03103572945082814,0
+proton-h-e20-a0-r1,H,20,0,40131205,small-events,0,2,6,202,0,0,0.017533388257775503,0
+proton-h-e20-a30-r1,H,20,30,40131206,small-events,0,2,2,144,0,0,0.008300372730062785,0
+proton-h-e100-a0-r1,H,100,0,40131207,small-events,0,2,3,131,0,0,0.004122511666525009,0
+proton-h-e100-a30-r1,H,100,30,40131208,small-events,0,2,2,144,0,0,0.0022066778479747848,0
+proton-e-e5-a0-r1,E,5,0,40131301,small-events,0,2,3,131,0,0,0.019671403686874707,0
+miss-h-e5-a0-r1,H,5,0,40131302,zero-event-retention,1,2,2,2,2,0,0.0,0

@@ -1,0 +1,442 @@
+{
+  "H": {
+    "run_id": "init-h-r2",
+    "events": 0,
+    "physics_tables_built": true,
+    "constructors": [
+      {
+        "phase": "post_zero_event_init",
+        "index": "0",
+        "name": "G4EmStandard_opt4",
+        "physics_type": "2"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "1",
+        "name": "G4GammaLeptoNuclearPhys",
+        "physics_type": "3"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "2",
+        "name": "Decay",
+        "physics_type": "4"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "3",
+        "name": "hElasticWEL_CHIPS_XS",
+        "physics_type": "5"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "4",
+        "name": "hInelastic QGSP_BIC",
+        "physics_type": "6"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "5",
+        "name": "stopping",
+        "physics_type": "7"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "6",
+        "name": "IonElasticPhysics",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "7",
+        "name": "ionInelasticFTFP_BIC",
+        "physics_type": "8"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "8",
+        "name": "neutronTrackingCut",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "9",
+        "name": "stepLimiter",
+        "physics_type": "0"
+      }
+    ],
+    "proton_processes": [
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "0",
+        "process": "Transportation",
+        "process_type": "1",
+        "process_subtype": "91",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "1",
+        "process": "msc",
+        "process_type": "2",
+        "process_subtype": "10",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "2",
+        "process": "hIoni",
+        "process_type": "2",
+        "process_subtype": "2",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "3",
+        "process": "hBrems",
+        "process_type": "2",
+        "process_subtype": "3",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "4",
+        "process": "hPairProd",
+        "process_type": "2",
+        "process_subtype": "4",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "5",
+        "process": "CoulombScat",
+        "process_type": "2",
+        "process_subtype": "1",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "6",
+        "process": "nuclearStopping",
+        "process_type": "2",
+        "process_subtype": "8",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "7",
+        "process": "hadElastic",
+        "process_type": "4",
+        "process_subtype": "111",
+        "hadronic_model_count": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "8",
+        "process": "protonInelastic",
+        "process_type": "4",
+        "process_subtype": "121",
+        "hadronic_model_count": "3"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "9",
+        "process": "StepLimiter",
+        "process_type": "7",
+        "process_subtype": "401",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "10",
+        "process": "UserSpecialCut",
+        "process_type": "7",
+        "process_subtype": "402",
+        "hadronic_model_count": "0"
+      }
+    ],
+    "material_cuts": [
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "gamma",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "e-",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "e+",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "proton",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "1.0000000000000002e-06",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "gamma",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "e-",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "e+",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "proton",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "1.0000000000000002e-06",
+        "energy_cut_available": "1"
+      }
+    ],
+    "audit": "results/init-h-r2-audit.json"
+  },
+  "E": {
+    "run_id": "init-e-r1",
+    "events": 0,
+    "physics_tables_built": true,
+    "constructors": [
+      {
+        "phase": "post_zero_event_init",
+        "index": "0",
+        "name": "G4EmStandard_opt4",
+        "physics_type": "2"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "1",
+        "name": "stepLimiter",
+        "physics_type": "0"
+      }
+    ],
+    "proton_processes": [
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "0",
+        "process": "Transportation",
+        "process_type": "1",
+        "process_subtype": "91",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "1",
+        "process": "msc",
+        "process_type": "2",
+        "process_subtype": "10",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "2",
+        "process": "hIoni",
+        "process_type": "2",
+        "process_subtype": "2",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "3",
+        "process": "hBrems",
+        "process_type": "2",
+        "process_subtype": "3",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "4",
+        "process": "hPairProd",
+        "process_type": "2",
+        "process_subtype": "4",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "5",
+        "process": "CoulombScat",
+        "process_type": "2",
+        "process_subtype": "1",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "6",
+        "process": "nuclearStopping",
+        "process_type": "2",
+        "process_subtype": "8",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "7",
+        "process": "StepLimiter",
+        "process_type": "7",
+        "process_subtype": "401",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "8",
+        "process": "UserSpecialCut",
+        "process_type": "7",
+        "process_subtype": "402",
+        "hadronic_model_count": "0"
+      }
+    ],
+    "material_cuts": [
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "gamma",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "e-",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "e+",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "0",
+        "material": "G4_Galactic",
+        "particle": "proton",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "1.0000000000000002e-06",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "gamma",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "e-",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "e+",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "0.00098999999999999999",
+        "energy_cut_available": "1"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "couple_index": "1",
+        "material": "G4_Si",
+        "particle": "proton",
+        "range_cut_um": "0.01",
+        "energy_cut_MeV": "1.0000000000000002e-06",
+        "energy_cut_available": "1"
+      }
+    ],
+    "audit": "results/init-e-r1-audit.json"
+  }
+}

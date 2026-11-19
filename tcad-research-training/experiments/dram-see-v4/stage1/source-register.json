@@ -1,0 +1,105 @@
+{
+  "schema": "dram-see-v4-study-sources-r1",
+  "recorded_at": "2026-10-12T18:06:21.913265-08:00",
+  "sources": [
+    {
+      "id": "shin2003_jkps",
+      "dedup_key": "10.3938/jkps.43.887",
+      "title": "Data Retention Time and Electrical Characteristics of Cell Transistor According to STI Materials in 90 nm DRAM",
+      "authors": "S. H. Shin et al.",
+      "venue": "Journal of the Korean Physical Society 43(5), 887-891 (2003)",
+      "url": "https://www.researchgate.net/profile/Soon-Hong/publication/285712995_Data_Retention_Time_and_Electrical_Characteristics_of_Cell_Transistor_According_to_STI_Materials_in_90_nm_DRAM/links/5705b8ee08ae74a08e274f35/Data-Retention-Time-and-Electrical-Characteristics-of-Cell-Transistor-According-to-STI-Materials-in-90-nm-DRAM.pdf",
+      "evidence_level": "full_text_no_pixels",
+      "adopted_for_device_parameters": false
+    },
+    {
+      "id": "park2002_iedm",
+      "dedup_key": "10.1109/IEDM.2002.1175963",
+      "title": "Highly Manufacturable 90 nm DRAM Technology",
+      "authors": "Y. K. Park et al.",
+      "venue": "IEDM Technical Digest, 819-822 (2002)",
+      "url": "https://www.researchgate.net/profile/Soon-Hong/publication/224739434_Highly_manufacturable_90_nm_DRAM_technology/links/5705b97308ae44d70ee34705/Highly-manufacturable-90-nm-DRAM-technology.pdf",
+      "evidence_level": "full_text_no_pixels",
+      "adopted_for_device_parameters": false
+    },
+    {
+      "id": "yun2004_ssdm",
+      "dedup_key": "yun2004_ssdm",
+      "title": "A Novel Cell Structure with Bit Line Cap Spacer (BCS) and Top Enlarged Storage Node Contact (TESC) for 90 nm DRAM Technology and Beyond",
+      "authors": "C. J. Yun et al.",
+      "venue": "SSDM 2004, contribution B-9-1",
+      "url": "https://confit.atlas.jp/guide/event-img/ssdm2004/B-9-1/public/pdf_archive?type=in",
+      "evidence_level": "discovery_only",
+      "adopted_for_device_parameters": false
+    },
+    {
+      "id": "provided_sram",
+      "dedup_key": "sha256:ec3c840213e104bde952c8fe8c13a25161eb338b58be871b88d83a72e470d52f",
+      "title": "Study of Single Event Upset Phenomena Induced by Muons and Protons in 65-nm Planar Bulk SRAMs",
+      "path": "E:/TCAD-Workspace/参考文献/Yifan---Study of Single Event Upset Phenomena Induced by Muons and Protons in 65-nm Planar Bulk SRAMs.pdf",
+      "evidence_level": "relevant_chapters_read_and_fig4.2_viewed",
+      "bibliographic_author_year_not_reverified_this_round": true
+    },
+    {
+      "id": "provided_vdmos",
+      "dedup_key": "sha256:8ea3214a786284f7a2bfa2ab557fb36422c30cc8bf79bc41b07af585b8a19461",
+      "title": "周习瑞-硕士论文初稿",
+      "path": "E:/TCAD-Workspace/参考文献/周习瑞-硕士论文初稿.docx",
+      "evidence_level": "relevant_sections_xml_read",
+      "use": "Methods only; not DRAM device parameters or burnout criterion"
+    },
+    {
+      "id": "sentaurus_existing_excerpt",
+      "dedup_key": "sentaurus:W-2024.09:chapter22:813-816",
+      "path": "local_runtime/dram-see-v1/heavyion-reference.txt",
+      "evidence_level": "local_manual_excerpt_read",
+      "use": "Named multiple HeavyIon and variable LET candidate, not runtime proof",
+      "copy_manual_into_v4": false
+    },
+    {
+      "id": "geant4_1073",
+      "dedup_key": "geant4:v10.7.3:physics_lists",
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/physics_lists/lists/src/QGSP_BIC.cc",
+      "evidence_level": "versioned_official_source",
+      "use": "Model and default configuration evidence; live installation unknown"
+    },
+    {
+      "id": "nist_silicon",
+      "dedup_key": "nist:star:material014",
+      "url": "https://physics.nist.gov/cgi-bin/Star/compos.pl?matno=014&mode=text",
+      "evidence_level": "official_material_data",
+      "density_g_cm3": 2.33
+    },
+    {
+      "id": "nist_binomial",
+      "dedup_key": "nist:exacbici",
+      "url": "https://www.itl.nist.gov/div898/software/dataplot/refman2/auxillar/exacbici.htm",
+      "evidence_level": "official_method",
+      "use": "Fixed-n independent primary-event statistical design examples"
+    },
+    {
+      "id": "bunning2021",
+      "dedup_key": "arxiv:2110.15911",
+      "title": "Physics-informed linear regression is competitive with two Machine Learning methods in residential building MPC",
+      "authors": "Felix Bunning et al.",
+      "venue": "arXiv 2110.15911, v2 (2022); original submission 2021",
+      "url": "https://arxiv.org/abs/2110.15911",
+      "evidence_level": "abstract_metadata_only",
+      "use": "Cross-domain methodological motivation only; no DRAM performance claim"
+    }
+  ],
+  "search_scope": {
+    "local": "Two user-provided references and existing project/manual evidence",
+    "external": "Targeted original DRAM papers, Geant4 versioned sources, NIST and arXiv methods discovery",
+    "zotero_obsidian": "Not requested and no tools available; not used",
+    "arxiv": "No helper at configured project/global paths; web search used as fallback",
+    "research_wiki": "No existing wiki; none created"
+  },
+  "access_limits": [
+    "ResearchGate local PDF downloads access-restricted; no bypass attempted",
+    "Web screenshot wrappers returned references without pixels; original device graph axes not verified",
+    "NIST PSTAR direct form fetch returned HTTP403; no numeric proton stopping-power table obtained"
+  ],
+  "device_audit_path": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\study-20261012\\device-literature\\source-audit.json",
+  "device_audit_sha256": "ffd0e5e20236ffeab3530a1ffef13626aa773c5a52b5fc898fd561f3cf7e9633"
+}

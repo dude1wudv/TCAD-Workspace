@@ -1,0 +1,15 @@
+{
+  "schema": "tcad-r06-continuation-review-v1",
+  "utc": "2026-11-17T17:59:05.645748+00:00",
+  "status": "waiting",
+  "stage": "P0_O2_compile_verified_prefix_queued_launch_unknown",
+  "main_review_sha256": "92e1e6dd04f45bd999a540b2b24da066226421bf98b1fb7cd93fddd266960640",
+  "original_submission_readback_sha256": "e9b53c3a7d3d4979b35e51135a450652bd5d40359e0866d78f63a6926bfdc15c",
+  "launch_diagnosis_sha256": "68a112e439ea119cdd00a795b43317110183a0218aee7cdb7cddd4eacab6c5c4",
+  "current_original_run_id": "auto-r06-p0-d0-o2-zero-prefix-a-r1-2f24d43e305e4322",
+  "next_step": "Original maintenance reconciles this exact ID and fixes verified-terminal compatibility without policy/profile/identity changes; consume original verified collected short results when available",
+  "formal_case_credit": 0,
+  "statistics_eligible": 0,
+  "o2_scientific_gate_passed": false,
+  "runner_controller_policy_ledger_modified": false
+}

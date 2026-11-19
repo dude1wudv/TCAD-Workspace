@@ -1,0 +1,9 @@
+node_modules/
+.vite/
+__pycache__/
+dist-status/
+vendor/material-web/
+*.log
+.env
+.env.*
+!.env.example

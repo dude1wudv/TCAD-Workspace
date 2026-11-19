@@ -1,0 +1,37 @@
+{
+  "schema": "dram-see-v4-witness-gate-v1",
+  "stage": "fixed",
+  "passed": true,
+  "contract_sha256": "fd911ffb36e409f44aef5bde8d81506749434fdb84d1900434171b35b9fc91b3",
+  "evidence": [
+    {
+      "request": "witness-fixed-h-s1-r1",
+      "record_path": "local_runtime/dram-see-v4/transport-probe/runs/witness-fixed-h-s1-r1/record.json",
+      "record_sha256": "cedf6e04165bd8b7d8100b35f73d920fcbdd033b069dc6e1448671bbe708aa8a",
+      "audit_path": "local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s1-r1/audit.json",
+      "audit_sha256": "8b7095977146845365004960f09463acbabeb073e442d857c17370834349b2fd"
+    },
+    {
+      "request": "witness-fixed-h-s2-r1",
+      "record_path": "local_runtime/dram-see-v4/transport-probe/runs/witness-fixed-h-s2-r1/record.json",
+      "record_sha256": "cd712a6316d6b57dae5f6ad8a6747c856722af50225734de42d05c66179e0c22",
+      "audit_path": "local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s2-r1/audit.json",
+      "audit_sha256": "8bee74b2722ea4ecf0a8699bd54320c05527ffe094f1347ab215627bcfc25110"
+    },
+    {
+      "request": "witness-fixed-h-s3-r1",
+      "record_path": "local_runtime/dram-see-v4/transport-probe/runs/witness-fixed-h-s3-r1/record.json",
+      "record_sha256": "03f2b453880786754a6940fb8d5ae841436963394e86c598ae309bfbea30d10c",
+      "audit_path": "local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s3-r1/audit.json",
+      "audit_sha256": "e4386028b6c03990f2db67b2f89c40c948f0f17c001550e0cf17a6bcebdf2ea3"
+    },
+    {
+      "request": "witness-fixed-e-s1-r1",
+      "record_path": "local_runtime/dram-see-v4/transport-probe/runs/witness-fixed-e-s1-r1/record.json",
+      "record_sha256": "c0bdd77a5bda8bad55efe47513cc766c9778b82eb8d7dca889976d5fd1fe1e38",
+      "audit_path": "local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-e-s1-r1/audit.json",
+      "audit_sha256": "403b1147920d71b79fcde18fd9048df13bbd67e88d37a83519522d57dfbf912e"
+    }
+  ],
+  "checked_utc": "2026-10-13T12:08:57.086456+00:00"
+}

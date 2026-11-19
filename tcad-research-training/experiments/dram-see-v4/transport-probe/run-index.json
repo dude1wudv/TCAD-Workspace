@@ -1,0 +1,340 @@
+{
+  "schema": "dram-see-v4-transport-index-v1",
+  "owner": "root",
+  "phase": "COMPLETE_SELECTED_PHYSICS_AND_SMALL_PROBES",
+  "environment_spec": "environment-spec.json",
+  "contract": "probe-contract.json",
+  "contract_sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+  "requests": [
+    {
+      "label": "init-h-r1",
+      "mode": "init",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131001,
+      "event_count": 0,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "initialization",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "init-h-r1",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/init-h-r1/operation.json",
+          "state": "FAILED_COLLECTED",
+          "ssh_exit_code": 2,
+          "remote_exit_code": 2,
+          "collection_exit_code": 0
+        },
+        {
+          "label": "init-h-r2",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/init-h-r2/operation.json",
+          "state": "COLLECTED_PENDING_AUDIT",
+          "ssh_exit_code": 0,
+          "remote_exit_code": 0,
+          "collection_exit_code": 0
+        }
+      ],
+      "audit": "results/init-h-r2-audit.json"
+    },
+    {
+      "label": "init-e-r1",
+      "mode": "init",
+      "arm": "E",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131002,
+      "event_count": 0,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "initialization",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "init-e-r1",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/init-e-r1/operation.json",
+          "state": "COLLECTED_PENDING_AUDIT",
+          "ssh_exit_code": 0,
+          "remote_exit_code": 0,
+          "collection_exit_code": 0
+        }
+      ],
+      "audit": "results/init-e-r1-audit.json"
+    },
+    {
+      "label": "format-h5-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131101,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "format-probe",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "format-h5-a0-r1",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/format-h5-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/format-h5-a0-r1/audit.json"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e1-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 1,
+      "angle_deg": 0,
+      "seed": 40131201,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e1-a0-r1",
+          "started_utc": "2026-10-13T03:54:15.941737+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e1-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e1-a0-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:54:30.263754+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e1-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 1,
+      "angle_deg": 30,
+      "seed": 40131202,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e1-a30-r1",
+          "started_utc": "2026-10-13T03:54:30.264478+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e1-a30-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e1-a30-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:54:42.242377+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e5-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131203,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e5-a0-r1",
+          "started_utc": "2026-10-13T03:54:42.243173+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e5-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e5-a0-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:54:56.401455+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e5-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 30,
+      "seed": 40131204,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e5-a30-r1",
+          "started_utc": "2026-10-13T03:54:56.402243+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e5-a30-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e5-a30-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:55:09.986081+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e20-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 20,
+      "angle_deg": 0,
+      "seed": 40131205,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e20-a0-r1",
+          "started_utc": "2026-10-13T03:55:09.986899+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e20-a0-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:55:22.534357+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e20-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 20,
+      "angle_deg": 30,
+      "seed": 40131206,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e20-a30-r1",
+          "started_utc": "2026-10-13T03:55:22.535028+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a30-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e20-a30-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:55:35.330504+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e100-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 100,
+      "angle_deg": 0,
+      "seed": 40131207,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e100-a0-r1",
+          "started_utc": "2026-10-13T03:55:35.331311+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e100-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e100-a0-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:55:47.280780+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-h-e100-a30-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 100,
+      "angle_deg": 30,
+      "seed": 40131208,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-h-e100-a30-r1",
+          "started_utc": "2026-10-13T03:55:47.281599+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e100-a30-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e100-a30-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:56:01.389009+00:00"
+        }
+      ]
+    },
+    {
+      "label": "proton-e-e5-a0-r1",
+      "mode": "thin",
+      "arm": "E",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131301,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 0,
+      "stage": "small-events",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "proton-e-e5-a0-r1",
+          "started_utc": "2026-10-13T03:56:01.389783+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/proton-e-e5-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/proton-e-e5-a0-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:56:14.911641+00:00"
+        }
+      ]
+    },
+    {
+      "label": "miss-h-e5-a0-r1",
+      "mode": "thin",
+      "arm": "H",
+      "energy_MeV": 5,
+      "angle_deg": 0,
+      "seed": 40131302,
+      "event_count": 2,
+      "geometry_id": "v4-thin-si-l025-r1",
+      "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+      "miss": 1,
+      "stage": "zero-event-retention",
+      "status": "PASSED",
+      "attempts": [
+        {
+          "label": "miss-h-e5-a0-r1",
+          "started_utc": "2026-10-13T03:56:14.912706+00:00",
+          "operation": "local_runtime/dram-see-v4/transport-probe/operations/miss-h-e5-a0-r1/operation.json",
+          "audit": "local_runtime/dram-see-v4/transport-probe/audits/miss-h-e5-a0-r1/audit.json",
+          "audit_passed": true,
+          "finished_utc": "2026-10-13T03:56:25.849689+00:00"
+        }
+      ]
+    }
+  ],
+  "failures": "results/failures.json",
+  "installation": {
+    "accepted_operation": "install-data-r2",
+    "failed_operation": "install-data-r1",
+    "dataset_inventory": "results/installed-dataset-inventory.json",
+    "independent_validation": "local_runtime/dram-see-v4/transport-probe/validation/logs/install-evidence-validation.json"
+  },
+  "summary": "results/summary.json",
+  "report": "report.md",
+  "active_runs": [],
+  "all_initialization_and_event_requests_passed": true
+}

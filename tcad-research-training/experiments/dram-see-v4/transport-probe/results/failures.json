@@ -1,0 +1,52 @@
+{
+  "schema": "dram-see-v4-transport-failure-ledger-v1",
+  "failures": [
+    {
+      "id": "install-data-r1",
+      "phase": "pre-install archive check",
+      "ssh_exit_code": 1,
+      "remote_exit_code": 1,
+      "collection_exit_code": 0,
+      "cause": "CRLF hash-list created on Windows; sha256sum interpreted CR as filename suffix",
+      "installed_before_failure": false,
+      "evidence": "local_runtime/dram-see-v4/transport-probe/operations/install-data-r1",
+      "resolution": "New immutable install-data-r2 input normalizes hash list to LF; original attempt preserved",
+      "status": "RESOLVED_WITH_NEW_ATTEMPT",
+      "resolution_evidence": "local_runtime/dram-see-v4/transport-probe/operations/install-data-r2/operation.json"
+    },
+    {
+      "id": "init-h-r1",
+      "phase": "CLI parse before Geant4 initialization",
+      "ssh_exit_code": 2,
+      "remote_exit_code": 2,
+      "collection_exit_code": 0,
+      "cause": "Adapter passed optional miss value as bare 0, while the frozen C++ CLI accepts miss=0",
+      "primary_events_started": 0,
+      "evidence": "local_runtime/dram-see-v4/transport-probe/operations/init-h-r1",
+      "resolution": "Correct adapter flag; preserve old input and use init-h-r2 for unchanged request/source/binary",
+      "status": "RESOLVED_WITH_NEW_ATTEMPT",
+      "resolution_evidence": "local_runtime/dram-see-v4/transport-probe/operations/init-h-r2"
+    }
+  ],
+  "validation_tooling": [
+    {
+      "id": "unit-test-exception-expectation",
+      "status": "RESOLVED",
+      "detail": "Initial worker test expected ValueError for missing gate; actual implementation raises FileNotFoundError before side effects. Test changed to assert the exact existing exception, no business change.",
+      "evidence": "local_runtime/dram-see-v4/transport-probe/validation/logs/transport-unittest-initial-failure.log"
+    },
+    {
+      "id": "expired-local-poll-handle",
+      "status": "RECONCILED_READ_ONLY",
+      "detail": "Local execution polling handle expired after completion. Root used terminal run-index and FROZEN_SMALL_CHECKS_COMPLETED log plus original per-operation exits; no event was resubmitted."
+    }
+  ],
+  "actual_event_runs_failed": 0,
+  "actual_initialization_failures_after_G4_started": 0,
+  "unresolved_failures": [],
+  "validation_capacity": {
+    "status": "HANDLED_BY_ROOT_TAKEOVER",
+    "detail": "Independent validation worker unavailable after completed installation/init/format/test review; root read-only reviewed remaining10 runs; no simulation rerun.",
+    "evidence": "local_runtime/dram-see-v4/transport-probe/validation/root-takeover/summary.json"
+  }
+}

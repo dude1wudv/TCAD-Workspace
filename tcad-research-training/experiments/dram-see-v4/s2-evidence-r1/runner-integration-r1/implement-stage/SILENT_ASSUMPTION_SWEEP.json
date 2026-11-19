@@ -1,0 +1,18 @@
+{
+  "undeclared": [],
+  "stale_rows": [],
+  "semantic_undeclared": 0,
+  "findings": [],
+  "resolved": [
+    {
+      "id": "F001",
+      "ledger": "I013",
+      "site": "E:/TCAD-Workspace/tcad-research-training/local_runtime/dram-see-v4/s2-runner-integration-r1/20261016T155822Z/review-inputs-r2/geometry_bridge.py:398",
+      "result": "已明确拒绝几何预约 ID 与 execution-release.budget_reservation_id 相同；生成的 runner 补丁同步包含该条件，API_NOTES.md:58 也改为必须独立。此前账本与代码不一致已解决。"
+    }
+  ],
+  "verdict": "clean",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "boundary": "直接审阅 r1→r2 差异及相关源文件，未发现新增问题。clean仅表示本轮静态复核零发现；未运行代码、测试、原生工具或SSH，不构成原生正常路径、科学资格或跨家族验收。"
+}

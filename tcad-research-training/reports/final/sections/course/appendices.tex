@@ -1,0 +1,112 @@
+\section{课程要求与现有证据对应}
+\small
+\begin{longtable}{p{0.21\textwidth}p{0.44\textwidth}p{0.27\textwidth}}
+\toprule
+课程要求&现有材料与报告位置&尚待补齐的证据\\
+\midrule
+\endfirsthead
+\toprule
+课程要求&现有材料与报告位置&尚待补齐的证据\\
+\midrule
+\endhead
+理解DRAM、SEE与AI方法&第1至4章给出原理、简化假设、接口及回归方法&学生个人理解与答辩表现\\
+2至3人合作&本报告提供可按模型、平台、数据分析划分的工作对象&真实成员、职责、完成日期与贡献\\
+可行性、方案与进度&第1章、第4章和共享进度表；原设计与版本修订保留&教师对方案及变更的审核记录\\
+软硬件及环境搭建&Windows与Linux VM的实际远程访问流程；Geant4、TCAD归档&实验室资源正式交接及使用说明\\
+基础模型与参数来源&第2章参数表；自编几何和mixed-mode输入&真实DRAM模型或参考电学校准\\
+自然语言参数遍历&v1请求到执行；R50的preview/audit/locate映射&学生现场操作与问题解释记录\\
+Geant4到TCAD传递&式\eqref{cr:transfer}、源文件及积分验证&更细空间映射与材料栈适用性\\
+多尺寸、粒子和方向评估&v1完整小矩阵；R50训练与冻结测试设计&R50其余测试及后续扩展最终验收\\
+拟合、外推与验证&v1有限外推；R50四模型LOCO与测试前预测冻结&R50域内/域外完整真实评分\\
+总结、演示与考核&本阶段报告及附录只读演示步骤&教师评审、答辩、成绩与验收事实\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\clearpage
+\section{成员、指导与实际阶段进度记录}
+原课程大纲列指导教师为李洋。本稿不填写未提供的学生姓名、学号、实际贡献、
+审核日期或答辩结果；以下表格用于参与者依据真实工作补全。
+AI辅助工具不计作项目小组成员。
+
+\begin{table}[H]
+\centering\small
+\caption{真实课程信息登记表。空白表示尚未收到信息，不表示相应活动已经发生。}
+\begin{tabularx}{\textwidth}{lXX}
+\toprule
+项目&真实记录&对应材料或日期\\
+\midrule
+成员1及学号&\rule{4cm}{0.4pt}&\rule{4cm}{0.4pt}\\
+成员2及学号&\rule{4cm}{0.4pt}&\rule{4cm}{0.4pt}\\
+成员3（如有）&\rule{4cm}{0.4pt}&\rule{4cm}{0.4pt}\\
+各成员实际分工&\rule{4cm}{0.4pt}&\rule{4cm}{0.4pt}\\
+指导教师&李洋（课程大纲所列）&实际指导记录待补\\
+方案/变更审核&\rule{4cm}{0.4pt}&\rule{4cm}{0.4pt}\\
+演示与答辩&\rule{4cm}{0.4pt}&\rule{4cm}{0.4pt}\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+\centering\small
+\caption{实际阶段演进。日期由原始归档UTC时间换算为UTC$-08{:}00$；
+当前完成数以正文共享快照表为准，run ID中的原UTC时间保留。}
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+本地日期&阶段&实际形成的主要成果\\
+\midrule
+2026-10-09&v1&16工况真实链路、有限预测外推、代表点组合细化及归档\\
+2026-10-09&v2&受控初态、8独立事件与16配对响应、小样本读出判据\\
+2026-10-09至10&D1&9项无粒子诊断、读出偏移和匹配参考实现证据\\
+2026-10-10&100 $\Omega$/probe&保留预充失败；完成50 $\Omega$独立三项probe\\
+2026-10-10至11&R50-main&参考、源隔离、数值检查、训练与测试前预测冻结\\
+共享快照之后&待完成部分&按原冻结设计补齐测试评分、扩展验证和课程活动\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\clearpage
+\section{可重复演示步骤与材料入口}
+演示从本报告证据包开始，不根据当前滚动运行状态临时换图或改数。
+先展示模型参数表、版本和证据截止时间，再按下列顺序核对一个预登记事件。
+所有只读命令均在仓库根目录运行；源码漂移或解析拒绝须保留原输出，不在现场
+改条件凑成通过。
+
+\begin{enumerate}
+\setlength{\itemsep}{0.15em}
+\item 打开本报告及共享\sourcepath{sources.json}，说明训练、预测与测试评分的区别，
+并用正文进度表指出哪些部分仍未完成。
+\item 运行R50自然语言映射预览和软件审计。预览展示64个独立事件及128个配对槽位；
+审计验证限定模板和拒绝示例，不产生新deck或提交求解。
+\item 定位预登记的$L=0.18\um$、$\alpha$、30°、首个事件的存储1响应，
+从事件元数据核对seed、坐标、总电离沉积及三文件哈希。
+\item 沿来源记录展示源项传递、匹配control与neutral，以及2.8 ns的$\Delta Q$
+和4 ns的$M,\Delta M$。说明同一事件的0/1共享源，不增加独立事件数。
+\item 展示训练LOCO表、模型及测试预测冻结记录。测试未完成时只展示已冻结预测的
+身份和时间，不把预测图冒充真实测试点。
+\item 展示历史D1参考比较和R50预充修订图，解释一个失败为什么必须保留，
+以及改变物理版本为什么需要重新建立参考。
+\end{enumerate}
+
+\noindent 下列命令是可重复的只读演示入口，不表示学生现场演示已经发生：
+{\small\begin{verbatim}
+$py = 'local_runtime/vdmos-analysis-venv/Scripts/python.exe'
+$demo = 'experiments/dram-see-v3/r50-main/demo.py'
+& $py -B $demo preview --compact
+& $py -B $demo audit
+& $py -B $demo locate --event-label l018-alpha-a30-s202610311 --bit 1
+& $py -B $demo preview --text "扫描几个尺寸"
+\end{verbatim}}
+最后一条预期拒绝，不能把非零退出码当成仿真失败。若需演示真实求解，
+应另行确认唯一调度者、冻结输入和资源安排；本步骤不启动求解器。
+
+\noindent 主要入口如下，均为仓库相对路径，具体内容摘要由共享来源清单绑定：
+\begin{itemize}
+\item 历史链路与预测：\sourcepath{experiments/dram-see-v1/delivery.md}。
+\item 历史读出统计：\sourcepath{experiments/dram-see-v2/data/summary/delivery-index.json}。
+\item D1诊断：\sourcepath{experiments/dram-readout-offset-d1/interpretation.md}。
+\item R50冻结预测：\sourcepath{experiments/dram-see-v3/r50-main/data/predictions/freeze.json}。
+\item 当前演示契约：\sourcepath{experiments/dram-see-v3/r50-main/demo-implementation.md}。
+\item 本报告数据表、图件及来源：\sourcepath{reports/final/tables/}、
+\sourcepath{reports/final/figures/}及\sourcepath{reports/final/sources.json}。
+\end{itemize}

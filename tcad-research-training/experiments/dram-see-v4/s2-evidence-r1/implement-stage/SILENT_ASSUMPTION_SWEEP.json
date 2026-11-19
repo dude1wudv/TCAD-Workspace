@@ -1,0 +1,19 @@
+{
+  "schema": "s2-f6-silent-assumption-sweep-r1",
+  "review_independence": "same-family",
+  "acceptance_status": "provisional",
+  "scope": {
+    "interface_assumptions": ["E001", "E002", "E003", "E004", "E005", "E006", "E007", "E008", "E009", "E010"],
+    "capture_decisions": ["C001", "C002", "C003", "C004", "C005", "C006", "C007", "C008", "C009", "C010", "C011", "C012", "C013"],
+    "fixture_decisions": "tests/fixture-notes.md"
+  },
+  "observations": [
+    "Observed/unavailable/inferred facts, raw exit preservation, wrapper/native separation, and exact process/status SHA and parent-chain binding are explicitly registered in E001-E003 and E010.",
+    "The bounded 2-second/50-ms observer, exact executable matching, per-step identities, independent post-wait solver admission, and SVisual raw-exit separation are registered in C003-C007 and C012-C013.",
+    "Synthetic archive authority and synthetic geometry tokens are explicitly scoped to parser tests; they do not represent native receipts, measured geometry, or electrical behavior.",
+    "SVisual has no separate admission record by design; its native identity, raw status, CPU/thread observation, and task-produced SVisual exit remain separate audit facts. This is documented in C006 and E010.",
+    "One /proc snapshot does not prove whole-run single-core/thread behavior; C005 and capture notes state this limitation. Native timing, vendor launcher identity, archive authenticity, and real geometry evidence remain unverified."
+  ],
+  "additional_undeclared_choices_found": [],
+  "qualification": "No additional undeclared choice was found in the reviewed interface paths; this same-family sweep is provisional and is not a clean or cross-family acceptance."
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "dram-see-v3-agent-native-visual-review",
+  "utc": "2026-10-10T15:18:42.880580+00:00",
+  "reviewer": "root agent, actual view_image inspection",
+  "state": "REVIEWED",
+  "scope": "Four real PNGs individually viewed; native export and owned SVisual screenshot for each predeclared completed run. Not student performance, teacher review, Workbench execution or solver completion for the whole matrix.",
+  "captures": [
+    {
+      "run_id": "20261010T103149Z-v3-physical-l018-b1-33b11a8f",
+      "evidence_sha256": "6ba79e0213c5d8b65052e80f600df04d096ec586b5e5205ac501d3b50579a712",
+      "files_sha256": {
+        "final-field-native.png": "6dc6c79b2b69d5d74ab8d95751130e649043285412781cd67121a257f30e445d",
+        "own-window.png": "0e5c39c93056c6e52fba566b37be7f959d4655269afb8715db8628edb4c3d60a"
+      },
+      "actual_pixels_reviewed": [
+        "final-field-native.png",
+        "own-window.png"
+      ],
+      "visible_field": "Abs(ElectricField-V)",
+      "visible_units": "V*cm^-1; title V/cm",
+      "time_and_branch": "Title shows actual 4 ns signal E-field; archive final TDR provenance checked by existing capture/audit",
+      "coordinates": "X vertical, Y horizontal, title coordinates um",
+      "approx_colorbar_max_V_per_cm": 1728200.0,
+      "native_export_not_blank": true,
+      "selected_scalar_visible_in_gui": true,
+      "matching_run_id_visible": true,
+      "unrelated_private_content_observed": false,
+      "result": "PASS within stated field-map scope"
+    },
+    {
+      "run_id": "20261010T122113Z-v3-l018-alpha-a30-s202610311-b1-aa2eba16",
+      "evidence_sha256": "c44f58b7807091a26482d5169d77b40b5b878e3683cb4ba363afb62d5113113e",
+      "files_sha256": {
+        "final-field-native.png": "8efbe23dbe6956f6642922ca8243b18e8be3b8033600091ca968cf308868adc7",
+        "own-window.png": "bded0619ff3cf98a1756eee4d35f44a300b659d96fb26e94cb6510e21b483859"
+      },
+      "actual_pixels_reviewed": [
+        "final-field-native.png",
+        "own-window.png"
+      ],
+      "visible_field": "Abs(ElectricField-V)",
+      "visible_units": "V*cm^-1; title V/cm",
+      "time_and_branch": "Title shows actual 4 ns signal E-field; archive final TDR provenance checked by existing capture/audit",
+      "coordinates": "X vertical, Y horizontal, title coordinates um",
+      "approx_colorbar_max_V_per_cm": 1820370.0,
+      "native_export_not_blank": true,
+      "selected_scalar_visible_in_gui": true,
+      "matching_run_id_visible": true,
+      "unrelated_private_content_observed": false,
+      "result": "PASS within stated field-map scope"
+    }
+  ]
+}

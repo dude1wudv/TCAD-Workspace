@@ -1,0 +1,40 @@
+[
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r2/launches/r2-a0-b1-base-r1/execution.json",
+    "sha256": "2c264307220baa31d6f4308af7c44bfa5cf4a900ca6460fda7ed234a2c992abe",
+    "label": "r2-a0-b1-base-r1",
+    "identity": [
+      "A0",
+      1,
+      "base"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T114619Z-v4-source-interface-r2-a0-b1-base-e305bf26",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 1,
+    "started_utc": "2026-10-13T11:46:19.136891+00:00",
+    "finished_utc": "2026-10-13T11:52:47.360906+00:00",
+    "manifest_input_matches_project": true
+  },
+  {
+    "path": "local_runtime/dram-see-v4/source-interface-r2/launches/r2-a1-b1-base-r1/execution.json",
+    "sha256": "3e930c91b53b9d72214fff04dab19397a0127c6cc72978975bcfc0bf408aa735",
+    "label": "r2-a1-b1-base-r1",
+    "identity": [
+      "A1",
+      1,
+      "base"
+    ],
+    "state": "RUNNER_EXITED",
+    "run_id": "20261013T115652Z-v4-source-interface-r2-a1-b1-base-9aee36a9",
+    "runner_exit_code": 0,
+    "ssh_exit_code": 0,
+    "runner_manifest_state": "COLLECTED",
+    "invocation_budget_position": 2,
+    "started_utc": "2026-10-13T11:56:51.295732+00:00",
+    "finished_utc": "2026-10-13T12:04:57.738456+00:00",
+    "manifest_input_matches_project": true
+  }
+]

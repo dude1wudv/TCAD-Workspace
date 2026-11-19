@@ -1,0 +1,326 @@
+--- dram-see-v3/prediction.py
++++ dram-see-v3/r50-main/prediction.py
+@@ -1,41 +1,14 @@
+-"""Leakage-guarded v3 ridge/mean fitting and immutable pre-test prediction freeze."""
+-import argparse
+-from datetime import datetime, timezone
+-import hashlib
+-import importlib.util
+-import json
++"""R50-main pure prediction algorithms, explicitly derived without old IO.
++
++Production fitting/freezing is exclusively finish.py after R50 raw gate checks.
++"""
+ import math
+-from pathlib import Path
+ import platform
+-import sys
+-import tarfile
+-
+ import numpy as np
+-
+-HERE = Path(__file__).resolve().parent
+-ROOT = HERE.parents[1]
+-LOCAL = ROOT / 'local_runtime/dram-see-v3'
+ TARGETS = ('deltaQ_fC', 'deltaM_mV')
+ FEATURES = ('Qdep_fC', 'Qdep_fC/L_um', 'Qdep_fC*sin(theta)')
+ ALPHAS = (0., .01, .1, 1., 10.)
+ CONTINUOUS_ACCEPTED = ('RAW_AUDIT_PASSED', 'MATCHED_REFINEMENT_PASSED', 'PASSED')
+-
+-
+-def sha(path):
+-    digest = hashlib.sha256()
+-    with Path(path).open('rb') as stream:
+-        for block in iter(lambda: stream.read(1024 * 1024), b''):
+-            digest.update(block)
+-    return digest.hexdigest()
+-
+-
+-def _module(name):
+-    path = HERE / (name + '.py')
+-    spec = importlib.util.spec_from_file_location('_v3_prediction_' + name, path)
+-    obj = importlib.util.module_from_spec(spec)
+-    exec(compile(path.read_bytes(), str(path), 'exec'), obj.__dict__)
+-    return obj
+-
+ 
+ def _configuration(design):
+     p = design.get('prediction', {})
+@@ -177,7 +150,7 @@
+                 'cv_alpha_scores': [{'alpha': a, 'mean_fold_rmse': s} for a, s in zip(ALPHAS, scores)],
+                 'cv_folds': cv,
+             }
+-    return {'schema': 'dram-see-v3-prediction-models', 'configuration': design['prediction'],
++    return {'schema': 'dram-see-v3-r50-main-prediction-models', 'configuration': design['prediction'],
+             'feature_names': list(FEATURES), 'train_independent_events': 32,
+             'train_paired_responses': 64, 'models': models,
+             'implementation': {'python': platform.python_version(), 'numpy': np.__version__,
+@@ -200,7 +173,7 @@
+         predictions.append({'event_label': row['event_label'], 'stored_bit': row['stored_bit'],
+                             'condition_id': row['condition_id'], 'split': row['split'],
+                             'feature_values': dict(zip(FEATURES, values)), 'predictions': targets})
+-    return {'schema': 'dram-see-v3-frozen-predictions', 'test_independent_events': 32,
++    return {'schema': 'dram-see-v3-r50-main-frozen-predictions', 'test_independent_events': 32,
+             'test_paired_responses': 64, 'predictions': predictions}
+ 
+ 
+@@ -261,258 +234,6 @@
+                                    'MAE': float(np.mean(np.abs(errors))) if errors else None,
+                                    'RMSE': _rmse(errors, np.zeros(len(errors))) if errors else None,
+                                    'max_absolute_error': max(map(abs, errors)) if errors else None})
+-    return {'schema': 'dram-see-v3-prediction-scores', 'scores': scores, 'stratified_residuals': residuals,
++    return {'schema': 'dram-see-v3-r50-main-prediction-scores', 'scores': scores, 'stratified_residuals': residuals,
+             'scope': 'Fixed pre-test predictions only; scores conditional on valid observed responses; missing/failed counts retained'}
+ 
+-
+-def assert_no_test_submissions(design, ledger, manifests=()):
+-    """Inspect identities/input metadata only; do not open any test response."""
+-    test_labels = {event['label'] for event in design['events'] if event['split'] != 'train'}
+-    for tag, row in ledger.get('runs', {}).items():
+-        p = row.get('parameters', {})
+-        if any(('v3-' + label + '-b') in tag for label in test_labels) or (p.get('source_event') and p.get('gate_length_um') in (.25, .45)):
+-            raise ValueError('Test TCAD already submitted/recorded: ' + tag)
+-    if ledger.get('stages', {}).get('test'):
+-        raise ValueError('A test stage already exists')
+-    for record in manifests:
+-        identity = record.get('run_id', '')
+-        p = record.get('parameters', {})
+-        if any(('v3-' + label + '-b') in identity for label in test_labels) or (p.get('schema') == 'dram-see-v3' and p.get('source_event') and p.get('gate_length_um') in (.25, .45)):
+-            raise ValueError('Test TCAD archive/submission already exists: ' + identity)
+-
+-
+-def _verified(ledger, tag):
+-    row = ledger.get('runs', {}).get(tag.replace('.', 'p'))
+-    if not row or row.get('state') != 'VERIFIED' or not row.get('run_id'):
+-        raise ValueError('Required verified response missing: ' + tag)
+-    numerical_status = row.get('continuous_numerical_status')
+-    if (numerical_status is not None and numerical_status not in CONTINUOUS_ACCEPTED) or row.get('continuous_numeric_valid') is False:
+-        raise ValueError('Known unresolved continuous numerical target: ' + tag)
+-    return row
+-
+-
+-def _manifest_inputs():
+-    found = []
+-    for path in sorted((ROOT / 'local_runtime/runs').glob('*-v3-*/manifest.json')):
+-        m = json.loads(path.read_text(encoding='utf8'))
+-        record = {'run_id': m.get('run_id', path.parent.name), 'state': m.get('state'),
+-                  'manifest_sha256': sha(path)}
+-        inputs = path.parent / 'inputs.tar'
+-        if inputs.exists():
+-            with tarfile.open(inputs) as tf:
+-                members = [member for member in tf.getmembers() if member.isfile() and member.name.removeprefix('./') == 'parameters.json']
+-                if len(members) != 1:
+-                    raise ValueError('Ambiguous v3 submitted parameters: ' + record['run_id'])
+-                record['parameters'] = json.loads(tf.extractfile(members[0]).read())
+-        else:
+-            raise ValueError('Uninspectable v3 submission; reconcile before prediction freeze: ' + record['run_id'])
+-        found.append(record)
+-    return found
+-
+-
+-def _event_record(design_event, validator, evidence):
+-    path = HERE / 'data/geant4' / design_event['label'] / 'event.json'
+-    expected = {key: design_event[key] for key in ('gate_length_um', 'particle', 'angle_deg', 'seed', 'energy_MeV')}
+-    ev = validator.validate_event(path, expected)
+-    for name in ('event.json', 'events.csv', 'steps.csv'):
+-        member = path.parent / name
+-        evidence[member.relative_to(ROOT).as_posix()] = sha(member)
+-    return ev
+-
+-
+-def _bind_bundle(bundle, evidence):
+-    run_id = bundle['summary']['run_id']
+-    for name in ('manifest.json', 'inputs.tar', 'results.tar'):
+-        path = ROOT / 'local_runtime/runs' / run_id / name
+-        evidence[path.relative_to(ROOT).as_posix()] = sha(path)
+-
+-
+-def collect_inputs(design, ledger):
+-    """Production adapter: raw audits, matched curves, and predeclared G4 only."""
+-    for stage in ('references', 'pilot', 'train'):
+-        if ledger.get('stages', {}).get(stage, {}).get('state') != 'VERIFIED':
+-            raise ValueError('Prediction gate incomplete: ' + stage)
+-    assert_no_test_submissions(design, ledger, _manifest_inputs())
+-    numerical = ledger.get('stages', {}).get('numerical_preregistered', {})
+-    if numerical.get('continuous_passed') is not True:
+-        raise ValueError('Preregistered continuous numerical gate incomplete or failed')
+-    numerical_path = (ROOT / numerical['evidence']).resolve()
+-    if not numerical_path.is_relative_to(HERE / 'data/numerical') or sha(numerical_path) != numerical.get('evidence_sha256'):
+-        raise ValueError('Preregistered numerical evidence path/hash differs')
+-    numerical_report = json.loads(numerical_path.read_text(encoding='utf8'))
+-    comparisons = numerical_report.get('comparisons', [])
+-    if (len(comparisons) != 2 or any(row.get('continuous_passed') is not True for row in comparisons)
+-            or {(row['variation']['step'], row['variation']['mesh']) for row in comparisons} != {(.5, 1.), (1., .7)}):
+-        raise ValueError('Both preregistered continuous refinements must pass')
+-    metrics, event_audit = _module('metrics'), _module('event_audit')
+-    evidence, training, test, cache = {numerical_path.relative_to(ROOT).as_posix(): sha(numerical_path)}, [], [], {}
+-    def bind_numerical_sources(value):
+-        if isinstance(value, dict):
+-            if 'run_id' in value and 'archive_sha256' in value:
+-                folder = ROOT / 'local_runtime/runs' / value['run_id']
+-                if sha(folder / 'results.tar') != value['archive_sha256']:
+-                    raise ValueError('Numerical source archive changed')
+-                for name in ('manifest.json', 'inputs.tar', 'results.tar'):
+-                    path = folder / name
+-                    evidence[path.relative_to(ROOT).as_posix()] = sha(path)
+-            for child in value.values():
+-                bind_numerical_sources(child)
+-        elif isinstance(value, list):
+-            for child in value:
+-                bind_numerical_sources(child)
+-    bind_numerical_sources(numerical_report)
+-    def bundle(run_id):
+-        if run_id not in cache:
+-            cache[run_id] = metrics.audit_module.load_curves(run_id)
+-            _bind_bundle(cache[run_id], evidence)
+-        return cache[run_id]
+-    # Recheck physical reference/source-isolation evidence instead of trusting
+-    # the stage label alone. Old controls and neutral curves are re-audited.
+-    for length in (.18, .25, .35, .45):
+-        neutral_run = _verified(ledger, f'v3-neutral-l{round(length*100):03d}-ox5-s1-m1')['run_id']
+-        for bit in (0, 1):
+-            control_run = _verified(ledger, f'v3-control-l{round(length*100):03d}-b{bit}-ox5-s1-m1')['run_id']
+-            physical_run = _verified(ledger, f'v3-physical-l{round(length*100):03d}-b{bit}')['run_id']
+-            result = metrics.compare_physical_curves(bundle(physical_run), bundle(control_run), bundle(neutral_run))
+-            if not result['passed']:
+-                raise ValueError('Reference gate no longer passes')
+-    for particle, angle, bit in (('alpha', 30, 1), ('proton', 0, 0)):
+-        event = next(e for e in design['events'] if e['pilot'] and e['particle'] == particle and e['angle_deg'] == angle)
+-        physical = _verified(ledger, f'v3-isolation-{particle}-a{angle}-b{bit}')['run_id']
+-        signal = _verified(ledger, 'v3-' + event['label'] + f'-b{bit}')['run_id']
+-        neutral = _verified(ledger, 'v3-neutral-l018-ox5-s1-m1')['run_id']
+-        if not metrics.compare_physical_curves(bundle(physical), bundle(signal), bundle(neutral))['passed']:
+-            raise ValueError('Source isolation gate no longer passes')
+-    for event in design['events']:
+-        transport = _event_record(event, event_audit, evidence)
+-        length = event['gate_length_um']
+-        neutral_run = _verified(ledger, f'v3-neutral-l{round(length*100):03d}-ox5-s1-m1')['run_id']
+-        for bit in (0, 1):
+-            row = {key: event[key] for key in ('gate_length_um', 'particle', 'angle_deg', 'seed', 'condition_id', 'replicate', 'split')}
+-            row.update(event_label=event['label'], stored_bit=bit,
+-                       Qdep_fC=transport['converted'][0]['charge_pc'] * 1000,
+-                       source_event_sha256=evidence[(HERE / 'data/geant4' / event['label'] / 'event.json').relative_to(ROOT).as_posix()])
+-            control_run = _verified(ledger, f'v3-control-l{round(length*100):03d}-b{bit}-ox5-s1-m1')['run_id']
+-            control, neutral = bundle(control_run), bundle(neutral_run)
+-            if event['split'] == 'train':
+-                item = _verified(ledger, 'v3-' + event['label'] + f'-b{bit}')
+-                signal = bundle(item['run_id'])
+-                p = signal['parameters']
+-                for key in ('gate_length_um', 'particle', 'angle_deg', 'seed', 'stored_bit'):
+-                    if p.get(key) != row[key]:
+-                        raise ValueError('Training archive identity differs from frozen event')
+-                if p.get('charge_pc') != transport['converted'][0]['charge_pc']:
+-                    raise ValueError('Training archived particle charge differs from G4')
+-                if p.get('source_evidence_sha256', {}).get('source-event.json') != row['source_event_sha256']:
+-                    raise ValueError('Training archive is not bound to the exact frozen G4 event')
+-                result = metrics.compute_curves(signal, control, neutral)
+-                near = [epsilon for epsilon in design['thresholds_mV']
+-                        if abs(abs(result['M4_V'] * 1000) - epsilon) <= design['numerical']['near_boundary_mV']]
+-                prereg = design['numerical']['preregistered']
+-                is_preregistered = (length == prereg['length_um'] and event['particle'] == prereg['particle']
+-                                    and event['angle_deg'] == prereg['angle_deg']
+-                                    and event['replicate'] == prereg['replicate'] and bit == prereg['stored_bit'])
+-                uncertain = (sorted({epsilon * 1000 for comparison in comparisons
+-                                     for epsilon in comparison.get('numerically_uncertain_thresholds_V', [])})
+-                             if is_preregistered else near)
+-                row.update(targets={'deltaQ_fC': result['deltaQ_fC'], 'deltaM_mV': result['deltaM_V'] * 1000},
+-                           continuous_valid=True, continuous_numerical_status='RAW_AUDIT_PASSED',
+-                           classification=result['classification'],
+-                           classification_numerically_uncertain_thresholds_mV=uncertain,
+-                           classification_numerical_status=('preregistered matched refinements checked'
+-                                                            if is_preregistered else 'near-boundary thresholds unresolved pending designated refinement' if near else 'outside preregistered near-boundary band'),
+-                           controller_classification_numerical_status=item.get('classification_numerical_status'),
+-                           numerical_evidence=numerical['evidence'] if is_preregistered else item.get('numerical_evidence'),
+-                           sources=result['sources'],
+-                           metric_validity=result['validity'])
+-                training.append(row)
+-            else:
+-                # Comparing a control against itself validates the full neutral
+-                # matching key/mesh; no held-out particle response is opened.
+-                baseline = metrics.compute_curves(control, control, neutral)
+-                row.update(known_control={'M4_mV': baseline['control_M4_V'] * 1000,
+-                                          'hold_SN_V': metrics.sample(control['circuit'], 'v(sn)', 2.8e-9)},
+-                           sources={'control': baseline['sources']['control'], 'neutral': baseline['sources']['neutral']})
+-                test.append(row)
+-    _validated_rows(training, design, True)
+-    _validated_rows(test, design, False)
+-    return training, test, evidence
+-
+-
+-def _write_json(path, value):
+-    with path.open('x', encoding='utf8', newline='\n') as stream:
+-        json.dump(value, stream, indent=2, ensure_ascii=False, allow_nan=False)
+-        stream.write('\n')
+-
+-
+-def _write_bundle(out, training, test, design, ledger, provenance, evidence):
+-    out = Path(out)
+-    if out.exists():
+-        raise ValueError('Prediction output is immutable and already exists')
+-    assert_no_test_submissions(design, ledger)
+-    models = fit_models(training, design)
+-    predictions = predict_inputs(models, test, design)
+-    artifacts = {'models.json': models, 'training-data.json': training, 'test-inputs.json': test,
+-                 'predictions.json': predictions, 'ledger-snapshot.json': ledger, 'provenance.json': provenance}
+-    out.mkdir(parents=True)
+-    for name, value in artifacts.items():
+-        _write_json(out / name, value)
+-        evidence[(out / name).relative_to(ROOT).as_posix()] = sha(out / name)
+-    frozen = {'schema': 'dram-see-v3-prediction-freeze',
+-              'frozen_utc': datetime.now(timezone.utc).isoformat(),
+-              'design_sha256': provenance['design_sha256'],
+-              'training_independent_events': 32, 'training_responses': 64,
+-              'test_independent_events': 32, 'test_paired_predictions': 64,
+-              'models_per_bit_target': 4, 'test_responses_seen': 0,
+-              'files_sha256': evidence, 'scope': design['prediction']['scope']}
+-    _write_json(out / 'freeze.json', frozen)
+-    # The self-hash lives outside JSON, avoiding a circular digest.
+-    with (out / 'freeze.sha256').open('x', encoding='ascii') as stream:
+-        stream.write(sha(out / 'freeze.json') + '\n')
+-    return frozen
+-
+-
+-def _freeze():
+-    """Main dispatcher calls this only after all gates; no solve/transport here."""
+-    out = HERE / 'data/predictions'
+-    if out.exists():
+-        raise ValueError('Prediction output exists; never replace a pre-test freeze')
+-    design_path, ledger_path = HERE / 'stats-design.json', LOCAL / 'ledger.json'
+-    digest = sha(design_path)
+-    if digest != (LOCAL / 'stats-design.sha256').read_text().strip():
+-        raise ValueError('Design hash differs from the frozen design')
+-    design = json.loads(design_path.read_text(encoding='utf8'))
+-    _configuration(design)
+-    ledger_bytes = ledger_path.read_bytes()
+-    ledger = json.loads(ledger_bytes)
+-    training, test, evidence = collect_inputs(design, ledger)
+-    sources = [HERE / (name + '.py') for name in ('prediction', 'statistics', 'metrics', 'audit', 'event_audit', 'build_case', 'design')]
+-    sources += [design_path, HERE.parent / 'dram-see-v1/analyze.py', HERE.parent / 'dram-see-v2/audit.py',
+-                HERE.parent / 'dram-readout-offset-d1/audit.py']
+-    for path in sources:
+-        evidence[path.relative_to(ROOT).as_posix()] = sha(path)
+-    if ledger_path.read_bytes() != ledger_bytes:
+-        raise ValueError('Ledger changed during model preparation; freeze requires a stable controller boundary')
+-    assert_no_test_submissions(design, ledger, _manifest_inputs())
+-    provenance = {'design_sha256': digest, 'ledger_snapshot_sha256': hashlib.sha256(ledger_bytes).hexdigest(),
+-                  'gates': ledger['stages'], 'test_submission_check': 'no test ledger entries or submitted input manifests',
+-                  'target_status': 'critical classes retained as audited continuous values; failures/missing/known continuous numerical failures block',
+-                  'source_sha256': {path.relative_to(ROOT).as_posix(): sha(path) for path in sources},
+-                  'python': sys.version, 'numpy': np.__version__,
+-                  'raw_evidence_files': len(evidence)}
+-    return _write_bundle(out, training, test, design, ledger, provenance, evidence)
+-
+-
+-def freeze():
+-    """Acquire the existing controller lock; call outside any held run.py lock."""
+-    with _module('common').controller_lock():
+-        return _freeze()
+-
+-
+-if __name__ == '__main__':
+-    parser = argparse.ArgumentParser(description=__doc__)
+-    parser.add_argument('action', choices=['freeze'])
+-    parser.parse_args()
+-    result = freeze()
+-    print(json.dumps({'frozen_utc': result['frozen_utc'], 'test_paired_predictions': result['test_paired_predictions'],
+-                      'freeze': str(HERE / 'data/predictions/freeze.json')}, indent=2))

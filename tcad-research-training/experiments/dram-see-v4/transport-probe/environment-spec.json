@@ -1,0 +1,17 @@
+{
+  "schema": "dram-see-v4-geant4-environment-spec-v1",
+  "authorization": "User explicitly authorized matching Geant4 10.7.3 missing data on 2026-10-13 UTC",
+  "geant4_version": "10.7.3",
+  "existing_binary_distribution_sha256": "0dff8b779028ef2d729a6b005f1ede103802df992be0c3ec976226b2a4b0fdd7",
+  "installation_scope": "Only new dataset directories under dram-see-v4/software/data; reuse existing Geant4 and compiler; no system or v3 modifications",
+  "datasets_to_add": [
+    {"directory": "PhotonEvaporation5.7", "archive": "G4PhotonEvaporation.5.7.tar.gz", "url": "https://geant4-data.web.cern.ch/datasets/G4PhotonEvaporation.5.7.tar.gz", "md5_from_distribution": "81ff27deb23af4aa225423e6b3a06b39", "env": "G4LEVELGAMMADATA"},
+    {"directory": "G4PARTICLEXS3.1.1", "archive": "G4PARTICLEXS.3.1.1.tar.gz", "url": "https://geant4-data.web.cern.ch/datasets/G4PARTICLEXS.3.1.1.tar.gz", "md5_from_distribution": "98b766fa2c447b541834cc9bf5206c05", "env": "G4PARTICLEXSDATA"}
+  ],
+  "reuse": {"G4EMLOW7.13": "dram-see-v1/software/data-complete/G4EMLOW7.13", "G4ENSDFSTATE2.3": "dram-see-v1/software/data/G4ENSDFSTATE2.3"},
+  "physics": {"H": "QGSP_BIC with ReplacePhysics(G4EmStandardPhysics_option4) plus StepLimiterPhysics", "E": "G4EmStandardPhysics_option4 plus StepLimiterPhysics", "neutron_tracking_cut": "Keep the standard QGSP_BIC constructor and document default 10 us time limit; no added user track rejection"},
+  "resources": {"run_manager": "G4RunManager", "threads": 1, "cpu_affinity_count": 1, "scheduler": "root", "shared_solver_lock": true},
+  "validation_order": ["HTTPS download and official-distribution MD5 plus SHA256", "archive integrity and safe paths", "remote installed file inventory", "compile isolated v4 executable", "zero-event initialization and process/cut inspection", "two-event format probe", "predeclared small proton events and zero-deposit probe"],
+  "deferred_datasets": {"G4NDL4.6": "HP neutron branch not selected", "RadioactiveDecay5.6": "RadioactiveDecayPhysics not selected", "G4TENDL": "AllHP charged-particle branch not selected"},
+  "source": "https://geant4.web.cern.ch/download/10.7.3.html"
+}

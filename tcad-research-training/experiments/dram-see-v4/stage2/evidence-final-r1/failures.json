@@ -1,0 +1,182 @@
+{
+  "scope": "All retained audit and execution failures in this campaign; later corrections do not erase them.",
+  "records": [
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/source-interface-r2/audits/r2-a1-b1-base-r1/audit.json",
+      "sha256": "ac3b565b837a8011c132360036fb845fa7a922e7e52ded3af890dffdb40f450a",
+      "passed": false,
+      "schema": "dram-see-v4-source-interface-r2-audit",
+      "mode": null,
+      "field_measurements_passed": null,
+      "status": "FAILED_OR_INCOMPLETE",
+      "run_id": "20261013T115652Z-v4-source-interface-r2-a1-b1-base-9aee36a9",
+      "errors": [
+        {
+          "check": "spatial_and_temporal_generation",
+          "error": "Missing native ROI dataset: Total; inspect the actual PLT header"
+        }
+      ],
+      "checks": {
+        "spatial_and_temporal_generation": {
+          "passed": false,
+          "error": "Missing native ROI dataset: Total; inspect the actual PLT header"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/source-interface-r2/audits/r2-a1-b1-base-r1-fields-r2/audit.json",
+      "sha256": "cec7c8c93d0f6a93de0f63466cb93f2f3b64cf4c5146d475a71ec33fea681b26",
+      "passed": false,
+      "schema": "dram-see-v4-source-interface-r2-audit",
+      "mode": null,
+      "field_measurements_passed": null,
+      "status": "FAILED_OR_INCOMPLETE",
+      "run_id": "20261013T115652Z-v4-source-interface-r2-a1-b1-base-9aee36a9",
+      "errors": [
+        {
+          "check": "spatial_and_temporal_generation",
+          "error": "Native total generated charge differs from precomputed domain charge by >5%"
+        }
+      ],
+      "checks": {
+        "spatial_and_temporal_generation": {
+          "passed": false,
+          "error": "Native total generated charge differs from precomputed domain charge by >5%"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/source-interface-r3/audits/r3-a1-b1-base-r1/audit.json",
+      "sha256": "5032f357344843e8a9ce31070316a0eabc8c96f40f994658c08752b1061aed84",
+      "passed": false,
+      "schema": "dram-see-v4-source-interface-r3-audit",
+      "mode": null,
+      "field_measurements_passed": null,
+      "status": "FAILED_OR_INCOMPLETE",
+      "run_id": "20261013T125700Z-v4-source-interface-r3-a1-b1-base-2f1ef557",
+      "errors": [
+        {
+          "check": "native_spatial_temporal_source",
+          "error": "3-coordinate native source charge exceeds frozen5% gate; ROI fraction differs: Total; BE interval time centroid differs: Total; ROI fraction differs: Left; BE interval time centroid differs: Left; ROI fraction differs: Right; BE interval time centroid differs: Right; ROI fraction differs: Center; BE interval time centroid differs: Center; ROI fraction differs: Low; BE interval time centroid differs: Low; ROI fraction differs: Middle; BE interval time centroid differs: Middle; ROI fraction differs: High; BE interval time centroid differs: High; ROI fraction differs: LowerLeft; BE interval time centroid differs: LowerLeft; ROI fraction differs: UpperLeft; BE interval time centroid differs: UpperLeft; Native BE-average temporal waveform exceeds5%: Total; Native ROI partition fails; Native ROI partition fails; Native ROI partition fails; Native spatial centroid exceeds0.01um"
+        }
+      ],
+      "checks": {
+        "native_spatial_temporal_source": {
+          "passed": false,
+          "error": "3-coordinate native source charge exceeds frozen5% gate; ROI fraction differs: Total; BE interval time centroid differs: Total; ROI fraction differs: Left; BE interval time centroid differs: Left; ROI fraction differs: Right; BE interval time centroid differs: Right; ROI fraction differs: Center; BE interval time centroid differs: Center; ROI fraction differs: Low; BE interval time centroid differs: Low; ROI fraction differs: Middle; BE interval time centroid differs: Middle; ROI fraction differs: High; BE interval time centroid differs: High; ROI fraction differs: LowerLeft; BE interval time centroid differs: LowerLeft; ROI fraction differs: UpperLeft; BE interval time centroid differs: UpperLeft; Native BE-average temporal waveform exceeds5%: Total; Native ROI partition fails; Native ROI partition fails; Native ROI partition fails; Native spatial centroid exceeds0.01um"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/witness-fixed-h-s1-r1-audit-r3/audit.json",
+      "sha256": "a6b13c51df6486f413911da779bb56ba200d194f62270b05ed22ba32471584e7",
+      "passed": false,
+      "schema": "dram-see-v4-witness-audit-v1",
+      "mode": "events",
+      "field_measurements_passed": null,
+      "status": "FAILED_OR_INCOMPLETE",
+      "run_id": "witness-fixed-h-s1-r1",
+      "errors": [
+        {
+          "check": "stable_births_process_identity_points_and_termination",
+          "error": "Post-step process absent from actual particle registry"
+        }
+      ],
+      "checks": {
+        "stable_births_process_identity_points_and_termination": {
+          "passed": false,
+          "error": "Post-step process absent from actual particle registry"
+        }
+      }
+    },
+    {
+      "kind": "audit",
+      "path": "local_runtime/dram-see-v4/transport-probe/audits/witness-pilot-h-r1/audit.json",
+      "sha256": "36a98554e69b66157ab9d44084479927c69f3d9fbfa35fd82501817abddfd00d",
+      "passed": false,
+      "schema": "dram-see-v4-witness-audit-v1",
+      "mode": "events",
+      "field_measurements_passed": null,
+      "status": "FAILED_OR_INCOMPLETE",
+      "run_id": "witness-pilot-h-r1",
+      "errors": [
+        {
+          "check": "stable_births_process_identity_points_and_termination",
+          "error": "Endpoint chord exceeds actual path length"
+        }
+      ],
+      "checks": {
+        "stable_births_process_identity_points_and_termination": {
+          "passed": false,
+          "error": "Endpoint chord exceeds actual path length"
+        }
+      }
+    },
+    {
+      "kind": "operation",
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r1/operation.json",
+      "sha256": "b99a0b96e43edf8b339088cf8a0264741d5fb4c8e6b9b78b3648201a36eeec90",
+      "label": "r2-a1-tdr-diagnostic-r1",
+      "state": "FAILED_COLLECTED",
+      "ssh_exit_code": 2,
+      "remote_exit_code": 2,
+      "collection_exit_code": 0,
+      "started_utc": "2026-10-13T12:19:38.476091+00:00",
+      "finished_utc": "2026-10-13T12:19:59.849302+00:00"
+    },
+    {
+      "kind": "operation",
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r2/operation.json",
+      "sha256": "20c45c63d2b3ff32f412afec99d94846af84789be64f459cafbe790a251cb39a",
+      "label": "r2-a1-tdr-diagnostic-r2",
+      "state": "FAILED_COLLECTED",
+      "ssh_exit_code": 1,
+      "remote_exit_code": 1,
+      "collection_exit_code": 0,
+      "started_utc": "2026-10-13T12:23:42.135416+00:00",
+      "finished_utc": "2026-10-13T12:24:01.768909+00:00"
+    },
+    {
+      "kind": "operation",
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r5/operation.json",
+      "sha256": "8f72cd1eb375fe303cb44e099a60122d9432b8c752a17836ed9b87cef27bddff",
+      "label": "r2-a1-tdr-diagnostic-r5",
+      "state": "FAILED_COLLECTED",
+      "ssh_exit_code": 1,
+      "remote_exit_code": 1,
+      "collection_exit_code": 0,
+      "started_utc": "2026-10-13T15:07:57.869308+00:00",
+      "finished_utc": "2026-10-13T15:08:14.607839+00:00"
+    },
+    {
+      "kind": "operation",
+      "path": "local_runtime/dram-see-v4/transport-probe/operations/r4-a1-mesh-tdr-diagnostic-r1/operation.json",
+      "sha256": "2c660f1ccef1ce436b782d22615bccf8ef36e34171a41f330459dcf25f8caeb8",
+      "label": "r4-a1-mesh-tdr-diagnostic-r1",
+      "state": "FAILED_COLLECTED",
+      "ssh_exit_code": 1,
+      "remote_exit_code": 1,
+      "collection_exit_code": 0,
+      "started_utc": "2026-10-13T14:50:59.534653+00:00",
+      "finished_utc": "2026-10-13T15:00:05.809014+00:00"
+    },
+    {
+      "kind": "read_only_progress_probe",
+      "path": "local_runtime/dram-see-v4/stage2-live/r4-a0-progress-02/record.json",
+      "sha256": "5818481e38eebb36e88e42f5f5571002c362c218ae9c9cb3d4d060601946bae6",
+      "record": {
+        "run_id": "20261013T132129Z-v4-source-interface-r4-a0-b1-mesh-5a893127",
+        "local_state": "RUNNING",
+        "ssh_exit_code": 1,
+        "utc": "2026-10-13T13:30:47.527695+00:00",
+        "read_only": true,
+        "solver_started": false
+      },
+      "note": "Progress probe failure is not a solver failure; original job is reconciled read-only."
+    }
+  ]
+}

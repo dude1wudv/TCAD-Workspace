@@ -1,0 +1,560 @@
+{
+  "schema": "dram-see-v4-study-design-r1",
+  "recorded_at": "2026-10-12T18:03:09.253714-08:00",
+  "status": "design_with_open_prerequisites",
+  "execution_enabled": false,
+  "is_runner_input": false,
+  "scope": "Next experimental design following literature study; not an instruction file for existing controllers.",
+  "analytic_and_tcad_source_cases": [
+    {
+      "id": "A0",
+      "purpose": "zero source",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A1",
+      "purpose": "single vertical",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A2",
+      "purpose": "inclined 30 deg",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A3",
+      "purpose": "boundary clipping",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A4",
+      "purpose": "coincident half-charge pair",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A5",
+      "purpose": "spatially separated pair",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A6",
+      "purpose": "delayed pair",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A7",
+      "purpose": "input reordering",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A8",
+      "purpose": "segment refinement",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A9",
+      "purpose": "out-of-plane 3D",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check",
+        "three_dimensional_fixture"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A10",
+      "purpose": "unit equivalence",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    },
+    {
+      "id": "A11",
+      "purpose": "nonuniform LET array",
+      "state": "designed_not_executed",
+      "validation_only": true,
+      "proposed_storage_bits": [
+        0,
+        1
+      ],
+      "requires": [
+        "schema_review",
+        "coordinate_and_unit_contract",
+        "source_kernel_and_named_parameters",
+        "matched_control",
+        "live_single_scheduler_check"
+      ],
+      "run_id": null
+    }
+  ],
+  "interface_fixture_candidate": {
+    "identity": "historical_l025_geometry_copied_to_v4_when_implemented",
+    "calibrated_90nm_device": false,
+    "dimension": 2,
+    "silicon_extent_um": [
+      [
+        0,
+        0.85
+      ],
+      [
+        0,
+        1.2
+      ]
+    ],
+    "effective_thickness_um": 1.0,
+    "gate_length_um": 0.25,
+    "q0_fC": 1.0,
+    "track_length_um": 0.6,
+    "width_parameter_um": 0.03,
+    "source_time_ns": 1.0,
+    "time_kernel": null,
+    "time_kernel_parameters": null,
+    "A1_start_um": [
+      0.425,
+      0.3,
+      0.0
+    ],
+    "A1_direction": [
+      0,
+      1,
+      0
+    ],
+    "A2_start_um": [
+      0.575,
+      0.3401923788646684,
+      0.0
+    ],
+    "A2_end_um": [
+      0.275,
+      0.8598076211353316,
+      0.0
+    ],
+    "A2_direction": [
+      -0.5,
+      0.8660254037844386,
+      0.0
+    ],
+    "A3_axis_x_um": 0.0,
+    "A4_each_source_fC": 0.5,
+    "A5_axes_x_um": [
+      0.325,
+      0.525
+    ],
+    "A6_times_ns": [
+      1.0,
+      1.01
+    ],
+    "A11_length_nodes_um": [
+      0,
+      0.3,
+      0.6
+    ],
+    "A11_let_pc_per_um": [
+      0,
+      0.0033333333333333335,
+      0
+    ],
+    "note": "Widths, delay, geometry and charge are interface fixture choices, not published 90nm physics values."
+  },
+  "proton_design": {
+    "energies_MeV": [
+      1,
+      5,
+      20,
+      100
+    ],
+    "theta_deg": [
+      0,
+      30
+    ],
+    "phi_deg": 0,
+    "arms": {
+      "E": "G4EmStandardPhysics_option4 only",
+      "H": "QGSP_BIC hadronic candidate with explicitly matched EM option4"
+    },
+    "default_em_must_be_replaced_not_duplicated": true,
+    "same_seed_is_not_event_pairing": true,
+    "geometry_hash": null,
+    "source_position_um": null,
+    "cut_um": null,
+    "max_step_um": null,
+    "required_data_verified_live": false,
+    "configurations": [
+      {
+        "id": "P-E-E1-A0",
+        "physics_arm": "E",
+        "energy_MeV": 1,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E1-A30",
+        "physics_arm": "E",
+        "energy_MeV": 1,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E5-A0",
+        "physics_arm": "E",
+        "energy_MeV": 5,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E5-A30",
+        "physics_arm": "E",
+        "energy_MeV": 5,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E20-A0",
+        "physics_arm": "E",
+        "energy_MeV": 20,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E20-A30",
+        "physics_arm": "E",
+        "energy_MeV": 20,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E100-A0",
+        "physics_arm": "E",
+        "energy_MeV": 100,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-E-E100-A30",
+        "physics_arm": "E",
+        "energy_MeV": 100,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E1-A0",
+        "physics_arm": "H",
+        "energy_MeV": 1,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E1-A30",
+        "physics_arm": "H",
+        "energy_MeV": 1,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E5-A0",
+        "physics_arm": "H",
+        "energy_MeV": 5,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E5-A30",
+        "physics_arm": "H",
+        "energy_MeV": 5,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E20-A0",
+        "physics_arm": "H",
+        "energy_MeV": 20,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E20-A30",
+        "physics_arm": "H",
+        "energy_MeV": 20,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E100-A0",
+        "physics_arm": "H",
+        "energy_MeV": 100,
+        "theta_deg": 0,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      },
+      {
+        "id": "P-H-E100-A30",
+        "physics_arm": "H",
+        "energy_MeV": 100,
+        "theta_deg": 30,
+        "phi_deg": 0,
+        "primary_event_count": 10,
+        "seed_manifest": null,
+        "state": "designed_not_executed",
+        "validation_only": true
+      }
+    ],
+    "planned_probe_primaries": 160,
+    "separate_smoke_primaries": 2,
+    "smoke_included_in_probe_count": false,
+    "automatic_all_events_to_tcad": false,
+    "event_rate_estimation": false
+  },
+  "device_candidates": [
+    {
+      "id": "shin2003_sti",
+      "doi": "10.3938/jkps.43.887",
+      "node_nm": 90,
+      "gate_length_nm": 95,
+      "parameter_status": "partial_text_evidence",
+      "curve_pixels_verified": false,
+      "gate_oxide_nm": null,
+      "junction_depth_nm": null,
+      "doping_profile": null,
+      "cstore_fF": null,
+      "cbl_fF": null,
+      "temperature_K": null
+    },
+    {
+      "id": "park2002_planar",
+      "doi": "10.1109/IEDM.2002.1175963",
+      "node_nm": 90,
+      "gate_length_nm": null,
+      "parameter_status": "candidate_not_same_device_as_shin_proven",
+      "curve_pixels_verified": false,
+      "storage_capacitance_reported_fF": 23,
+      "storage_capacitance_adopted_fF": null,
+      "gate_oxide_nm": null,
+      "junction_depth_nm": null,
+      "doping_profile": null,
+      "cbl_fF": null,
+      "temperature_K": null
+    }
+  ],
+  "prediction_design": {
+    "train_fractions": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "nested_event_groups": true,
+    "paired_storage_states_same_group": true,
+    "heldout_size_values": null,
+    "heldout_energy_values": null,
+    "epsilon_equivalence": null,
+    "physics_redundancy_audit_required": true,
+    "post_transport_features_disclosed_as_source_conditioned": true,
+    "model_training_started": false
+  },
+  "open_prerequisites": [
+    "Source time kernel and named HeavyIon parameter binding",
+    "A cases source and response tolerances at actual TCAD discretization",
+    "Live tool/data/process verification",
+    "Original device figure pixels and measurement conditions",
+    "Selected coherent device parameter set",
+    "Frozen seed/geometry/model/test manifests"
+  ],
+  "old_heartbeat_resumed": false,
+  "simulations_launched": 0,
+  "training_runs": 0
+}

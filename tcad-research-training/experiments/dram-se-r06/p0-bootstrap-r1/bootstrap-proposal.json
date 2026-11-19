@@ -1,0 +1,58 @@
+{
+  "schema": "tcad-r06-p0-bootstrap-proposal-v1",
+  "status": "pending_original_vm_cmi_build",
+  "submit_ready": false,
+  "tasks": [
+    {
+      "id": "r06-p0-d0-o2-zero-prefix-a-r1",
+      "backend": "tcad",
+      "project": "experiments/dram-se-r06/p0-bootstrap-r1/prepared-prefix-r1/inputs/r06-p0-d0-o2-zero-prefix-a-r1",
+      "depends_on": [],
+      "requires": [],
+      "repair_of": null,
+      "repair_reason": "",
+      "native_threads": 2,
+      "native_cores": 2,
+      "final_time_s": 1e-13,
+      "recipe_id": "zero_whr",
+      "diagnostic_plan": {
+        "path": "experiments/dram-se-r06/p0-bootstrap-r1/logging-zero-prefix-plan.json",
+        "sha256": "9a1a8c04f3bff99323272043def1c3231b31537d79c56bfd2c5c6156f551742a"
+      }
+    },
+    {
+      "id": "r06-p0-d0-o2-zero-prefix-b-r1",
+      "backend": "tcad",
+      "project": "experiments/dram-se-r06/p0-bootstrap-r1/prepared-prefix-r1/inputs/r06-p0-d0-o2-zero-prefix-b-r1",
+      "depends_on": [
+        "r06-p0-d0-o2-zero-prefix-a-r1"
+      ],
+      "requires": [],
+      "repair_of": null,
+      "repair_reason": "",
+      "native_threads": 2,
+      "native_cores": 2,
+      "final_time_s": 1e-13,
+      "recipe_id": "zero_whr",
+      "diagnostic_plan": {
+        "path": "experiments/dram-se-r06/p0-bootstrap-r1/logging-zero-prefix-plan.json",
+        "sha256": "9a1a8c04f3bff99323272043def1c3231b31537d79c56bfd2c5c6156f551742a"
+      }
+    }
+  ],
+  "blocking_actions": [
+    "Original Runtime dispatches compile-only through the existing Geant4 operation backend, recipe pmi_build, in the idle shared pool and original CentOS7 VM; no direct/manual compilation.",
+    "After the original backend collects the real compile-only outputs, materialize the complete build bundle and hash-bound receipt; run prepare.py materialize without overwriting earlier inputs.",
+    "Original controller integrates admissions under the final contract directory and calls r06_gate.verify before queue publication."
+  ],
+  "admission_schema_after_materialize": "tcad-r06-p0-admission-v1",
+  "input_sha256_after_materialize": "Every actual file in each frozen project, including the new real ELF. No placeholder admission is published.",
+  "scope": "p0_diagnostic",
+  "formal_case_id": null,
+  "statistics_eligible": false,
+  "budget_account": "p0_diagnostics",
+  "p0_task_count": 2,
+  "p0_particle_task_count": 0,
+  "formal_plan_completed_credit": 0,
+  "source_active_short_probe_still_required": true
+}

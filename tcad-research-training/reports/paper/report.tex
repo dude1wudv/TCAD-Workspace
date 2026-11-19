@@ -1,0 +1,367 @@
+% !TeX program = xelatex
+% Standalone source. All diagrams and plotted coordinates are embedded.
+% D1 coordinates originate from experiments/dram-readout-offset-d1/data/summary.csv.
+\documentclass[UTF8,a4paper,zihao=-4,fontset=fandol]{ctexart}
+\usepackage[margin=2.35cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,bm,booktabs,tabularx,array}
+\usepackage{graphicx,xcolor,tikz,pgfplots}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\pgfplotsset{compat=1.18}
+\usepackage{caption,float,placeins}
+\usepackage[hidelinks,unicode]{hyperref}
+\usepackage{url}
+\hypersetup{pdftitle={AI辅助下的多特征尺寸存储器单粒子效应评估},pdfsubject={模型依据与物理机制},pdfauthor={}}
+\definecolor{signalblue}{HTML}{2166AC}
+\definecolor{referenceorange}{HTML}{B35806}
+\definecolor{softgray}{HTML}{F3F5F7}
+\captionsetup{font=small,labelfont=bf,labelsep=quad}
+\renewcommand{\arraystretch}{1.3}
+\setlength{\tabcolsep}{5pt}
+\setlength{\parskip}{0.15em}
+\setlength{\emergencystretch}{2em}
+\linespread{1.32}
+\pagestyle{plain}
+\setcounter{tocdepth}{2}
+\newcommand{\um}{\,\mu\mathrm{m}}
+\newcommand{\ns}{\,\mathrm{ns}}
+\newcommand{\mV}{\,\mathrm{mV}}
+\newcommand{\fC}{\,\mathrm{fC}}
+\newcommand{\V}{\,\mathrm{V}}
+\newcommand{\sourcepath}[1]{{\footnotesize\nolinkurl{#1}}}
+\title{\heiti\LARGE AI辅助下的多特征尺寸存储器\\单粒子效应评估\\[0.6em]\large 模型依据与物理机制}
+\author{}
+\date{\small 阶段正文\quad 2026年10月10日}
+
+\begin{document}
+\maketitle
+\thispagestyle{plain}
+\vspace{-1.7em}
+\begin{abstract}
+针对动态随机存取存储器单粒子效应评价中粒子扰动与读出电路响应相互混合的问题，建立二维访问晶体管与理想电容组成的单晶体管单电容探索模型，明确粒子输运、电荷源项和读出判据之间的传递关系。模型采用Geant4电离沉积生成等效径迹激励，由器件与电路联合求解得到存储节点和位线响应。基于已完成的无粒子读出诊断，中性存储状态在理想固定参考下产生约$12.370\mV$的读出差分；端口积分与电容净电荷变化说明，该偏移与字线驱动下的电荷交换有关。对同一存储状态，完整中性参考将差分由$+2.455\mV$变为$-9.915\mV$，物理双支路与离线计算满足预设一致性容差。由此建立有符号电荷扰动、匹配读出裕量及裕量损失的评价口径，为后续多尺寸扫描和预测验证提供基础。本文定量结论限于已完成诊断，结构参数仍属未校准探索设定。
+\end{abstract}
+\noindent\textbf{关键词：}动态随机存取存储器；单粒子效应；Geant4；TCAD；电荷共享；匹配参考
+
+\section{研究问题与证据范围}
+DRAM通过存储单元中的电荷状态表示信息，访问晶体管连接存储节点与位线，读出电路根据电荷共享产生的微小电压差识别存储状态\cite{keeth2001}。粒子入射后，半导体中的能量沉积与载流子运动可能改变存储节点电荷。然而，粒子造成的节点变化需要经过访问晶体管和读出时序才能转化为可观测差分，因此仅比较粒子前后的存储电压，还不足以完整说明读出判据是否改变。
+
+本项目围绕课程要求，建立AI辅助的Geant4与TCAD联合评估流程\cite{course}。本文首先回答三个具体问题：所用DRAM模型对应什么物理对象，各项参数依据是什么；粒子能量沉积如何传递为TCAD激励和读出指标；在已完成的诊断中，为什么无粒子状态也出现读出偏移，以及该结果如何约束后续参考支路设计。这里的“多特征尺寸”具体指访问晶体管栅长扫描，参数名称与几何定义保持一致。
+
+报告区分文献支持的原理、项目设定的参数和已完成仿真得到的观察。外部资料用于支持1T1C结构、电荷共享和粒子沉积描述，并不为本项目的具体掺杂、电容或几何参数提供工艺校准。定量分析采用已完成的D1无粒子诊断及其归档数据\cite{d1}；正在执行的v3用于说明已冻结的设计和评价口径，其完整统计、拟合精度和氧化层结果另待验收后补入。
+
+\section{模型依据与建模选择}
+\subsection{1T1C单元与匹配参考}
+单晶体管单电容结构由访问晶体管和存储电容构成。字线控制访问晶体管导通，存储节点SN与位线BL通过晶体管交换电荷。标准DRAM的读出过程还包括差分感测和恢复，存储单元信号必须结合预充电平、位线负载及感测时序解释\cite{keeth2001}。本项目保留访问晶体管与电荷共享过程，采用理想电容描述存储节点和位线负载，评价终点为给定采样时刻的差分裕量。
+
+信号支路与参考支路采用相同几何、网格、器件模型、电容和时序，参考存储节点初始化为$0.5\V$。粒子源只施加于信号器件，中性参考独立求解。图\ref{fig:cell}给出对应关系。参考支路引入了与信号支路相同的读出驱动过程，因此能够计入固定理想参考电压无法描述的共同响应；两支路的初态不同，仍可能存在状态相关残差。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=Latex,font=\small,
+ access/.style={draw,rounded corners=2pt,minimum width=2.15cm,minimum height=0.65cm,fill=softgray}]
+\node at (2.9,3.65) {信号支路};
+\node at (9.8,3.65) {中性参考支路};
+\node[access] (a) at (2.9,1.7) {访问晶体管};
+\node[access] (r) at (9.8,1.7) {访问晶体管};
+\draw (0.6,1.7)--(a.west); \draw (a.east)--(5.2,1.7);
+\draw (7.5,1.7)--(r.west); \draw (r.east)--(12.1,1.7);
+\node[above] at (0.65,1.75) {SN}; \node[above] at (5.15,1.75) {BL};
+\node[above] at (7.55,1.75) {$\mathrm{SN}_{\rm n}$}; \node[above] at (12.05,1.75) {$\mathrm{BL}_{\rm n}$};
+\foreach \x/\cap in {0.6/$C_s$,5.2/$C_b$,7.5/$C_s$,12.1/$C_b$}{
+ \fill (\x,1.7) circle (1.4pt); \draw (\x,1.7)--(\x,0.85);
+ \draw (\x-0.23,0.85)--(\x+0.23,0.85); \draw (\x-0.23,0.68)--(\x+0.23,0.68);
+ \draw (\x,0.68)--(\x,0.2); \draw (\x-0.23,0.2)--(\x+0.23,0.2);
+ \draw (\x-0.14,0.1)--(\x+0.14,0.1); \node[right] at (\x+0.2,0.75) {\cap};
+}
+\draw[->] (2.9,2.75)--(a.north); \node[above] at (2.9,2.75) {WL};
+\draw[->] (9.8,2.75)--(r.north); \node[above] at (9.8,2.75) {同一WL时序};
+\draw[->,thick,signalblue] (1.25,2.8)--(a.north west);
+\node[signalblue,left] at (1.3,2.75) {粒子源};
+\node[below,align=center] at (2.9,-0.25) {初态$0.1/0.9\V$};
+\node[below,align=center] at (9.8,-0.25) {初态$0.5\V$\quad 无粒子源};
+\node at (6.35,-1.0) {$D(t)=V_{\rm BL}(t)-V_{{\rm BL},n}(t)$};
+\end{tikzpicture}
+\caption{信号单元与中性参考的功能示意。$C_s=10\,\mathrm{fF}$，$C_b=100\,\mathrm{fF}$。图中省略体端、预充开关和初始化钳位，访问晶体管由TCAD器件求解；该示意不是晶体管版图或真实感放电路。}
+\label{fig:cell}
+\end{figure}
+
+\subsection{几何与参数的来源层级}
+TCAD端采用二维平面NMOS，硅区域宽度为$L+0.6\um$、深度为$1.2\um$，二维电流与电荷按$1\um$有效厚度归一化。栅长$L$取$0.18$、$0.25$、$0.35$和$0.45\um$。其他主要设置见表\ref{tab:params}，均可在冻结输入中定位\cite{v3design}。扫描$L$时保持名义氧化层、电容和掺杂设定不变，因此比较的是该参数化模型对栅长变化的响应，而非四代实际制造工艺的比较。
+
+\begin{table}[htbp]
+\centering\small
+\caption{器件与电路主要参数及依据属性}
+\label{tab:params}
+\begin{tabularx}{\textwidth}{@{}p{3.2cm}p{4.5cm}X@{}}
+\toprule
+参数 & 当前取值或定义 & 依据与适用范围\\
+\midrule
+栅长$L$ & $0.18/0.25/0.35/0.45\um$ & 项目扫描设计，不对应商业工艺节点\\
+栅氧层厚度 & 名义$5\,\mathrm{nm}$ & 继承探索几何，尚无工艺校准\\
+体区掺杂 & 硼，$10^{17}\,\mathrm{cm}^{-3}$ & 均匀体区设定\\
+源漏掺杂 & 砷，峰值$10^{20}\,\mathrm{cm}^{-3}$ & 高斯分布；$0.12\um$深度处指定$10^{17}\,\mathrm{cm}^{-3}$，横向因子0.4\\
+栅功函数与温度 & $4.6\,\mathrm{eV}$；$300\,\mathrm{K}$ & 冻结器件设置\\
+存储及位线电容 & $C_s=10\,\mathrm{fF}$；$C_b=100\,\mathrm{fF}$ & 理想集总元件，未提取版图寄生\\
+初始化电压 & 信号$0.1/0.9\V$；中性$0.5\V$ & 理想钳位建立受控初态\\
+读出字线与预充 & WL终值$1.8\V$；BL预充$0.5\V$ & 项目时序定义\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+表中高斯分布的$0.12\um$是掺杂函数深度参数，应与最终净掺杂零交叉位置区分。其余参数也需要分别核对来源：实际模型校准至少需要器件转移和输出特性、存储与位线电容依据，以及写入、保持和读出参考结果。文献证明1T1C原理成立，并不等于这些具体数值已代表某一DRAM产品。
+
+\subsection{器件物理与初态时序}
+器件求解耦合泊松方程、电子与空穴连续性方程及外部电路。冻结设置采用Fermi统计、OldSlotboom带隙变窄、掺杂相关迁移率、高场饱和、法向电场迁移率修正，以及掺杂相关SRH和Auger复合；瞬态采用后向欧拉离散\cite{v3design}。这些设置定义了计算模型，应与实验标定的材料参数和适用性验证分开报告。
+
+v3使用理想钳位建立$0.1/0.9\V$两种存储状态，在$0.6\ns$释放，并于$0.95\ns$检查初态。粒子在$1\ns$入射，保持阶段指标于$2.8\ns$提取。位线在$2.8$--$2.9\ns$预充至$0.5\V$，$3\ns$时预充通路由$100\,\Omega$切换至$10^{20}\,\Omega$；字线在$3.05$--$3.10\ns$上升至$1.8\V$，最终在$4\ns$采样。读出窗口另保留$3.8$--$4\ns$的裕量变化，以检查单个采样值附近的动态行为。
+
+受控初态使两种存储位及不同尺寸具有明确的比较起点，其用途是隔离初始节点电压差异。它没有建立由访问晶体管真实写入该状态的校准证据。早期v1采用访问管充电，不同尺寸得到不同写后电压；v1的$3\ns$存储扰动和v3的$4\ns$匹配读出属于不同指标，后续结果不能直接合并\cite{v1}。
+
+\subsection{粒子输运模型与几何对应}
+Geant4负责生成硅内粒子输运及逐步能量沉积，TCAD负责求解给定源项下的器件电荷运动和电路响应。输运程序使用Geant4 10.7.3，相互作用物理采用option4电磁构造器，另由StepLimiter限制步长。官方10.7文档将option4列为电磁物理配置\cite{g4em}，本项目结果据此按电磁输运模型解释。
+
+粒子条件为$5\,\mathrm{MeV}$的alpha或proton，入射角为$0^\circ$或$30^\circ$。Geant4中的硅区域与TCAD硅体横截面对应，出平面厚度为$1\um$，外部介质为真空。入射点固定在硅表面$x=L+0.45\um$，方向为$(-\sin\theta,\cos\theta,0)$，其中$+y$指向硅体内部。用于源项映射的直径迹长度为
+\begin{equation}
+\ell=\begin{cases}
+1.2\um,&\theta=0^\circ,\\
+\min\!\left(\dfrac{1.2}{\cos\theta},\dfrac{L+0.45}{\sin\theta}\right)\um,&\theta=30^\circ,
+\end{cases}
+\label{eq:track}
+\end{equation}
+式中$L$取以$\mu\mathrm{m}$计的数值。该表达式同时考虑底边和侧边退出。特别地，$L=0.18\um$、$30^\circ$时直径迹从侧边退出，长度为$1.26\um$。Geant4实际散射路程与这里的等效直径迹长度具有不同定义。
+
+\section{从粒子沉积到读出判据的物理关系}
+\subsection{沉积电荷与收集电荷的区别}
+硅内第$j$个记录步的总沉积能为$E_{{\rm dep},j}$，非电离部分为$E_{{\rm NIEL},j}$，本项目将电离沉积定义为
+\begin{equation}
+E_{\rm ion}=\sum_j\max(0,E_{{\rm dep},j}-E_{{\rm NIEL},j}).
+\end{equation}
+用硅中每个电子空穴对平均$W=3.6\,\mathrm{eV}$的换算约定\cite{ryder2021}，得到
+\begin{equation}
+N_{\rm eh}=\frac{E_{\rm ion}[\mathrm{MeV}]\,10^6}{W[\mathrm{eV}]},\qquad
+Q_{\rm dep}=qN_{\rm eh},\qquad q=1.602176634\times10^{-19}\,\mathrm{C}.
+\label{eq:qdep}
+\end{equation}
+这里$Q_{\rm dep}$是以一类载流子电荷量计的生成电荷尺度，而非空间中产生的净电荷：一次电离同时生成电子与空穴。它也不等于存储电容的电荷变化。漂移、扩散、复合和端口交换决定生成载流子如何影响各电极\cite{label1996}，存储节点变化必须由联合求解提取。
+
+为传入二维器件模型，项目将$Q_{\rm dep}$均匀分布到式\eqref{eq:track}的等效直径迹，定义线电荷密度
+\begin{equation}
+\lambda_{\rm eq}=Q_{\rm dep}/\ell.
+\label{eq:lambda}
+\end{equation}
+程序字段\texttt{LET}采用$\mathrm{pC}/\mu\mathrm{m}$单位，正文以$\lambda_{\rm eq}$区分这一输入量与常用的质量阻止本领单位。HeavyIon源采用$0.03\um$横向高斯尺度。逐步沉积记录保留用于溯源，但总量映射简化了实际三维时空分布。原始研究已显示，即使生成电荷总量相近，不同载流子分布仍会改变器件瞬态响应\cite{ryder2021}；因此核对总量守恒只是源项验证的一部分。
+
+源项验证直接积分器件中的电子空穴对生成率$G_{\rm ion}$，将二维归一化厚度计入体积元，得到
+\begin{equation}
+Q_{\rm src}=q\int\!\!\int_{\Omega}G_{\rm ion}(\bm r,t)\,\mathrm{d}V\,\mathrm{d}t.
+\label{eq:source}
+\end{equation}
+对正沉积事件，预设相对误差为$|Q_{\rm src}-Q_{\rm dep}|/Q_{\rm dep}\leq5\%$。零沉积事件单独核对近零源项，仍保留其事件身份。靠近侧边的高斯源可能受到几何截断，应检查实际积分，不能把截断后的目标电荷替换成新的归一化基准。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=Latex,node distance=0.65cm,font=\small,
+box/.style={draw,rounded corners=2pt,align=center,text width=3.75cm,minimum height=1.15cm,fill=softgray}]
+\node[box] (e) {Geant4逐步沉积\\$E_{\rm dep},E_{\rm NIEL}$};
+\node[box,right=of e] (q) {电荷总量与等效径迹\\$Q_{\rm dep},\lambda_{\rm eq},\ell$};
+\node[box,right=of q] (g) {TCAD生成率源项\\$G_{\rm ion}(\bm r,t)$};
+\node[box,below=0.9cm of g] (v) {器件与电路联合响应\\$V_{\rm SN}(t),V_{\rm BL}(t)$};
+\node[box,left=of v] (m) {匹配对照与中性参考\\$\Delta Q,D,M,\Delta M$};
+\node[box,left=of m] (c) {数值检查与分类\\正确\quad 临界\quad 判据误读};
+\draw[->,thick] (e)--(q);\draw[->,thick] (q)--(g);\draw[->,thick] (g)--(v);
+\draw[->,thick] (v)--(m);\draw[->,thick] (m)--(c);
+\end{tikzpicture}
+\caption{从粒子沉积到读出判据的计算链路。沉积电荷、源项积分和电容电荷变化分别定义；匹配对照用于分离无粒子漂移，中性参考用于定义差分读出。未通过数值检查的响应另列为未决状态。}
+\label{fig:chain}
+\end{figure}
+
+\subsection{理想电荷共享及其适用条件}
+在访问晶体管导通前，设存储和位线电压分别为$V_s^-$和$V_b^-$。若两理想电容构成封闭系统、期间没有其他端口净电荷交换，且导通后充分等势，则电荷守恒给出\cite{keeth2001}
+\begin{equation}
+V_f=\frac{C_sV_s^-+C_bV_b^-}{C_s+C_b},\qquad
+V_f-V_b^-=\frac{C_s}{C_s+C_b}(V_s^--V_b^-).
+\label{eq:sharing}
+\end{equation}
+本模型的电容比使衰减因子为$C_s/(C_s+C_b)=1/11$。若读前SN恰为$0.1/0.9\V$且BL为$0.5\V$，理想共享差分分别为$\mp36.36\mV$。这些值是上述假设下的解析基准，不是仿真测量值；实际初态释放后的电压应从相应曲线读取。
+
+读取期间的晶体管具有栅、体等端口，理想二电容封闭条件未必成立。记$t_0=3\ns$、$t_1=4\ns$，并定义外接电容总电荷变化
+\begin{equation}
+\Delta Q_{sb}=C_s[V_s(t_1)-V_s(t_0)]+C_b[V_b(t_1)-V_b(t_0)].
+\end{equation}
+若参考电压为$V_r(t)$，令$D_1=V_b(t_1)-V_r(t_1)$，$D_{\rm closed}$为使用$t_0$实际电压的式\eqref{eq:sharing}预测减去$V_r(t_0)$，直接整理可得
+\begin{equation}
+\begin{split}
+D_1-D_{\rm closed}={}&\frac{\Delta Q_{sb}}{C_s+C_b}
++\frac{C_s}{C_s+C_b}[V_b(t_1)-V_s(t_1)]\\
+&-[V_r(t_1)-V_r(t_0)].
+\end{split}
+\label{eq:identity}
+\end{equation}
+右侧依次为电容净电荷变化、终点未完全等势和参考漂移的贡献。式\eqref{eq:identity}是集总电容定义下的恒等关系，不依赖终点等势假设；因此也适合检查关闭字线等不满足充分共享的对照。
+
+\subsection{有符号扰动与匹配读出指标}
+保持阶段在$t_h=2.8\ns$提取有符号电容变化
+\begin{equation}
+\Delta Q=C_s[V_{{\rm SN},e}(t_h)-V_{{\rm SN},c}(t_h)],
+\label{eq:dq}
+\end{equation}
+其中下标$e$和$c$分别表示粒子事件与同条件无粒子对照。$\Delta Q<0$表示事件相对对照降低了存储电容电荷；对于不同存储位，正负扰动对正确读取的影响不同，不能把所有$\Delta Q$统一命名为正的电荷损失。
+
+对读出过程，采用同尺寸、同离散和时序的中性参考$n$，定义
+\begin{align}
+D(t)&=V_{{\rm BL},e}(t)-V_{{\rm BL},n}(t),\\
+M&=(2b-1)D(4\ns),\qquad b\in\{0,1\},\label{eq:margin}\\
+\Delta M&=M_c-M_e.\label{eq:loss}
+\end{align}
+$M$将两种位值转换到统一的正确方向，$\Delta M>0$表示粒子引起裕量下降。主阈值$\epsilon=5\mV$，以$M>\epsilon$判为正确、$M<-\epsilon$判为判据误读，闭区间$[-\epsilon,\epsilon]$内为临界；另以$2.5/10\mV$作阈值敏感性分析\cite{v3design}。这些阈值是项目评价约定，不是经实测得到的感放失调或噪声分布。
+
+\FloatBarrier
+\section{已完成的读出偏移诊断}
+\subsection{对照设计与数据范围}
+D1固定$L=0.25\um$、$C_s=10\,\mathrm{fF}$、$C_b=100\,\mathrm{fF}$和$300\,\mathrm{K}$，设置不同SN初态、关闭字线、减慢字线及匹配参考等条件\cite{d1}。共有9个有效无粒子工况，另保存1次未进入瞬态的语法失败。本节图表读取已完成工况的汇总CSV，没有新增求解，也没有增加独立粒子样本。
+
+图\ref{fig:transfer}以各工况实际读前电压为横轴，展示标准字线下6个有效状态。实线仅连接已求解离散点，不代表补充仿真或拟合曲线。二电容预测使用各自实际读前SN、BL和参考电压；其与TCAD终点差分的间距揭示了封闭共享近似未包含的读出响应。
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+width=0.91\textwidth,height=7.0cm,
+xlabel={读前存储节点电压 $V_s(t_0)$ / V},ylabel={4 ns读出差分 / mV},
+xmin=0.32,xmax=0.93,ymin=-20,ymax=57,
+xtick={0.35,0.45,0.55,0.65,0.75,0.85},ytick={-20,0,20,40},
+grid=major,grid style={gray!20},tick label style={font=\small},label style={font=\small},
+legend style={at={(0.025,0.975)},anchor=north west,font=\small,draw=none,fill=white},
+legend cell align=left]
+\addplot[signalblue,thick,mark=*,mark size=2.1pt] coordinates {
+(0.350047852347033,-1.6281881277380172)
+(0.393777669739371,2.4549605553549902)
+(0.450052638821446,7.706471591548025)
+(0.50005512489201,12.369996600361976)
+(0.55005767254013,17.031202470839002)
+(0.900077175465742,49.60433068052195)};
+\addlegendentry{TCAD与理想固定参考}
+\addplot[black!65,dashed,thick,mark=triangle*,mark size=2.3pt] coordinates {
+(0.350047852347033,-13.635481293254259)
+(0.393777669739371,-9.66004331141168)
+(0.450052638821446,-4.544136982363945)
+(0.50005512489201,0.0015436140509139662)
+(0.55005767254013,4.547229809543696)
+(0.900077175465742,36.367184973050136)};
+\addlegendentry{二电容封闭共享预测}
+\addplot[referenceorange,dashdotted,thick,mark=square*,mark size=1.9pt] coordinates {
+(0.350047852347033,-13.998184728099993)
+(0.393777669739371,-9.915036045006985)
+(0.450052638821446,-4.663525008813951)
+(0.50005512489201,0)
+(0.55005767254013,4.661205870477025)
+(0.900077175465742,37.23433408015997)};
+\addlegendentry{TCAD减匹配中性参考}
+\addplot[gray,thin,forget plot] coordinates {(0.32,0)(0.93,0)};
+\end{axis}
+\end{tikzpicture}
+\caption{D1标准字线条件下的读出关系。6个点对应初态扫描及alpha状态匹配的无粒子工况，所有标准字线有效状态均保留。匹配中性曲线扣除共同读出响应，但与封闭二电容预测仍存在状态相关差异。数据来源为D1已归档汇总\cite{d1}。}
+\label{fig:transfer}
+\end{figure}
+
+\subsection{中性状态的偏移与端口电荷闭合}
+中性SN工况在$3\ns$时的实际SN电压为$0.500055125\V$，其封闭二电容共享预测差分仅为$0.001544\mV$，实际$4\ns$差分为$12.369997\mV$。两者之差约$12.368453\mV$，与外接电容在读出期间的净增电荷$1.360530\fC$相一致：
+\begin{equation}
+\frac{1.360530\fC}{110\,\mathrm{fF}}\approx12.3685\mV.
+\end{equation}
+完整比较同时保留式\eqref{eq:identity}的终点电压分离项和参考漂移项。该偏移发生于无粒子条件，说明它是当前模型读出过程的一部分，不能归为粒子沉积的新电荷。
+
+器件端口电流积分提供了进一步证据。按D1既定符号约定，标准中性工况的栅端积分为$+1.464107\fC$，体端为$-0.103577\fC$，合计$+1.360530\fC$，与SN和BL外接电容净增电荷闭合。栅端项在该模型中全部为位移电流，不能解释为载流子穿越栅氧层；源漏交换还包含电子电流。因此，结果支持字线驱动与器件端口交换共同参与偏移形成，但端口积分不能唯一拆分重叠电容、沟道形成及耗尽区变化的贡献。
+
+\begin{table}[htbp]
+\centering\small
+\caption{中性状态的字线对照及终点结果}
+\label{tab:wl}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+字线条件 & 上升时间 / ps & $D(4\ns)$ / mV & $\Delta Q_{sb}$ / fC\\
+\midrule
+标准上升 & 50 & $12.369997$ & $1.360530$\\
+减慢上升 & 200 & $12.369997$ & $1.360530$\\
+保持关闭 & 不上升 & $-0.003816$ & $-2.094\times10^{-7}$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+表\ref{tab:wl}显示，关闭字线时终点差分接近零；将字线上升时间由$50\,\mathrm{ps}$改为$200\,\mathrm{ps}$时，$4\ns$终点差分与总电荷积分在已报告精度内保持一致。该对照说明减慢边沿没有消除当前采样时刻的偏移。不同SN状态下，实际差分与封闭共享预测之差从约$12.007$变化到$13.237\mV$，故也不能将偏移视为对所有状态严格相同的常数。
+
+\subsection{同一信号状态下的参考支路比较}
+为了检验读出偏移如何影响粒子响应的解释，D1用无粒子钳位构造与旧alpha101事件相近的读前SN状态。该无粒子工况的实际读前SN为$0.393777670\V$，与原事件相差约$0.049915\mV$，满足预先规定的$1\mV$状态匹配容差。该比较匹配的是节点电压标量，不是完整的内部载流子与电场历史。
+
+对这一无粒子信号状态，表\ref{tab:reference}比较三种参考计算。固定$0.5\V$参考给出小的正差分，而使用完整中性参考后，差分转为负值。实际双支路与离线相减的差约为$2.0\times10^{-12}\mV$，低于预先规定的$0.1\mV$实现一致性容差。这个极小差值反映同模型独立支路计算的一致性，不表示真实器件可达到相应测量精度。
+
+\begin{table}[htbp]
+\centering\small
+\caption{D1同一无粒子信号状态的参考方式比较}
+\label{tab:reference}
+\begin{tabularx}{0.94\textwidth}{@{}Xr@{}}
+\toprule
+参考方式 & $D(4\ns)$ / mV\\
+\midrule
+理想固定$0.5\V$参考 & $+2.454961$\\
+离线减去完整中性支路BL曲线 & $-9.915036$\\
+物理双支路中的中性参考 & $-9.915036$\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+在该状态下，离线匹配差分与原理想参考下的封闭共享预测相差约$-0.255\mV$。物理双支路按实际读前参考电压定义的封闭共享预测为$-9.656229\mV$；实际差分与该预测之差为$-0.258807\mV$。该差值由式\eqref{eq:identity}中的电容净电荷变化、终点电压分离和参考漂移项共同解释，并不是恒等式扣除各项后剩余的误差。两种比较的参照定义不同，不能混用。匹配参考消除了大部分共同偏移，但没有将信号支路的状态相关响应变成理想封闭电容过程。
+
+上述证据说明，原始差分的正负既受信号状态影响，也受参考定义影响。旧alpha101在原$5\mV$判据下的临界分类仍按旧定义保留；D1诊断不回写旧分类。v3据此预先冻结同尺寸中性参考，先核验物理双支路与离线计算的一致性，再开展正式矩阵评价。
+
+\section{与后续多参数评估的衔接}
+\subsection{已完成接口与冻结设计}
+AI在项目中辅助编写参数生成、结果提取和证据检查程序。现有自然语言入口属于限定模板解析器：对约定的中文扫描请求生成与冻结设计一致的事件清单，并拒绝歧义、越界或超预算参数。已有接口演示记录核对了64个事件和128个位响应的一致性，以及5类请求拒绝行为\cite{v3demo}。这一能力描述的是受约束的参数遍历，不等同于任意自然语言自动生成任意物理模型。
+
+v3冻结矩阵包含4种栅长、2种粒子、2个方向和每工况4个独立事件，每个事件分别作用于两种存储位，共64个独立事件和128个配对响应。重复计算、两种位值和氧化层配对不增加独立粒子事件数。训练尺寸为$0.18/0.35\um$，域内留出为$0.25\um$，外推为$0.45\um$；模型和测试预测需在测试粒子响应求解前冻结\cite{v3design}。本节陈述设计，完整矩阵结果尚未作为本文证据。
+
+已保存的v3阶段报告对4种尺寸共8项无粒子物理参考比较、2项粒子源隔离比较给出通过记录\cite{v3snapshot}。这些检查支持匹配参考的实现和源项隔离；它们与尚待完成的矩阵统计、连续数值细化及预测精度属于不同验收对象，不能互相替代。
+
+\subsection{后续结果的解释边界}
+后续汇总将保留正确、判据误读、临界、数值不确定、失败和缺失状态，并按预登记分母报告。每个尺寸、粒子、方向和存储位层只有4个独立事件，即便4项全部可判且均无误读，二项零事件单侧95\%上界仍为$1-0.05^{1/4}\approx52.7\%$。这一解析结果说明当前样本规模主要用于探索和流程验证，不能由零观察直接推断低误读概率。
+
+模型的外推范围受到三方面约束。首先，二维平面NMOS与理想电容尚未用实验室DRAM数据校准，真实存储电容结构、感放失调、锁存和恢复均未建立。其次，输运几何仅含硅和真空，电磁配置及总量等效映射限制了对完整材料栈、核反应次级粒子和三维沉积分布的描述。最后，当前读出分类以固定时刻和阈值为基础，支持的是模型内判据变化，不能直接替代持久位翻转或辐射截面测量。
+
+\section{阶段结论}
+已完成的D1对照证明，在当前探索模型中，理想固定参考保留了约$12.37\mV$的无粒子读出偏移。通过电容电荷恒等式、端口积分和字线对照，可以将其解释为读出驱动下的电荷交换响应。完整中性参考在同一信号状态上改变了差分符号，且物理双支路与离线方法满足预设一致性容差。这些证据确立了后续评估应同时报告存储电荷扰动、匹配读出裕量及其损失的依据。下一步报告将接入完成验收的v3矩阵与预测结果，并以实验室模型或电学参考数据补充参数校准。
+
+\FloatBarrier
+\begin{thebibliography}{99}
+\small\raggedright
+\bibitem{keeth2001} KEETH B, BAKER R J. DRAM Circuit Design: A Tutorial[M]. IEEE Press, 2001: 22--29. ISBN 0-7803-6014-1. \href{https://catalogimages.wiley.com/images/db/pdf/0780360141.excerpt.pdf}{出版社章节摘录}.
+\bibitem{course} 李洋. AI辅助下的存储器单粒子效应评估 项目设计课程教学大纲[Z]. 2026. 项目保存的原文提取稿：\sourcepath{docs/course-project-syllabus.md}.
+\bibitem{d1} 本项目. D1读出偏移诊断报告与已归档数据[DS]. 2026-10-10. \sourcepath{experiments/dram-readout-offset-d1/report.md}; \sourcepath{experiments/dram-readout-offset-d1/data/summary.csv}; \sourcepath{experiments/dram-readout-offset-d1/validation/independent-final.json}.
+\bibitem{v3design} 本项目. DRAM SEE v3冻结设计与器件输入[CP/DS]. 2026-10-10. \sourcepath{experiments/dram-see-v3/stats-design.json}; \sourcepath{experiments/dram-see-v3/build_case.py}; \sourcepath{local_runtime/dram-see-v3/inputs/v3-physical-l018-b1/geometry.scm}; 同目录\texttt{device.cmd}.
+\bibitem{v1} 本项目. DRAM SEE v1第一版实验报告[R]. 2026-10-09. \sourcepath{experiments/dram-see-v1/report.md}.
+\bibitem{g4em} Geant4 Collaboration. Guide for Physics Lists, Geant4 10.7, Rev. 5.0: EM Opt4[EB/OL]. 2020-12-04[2026-10-10]. \href{https://geant4-userdoc.web.cern.ch/UsersGuides/PhysicsListGuide/BackupVersions/V10.7/html/electromagnetic/Opt4.html}{Geant4 10.7官方归档文档}.
+\bibitem{ryder2021} RYDER K L, RYDER L D, STERNBERG A L, et al. Comparison of Single-Event Transients in an Epitaxial Silicon Diode Resulting From Heavy-Ion-, Focused X-Ray-, and Pulsed Laser-Induced Charge Generation[J]. IEEE Transactions on Nuclear Science, 2021, 68(5): 626--633. DOI: \href{https://doi.org/10.1109/TNS.2021.3060339}{10.1109/TNS.2021.3060339}. \href{https://nepp.nasa.gov/docs/papers/2021-Ryder-TNS-Paper-SET-Epitaxial-Silicon-Diode-20210010229.pdf}{NASA公开稿}，第3页式(2)及第7--8页。
+\bibitem{label1996} LABEL K A, GATES M M, BARTH J L, et al. Single Event Effect Criticality Analysis[R]. NASA, 1996-02-15: 21--23. \href{https://nepp.nasa.gov/DocUploads/6D728AF0-2817-4530-97555B6DCB26D083/seecai.pdf}{NASA公开报告}.
+\bibitem{v3demo} 本项目. v3限定自然语言接口演示记录[DS]. 2026-10-10. \sourcepath{experiments/dram-see-v3/demo.md}; \sourcepath{experiments/dram-see-v3/data/demo/request-demonstration.json}.
+\bibitem{v3snapshot} 本项目. DRAM SEE v3阶段报告 固定快照[R]. 2026-10-10 14:00 UTC. \sourcepath{experiments/dram-see-v3/data/summary/20261010T140027916013Z/published-report.md}.
+\end{thebibliography}
+
+\appendix
+\section{图表数据与核验入口}
+表\ref{tab:trace}列出本文定量证据的读取范围。项目相对路径以\texttt{tcad-research-training}为根目录。正文取有效数字后的值用于呈现，源文件保留完整数值和运行身份。附随的\texttt{sources.json}绑定所引用文件及本文源文件的SHA-256，供后续更新时识别版本。
+
+\begin{table}[htbp]
+\centering\footnotesize
+\caption{正文定量证据与源数据字段的对应}
+\label{tab:trace}
+\begin{tabularx}{\textwidth}{@{}p{3.0cm}X@{}}
+\toprule
+对象 & D1汇总数据中的读取范围或字段\\
+\midrule
+图\ref{fig:transfer} & 标准字线6项：\texttt{scan035}、\texttt{alpha-match}、\texttt{scan045}、\texttt{center050}、\texttt{scan055}、\texttt{bridge090}；标签前缀均为\texttt{rodiag1-}\\
+横轴与纵轴 & \texttt{read\_SN\_V}、\texttt{D\_mV}、\texttt{two\_capacitor\_D\_mV}、\texttt{offline\_center\_BL\_reference\_D\_mV}\\
+表\ref{tab:wl} & \texttt{center050}、\texttt{wl-slow}、\texttt{wl-off}；\texttt{D\_mV}、\texttt{SN\_BL\_gain\_fC}\\
+表\ref{tab:reference} & \texttt{alpha-match}、\texttt{matched-ref-r3}；原始与离线匹配差分\\
+端口电荷积分 & \texttt{gate\_TotalCurrent\_fC}、\texttt{body\_TotalCurrent\_fC}及对应电子、空穴、位移分量\\
+\bottomrule
+\end{tabularx}
+\end{table}
+\end{document}

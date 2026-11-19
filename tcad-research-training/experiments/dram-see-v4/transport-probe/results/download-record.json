@@ -1,0 +1,33 @@
+{
+  "schema": "dram-see-v4-data-download-v1",
+  "started_utc": "2026-10-13T03:34:03.057591+00:00",
+  "environment_spec_sha256": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+  "state": "VERIFIED",
+  "datasets": [
+    {
+      "archive": "G4PhotonEvaporation.5.7.tar.gz",
+      "url": "https://geant4-data.web.cern.ch/datasets/G4PhotonEvaporation.5.7.tar.gz",
+      "state": "VERIFIED",
+      "final_url": "https://geant4-data.web.cern.ch/datasets/G4PhotonEvaporation.5.7.tar.gz",
+      "content_length": "10089240",
+      "bytes": 10089240,
+      "md5": "81ff27deb23af4aa225423e6b3a06b39",
+      "sha256": "761e42e56ffdde3d9839f9f9d8102607c6b4c0329151ee518206f4ee9e77e7e5",
+      "files": 3110,
+      "expanded_bytes": 37449830
+    },
+    {
+      "archive": "G4PARTICLEXS.3.1.1.tar.gz",
+      "url": "https://geant4-data.web.cern.ch/datasets/G4PARTICLEXS.3.1.1.tar.gz",
+      "state": "VERIFIED",
+      "final_url": "https://geant4-data.web.cern.ch/datasets/G4PARTICLEXS.3.1.1.tar.gz",
+      "content_length": "8613102",
+      "bytes": 8613102,
+      "md5": "98b766fa2c447b541834cc9bf5206c05",
+      "sha256": "66c17edd6cb6967375d0497add84c2201907a25e33db782ebc26051d38f2afda",
+      "files": 2000,
+      "expanded_bytes": 22482907
+    }
+  ],
+  "finished_utc": "2026-10-13T03:34:11.058097+00:00"
+}

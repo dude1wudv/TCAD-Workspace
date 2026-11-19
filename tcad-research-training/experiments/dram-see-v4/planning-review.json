@@ -1,0 +1,173 @@
+{
+  "schema": "dram-see-v4-planning-review-v1",
+  "checked_at": "2026-10-12T17:48:31.554893-08:00",
+  "status": "planning_documents_checked_no_experiments_run",
+  "scope": "Only new v4 planning files and a byte-identical user screenshot copy. Existing v3/source/report files were read-only.",
+  "protected_anchors": [
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/models.json",
+      "before_sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+      "after_sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/training-data.json",
+      "before_sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+      "after_sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/responses.csv",
+      "before_sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+      "after_sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+      "unchanged": true
+    },
+    {
+      "path": "reports/final-r4/delivery-manifest.json",
+      "before_sha256": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e",
+      "after_sha256": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/documents/course-report.tex",
+      "before_sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953",
+      "after_sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/documents/research-paper.tex",
+      "before_sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379",
+      "after_sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/slides/output/dram-see-v3-mentor-r4.pptx",
+      "before_sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+      "after_sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/qa/package-manifest.json",
+      "before_sha256": "4fa21e87acd7386cf96035f4d3251b5f5cd4462f56564cfb9da8ca09380328e7",
+      "after_sha256": "4fa21e87acd7386cf96035f4d3251b5f5cd4462f56564cfb9da8ca09380328e7",
+      "unchanged": true
+    }
+  ],
+  "input_sources": [
+    {
+      "path": "E:\\TCAD-Workspace\\参考文献\\Yifan---Study of Single Event Upset Phenomena Induced by Muons and Protons in 65-nm Planar Bulk SRAMs.pdf",
+      "sha256": "ec3c840213e104bde952c8fe8c13a25161eb338b58be871b88d83a72e470d52f"
+    },
+    {
+      "path": "E:\\TCAD-Workspace\\参考文献\\周习瑞-硕士论文初稿.docx",
+      "sha256": "8ea3214a786284f7a2bfa2ab557fb36422c30cc8bf79bc41b07af585b8a19461"
+    },
+    {
+      "path": "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v4\\evidence\\mentor-comments-page1.png",
+      "sha256": "5d1181caf2c173411e5afe8d4e90da2871df1172439b9241ae67850d12ad6e07"
+    }
+  ],
+  "local_markdown_links": {
+    "count": 25,
+    "all_exist": true,
+    "missing": []
+  },
+  "mentor_comments": {
+    "source": "evidence/mentor-comments-page1.png",
+    "scope": "Provided single page only",
+    "ids": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08"
+    ],
+    "eight_unique": true,
+    "root_viewed_original": true
+  },
+  "root_review": [
+    "Checked original screenshot; source text and current interpretation are separate.",
+    "Read Geant4 physics registration, whole-event HeavyIon mapping and deltaQ/deltaM formulas after agent handoff.",
+    "Checked 90 nm process versus approximately 95 nm gate length in author-uploaded paper text; no figure digitization claimed.",
+    "Checked energy-to-LET units, generated charge versus node response, multi-track source combination versus nonlinear response addition.",
+    "Checked constant-capacitance assumption, integral KCL double-counting caveat, training-only physics parameters and grouped held-out tests.",
+    "Checked plan-only status, unfinished gates and protection of prior failure/threshold definitions."
+  ],
+  "simulation_runs": 0,
+  "training_runs": 0,
+  "solver_or_vm_commands": 0,
+  "code_changes": false,
+  "software_installed": false,
+  "git_commits_or_pushes": false,
+  "messages_sent_to_others": false,
+  "automation": {
+    "id": "dram-see-v3",
+    "mutated": false,
+    "view_tool_called": true,
+    "view_tool_exposed_status_to_model": false,
+    "last_existing_pause_evidence": "local_runtime/dram-see-v3/downstream-r4-completion/20261012T0020Z/automation-paused-verification.json",
+    "old_heartbeat_not_resumed": true
+  },
+  "gates": {
+    "G1": "not_passed",
+    "G2": "not_passed",
+    "G3": "not_passed",
+    "G4": "not_passed"
+  },
+  "git_status": {
+    "initial_entries": 85,
+    "final_entries": 86,
+    "v4_entry": [
+      "?? experiments/dram-see-v4/"
+    ],
+    "note": "Pre-existing dirty tree retained; entry counts are not a full historical-content audit."
+  },
+  "verification_method": "Read-only code/source inspection, screenshot inspection, SHA256 comparison of 8 pre-recorded anchors and local-link/comment enumeration; no build/lint/test or simulation suite run for documentation-only changes.",
+  "not_verified": [
+    "Full historical raw archive re-audit",
+    "Live VM/solver state",
+    "Current heartbeat status readback beyond tool-rendered card",
+    "Original 90 nm figure digitization and full device calibration",
+    "v4 source implementation and tolerances",
+    "v4 three-dimensional TCAD validity",
+    "statistical event rates or model performance"
+  ],
+  "artifacts": [
+    {
+      "path": "device-basis.md",
+      "sha256": "df9458765648e38fb5fd3682efbcc198a815cf11428e92623f7cee67f8cbdd70"
+    },
+    {
+      "path": "evidence/mentor-comments-page1.png",
+      "sha256": "5d1181caf2c173411e5afe8d4e90da2871df1172439b9241ae67850d12ad6e07"
+    },
+    {
+      "path": "interface-contract.md",
+      "sha256": "dee4f4438166cf8c2d15b351a49e1373347a1ab18de1bb8bc3cc6d1ce7d677c1"
+    },
+    {
+      "path": "MANIFEST.md",
+      "sha256": "5e6d2d2c853932d8620441a617c0ec11b20561d1737b3340598c9df802d23527"
+    },
+    {
+      "path": "mentor-response.md",
+      "sha256": "26c7f44f8743e3e08b7b34f441cf64f68531da8aa0fa71eaddf14d1b60ca27dd"
+    },
+    {
+      "path": "plan.md",
+      "sha256": "3a2e8147bbcc48e8b2c95960a833a91a82998be08308c65b10b0911cf9107500"
+    },
+    {
+      "path": "README.md",
+      "sha256": "2b0939885c57008c7753e559d4d59f9d9d739bc5110fee6bcbcadced29315db0"
+    },
+    {
+      "path": "work-items.md",
+      "sha256": "3c65bec189150a08178412731139e049496dd278ff47d98fd93fd72d37e0126a"
+    }
+  ],
+  "document_checks_passed": true
+}

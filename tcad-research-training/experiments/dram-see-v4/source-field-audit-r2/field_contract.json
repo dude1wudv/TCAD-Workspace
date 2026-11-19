@@ -1,0 +1,208 @@
+{
+  "schema": "source-field-audit-r2-contract",
+  "scope": "All registered r5 artificial nonzero-source roles/bit/profile; historical A1 sparse snapshots are extraction checks only",
+  "source_revision": "source-interface-r5 full mode; frozen r4 passed evidence is reused by external bridge",
+  "window_s": [
+    9.5e-10,
+    1.05e-09
+  ],
+  "rois_um": {
+    "Total": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "Left": [
+      0.0,
+      0.0,
+      0.425,
+      1.2
+    ],
+    "Right": [
+      0.425,
+      0.0,
+      0.85,
+      1.2
+    ],
+    "Center": [
+      0.395,
+      0.0,
+      0.455,
+      1.2
+    ],
+    "Low": [
+      0.0,
+      0.0,
+      0.85,
+      0.45
+    ],
+    "Middle": [
+      0.0,
+      0.45,
+      0.85,
+      0.75
+    ],
+    "High": [
+      0.0,
+      0.75,
+      0.85,
+      1.2
+    ],
+    "LowerLeft": [
+      0.0,
+      0.0,
+      0.425,
+      0.6
+    ],
+    "UpperLeft": [
+      0.0,
+      0.6,
+      0.425,
+      1.2
+    ],
+    "SourceLeft": [
+      0.295,
+      0,
+      0.355,
+      1.2
+    ],
+    "SourceRight": [
+      0.495,
+      0,
+      0.555,
+      1.2
+    ]
+  },
+  "partitions": [
+    [
+      "Left",
+      "Right"
+    ],
+    [
+      "Low",
+      "Middle",
+      "High"
+    ],
+    [
+      "LowerLeft",
+      "UpperLeft",
+      "Right"
+    ]
+  ],
+  "audit_tolerances": {
+    "source_relative": 0.05,
+    "zero_charge_fC": 1e-06,
+    "final_time_abs_s": 1e-18,
+    "pair_generated_charge_abs_fC": 0.0001,
+    "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-05,
+    "pair_current_abs_A": 1e-12,
+    "pair_current_relative": 0.001,
+    "roi_fraction_abs": 0.05,
+    "partition_relative": 0.05,
+    "centroid_abs_um": 0.01,
+    "time_centroid_abs_s": 5e-13,
+    "generation_waveform_relative": 0.05,
+    "active_generation_fraction": 0.001,
+    "output_step_roundoff_s": 1e-18,
+    "refinement_charge_relative": 0.02,
+    "refinement_voltage_abs_V": 0.001,
+    "refinement_voltage_relative": 0.05
+  },
+  "device": {
+    "dimension": 2,
+    "effective_thickness_um": 1.0,
+    "gate_length_um": 0.25,
+    "oxide_nm": 5.0,
+    "silicon_bounds_um": [
+      0.0,
+      0.0,
+      0.85,
+      1.2
+    ]
+  },
+  "conversion": {
+    "elementary_charge_C": 1.602176634e-19,
+    "silicon_eV_per_pair": 3.6,
+    "fC_to_pC": 0.001,
+    "um3_to_cm3": 1e-12
+  },
+  "coordinate_fields": {
+    "x": "X",
+    "y": "Y"
+  },
+  "native_fields": {
+    "G": "HeavyIonGeneration",
+    "ONE": "SFA_One",
+    "XG": "SFA_XG",
+    "YG": "SFA_YG"
+  },
+  "frozen_reference_contract_sha256": "d865e7d25ab79fb9bc3e78721e3f47f248bac68959b3e03e3e81555101094d1f",
+  "integration": "Real accepted BE intervals, right-rectangle, midpoint temporal moment; no missing-frame interpolation",
+  "units": {
+    "G_integral": "um^2*cm^-3*s^-1",
+    "XG_or_YG_integral": "um^3*cm^-3*s^-1",
+    "ONE_integral": "um^2",
+    "centroid": "um"
+  },
+  "limits": [
+    "Native node-field integration is not solver control-volume integration.",
+    "No missing generation field is replaced by theoretical or structural zero.",
+    "Outside-window charge comes from native legacy PLT, not theoretical tails.",
+    "Area is diagnostic; required scopes must have positive area.",
+    "Root retains sole solver budget and dispatch responsibility."
+  ],
+  "audit_revision": 1,
+  "extractor_revisions": {
+    "e7b05794444fa0a0406efced528360a75e04325441d994b098e836ffd6df386e": "extract_fields.tcl"
+  },
+  "memory_revision_note": "Exact deleted-object-name success semantics inherited from native-verified r1 bounded_r2; only two declared ROIs added, no old field or threshold changed.",
+  "legacy_rois": [
+    "Total",
+    "Left",
+    "Right",
+    "Center",
+    "Low",
+    "Middle",
+    "High",
+    "LowerLeft",
+    "UpperLeft"
+  ],
+  "local_source_rois": [
+    "SourceLeft",
+    "SourceRight"
+  ],
+  "local_source_roi_cases": [
+    "A5",
+    "A6",
+    "A7"
+  ],
+  "source_case_ids": [
+    "A1",
+    "A2",
+    "A3",
+    "A4",
+    "A5",
+    "A6",
+    "A7",
+    "A8S2",
+    "A8S4"
+  ],
+  "A6_delay_s": 1e-11,
+  "roi_centroid_rule": "All effective registered ROIs: spatial integrated charge fraction>=active_generation_fraction; per-frame observed generation>=local ROI peak*active_generation_fraction. True XG/G,YG/G; no zero or theoretical fill.",
+  "A6_delay_rule": "Measured SourceRight temporal centroid minus SourceLeft; compare analytic local weighted delay (about10ps) using unchanged time_centroid_abs_s.",
+  "local_waveform_rule": "A5/A6/A7 only: SourceLeft/Right full actual BE interval waveform must match each local analytic peak within generation_waveform_relative.",
+  "frozen_library_sha256": {
+    "experiments/dram-see-v4/source-probe/audit_probe.py": "d79c0c0989a15e074e39d6ec721b39b5430ded7d4b8f8b6c6f3de122f9fba1c1",
+    "experiments/dram-see-v3/r50-main/audit.py": "acf560c69d7ae849cd6ccc7d136da286f12e32ec94b1e886aa114430b8332bc7",
+    "experiments/dram-see-v3/r50-main/metrics.py": "911daf34a0238ab14f3d3949d2b647a3a2d8dbb976ef9a28f34ff19896764187",
+    "experiments/dram-see-v4/source-interface-r3/audit_interface.py": "479199fdb1d9e100a39847456038d4e8a808652496433688a648eabd863e0396",
+    "experiments/dram-see-v4/source-interface-r3/build_interface.py": "98c327b3230a7402694a7b2ce7db6376509cd6638b916e16ed2cc60404c79bd5",
+    "experiments/dram-see-v4/source-interface-r3/oracle.py": "718c4903de8cc68cdaa5c7e36bdb56d2b9f690b9016df082b745f7ca62862fdf",
+    "experiments/dram-see-v4/source-interface-r2/audit_interface.py": "2b6f81290ed894c377fbd0781444e86de50992aa0919212e28d088371c31230f",
+    "experiments/dram-see-v4/source-interface-r2/build_interface.py": "039ab97397e344145eca77c38018e5c50dd515083f59257a064dd34eab9fa53f",
+    "experiments/dram-see-v4/source-interface-r2/source_contract.json": "41bea845de61349d864bd28c7e7eb21e66894cfeeb73364c27a39fc6285844cd",
+    "experiments/dram-see-v4/source-interface-r3/source_contract.json": "d865e7d25ab79fb9bc3e78721e3f47f248bac68959b3e03e3e81555101094d1f"
+  }
+}

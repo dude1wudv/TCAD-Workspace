@@ -1,0 +1,799 @@
+{
+  "schema": "dram-see-v4-transport-raw-index-v1",
+  "paths_relative_to": "repository root",
+  "runs": [
+    {
+      "request_label": "init-h-r1",
+      "run_id": "init-h-r2",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/init-h-r2/record.json",
+        "sha256": "a836d5883122b3ec745a9446eb1f8236859206ce96f45693f214ef4d30e95bd5"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/init-h-r2/results.tar",
+        "sha256": "5ef4c29729dfffcd4098dc5d9553fa23c8e93d9faff6f78d6fba5e6f9812c4f3"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/init-h-r2/operation.json",
+        "sha256": "ccb1c165b5a9c56cc4d5ebe7f6086d653ed70953e548cc64ac492c294197bde4"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/init-h-r2/audit.json",
+        "sha256": "a101efb2a2e81bf42bcbaaf142f33a714d75b64f9db4e6304430035b53fcef80"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "0b89356ef93485224a39c7de9e2ac59f621b3757a5462be76078bd4b849593c6",
+        "cuts.csv": "f6e2dce9bf072f4382e89e73696a5d3e6680d2d365bfcee11fea7d4fab3983fd",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "e37389eade6b72a83af438b92a686d65a1cc4689e5b75ae028f28c15518a9006",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "afa9d178648d7150dce71e3f4169d06410dc025f5642e49bb3b6363aa1c2ad03",
+        "execution.log": "d87d6a691cc1b0beedf068d4b2cbe7f1698fb4c16ea05ac0ec80e0f9c2b6195c",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7d2b6d2d7a1d92ed9e8071d31448a05f495be1365e2730dcac8488203630608",
+        "input-hashes.sha256": "665de87e1d8c2ee4182891a57df9fd35a67d48064bf6782110250aae5a0b4a07",
+        "materials.csv": "7e4bcfb85b1eb9ee03ed68efb94aa13ea8e827e16871a5208273a6b985e1f492",
+        "metadata.json": "8bf07f8de03e3a965e7372ef9a9792a5f4c2997995a23d4943a4480450964279",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "0feefe8c01e135639c83faf97d820781c8cc6ff359dfc34b244b7d8714328e3e",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "8ac7785ed4b1e2b84b91c345667fd9599eeb5c3627e38909f97954275fcee7d8",
+        "run.sh": "c2cd83efb2c2260e8176fb2cc48b66330dcce8d62e0002cd6a53b385b205a52f",
+        "started-utc.txt": "8b18a2a794ca50aa0781f6f681165cb2767ff164b3251b4050715360ccad4052",
+        "status-history.jsonl": "e522021dfb56179215ead631d5f8c44e422ec29c2ddb3b28dee6e6c3c8001996",
+        "status.json": "34f3b95406cde0d48cc795163c871ec2b78a5b5f873a1587f8270003f09767df",
+        "steps.csv": "645bfe52c11b25083cfebd7fa0ef276cd5cf08313d95bd9f642d110285ec97c4",
+        "task.sh": "85c966e3e9578da6280c5f1f8317cf9cc172a890b1a8beb6c627a349c3d1fbc8",
+        "tracks.csv": "24f2cb5061a7a592f4457eefd6796e32aa608a43e7520cc3e781a9de825295ad",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "665de87e1d8c2ee4182891a57df9fd35a67d48064bf6782110250aae5a0b4a07",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "8ac7785ed4b1e2b84b91c345667fd9599eeb5c3627e38909f97954275fcee7d8",
+        "task.sh": "85c966e3e9578da6280c5f1f8317cf9cc172a890b1a8beb6c627a349c3d1fbc8",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "init-e-r1",
+      "run_id": "init-e-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/init-e-r1/record.json",
+        "sha256": "b2a8e02d43a73385e74208267a89b2f04e376eec720a0bf847a49456f1c82e32"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/init-e-r1/results.tar",
+        "sha256": "7a311972722265fd957c4d75fb87a324b2a3a3cdce6f942484258e810e849114"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/init-e-r1/operation.json",
+        "sha256": "921971b84a758d0863b95864b3194668bb88666117e42382f86aae19cac92181"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/init-e-r1/audit.json",
+        "sha256": "1269e1918e89e97905e37f2df4e352e6d69a22c7648dea9384503cd12a7ca297"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "4983ce0d536639d32a0629b81d9135846d2793a766b5ecc44be4d412171e3377",
+        "cuts.csv": "f6e2dce9bf072f4382e89e73696a5d3e6680d2d365bfcee11fea7d4fab3983fd",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "e37389eade6b72a83af438b92a686d65a1cc4689e5b75ae028f28c15518a9006",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "afa9d178648d7150dce71e3f4169d06410dc025f5642e49bb3b6363aa1c2ad03",
+        "execution.log": "bd4c79dde2f7567d08462e112d404fd2934829f22c4ffc9a5b38390509e1bc2c",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "57d29137601fad45a245e62f0f057bcf23d52311bc045c8673744cfa712decbe",
+        "input-hashes.sha256": "65e0ffe3ccb488e00d581c45bafa67b5a82dc63e54623361aa665aff4dc8fc5b",
+        "materials.csv": "7e4bcfb85b1eb9ee03ed68efb94aa13ea8e827e16871a5208273a6b985e1f492",
+        "metadata.json": "1c3c54b3383241bfcaaf1f75c4075b99d8163d815f5997273f087401bc690c80",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "37f8fb2f5d4e91a7f5428f1129467ad36f77eb0ad7c164af00c78b0e2949bbc3",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "35cc9666123817313f8ebb9f1c8524fed8d69c14f736f0071700b1b7a0e13276",
+        "run.sh": "23d482dd4eef71aa6cf6dd4cf9d8a2c7d20174ee26dd6907aedf9ecf750e2671",
+        "started-utc.txt": "bb547432bcba9e6d0ae5df4c49d7d75da418002f7fa9ce9b54e337d50701c540",
+        "status-history.jsonl": "e522021dfb56179215ead631d5f8c44e422ec29c2ddb3b28dee6e6c3c8001996",
+        "status.json": "34f3b95406cde0d48cc795163c871ec2b78a5b5f873a1587f8270003f09767df",
+        "steps.csv": "645bfe52c11b25083cfebd7fa0ef276cd5cf08313d95bd9f642d110285ec97c4",
+        "task.sh": "73135a89dc67567044348c58621b7e57cec54f94fb7782eef1d0a7c8291d55de",
+        "tracks.csv": "24f2cb5061a7a592f4457eefd6796e32aa608a43e7520cc3e781a9de825295ad",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "65e0ffe3ccb488e00d581c45bafa67b5a82dc63e54623361aa665aff4dc8fc5b",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "35cc9666123817313f8ebb9f1c8524fed8d69c14f736f0071700b1b7a0e13276",
+        "task.sh": "73135a89dc67567044348c58621b7e57cec54f94fb7782eef1d0a7c8291d55de",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "format-h5-a0-r1",
+      "run_id": "format-h5-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/format-h5-a0-r1/record.json",
+        "sha256": "01f14683964702a1f7635b2e71d246d8b8145d259e66a5d4527e836cbf2a7834"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/format-h5-a0-r1/results.tar",
+        "sha256": "b2be7f95f8e0e221dd80f468a395c88892618ec2bbc625982929df8949b018ae"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/format-h5-a0-r1/operation.json",
+        "sha256": "eda65cf86ec473c5595e0a60c41a8590df7075a19c094631424648d99c7f1c0f"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/format-h5-a0-r1/audit.json",
+        "sha256": "33dbf31fab8ef6c0392293ac67f774cd6bf7d9f937825b730be1153d8704eb46"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "d7a6655dd171da282759484eff56c044299e13969255e6d4995d1a9aaa4d2df3",
+        "execution.log": "464cb5a2dc398df0f9c4179f7d2306a39e145fcc3383c0a7af24c060e3f531e4",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "daf8fb7c3e00338e3baa1ea82cc999941edd376d479f454ebb3767e9dfeb9671",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "7ad4760eae45230cd14fca6b3db1cbe1b4585123127affc8b2aac0282d370c89",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "8d123002e70ca107a9c004c0c23886195caf80c82b8d76f84d2c923e6f13d606",
+        "run.sh": "5f851f02cdc38bebe6b185c47ba887858f98d7ecce3380916be7dd940d89741c",
+        "started-utc.txt": "bb0f11ca5f35bf61c688b9e51e4be7c3165b17f7820eb5791256643e1a3fdbdd",
+        "status-history.jsonl": "9fea8de47c1876668497aeddb7d9811678ec9bc99756321c02806573dbaf6ac5",
+        "status.json": "88bb836d2486d4767efa3cd67ccd04722279e923d64ff4dc97fe17ac4004f09d",
+        "steps.csv": "a312fe61152135003435b601357b9efcdbe5c27ef82944781e7b3a8d77b702f6",
+        "task.sh": "928151288b2339383a1adda2fb0e6cfcb596aee7a6f39461118863082ff5bb1a",
+        "tracks.csv": "5fa787f9093c478589807f30f02f74202d6db78e1467768cf6802d459ce3d77f",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "daf8fb7c3e00338e3baa1ea82cc999941edd376d479f454ebb3767e9dfeb9671",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "8d123002e70ca107a9c004c0c23886195caf80c82b8d76f84d2c923e6f13d606",
+        "task.sh": "928151288b2339383a1adda2fb0e6cfcb596aee7a6f39461118863082ff5bb1a",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e1-a0-r1",
+      "run_id": "proton-h-e1-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e1-a0-r1/record.json",
+        "sha256": "668c9c448a043211f59f23d2bf5076267b9c265a7384c6264f3a6d9291de8319"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e1-a0-r1/results.tar",
+        "sha256": "7b4b318c2fa639765dbf513486d0ea174b53ef5f50ad7dc37cb95c8324762058"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e1-a0-r1/operation.json",
+        "sha256": "4349a6d02829eede3e37ba58c7d5a328992d48f7b0890dbb77aab34dcc02245a"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e1-a0-r1/audit.json",
+        "sha256": "b4b41d3db9f4975ed896e82df3409997fa3adf6a42fd72af6806607e1c14a815"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "eded7856c872f8c917b77af011340711ab05ddf52c3f380e2168fa26a0b67e00",
+        "execution.log": "c47eed47f9308c8c3b5fd16734255c878967201bcd2ce8808b1c0867a2913883",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "7554f2529777491e63e160f372ff2e4f74563517be509049dbb5152dbb4f6f77",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "7d4204ff0fef734f69cab3d9e3ee1e0dec706d1f049631d8c2c0145bb75d324f",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "e5d4a2c49f94eb94126c630a0f869a3a65482b74ff6c4e9e6b92ddc7994f9c2c",
+        "run.sh": "4612765dbca1a7ae166ead0b1dc0067601f455a60d44688cd540c4593a79e5a0",
+        "started-utc.txt": "56552d42ed315711d50dd9022abb143124df58006688628132b7ec8753a0f5af",
+        "status-history.jsonl": "f3b3944202873dad158436cc5754ac1b235802d9eec0ba919872b9201f9ebb1f",
+        "status.json": "92a717de4f54eb7daf4bf097f0fdc90cf29ea132b64406207749101c0717125f",
+        "steps.csv": "c3b5182017b7fe09bd2d52ee2ddccf64c98f3f2cd26ad52845ae7582550490ad",
+        "task.sh": "27f1f358871d50a25c4a34e825ea9d9c0969383a09ed1107e736803d06cbf5ef",
+        "tracks.csv": "f232b4eb58897986f00b4b82e32d03dae3ff123466538cb721458b34fe1a27ee",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "7554f2529777491e63e160f372ff2e4f74563517be509049dbb5152dbb4f6f77",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "e5d4a2c49f94eb94126c630a0f869a3a65482b74ff6c4e9e6b92ddc7994f9c2c",
+        "task.sh": "27f1f358871d50a25c4a34e825ea9d9c0969383a09ed1107e736803d06cbf5ef",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e1-a30-r1",
+      "run_id": "proton-h-e1-a30-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e1-a30-r1/record.json",
+        "sha256": "882c256258934c15423a4418204f1ad1e7ef6f55ea54b182d9845307428f50c5"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e1-a30-r1/results.tar",
+        "sha256": "95d459337810275e52abe00d300df5db0e0619bfd94756ca447ad0d404a6a251"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e1-a30-r1/operation.json",
+        "sha256": "98d63dbb6b5d1507511361b169d53e56162acdfef7f338aa2f3eaa2148c54244"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e1-a30-r1/audit.json",
+        "sha256": "b2f3c2e396014d5746e6b129e41860a67204e9d0ad1f4e6d7feb7938e9fbeb1e"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "b1f0e4ab566bce01f65e58e1ad828002d4f8d444baef6d747376a5da9d9f14cf",
+        "execution.log": "21126c17af22e3868f64c4555d6448b9ca344d5595667b783f8437ce503eb13f",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "9fbfff4cac5eb9809ae5d4c7829912b9f88aa8a350190893fb0eea6167348d33",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "c5eb0b6ac4dc5103f19578e490ab741856d8766469ca0f8234a8f71c2c864616",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "ef3ea00bbe0450a63b15b5de4ddd96b129c199ea0ac72ae83696abc2477bfc84",
+        "run.sh": "152203e18313af7859541bddfa41196438988934279109b9d0bde64ac4ba6c1a",
+        "started-utc.txt": "45c89bcd9ced29445ad99a3c49976209848c0ba9096feb79c37c920c198f2e3d",
+        "status-history.jsonl": "9b2a53e8c17fcfc189af558359117327fa423636e20e51674382fa9039dc0c0c",
+        "status.json": "46d1682857332ed6fc3a4bcf3aeeaa3370ac8f7c9d0ca83bb59d725e3278736e",
+        "steps.csv": "b25a35d27219735b734e9eb20a3c78ad59bf532e94a8b12aaaa37799f670dfd2",
+        "task.sh": "58f936967dea1d8069fa80454e8fc3aaaee65e5a21da90b51726ab9ba263f1f1",
+        "tracks.csv": "aa327f5f2241eeaa3cb7a21c419aa33469d9a8b10c1364dc8f2409c1d2f5db0c",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "9fbfff4cac5eb9809ae5d4c7829912b9f88aa8a350190893fb0eea6167348d33",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "ef3ea00bbe0450a63b15b5de4ddd96b129c199ea0ac72ae83696abc2477bfc84",
+        "task.sh": "58f936967dea1d8069fa80454e8fc3aaaee65e5a21da90b51726ab9ba263f1f1",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e5-a0-r1",
+      "run_id": "proton-h-e5-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e5-a0-r1/record.json",
+        "sha256": "6e088916e6602bef4d59595f7c6e34d253c4e0d006a55e202c846a52bc7b45df"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e5-a0-r1/results.tar",
+        "sha256": "8922d18b9ac8ab457d849b04331f3859f4796b0867e5659928d6d79b42fbeb07"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e5-a0-r1/operation.json",
+        "sha256": "7d41de443b074cd081879978fda07f25466317a4fcd682e38ed2d0b8166200cf"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e5-a0-r1/audit.json",
+        "sha256": "56ba5ef5ce8665f0dec25c41d2ba0b69b9e2fb4b3824b56b2341a62d57e3065a"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "eab4dd6f7bdf64550eb9970d56c1d7bffa46b1bb27836141a24aada77f824f49",
+        "execution.log": "2a81611abca3e5c96915d1f902426c2b5d94cf8dbe8ce60291b29020eb1de021",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "a8e4051c6e2a375673088095c031478410617b9785e00c27cd96480ea32e5c11",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "97fb984c5ebb78f3a229e77ce2e1770ab28b05136d90fa2587b075d9a2a360e7",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "18144b8ed4b1376d9e65cf1e1c0a2303c02ea8a0ad14e1ffd0749f5501d54bea",
+        "run.sh": "45466cd40c5ede072ebf841d5f7d82a5ab139bf4aa74299d0a7ae06a02b6080e",
+        "started-utc.txt": "2f01ae4fe7d31c7f897104682dff37668b8611b28a393aa4d79da06a6dd9ed93",
+        "status-history.jsonl": "de68cfa18c903f05043aa5a57d01b413b18b3f4787f8d142861615cb15c4a2f6",
+        "status.json": "3ac63762f1eaafd41eb912eae428b47ef0aa77423e53880a2381e44e812f632f",
+        "steps.csv": "ccd860294254d9192355b5a4b25b324a3c53fb386a734772d46437c557f40bc9",
+        "task.sh": "c83b8d18154bf62a50d629fb208e9b2b17d5f37c956c68c8e4ccf0c768f77934",
+        "tracks.csv": "89f6eaf8d366b7881416a0526f726241b9e6ac5653e8c41468ad11091baed297",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "a8e4051c6e2a375673088095c031478410617b9785e00c27cd96480ea32e5c11",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "18144b8ed4b1376d9e65cf1e1c0a2303c02ea8a0ad14e1ffd0749f5501d54bea",
+        "task.sh": "c83b8d18154bf62a50d629fb208e9b2b17d5f37c956c68c8e4ccf0c768f77934",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e5-a30-r1",
+      "run_id": "proton-h-e5-a30-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e5-a30-r1/record.json",
+        "sha256": "8fe7aa7e14816fd6e0494973c8d43c4e02ceebccd17f170b694521c6900a9ad3"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e5-a30-r1/results.tar",
+        "sha256": "20b893256659c3ea1cea563f66fe9e9e69d5e77272f0ccd9d9222e35b40a6b3e"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e5-a30-r1/operation.json",
+        "sha256": "377b38eaaef18a46a47ef8c3583623cc67847128ac87e4d23c98a148f33caa20"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e5-a30-r1/audit.json",
+        "sha256": "7e4480f4ba23ca791d4385c2bccd4e9b39ba56bba1cb34ec4f4887afa71200f6"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "694e02493e04fed629aa6c7ed4e1b22af003ffe4dc3793e327a5e7716e75c564",
+        "execution.log": "2f5900247e8a7a311c0e926b38e18560e86e8a3abb6d67b25c0d36f12f7af23a",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "2a514c91d0d24633e365bbdd4948a65bdd7e942e64e4e8309866ac856e67d6c1",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "0ebca89640e7b6abf128229fad98353b2ecc4bf5f89b4d6242fef9713ddf497e",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "71a2a79e4a3366636c186991d4dfbaa6216e983efbe04d58c89d28625b12f3be",
+        "run.sh": "93047884d869be10fd79be1fb3443f0687f0ca0294040b0e6878d68855f52d07",
+        "started-utc.txt": "372bff40da6836b194452d1ae576048290432ec66585ecb527d2de38f9a6b7d5",
+        "status-history.jsonl": "ac779257160d771c3d09238b401614ad50063830dea8f065d929324a04d8a846",
+        "status.json": "3c64f670653aa85d805e139f404d4d7f8908fa89d9a06d0aee2ff77b58667b38",
+        "steps.csv": "c1a50a3df877451ab78523c329a8545a41b23ba96723387f4dcad80d0b6eaae6",
+        "task.sh": "2a5c5bc4ca1d553fb5cf258ab0cf2fa3f87f3d46cc9559d4203008133b4355c0",
+        "tracks.csv": "5f4ae804daba94f43aa77977e322059e394bdc58d3a815b9004feb9a0098cb12",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "2a514c91d0d24633e365bbdd4948a65bdd7e942e64e4e8309866ac856e67d6c1",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "71a2a79e4a3366636c186991d4dfbaa6216e983efbe04d58c89d28625b12f3be",
+        "task.sh": "2a5c5bc4ca1d553fb5cf258ab0cf2fa3f87f3d46cc9559d4203008133b4355c0",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e20-a0-r1",
+      "run_id": "proton-h-e20-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e20-a0-r1/record.json",
+        "sha256": "bef778a9964de6fb4b9a400fb45cd954c9aa642401680f1ac887e0f3e47c10a7"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a0-r1/results.tar",
+        "sha256": "aca652eb33bf4d0469f21267650dcf6a8a181e2221830c29d76179859ce3297c"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a0-r1/operation.json",
+        "sha256": "8d3bfd3ff2fa148ea40f09cbdb6d7cba842386fdc566270c4f94bf262a784081"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e20-a0-r1/audit.json",
+        "sha256": "cfa8cc370e11f087dd0b1a1584f7bf965232ec40938bc4b795cc60b12889fd6f"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "89004ce74d3cd993663c7b46cffe64e6c4db51ba212978fef358e85a7db79e3f",
+        "execution.log": "204742688ba68cf69ecc6c9a343d40ab9f59b79f89fda3c65b1918c9145288b3",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "9286e223756e48a69c5a7f38248db8311ab49cd34b8f1f9d9bde77436cc639be",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "663ee85d0762d6c0e536a3e1fdd8afeb67d6f5a4b8053a67ff91043e501c2a0a",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "885d2d69a4c8cca561fe54eac96dcde666797c84bbdb2e8452b6fec31192301b",
+        "run.sh": "0ceb3c26ffd766b7f77ee3c099f34352344ddc9856480d6e906b44c18f8c73d5",
+        "started-utc.txt": "43f10e40b1dda53dee4b16c25a97bee1c1f4be09f150e17ad5c943730a69a7f7",
+        "status-history.jsonl": "ee74ce4c774d8c8e49a86c0b36603b1f63888e6660c2cddd4da2bbe559fad9c7",
+        "status.json": "3a3e9bfad8239928606215c7af7d429577241d5c9834401c61e62612d1735999",
+        "steps.csv": "ae803126f2b306136a5e4349978669758f2e76978accd31aa4e6f4ed1216bc1e",
+        "task.sh": "84e8dd216fae9c933baf8f4ef52e6e6c23684b26cb0eaaa5a5c01e2e182f295f",
+        "tracks.csv": "00564f488d716122f3fa77057545b3045d90ef7035a0f8ad38f1d8f86cc92c99",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "9286e223756e48a69c5a7f38248db8311ab49cd34b8f1f9d9bde77436cc639be",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "885d2d69a4c8cca561fe54eac96dcde666797c84bbdb2e8452b6fec31192301b",
+        "task.sh": "84e8dd216fae9c933baf8f4ef52e6e6c23684b26cb0eaaa5a5c01e2e182f295f",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e20-a30-r1",
+      "run_id": "proton-h-e20-a30-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e20-a30-r1/record.json",
+        "sha256": "b88f39f9bdd3bae0b8c1a634eccf70ceec11e2387e209772fad1ec63aa7fcfd1"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a30-r1/results.tar",
+        "sha256": "cea89508426b06a40d1d0163ba6e236d7ca531bf90c19af74c4ba9a560e15ff5"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e20-a30-r1/operation.json",
+        "sha256": "00425bc8773c4c9715d98d9aac35911a0c0e23c718f50f61b0334fb63d6cc3df"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e20-a30-r1/audit.json",
+        "sha256": "11a47339d0f0d5c07787256397688c1351b2b1482211cc9a6a257bab5b889b2f"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "4aed4198a5eb054400f0aeaa1cd1a22583d20be3a1cb5b33bfbcaee69c68f7af",
+        "execution.log": "3cd260da25d717826095976b13a99fab249f40ddaea5e54f851eac424706a9f2",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "74eebb64f989fbb03af77e94629d901cc5a999ff3b850fa1b533e8913bfd0978",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "08b7c6f545c02f879862c09eac19176210dc247df16a08d2541254233613a112",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "ef8671c49cd0e706a1baa82867e1c6667ddd89330fc07951b5bc447022dcd2d4",
+        "run.sh": "690f3b141402156d2dede9a0db09e1edf679db8ea13e7027f33fbfadcde6bcec",
+        "started-utc.txt": "d8ed1191977b3c338f25a5d09921aa98cfa5baabc5785723a235916e1e22310d",
+        "status-history.jsonl": "4273496780fbe7b1034e4c6cb06a9b269879309bc48566d732054ec3f89df564",
+        "status.json": "fb1ec11394df6225806f9f64e321dfd24c3cfebb92380d810699861f5612c059",
+        "steps.csv": "926eef8b6785ed45e8fb9dc2dd5c31123c20fe84c7eafaf497e49e9186ddace6",
+        "task.sh": "5840f26441890560a7fa53276862003e3c82e58aefbcf7fa559ae4c68ffda075",
+        "tracks.csv": "095eea1c9ff03db67e6210ac6f557b035dcb03e0a7603dc3845ebc9e120ec3d5",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "74eebb64f989fbb03af77e94629d901cc5a999ff3b850fa1b533e8913bfd0978",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "ef8671c49cd0e706a1baa82867e1c6667ddd89330fc07951b5bc447022dcd2d4",
+        "task.sh": "5840f26441890560a7fa53276862003e3c82e58aefbcf7fa559ae4c68ffda075",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e100-a0-r1",
+      "run_id": "proton-h-e100-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e100-a0-r1/record.json",
+        "sha256": "0921f9e10139860d2aa5f5feab7d2ba414ff6ab2058e85a03a0143e27ecdc954"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e100-a0-r1/results.tar",
+        "sha256": "d7099d6438ce10d5655710c602f357e0726b6ffa9c4a34375067583e07362fb7"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e100-a0-r1/operation.json",
+        "sha256": "a62bb9bf52f14b239e1f1312161f4e3e11bb91c77fb798513832aee9657bcd7a"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e100-a0-r1/audit.json",
+        "sha256": "168002799a9bff64bf1808f09d98431fb3d3e8f62900f2ec60727f13115888fe"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "acb8255e0987af38978d616ac78c02dae40cc8b8398993e61c019edb9680d273",
+        "execution.log": "2c8743b1206d52eff91f349655dcc48ae2ca45bdb5c211f1b295d20555ea8d11",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "0973768fe29ec64ba234e5c9ca5a50cdd91a18d277cdb09434c293bbd7706ef3",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "3c0eb29a9eb46593433eefa611810a4c7c15a1ba6ef35572eeddeb1ad2e99f20",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "8ab7602313eb1821d26039d994ed2dca1deefab506a2c5b3f847a228c77cc5bf",
+        "run.sh": "9ba1e2160291f3e1a237ebfcadadc091abed81611c5f8ade6dd0a7a9f24a276a",
+        "started-utc.txt": "2ac4bba47d5218503e6a2d208c25c1f2820edbd15f155f697af0445fee0440b3",
+        "status-history.jsonl": "f32fb4edc0502ca9b927a7fb54ecebe3d727f4bea2d9d15b7c6a1d2b35141a55",
+        "status.json": "e8664fe4ff38a675c981c80f7b0d683f670cfbe7c13d68dd419042792c937690",
+        "steps.csv": "466898ab98d01b93e55147e48301a5ba9e6d4be255a2ebea60dcd05d5c25e8e6",
+        "task.sh": "18cf3b4aabe3aa0c6d40df854626344a3d4d80986bc8e805df440edbfc4413d8",
+        "tracks.csv": "3e29d7a350b4f828cc91d8de96b357eb44ef450de9614c36b8b46048323faa8a",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "0973768fe29ec64ba234e5c9ca5a50cdd91a18d277cdb09434c293bbd7706ef3",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "8ab7602313eb1821d26039d994ed2dca1deefab506a2c5b3f847a228c77cc5bf",
+        "task.sh": "18cf3b4aabe3aa0c6d40df854626344a3d4d80986bc8e805df440edbfc4413d8",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-h-e100-a30-r1",
+      "run_id": "proton-h-e100-a30-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-h-e100-a30-r1/record.json",
+        "sha256": "3251cc3947c0dcf4a52f811a2eaeec42c59403059008509454d97f994744ee7f"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e100-a30-r1/results.tar",
+        "sha256": "49290750746c17e2681b36d8c8e9d7f634835ca5b4177fa9de5e3b9a5dfc4a3e"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-h-e100-a30-r1/operation.json",
+        "sha256": "369455bf8c04f65ab8aae16cf77c548fa3bad6704967bb1da4092fae8028fc0c"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-h-e100-a30-r1/audit.json",
+        "sha256": "d37f10f6d25d0ef31c10cad4884ecd17c39e356351e434597c9c45cbf7bedf00"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "69d4cd80f1a4c2b6f18e8ed4ec7ef4ce5ccd0cabba882023c9020a64ab9453f0",
+        "execution.log": "318386526ba46bd61232e059d9a3b3fb60e56b75cfc647bfb31e2fd68d94bafc",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "935609cbd6dd7d92a0f66812b201dcbd3e3bdcae014a78c1935b5160268b0011",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "8ec8c730e547c67f2e485332c67ed4c956d3457c628e7e5f6eebe851205550fa",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "a819f4cd6c93a4b4b77a1313b059decf12db6bf15900f06e461f6d6b99ac98bd",
+        "run.sh": "c3ccde2df86976b7fa79320e2ae937a00aec5c72be0a566691a6cbf5fbe3a634",
+        "started-utc.txt": "6422f1f9e8574c4abb743fae320f7bbd508325d94914a0b6499d00b3d6954b98",
+        "status-history.jsonl": "4273496780fbe7b1034e4c6cb06a9b269879309bc48566d732054ec3f89df564",
+        "status.json": "fb1ec11394df6225806f9f64e321dfd24c3cfebb92380d810699861f5612c059",
+        "steps.csv": "6ba742e7efce0735f0834fa6fc373d1677c91e5befdde457c8bec01cba9673a9",
+        "task.sh": "6da4b1273735867beba41b80901b9ca0f0435d7cc83981e5bff0579ae5e55ae2",
+        "tracks.csv": "d04cf3296c9b3de18cea4cfd12024a9a6ba8ea0c90abe0404ee72953e55a0a70",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "935609cbd6dd7d92a0f66812b201dcbd3e3bdcae014a78c1935b5160268b0011",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "a819f4cd6c93a4b4b77a1313b059decf12db6bf15900f06e461f6d6b99ac98bd",
+        "task.sh": "6da4b1273735867beba41b80901b9ca0f0435d7cc83981e5bff0579ae5e55ae2",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "proton-e-e5-a0-r1",
+      "run_id": "proton-e-e5-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/proton-e-e5-a0-r1/record.json",
+        "sha256": "35cf3d0409ba4b084bbc60e78d57c0772ab6853bf9c6f481f04c516db984c28c"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-e-e5-a0-r1/results.tar",
+        "sha256": "e187e12f230a510b62b95a274ebf29310ff222d9a2e2278ccff10e76abd42c50"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-e-e5-a0-r1/operation.json",
+        "sha256": "04abd527efb9209fc5eaaa40b84970f6d10ac7b0ec6761c8e2443835edbeb141"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/proton-e-e5-a0-r1/audit.json",
+        "sha256": "081334bb78d629d65c047d9160323737a7c427d98d73ab7d479eb9de772d08a8"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "c27230fdb226434d6a8908f0c30d9df9c65615dd5a27ef4d1082bf506641716f",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "ae555d6a64a1808709271f76d898425f5cdff5c010bae3403392c72e3df86116",
+        "execution.log": "7ab1c54c37b948f02f90c6e45073dcbcdb29935ed584a989818de6fa87eb7bd5",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "57d29137601fad45a245e62f0f057bcf23d52311bc045c8673744cfa712decbe",
+        "input-hashes.sha256": "331d841d23173079cf3965cfef6ad61962f2ded0a5d62c489a6e132b9b0f4676",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "42b6ad710acb925b5a38f49bb18e7cd134dbe57f7d6b182e5d4f524a0509db61",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "466c05af9359d121289aba2bc7b9424c2c613b9b8845fad613cd712ee3bc5fc5",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "e116e980b46f7f3a760b6fc9888b63fab14535a019c8f48187aa186ed73603b9",
+        "run.sh": "9214812a4ce1cad8d50637a2f1af1e02c36defb96c12e18c0ced718814f276c5",
+        "started-utc.txt": "28c3ac44e1e16aaeee011039faaf1934907aff5204255d5f9805dd1de71a93d9",
+        "status-history.jsonl": "f32fb4edc0502ca9b927a7fb54ecebe3d727f4bea2d9d15b7c6a1d2b35141a55",
+        "status.json": "e8664fe4ff38a675c981c80f7b0d683f670cfbe7c13d68dd419042792c937690",
+        "steps.csv": "4f7c15025d3174f42136b4ead5473831843a0da2cf9b536ce754f9fc91a9faa5",
+        "task.sh": "6b02abf8ff1de0bdb8a8329a77d932ad492c8db0b9db67312b9c226855ef780c",
+        "tracks.csv": "d2c0d05ef27501e5d95ae653fd42d286c3497d054428f866353967d9beae8f0c",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "331d841d23173079cf3965cfef6ad61962f2ded0a5d62c489a6e132b9b0f4676",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "e116e980b46f7f3a760b6fc9888b63fab14535a019c8f48187aa186ed73603b9",
+        "task.sh": "6b02abf8ff1de0bdb8a8329a77d932ad492c8db0b9db67312b9c226855ef780c",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    },
+    {
+      "request_label": "miss-h-e5-a0-r1",
+      "run_id": "miss-h-e5-a0-r1",
+      "record": {
+        "path": "local_runtime/dram-see-v4/transport-probe/runs/miss-h-e5-a0-r1/record.json",
+        "sha256": "a35a04052523f4345d4d8055a7eebf5c29dc4d8a2b849f0e8ef0502b92463c8d"
+      },
+      "raw_archive": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/miss-h-e5-a0-r1/results.tar",
+        "sha256": "8e4fdf80c5e398792f3a0b875d2827bdfeb7139ae44cd01f90fedbc67298755c"
+      },
+      "operation_evidence": {
+        "path": "local_runtime/dram-see-v4/transport-probe/operations/miss-h-e5-a0-r1/operation.json",
+        "sha256": "a90eddec8d4e1bf2300971c246d2e899f53e90dc33e310d876cabe3f77c8758f"
+      },
+      "audit": {
+        "path": "local_runtime/dram-see-v4/transport-probe/audits/miss-h-e5-a0-r1/audit.json",
+        "sha256": "d498e3b5c43e9c9bc2e91e8f5546d5e7bbe8ec3be3272f80ef0cbc654af2803f"
+      },
+      "original_files_sha256": {
+        "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+        "constructors.csv": "f705d9efb1b4b9f4eb1144fae28eb4c9a12478e24f49d3e0aa36710f36bfcd04",
+        "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "events.csv": "d47a920d3c5fa4ae883e0fc1c399092a362411562ed159ff57f4b9eb3bb3d059",
+        "execution.log": "7111898065b18cebfbda4a0db46faa623c0389c0a58becdd563f1a9ededb1ca4",
+        "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+        "hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+        "input-hashes.sha256": "634d54377b639a5c373a79522ba00f07e1961f083aca0a645098e08ca00f8d74",
+        "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+        "metadata.json": "7b7e40059c926c96657c6b60f934cda7315faddc220ac5d51840646d26326e28",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "processes.csv": "415f0d4f251d1c31f22e9b62bd20098f35fde52ae18ef256a1323f6e262bd041",
+        "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+        "request.json": "2b6a0c9ab5841c67c932e8e8cf33fc08fe8abce38827290d2893c3a820293734",
+        "run.sh": "4936ab13c729c9b032f41310b2203d0dfc5d696ce89f224372ab210d6a455fed",
+        "started-utc.txt": "c7482c63e347b2cd6b63cb58c85d7113a84d304e639716ad79cda516f5c88e4f",
+        "status-history.jsonl": "55cbbd1269df1451cd6ad1c18a682b8bb0727fd06f9d31720a282b8e2821c7b1",
+        "status.json": "da44e7a91411639156aa05f09416523ef89e7c3be4875baa1ca30f13e0e6f791",
+        "steps.csv": "6f8adc1f98998ce7e77a4ae4becc1b59e5562249fb7122ed28f3bdb1b39f77b6",
+        "task.sh": "6b89b4ecd4f0ecaacd160d02d445d65528fa789bc3181219d5bc48cb02c062c3",
+        "tracks.csv": "40aa87345a46573a0f14e8ea39183201045be461923278ea20c5b4e150e63591",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      },
+      "input_sha256": {
+        "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+        "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+        "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+        "input-hashes.sha256": "634d54377b639a5c373a79522ba00f07e1961f083aca0a645098e08ca00f8d74",
+        "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+        "request.json": "2b6a0c9ab5841c67c932e8e8cf33fc08fe8abce38827290d2893c3a820293734",
+        "task.sh": "6b89b4ecd4f0ecaacd160d02d445d65528fa789bc3181219d5bc48cb02c062c3",
+        "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+        "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+      }
+    }
+  ]
+}

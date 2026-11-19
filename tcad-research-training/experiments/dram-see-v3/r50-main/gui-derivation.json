@@ -1,0 +1,15 @@
+{
+  "schema": "dram-see-v3-r50-main-gui-derivation",
+  "original": "experiments/dram-see-v3/gui_evidence.py",
+  "original_sha256": "ebe48a58e517f2558ca737723bd054ec58494619bbd1d004573864fa17b8ebec",
+  "derived": "experiments/dram-see-v3/r50-main/gui_evidence.py",
+  "derived_sha256": "bce877be083c2d471f645bb326ca75e0fdf5e9534fc36f7c2c64f913899dee8b",
+  "diff_sha256": "7f86c4783ea2e56021b237abca5bf7eb2a89b9fa8c7bbf97b2d03b26798c7b97",
+  "changes": [
+    "explicit R50 module paths and schema/revision",
+    "only two preregistered targets with accepted execution and case input freeze provenance",
+    "separate local/remote evidence folders and R50 figure labels",
+    "fixed source manifest; original lock/preflight/native export/owned process identity/window capture/PNG verification retained"
+  ],
+  "actual_gui_executed": false
+}

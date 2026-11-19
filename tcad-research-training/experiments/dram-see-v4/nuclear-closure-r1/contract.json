@@ -1,0 +1,153 @@
+{
+  "budgets": {
+    "minimum_local_free_GiB": 20,
+    "minimum_remote_available_memory_GiB": 4,
+    "minimum_remote_free_GiB": 8,
+    "natural_sampling_dispatch_hours": 48,
+    "storage_GiB": 160,
+    "tcad_corrective": 4,
+    "tcad_primary": 14,
+    "tcad_total": 18,
+    "transport_corrective_calls": 2,
+    "transport_primary_calls": 107,
+    "transport_replay_primaries": 20000,
+    "transport_unique_primaries": 1000008
+  },
+  "exclusions": [
+    "no training",
+    "no persistent upset labels",
+    "no calibrated 90nm claim",
+    "no probability or environment rate",
+    "no installing software",
+    "no git commit/push",
+    "no external messages"
+  ],
+  "geometry": {
+    "path": "experiments/dram-see-v4/source-interface-3d-r1/geometry-contract.json",
+    "sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d"
+  },
+  "goal": "One geometry-matched natural nuclear event with all-event joint 3D source, matched A0 response, native field and numerical-sensitivity acceptance",
+  "numerical": {
+    "comparisons": [
+      [
+        "m0-t0",
+        "m0-t1"
+      ],
+      [
+        "m1-t0",
+        "m1-t1"
+      ],
+      [
+        "m0-t0",
+        "m1-t0"
+      ],
+      [
+        "m0-t1",
+        "m1-t1"
+      ],
+      [
+        "m0-t0",
+        "m1-t1"
+      ]
+    ],
+    "mesh_scales": {
+      "m0": 1.0,
+      "m1": 0.75
+    },
+    "pulse_max_step_s": 5e-13,
+    "readout_max_step_s": 5e-12,
+    "readout_window_s": [
+      3e-09,
+      4e-09
+    ],
+    "shared_native_checkpoints": "explicit TurningPoints with nested time grid; all accepted points retained",
+    "time_scales": {
+      "t0": 1.0,
+      "t1": 0.5
+    }
+  },
+  "old_plan": {
+    "continue_old_a5": false,
+    "failed_outcome": {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/outcomes/r5-a1-b1-fine-r1.json",
+      "sha256": "9d845305a40fc2a9f9c7eddb5f2a21bc54d160ae4b46f39f3f93767e2da33078"
+    },
+    "fine_a1_passed": false,
+    "including_history": 21,
+    "new_calls": 16,
+    "reserve_used": 0,
+    "roles_passed": 15,
+    "roles_total": 17,
+    "status": "SUPERSEDED_PARTIAL"
+  },
+  "primary_roles": [
+    "qualification-zero",
+    "qualification-point",
+    "a0-m0-t0",
+    "artificial-line",
+    "artificial-point",
+    "artificial-mixed",
+    "artificial-segmented",
+    "event-m0-t0",
+    "a0-m0-t1",
+    "event-m0-t1",
+    "a0-m1-t0",
+    "event-m1-t0",
+    "a0-m1-t1",
+    "event-m1-t1"
+  ],
+  "revision": 1,
+  "schema": "dram-see-v4-nuclear-closure-contract-r1",
+  "source": {
+    "clipping": "Si only, spatial/window/other-material allocations explicit, no renormalization",
+    "device_time_offset_s": 1e-09,
+    "device_window_s": [
+      0,
+      4e-09
+    ],
+    "elementary_charge_C": 1.602176634e-19,
+    "kernel": "normalized isotropic spatial Gaussian convolved uniformly over original endpoint chord and correlated original step times; zero chord has point spatial support",
+    "model_assumptions_not_calibration": true,
+    "silicon_eV_per_pair": 3.6,
+    "source_sign": "negative PMI net recombination; native qualification mandatory",
+    "spatial_w_um": 0.03,
+    "temporal_sigma_s": 2e-12,
+    "zero_length_positive_energy": "retain as point; never invent length"
+  },
+  "tolerances": {
+    "be_waveform_relative": 0.05,
+    "centroid_abs_um": 0.01,
+    "equivalent_charge_abs_fC": 0.0001,
+    "equivalent_current_abs_A": 1e-12,
+    "equivalent_current_relative": 0.001,
+    "equivalent_generation_relative": 0.001,
+    "equivalent_voltage_abs_V": 1e-05,
+    "kcl_charge_abs_fC": 0.0001,
+    "kcl_relative": 0.01,
+    "native_source_relative": 0.05,
+    "offline_charge_abs_fC": 1e-06,
+    "offline_charge_relative": 0.001,
+    "partition_relative": 0.05,
+    "refinement_charge_relative": 0.02,
+    "refinement_voltage_abs_V": 0.001,
+    "refinement_voltage_relative": 0.05,
+    "roi_fraction_abs": 0.05,
+    "time_centroid_abs_s": 5e-13
+  },
+  "transport": {
+    "complete_started_stage_before_witness_selection": true,
+    "deadline_blocks_new_submissions_only": true,
+    "no_biasing": true,
+    "no_seed_search": true,
+    "no_thick_target_relocation": true,
+    "probability_claims": false,
+    "selection": "first frozen request order, then numeric event_id; native protonInelastic ancestry with positive descendant Si ionization during 0<=device_t<=4ns",
+    "stage_order": [
+      "P0",
+      "N1",
+      "N2",
+      "N3",
+      "N4"
+    ]
+  }
+}

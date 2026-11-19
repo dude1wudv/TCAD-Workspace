@@ -1,0 +1,64 @@
+{
+  "schema": "v4-witness-audit-revision-evidence-v1",
+  "prior_revision": "r2-msc-endpoint-semantics",
+  "files_sha256": {
+    "audit_witness.py": "4722cf99be3f7904b4f1ae56317ce98e1fb781bf367b0166a7781c469d62fc48",
+    "tests/test_audit_witness.py": "32cb12e4cb84e253a4b7f1f468d9a3e7b4715cb166b103d817f4038cc4965c5d",
+    "README-implementation.md": "3a0ad220d2b891ad56f7c64015c0a4f5303dbe0b386bef62c57a6e54e16e8ae9"
+  },
+  "reason": "A secondary can be created by a parent step with a positive model formation/evaporation delay, later than parent step post time and parent track end. Exact creation token remains authoritative.",
+  "actual_H_pilot_parameters": {
+    "protonInelastic_model": "Binary Cascade",
+    "model_min_MeV": 0,
+    "model_max_MeV": 6000,
+    "isomer_production_flag": 1,
+    "long_lived_isomer_limit_ns": 1
+  },
+  "sources": [
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/hadronic/models/de_excitation/photon_evaporation/src/G4PhotonEvaporation.cc",
+      "lines": "480-493",
+      "meaning": "sample nonnegative time delay and assign fragment creation time"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/hadronic/models/de_excitation/handler/src/G4ExcitationHandler.cc",
+      "lines": "471-475",
+      "meaning": "copy creation time to reaction product formation time"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/hadronic/models/binary_cascade/src/G4BinaryCascade.cc",
+      "lines": "328-346",
+      "meaning": "copy reaction product formation time to G4HadSecondary"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/hadronic/management/src/G4HadronicProcess.cc",
+      "lines": "396,431-438",
+      "meaning": "construct secondary G4Track at parent global time plus max(model secondary time,0)"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/hadronic/util/src/G4HadProjectile.cc",
+      "lines": "51-59",
+      "meaning": "hadronic model interaction clock begins at zero"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/Geant4/geant4/v10.7.3/source/processes/hadronic/models/de_excitation/management/src/G4DeexPrecoParameters.cc",
+      "lines": "67,87",
+      "meaning": "default max lifetime 1ns and isomer production true"
+    }
+  ],
+  "change": "Remove parent-end and parent-step-post birth upper bounds. Keep mother-birth and production-step-pre lower bounds, own-track monotonicity, exact token and original tolerances. Report positive delays without assigning a specific nuclear level lifetime.",
+  "unchanged": [
+    "transport_witness.cc",
+    "witness-contract.json",
+    "raw simulation outputs",
+    "seeds",
+    "event count",
+    "all numerical tolerances"
+  ],
+  "failure_status": "No event failure prompted this change: proactive official-source semantic correction before fixed-batch audit.",
+  "raw_evidence_sha256": {
+    "local_runtime\\dram-see-v4\\transport-probe\\runs\\witness-pilot-h-r1\\execution.log": "6ba5fc1026021787f8cfed94b0277a9f2812f55eae1b140ddf5a64d30a586414",
+    "local_runtime\\dram-see-v4\\transport-probe\\runs\\witness-pilot-h-r1\\hadronic-models.csv": "e7929fdb0d5f5f40662ad3bfb96513be30f0d62b1b19dd161d70ea4ba25c1733",
+    "local_runtime\\dram-see-v4\\transport-probe\\runs\\witness-pilot-h-r1\\record.json": "1203d25be21be17de855d25f23dd2b103a1f315cae098109d8156150bc4a9455"
+  }
+}

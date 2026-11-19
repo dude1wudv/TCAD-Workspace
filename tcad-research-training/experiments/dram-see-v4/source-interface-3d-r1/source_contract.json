@@ -1,0 +1,459 @@
+{
+  "allowed_roles": [
+    [
+      "A0",
+      1,
+      "main"
+    ],
+    [
+      "A1",
+      1,
+      "main"
+    ]
+  ],
+  "audit_tolerances": {
+    "active_generation_fraction": 0.001,
+    "centroid_abs_um": 0.01,
+    "final_time_abs_s": 1e-18,
+    "generation_waveform_relative": 0.05,
+    "output_step_roundoff_s": 1e-18,
+    "pair_current_abs_A": 1e-12,
+    "pair_current_relative": 0.001,
+    "pair_generated_charge_abs_fC": 0.0001,
+    "pair_generation_curve_relative": 0.001,
+    "pair_voltage_abs_V": 1e-05,
+    "partition_relative": 0.05,
+    "refinement_charge_relative": 0.02,
+    "refinement_voltage_abs_V": 0.001,
+    "refinement_voltage_relative": 0.05,
+    "roi_fraction_abs": 0.05,
+    "source_relative": 0.05,
+    "time_centroid_abs_s": 5e-13,
+    "zero_charge_fC": 1e-06
+  },
+  "budget": {
+    "automatic_retry": false,
+    "primary_solver_calls": 2,
+    "reserve_solver_calls": 2,
+    "scheduler": "root only"
+  },
+  "conversion": {
+    "elementary_charge_C": 1.602176634e-19,
+    "fC_to_pC": 0.001,
+    "silicon_eV_per_pair": 3.6,
+    "um3_to_cm3": 1e-12
+  },
+  "decisions": [
+    "Extruded representative 0.25um structure, not a calibrated 90nm DRAM.",
+    "z faces are uncontacted with natural Neumann potential and no carrier current.",
+    "Preserve r5 bit1 circuit, source time and xy placement, fixed real capacitances, AreaFactor1.",
+    "SDE contact faces, doping orientation, actual tetrahedral mesh and native source normalization remain real-run validation obligations.",
+    "Positive deposition on a zero-length segment is unsupported and rejected, not divided by an invented length.",
+    "No Geant4 event, old thick-target track, z projection or 2D-normalized source is accepted by this entry point."
+  ],
+  "device": {
+    "area_factor": 1.0,
+    "bitline_capacitance_F": 1e-13,
+    "capacitance_F": 1e-14,
+    "capacitance_policy": "fixed physical values; never multiply by width or AreaFactor",
+    "dimension": 3,
+    "gate_length_um": 0.25,
+    "oxide_nm": 5.0,
+    "physical_width_um": 1.0,
+    "reference_capacitance_F": 1e-13,
+    "temperature_K": 300
+  },
+  "evidence": [
+    {
+      "pages": [
+        58,
+        59,
+        193,
+        194,
+        813,
+        814
+      ],
+      "path": "local_runtime/dram-see-v1/sdevice_ug.pdf",
+      "sha256": "98f37002013ccc2e73c0316e3ea66fd7d06fd773abac7caaa3d362ea85d5c5b0"
+    },
+    {
+      "pages": [
+        232,
+        242,
+        243,
+        323,
+        553,
+        567,
+        568,
+        574
+      ],
+      "path": "local_runtime/dram-see-v4/three-dimensional-pilot-r1/references/sde_ug-installed-private.pdf",
+      "sha256": "b3a5e959566355c01a56d23979b9a38df2d3ce6613126fd97cef144c05c6f14f"
+    },
+    {
+      "pages": [
+        37,
+        175,
+        181,
+        182
+      ],
+      "path": "local_runtime/dram-see-v4/three-dimensional-pilot-r1/references/smesh_ug-installed-private.pdf",
+      "sha256": "8db3eadf20108c69254438a53d50d1c88b4937d456028752f8d051a2f5d8ba84"
+    }
+  ],
+  "frozen_dependency_sha256": {
+    "experiments/dram-see-v3/r50-main/build_case.py": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+    "experiments/dram-see-v4/source-interface-r5/build_interface.py": "134e5b0af1022620e1a1d225e01d173aa583e72d779f51e7459163ecaffac9c3",
+    "experiments/dram-see-v4/source-interface-r5/source_contract.json": "9d9100db66696cfe63032eaae5e78fbf388b8992ddc239c955bf3cae1a3fe7e1",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/device.cmd": "da11dfc2b3cc092dd414a1d35d27c092f64154a1f15e01fcc9149df83479ebca",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/geometry.scm": "de339ae9ba920e8ce42515144eb270c64e8e026b00aea917ab1e3253fa1a9dae",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/heavyion.par": "c45036a57cc3864584c9364ae2da0ea6e9e9fab861d7ab19539bf8f29833aade",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/input-manifest.json": "115007b2357e1adae940cf10350c024b27fe871aa8a98426facfb7d297af331e",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/parameters.json": "1bfbc2a4657f24aed2950e79bc4ef25b5cb0817efb030d038380e7158b8c0aaa",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main/source-spec.json": "a5eef37dbcee8ae8764e99a884a314bea9659f7d706b9ad6cf867e7df9b250ef",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main/device.cmd": "d1a58e6a2e459c33c022facf9dc32be43f334b66c6dacdaf59c4d93fb05bc25c",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main/geometry.scm": "de339ae9ba920e8ce42515144eb270c64e8e026b00aea917ab1e3253fa1a9dae",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main/heavyion.par": "acf96874b6be6fea06bca180e396f6eaf561275a6815d28438c0748a29c8c451",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main/input-manifest.json": "f906bc7407f3e16fc2a2165b4d40383d1994dabb339c4bcfeacaa6668d21fa2c",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main/parameters.json": "04211508edce8a603b515ddf19f83dc5dfa495c503a92635c856d5c6a30d71fe",
+    "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main/source-spec.json": "51ca175a0035e748639d82b323a62b93062ccc7967319701efeb87486a7295bc",
+    "scripts/tcad.py": "8a08d895d788f053da8d07cc29dd7c745ede9b5f3b29b757ad012ca79f7779d5"
+  },
+  "geometry_contract_file": "geometry-contract.json",
+  "geometry_contract_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+  "heavyion_parameters": {
+    "a_1": 0.0,
+    "a_2": 0.0,
+    "a_3": 0.0,
+    "a_4": 0.0,
+    "c_1": 0.0,
+    "c_2": 1.0,
+    "c_3": 0.0,
+    "c_4": 1.0,
+    "k_hi": 1.0,
+    "s_hi": 2e-12
+  },
+  "kernel": {
+    "dimension": 3,
+    "longitudinal": "constant on 0<=s<length, zero elsewhere",
+    "normalization": "one physical charge allocation, no width/thickness multiplier, no clipping renormalization",
+    "s_hi_s": 2e-12,
+    "shape": "Gaussian",
+    "time_domain_s": [
+      0,
+      4e-09
+    ],
+    "time_sigma_equals_s_hi": true,
+    "transverse": "exp(-r_perp^2/w^2)/(pi*w^2)"
+  },
+  "measurement": {
+    "a0_missing_generation": "STRUCTURAL_SOURCE_FREE_WITHOUT_NATIVE_GENERATION_FIELD, never an invented measured zero",
+    "dynamic_output_semantics": "every accepted injection-window time, no Intervals and no additional forced times",
+    "dynamic_plot_command": "Plot(FilePrefix=\"gstep\" Time=(Range=(0.95e-9 1.05e-9)) NoOverwrite)",
+    "full_terminal_currents": "access_device.plt; all contact currents plus circuit.plt node/capacitor currents",
+    "window_can_pass_acceptance": false,
+    "xyz_coordinates": "native 3D TDR coordinates and full-volume CurrentPlot Coordinates diagnostics; independent native TDR moments required"
+  },
+  "mesh": {
+    "convergence_status": "diagnostic starting mesh, not convergence verified",
+    "doping_refinement_max_trans_diff": 1,
+    "interface_rule": "Replace 2D isotropic MaxLenInt=0.001 by explicit anisotropic OxideInterface window retaining 0.001um xy target and 0.05um far-z target; avoid accidental 1nm z meshing. Root approved for initial 3D mesh.",
+    "windows": [
+      {
+        "max_size_um": [
+          0.0175,
+          0.0175,
+          0.05
+        ],
+        "max_um": [
+          0.85,
+          1.2,
+          0.5
+        ],
+        "min_size_um": [
+          0.0015,
+          0.001,
+          0.01
+        ],
+        "min_um": [
+          0,
+          -0.005,
+          -0.5
+        ],
+        "name": "All"
+      },
+      {
+        "max_size_um": [
+          0.006,
+          0.004,
+          0.05
+        ],
+        "max_um": [
+          0.85,
+          0.16,
+          0.5
+        ],
+        "min_size_um": [
+          0.001,
+          0.0005,
+          0.01
+        ],
+        "min_um": [
+          0,
+          0,
+          -0.5
+        ],
+        "name": "Surface"
+      },
+      {
+        "max_size_um": [
+          0.001,
+          0.001,
+          0.05
+        ],
+        "max_um": [
+          0.55,
+          0.005,
+          0.5
+        ],
+        "min_size_um": [
+          0.001,
+          0.0005,
+          0.01
+        ],
+        "min_um": [
+          0.3,
+          -0.005,
+          -0.5
+        ],
+        "name": "OxideInterface"
+      },
+      {
+        "max_size_um": [
+          0.0175,
+          0.0175,
+          0.025
+        ],
+        "max_um": [
+          0.575,
+          1.05,
+          0.18
+        ],
+        "min_size_um": [
+          0.0015,
+          0.001,
+          0.005
+        ],
+        "min_um": [
+          0.275,
+          0.15,
+          -0.18
+        ],
+        "name": "SourceTransition"
+      },
+      {
+        "max_size_um": [
+          0.0175,
+          0.0175,
+          0.01
+        ],
+        "max_um": [
+          0.515,
+          0.95,
+          0.09
+        ],
+        "min_size_um": [
+          0.0015,
+          0.001,
+          0.005
+        ],
+        "min_um": [
+          0.335,
+          0.25,
+          -0.09
+        ],
+        "name": "SourceCore"
+      }
+    ],
+    "xy_reference_scale": 0.5
+  },
+  "offline_tolerances": {
+    "charge_abs_fC": 1e-06,
+    "charge_relative": 0.001
+  },
+  "partitions": [
+    [
+      "Left",
+      "Right"
+    ],
+    [
+      "Low",
+      "Middle",
+      "High"
+    ],
+    [
+      "LowerLeft",
+      "UpperLeft",
+      "Right"
+    ],
+    [
+      "ZNegative",
+      "ZPositive"
+    ]
+  ],
+  "pulse_output_window_s": [
+    9.5e-10,
+    1.05e-09
+  ],
+  "references": {
+    "A0": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a0-b1-main",
+    "A1": "local_runtime/dram-see-v4/source-interface-r5/inputs/v4-source-interface-r5-a1-b1-main"
+  },
+  "resource_guard": {
+    "available_memory_floor_bytes": 4294967296,
+    "copy_allowance": 2,
+    "extra_bytes": 1073741824,
+    "format_margin": 1.25,
+    "frame_allowance": 410,
+    "free_disk_floor_bytes": 8589934592,
+    "peak_memory_estimate_bytes": null,
+    "reference_archive_bytes": 2127882240,
+    "reference_archive_sha256": "b2416240e58832a6e09165e591af24ab61368035b7056725749a10340ca2fcc0",
+    "reference_mean_frame_bytes": 9900357,
+    "reference_mesh_vertices": 103498,
+    "reference_run_path": "local_runtime/runs/20261013T181717Z-v4-source-interface-r5-a0-b1-fine-26fc3f1a",
+    "reference_sdevice_grid_points": 103112,
+    "reliable_node_upper_bound": null,
+    "schema": "dram-see-v4-source-3d-resource-policy",
+    "semantics": "Conditional estimate only. The final unique mesh Optimizing elements vertex count is a proxy; the 2D reference has different mesh vertices and SDevice grid points. Preserve 8GiB disk and 4GiB initial available-memory floors. Unknown format or insufficient resources blocks SDevice inside the same SDE call. No hard peak guarantee."
+  },
+  "revision": 1,
+  "rois_um6": {
+    "Center": [
+      0.395,
+      0.0,
+      -0.5,
+      0.455,
+      1.2,
+      0.5
+    ],
+    "CenterTube": [
+      0.395,
+      0,
+      -0.03,
+      0.455,
+      1.2,
+      0.03
+    ],
+    "High": [
+      0.0,
+      0.75,
+      -0.5,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "Left": [
+      0.0,
+      0.0,
+      -0.5,
+      0.425,
+      1.2,
+      0.5
+    ],
+    "Low": [
+      0.0,
+      0.0,
+      -0.5,
+      0.85,
+      0.45,
+      0.5
+    ],
+    "LowerLeft": [
+      0.0,
+      0.0,
+      -0.5,
+      0.425,
+      0.6,
+      0.5
+    ],
+    "Middle": [
+      0.0,
+      0.45,
+      -0.5,
+      0.85,
+      0.75,
+      0.5
+    ],
+    "Right": [
+      0.425,
+      0.0,
+      -0.5,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "Total": [
+      0.0,
+      0.0,
+      -0.5,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "UpperLeft": [
+      0.0,
+      0.6,
+      -0.5,
+      0.425,
+      1.2,
+      0.5
+    ],
+    "ZNegative": [
+      0,
+      0,
+      -0.5,
+      0.85,
+      1.2,
+      0
+    ],
+    "ZPositive": [
+      0,
+      0,
+      0,
+      0.85,
+      1.2,
+      0.5
+    ]
+  },
+  "schema": "dram-see-v4-source-interface-3d-r1-contract",
+  "scope": "Only artificial A0/A1, bit1, main 3D diagnostic mesh; no real-event import or projection",
+  "tcad_ready": false,
+  "tdr_times_s": [
+    9.95e-10,
+    1e-09,
+    1.005e-09,
+    1.01e-09,
+    1.015e-09
+  ],
+  "timing": {
+    "clamp_release_s": 6e-10,
+    "hold_end_s": 2.8e-09,
+    "precharge_end_s": 3e-09,
+    "prestrike_s": 9.5e-10,
+    "pulse_end_s": 1.05e-09,
+    "pulse_initial_step_s": 1e-13,
+    "pulse_max_step_s": 5e-13,
+    "read_sample_s": 4e-09,
+    "strike_s": 1e-09
+  },
+  "units": {
+    "coordinates": "um",
+    "deck_let": "pC/um",
+    "generation": "pairs/cm^3/s",
+    "raw_3d_spatial_integral": "um^3*cm^-3*s^-1",
+    "raw_centroid": "um",
+    "source_charge": "fC",
+    "time": "s"
+  }
+}

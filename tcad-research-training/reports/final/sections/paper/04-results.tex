@@ -1,0 +1,56 @@
+\section{参考验证与多参数响应}
+\subsection{历史D1诊断：固定参考中的无粒子偏移}
+D1在$L=0.25\um$下完成9项有效无粒子工况，比较存储初态、字线驱动和参考方式。中性SN的实际读前电压为$0.500055125\V$，二电容封闭共享预测差分仅$0.001544\mV$，TCAD的$4\ns$差分却为$12.369997\mV$。理想共享关系
+\begin{equation}
+V_f=\frac{C_sV_s(t_0)+C_bV_b(t_0)}{C_s+C_b}
+\label{eq:paper-sharing}
+\end{equation}
+假定两电容间封闭交换且最终等势；实际访问器件和字线驱动使这一假设并不充分。中性工况外接电容净增电荷为$1.360530\fC$，除以$C_s+C_b$对应约$12.368453\mV$，与上述差额一致。按该诊断的符号约定，栅、体端积分分别为$+1.464107$和$-0.103577\fC$，与净增电荷闭合。栅端项是位移电流，不能解释为载流子穿越栅氧；端口闭合也不能唯一拆分重叠电容、沟道形成和耗尽区变化的贡献。
+
+关闭字线时偏移接近零；将上升时间由50 ps增至200 ps，已报告精度内的终点偏移未消失。这支持读出驱动参与偏移形成，而非将偏移归为新产生的粒子电荷。对无粒子构造的同一信号状态，固定理想参考给出$+2.454961\mV$，匹配中性参考给出$-9.915036\mV$，见图\ref{fig:paper-d1}。物理双支路与离线相减满足$0.1\mV$预设容差，说明两种参考实现一致；它不是独立实测校准。该无粒子状态仅匹配历史事件的读前SN电压，不能声称复现其完整载流子历史。所有D1数值保留历史条件，不作为R50偏移量或R50粒子响应。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{d1-reference-comparison.pdf}
+\caption{历史D1中同一无粒子信号状态的参考比较。参考改变读出差分的符号，说明绝对判据依赖参考定义；该比较不是粒子诱发持久位翻转的证明，也不代替R50基线。}
+\label{fig:paper-d1}
+\end{figure}
+
+\subsection{R50参考、预充与数值检查}
+原100$\,\Omega$版本出现$13.297\,\mu\mathrm V$的预充误差，超过$10\,\mu\mathrm V$门槛。半步长与细网格诊断没有使其通过，故保留失败记录。R50将预充通路改为$50\,\Omega$，建立独立输入版本并重跑主线。对同一固定事件的独立探针比较，BL预充误差由$13.297362$变为$4.731204\,\mu\mathrm V$，见图\ref{fig:paper-precharge}；这项比较不能回写旧结果，也不能用放宽门槛解释通过。
+
+R50已完成20项参考计算，并通过源隔离和预登记代表点的数值检查。图\ref{fig:paper-reference}展示四尺寸的无粒子预击前初态及代表尺寸的读出过程。另由参考验收记录分别核对物理双支路与离线方法的信号侧、参考侧和差分，最大电压差约$6\times10^{-15}\V$；该数值反映同模型计算一致性，不代表实际测量精度。源积分以原Geant4沉积总量为目标，代表点细化采用$0.5\mV$的读出量容差及$0.01\fC$的电荷差容差。通过支持已检查输入的实现与离散稳定性，不代表整个参数域均完成收敛验证，也不证明模型已符合真实DRAM工艺。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{r50-precharge.pdf}
+\caption{同一固定事件的预充电阻比较。柱高为$3\ns$时$|V_{\rm BL}-0.5\V|$：原100$\,\Omega$失败项为$13.297362\,\mu\mathrm V$，50$\,\Omega$独立探针为$4.731204\,\mu\mathrm V$，门槛保持$10\,\mu\mathrm V$。图中不含参考节点曲线，也不改写原失败身份。}
+\label{fig:paper-precharge}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\textwidth]{r50-reference.pdf}
+\caption{R50无粒子基准。左图为四个栅长的存储0、中性和存储1共12项预击前SN电压；右图为$L=0.18\um$三种状态在$3$--$4\ns$的BL曲线。数据来自已验收参考归档；图中没有粒子响应，也不是物理双支路与离线方法的差值图。}
+\label{fig:paper-reference}
+\end{figure}
+
+\subsection{已完成训练矩阵的连续响应与分类}
+R50训练部分的32个独立事件、64个位响应已完成。图\ref{fig:paper-training-response}按训练工况展示连续量，位值配对用于观察同一沉积对两种状态的影响。按冻结$5\mV$主判据，64响应中48项为正确方向，10项为判据误读，4项临界，2项数值不确定。连续量可用于拟合，并不意味着每个分类已确定；2项不确定不能强行转为正确或误读，也不能因不利于结论而删除。
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{r50-training-response.pdf}
+\caption{R50训练连续响应与Geant4沉积电荷$Q_{\rm dep}$的关系。两行分别为$2.8\ns$的$\Delta Q$和$4\ns$的$\Delta M$，两列对应存储0/1；包括$L=0.18/0.35\um$、alpha/proton及$0^\circ/30^\circ$。每工况4个独立事件，两种位值合计64响应，测试尺寸未混入。}
+\label{fig:paper-training-response}
+\end{figure}
+
+这些计数表明，同一评估链能够保留裕量充足、临界和方向相反的响应，而非只输出成功求解的二元标签。当前每一尺寸、粒子、角度及位值层仅4个独立事件，适于方法与响应探索，不足以估计低概率误码或截面。尤其不能把64个位响应当作64次独立入射，或把判据误读比例解释为真实存储器辐射失效率。
+
+独立留出与外推按既定分母继续验收，表\ref{tab:paper-progress}记录本文快照的完成范围。运行中和未完成响应不进入最终预测误差；训练结果和预先冻结的测试预测，也不能补作缺失测试真值。
+\begin{table}[htbp]
+\centering\small
+\caption{固定证据快照中的矩阵完成范围；状态描述不代表独立测试评分完成}
+\label{tab:paper-progress}
+\input{tables/progress.tex}
+\end{table}
+\FloatBarrier

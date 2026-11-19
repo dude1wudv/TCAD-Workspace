@@ -1,0 +1,1193 @@
+{
+  "schema": "dram-se-r06-old-zero-hold-window-observation-r1",
+  "scope": "old_r04_L08_p000_prototype_no_particle_observations_only",
+  "units": {
+    "time_token_s": "s",
+    "voltages": "V",
+    "reported_times": "ns"
+  },
+  "method": "Original cached row order retained; Decimal arithmetic; linear interpolation explicitly marked with real neighbors.",
+  "candidate_basis": "P0-2 reference times 21/22/24ns; only zero caches read; no particle outcome selection.",
+  "formal_timing_frozen": false,
+  "r06_D0_qualified": false,
+  "Z_completion_credit": 0,
+  "formal_case_credit": 0,
+  "statistics_eligible": false,
+  "scientific_gate_status": "not_evaluated",
+  "states": [
+    {
+      "state": "b0",
+      "run_id": "auto-r04-l08-p000-nodal-whr-b0-zero-mc2-v1-64be04d60e604e04",
+      "windows": [
+        {
+          "start_ns": "18.2",
+          "end_ns": "30",
+          "start_method": "exact_cached_row",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 74,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "-0.00213215369426971",
+              "end_V": "-0.00213206673774371",
+              "delta_V": "8.695652600E-8",
+              "min_V": "-0.00213215369426971",
+              "max_V": "-0.00213206673774371",
+              "peak_to_peak_V": "8.695652600E-8"
+            },
+            "v(sn2)": {
+              "start_V": "-0.00212551677812859",
+              "end_V": "-0.00212542926487108",
+              "delta_V": "8.751325751E-8",
+              "min_V": "-0.00212551677812859",
+              "max_V": "-0.00212542926487108",
+              "peak_to_peak_V": "8.751325751E-8"
+            },
+            "v(bl)": {
+              "start_V": "0.134918209221575",
+              "end_V": "0.599999999987912",
+              "delta_V": "0.465081790766337",
+              "min_V": "0.134918209221575",
+              "max_V": "0.599999999987912",
+              "peak_to_peak_V": "0.465081790766337"
+            },
+            "v(wl1)": {
+              "start_V": "0.0",
+              "end_V": "0.0",
+              "delta_V": "0.0",
+              "min_V": "0.0",
+              "max_V": "0.0",
+              "peak_to_peak_V": "0.0"
+            },
+            "v(wl2)": {
+              "start_V": "0.0",
+              "end_V": "0.0",
+              "delta_V": "0.0",
+              "min_V": "0.0",
+              "max_V": "0.0",
+              "peak_to_peak_V": "0.0"
+            },
+            "v(drive)": {
+              "start_V": "0.6",
+              "end_V": "0.6",
+              "delta_V": "0.0",
+              "min_V": "0.6",
+              "max_V": "0.6",
+              "peak_to_peak_V": "0.0"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.465081790778425"
+        },
+        {
+          "start_ns": "21",
+          "end_ns": "24",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "linear_interpolation_between_actual_cached_rows",
+          "interior_actual_row_count": 6,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "-0.002132069477171757555699154816",
+              "end_V": "-0.002132068554353520806884519812",
+              "delta_V": "9.22818236748814635004E-10",
+              "min_V": "-0.002132069477171757555699154816",
+              "max_V": "-0.002132068554353520806884519812",
+              "peak_to_peak_V": "9.22818236748814635004E-10"
+            },
+            "v(sn2)": {
+              "start_V": "-0.002125431999742317627165412256",
+              "end_V": "-0.002125431075604340705832810164",
+              "delta_V": "9.24137976921332602092E-10",
+              "min_V": "-0.002125431999742317627165412256",
+              "max_V": "-0.002125431075604340705832810164",
+              "peak_to_peak_V": "9.24137976921332602092E-10"
+            },
+            "v(bl)": {
+              "start_V": "0.5999101630471643699152950608",
+              "end_V": "0.5999999510645133423004636544",
+              "delta_V": "0.0000897880173489723851685936",
+              "min_V": "0.5999101630471643699152950608",
+              "max_V": "0.5999999510645133423004636544",
+              "peak_to_peak_V": "0.0000897880173489723851685936"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0E-14",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0E-14",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.60000000000000",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.0000898369528356300847049392"
+        },
+        {
+          "start_ns": "21",
+          "end_ns": "30",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 40,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "-0.002132069477171757555699154816",
+              "end_V": "-0.00213206673774371",
+              "delta_V": "2.739428047555699154816E-9",
+              "min_V": "-0.002132069477171757555699154816",
+              "max_V": "-0.00213206673774371",
+              "peak_to_peak_V": "2.739428047555699154816E-9"
+            },
+            "v(sn2)": {
+              "start_V": "-0.002125431999742317627165412256",
+              "end_V": "-0.00212542926487108",
+              "delta_V": "2.734871237627165412256E-9",
+              "min_V": "-0.002125431999742317627165412256",
+              "max_V": "-0.00212542926487108",
+              "peak_to_peak_V": "2.734871237627165412256E-9"
+            },
+            "v(bl)": {
+              "start_V": "0.5999101630471643699152950608",
+              "end_V": "0.599999999987912",
+              "delta_V": "0.0000898369407476300847049392",
+              "min_V": "0.5999101630471643699152950608",
+              "max_V": "0.599999999987912",
+              "peak_to_peak_V": "0.0000898369407476300847049392"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.6",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.0000898369528356300847049392"
+        },
+        {
+          "start_ns": "22",
+          "end_ns": "30",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 38,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "-0.002132069161385902134847807840",
+              "end_V": "-0.00213206673774371",
+              "delta_V": "2.423642192134847807840E-9",
+              "min_V": "-0.002132069161385902134847807840",
+              "max_V": "-0.00213206673774371",
+              "peak_to_peak_V": "2.423642192134847807840E-9"
+            },
+            "v(sn2)": {
+              "start_V": "-0.002125431682352317138441296208",
+              "end_V": "-0.00212542926487108",
+              "delta_V": "2.417481237138441296208E-9",
+              "min_V": "-0.002125431682352317138441296208",
+              "max_V": "-0.00212542926487108",
+              "peak_to_peak_V": "2.417481237138441296208E-9"
+            },
+            "v(bl)": {
+              "start_V": "0.5999926651957327703099301056",
+              "end_V": "0.599999999987912",
+              "delta_V": "0.0000073347921792296900698944",
+              "min_V": "0.5999926651957327703099301056",
+              "max_V": "0.599999999987912",
+              "peak_to_peak_V": "0.0000073347921792296900698944"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.6",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.0000073348042672296900698944"
+        },
+        {
+          "start_ns": "24",
+          "end_ns": "30",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 34,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "-0.002132068554353520806884519812",
+              "end_V": "-0.00213206673774371",
+              "delta_V": "1.816609810806884519812E-9",
+              "min_V": "-0.002132068554353520806884519812",
+              "max_V": "-0.00213206673774371",
+              "peak_to_peak_V": "1.816609810806884519812E-9"
+            },
+            "v(sn2)": {
+              "start_V": "-0.002125431075604340705832810164",
+              "end_V": "-0.00212542926487108",
+              "delta_V": "1.810733260705832810164E-9",
+              "min_V": "-0.002125431075604340705832810164",
+              "max_V": "-0.00212542926487108",
+              "peak_to_peak_V": "1.810733260705832810164E-9"
+            },
+            "v(bl)": {
+              "start_V": "0.5999999510645133423004636544",
+              "end_V": "0.599999999987912",
+              "delta_V": "4.89233986576995363456E-8",
+              "min_V": "0.5999999510645133423004636544",
+              "max_V": "0.599999999987912",
+              "peak_to_peak_V": "4.89233986576995363456E-8"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.6",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "4.89354866576995363456E-8"
+        }
+      ],
+      "candidate_points": [
+        {
+          "method": "linear_interpolation_between_actual_cached_rows",
+          "time_ns": "21",
+          "values_V": {
+            "v(sn1)": "-0.002132069477171757555699154816",
+            "v(sn2)": "-0.002125431999742317627165412256",
+            "v(bl)": "0.5999101630471643699152950608",
+            "v(wl1)": "0E-14",
+            "v(wl2)": "0E-14",
+            "v(drive)": "0.60000000000000"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 448,
+              "time_token_s": "2.06183768096996E-08",
+              "values_V": {
+                "v(sn1)": "-0.00213206961127146",
+                "v(sn2)": "-0.00212543213462679",
+                "v(bl)": "0.599802487282208",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "16e088058659fff531c414c7484cde9f471cae8d37f80be098d73052004c1627"
+            },
+            {
+              "raw_row_1based": 449,
+              "time_token_s": "2.11183768096996E-08",
+              "values_V": {
+                "v(sn1)": "-0.00213206943557498",
+                "v(sn2)": "-0.00212543195790211",
+                "v(bl)": "0.599943563306534",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "147d47e010906afa04eec355021b4f995b597abf465350eb458c1f32523ddc46"
+            }
+          ],
+          "right_weight": "0.7632463806008",
+          "bracket_width_ns": "0.5000000000000",
+          "neighbor_secant_V_per_ns": {
+            "v(sn1)": "3.5139296E-10",
+            "v(sn2)": "3.5344936E-10",
+            "v(bl)": "0.000282152048652",
+            "v(wl1)": "0E+12",
+            "v(wl2)": "0E+12",
+            "v(drive)": "0E+12"
+          },
+          "delay_to_read_ns": "10.9",
+          "elapsed_since_WL1_release_ns": "2.9",
+          "elapsed_since_drive_ramp_end_ns": "2.8",
+          "BL_bias_from_0p6_V": "-0.0000898369528356300847049392",
+          "BL_max_actual_neighbor_abs_bias_V": "0.000197512717792",
+          "SN1_delta_from_18p2ns_V": "8.4217097952444300845184E-8",
+          "SN1_delta_to_30ns_V": "2.739428047555699154816E-9"
+        },
+        {
+          "method": "linear_interpolation_between_actual_cached_rows",
+          "time_ns": "22",
+          "values_V": {
+            "v(sn1)": "-0.002132069161385902134847807840",
+            "v(sn2)": "-0.002125431682352317138441296208",
+            "v(bl)": "0.5999926651957327703099301056",
+            "v(wl1)": "0E-14",
+            "v(wl2)": "0E-14",
+            "v(drive)": "0.60000000000000"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 450,
+              "time_token_s": "2.16183768096996E-08",
+              "values_V": {
+                "v(sn1)": "-0.00213206927784982",
+                "v(sn2)": "-0.00212543179937687",
+                "v(bl)": "0.599983873941786",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "9f772af30b45a1a7c84eb26f4b525ed176abc086faaa576b38346598fe203505"
+            },
+            {
+              "raw_row_1based": 451,
+              "time_token_s": "2.21183768096996E-08",
+              "values_V": {
+                "v(sn1)": "-0.00213206912525962",
+                "v(sn2)": "-0.00212543164605213",
+                "v(bl)": "0.599995392180418",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "d3d3df11681b0ea3ae685c2139e630502ba956fbf826ff91125b4c6007ebeab9"
+            }
+          ],
+          "right_weight": "0.7632463806008",
+          "bracket_width_ns": "0.5000000000000",
+          "neighbor_secant_V_per_ns": {
+            "v(sn1)": "3.051804E-10",
+            "v(sn2)": "3.0664948E-10",
+            "v(bl)": "0.000023036477264",
+            "v(wl1)": "0E+12",
+            "v(wl2)": "0E+12",
+            "v(drive)": "0E+12"
+          },
+          "delay_to_read_ns": "9.9",
+          "elapsed_since_WL1_release_ns": "3.9",
+          "elapsed_since_drive_ramp_end_ns": "3.8",
+          "BL_bias_from_0p6_V": "-0.0000073348042672296900698944",
+          "BL_max_actual_neighbor_abs_bias_V": "0.000016126058214",
+          "SN1_delta_from_18p2ns_V": "8.4532883807865152192160E-8",
+          "SN1_delta_to_30ns_V": "2.423642192134847807840E-9"
+        },
+        {
+          "method": "linear_interpolation_between_actual_cached_rows",
+          "time_ns": "24",
+          "values_V": {
+            "v(sn1)": "-0.002132068554353520806884519812",
+            "v(sn2)": "-0.002125431075604340705832810164",
+            "v(bl)": "0.5999999510645133423004636544",
+            "v(wl1)": "0E-14",
+            "v(wl2)": "0E-14",
+            "v(drive)": "0.60000000000000"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 454,
+              "time_token_s": "2.36183768096997E-08",
+              "values_V": {
+                "v(sn1)": "-0.00213206866997541",
+                "v(sn2)": "-0.00212543119079582",
+                "v(bl)": "0.599999892435419",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "953648899be2d20a1a68efb3fef0044e3ae265524872d86bcd1d7f1e47c808a6"
+            },
+            {
+              "raw_row_1based": 455,
+              "time_token_s": "2.41183768096997E-08",
+              "values_V": {
+                "v(sn1)": "-0.00213206851848843",
+                "v(sn2)": "-0.00212543103987276",
+                "v(bl)": "0.599999969250843",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "2e7f57ba80992a0e8dbbbc3f00cdb13bddd9dc397123f1a733c1bcbc7ba587cb"
+            }
+          ],
+          "right_weight": "0.7632463806006",
+          "bracket_width_ns": "0.5000000000000",
+          "neighbor_secant_V_per_ns": {
+            "v(sn1)": "3.0297396E-10",
+            "v(sn2)": "3.0184612E-10",
+            "v(bl)": "1.53630848E-7",
+            "v(wl1)": "0E+12",
+            "v(wl2)": "0E+12",
+            "v(drive)": "0E+12"
+          },
+          "delay_to_read_ns": "7.9",
+          "elapsed_since_WL1_release_ns": "5.9",
+          "elapsed_since_drive_ramp_end_ns": "5.8",
+          "BL_bias_from_0p6_V": "-4.89354866576995363456E-8",
+          "BL_max_actual_neighbor_abs_bias_V": "1.07564581E-7",
+          "SN1_delta_from_18p2ns_V": "8.5139916189193115480188E-8",
+          "SN1_delta_to_30ns_V": "1.816609810806884519812E-9"
+        }
+      ],
+      "readout_31p9ns": {
+        "point": {
+          "method": "exact_cached_row",
+          "time_ns": "31.9",
+          "values_V": {
+            "v(sn1)": "0.438925290376347",
+            "v(sn2)": "-0.00212425252293775",
+            "v(bl)": "0.556235089929007",
+            "v(wl1)": "2.5",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 593,
+              "time_token_s": "3.19000000000000E-08",
+              "values_V": {
+                "v(sn1)": "0.438925290376347",
+                "v(sn2)": "-0.00212425252293775",
+                "v(bl)": "0.556235089929007",
+                "v(wl1)": "2.5",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "12503e8fa5270b61005b1146784776a10f62c693e28886ad9997ca27001d2121"
+            }
+          ],
+          "right_weight": "0",
+          "bracket_width_ns": "0"
+        },
+        "signed_BL_margin_V": "0.043764910070993",
+        "formula": "0.6-Vbl"
+      },
+      "edge_observations": {
+        "sn1_write_on_end": {
+          "raw_row_1based": 347,
+          "time_token_s": "1.80000000000000E-08",
+          "values_V": {
+            "v(sn1)": "0.00000389700389972628",
+            "v(sn2)": "-0.00212470078259473",
+            "v(bl)": "3.17551026935709E-7",
+            "v(wl1)": "2.5",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.0"
+          },
+          "cached_canonical_row_token_sha256": "63fb613b1de4a9fb95d9f4b52554e9b7ca46c1c5860e260fb74becf10cd84bf8"
+        },
+        "sn1_write_released": {
+          "raw_row_1based": 372,
+          "time_token_s": "1.81000000000000E-08",
+          "values_V": {
+            "v(sn1)": "-0.00213178682405547",
+            "v(sn2)": "-0.00212556074709504",
+            "v(bl)": "-0.000146869738714284",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.0"
+          },
+          "cached_canonical_row_token_sha256": "3e6db11ed469031af726c002ca8846636ebfe3d5db8e63e393c5cdc4b8c5760f"
+        },
+        "hold_end": {
+          "raw_row_1based": 490,
+          "time_token_s": "3.00000000000000E-08",
+          "values_V": {
+            "v(sn1)": "-0.00213206673774371",
+            "v(sn2)": "-0.00212542926487108",
+            "v(bl)": "0.599999999987912",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "cached_canonical_row_token_sha256": "9dd35db21cd2a36d5424513f8b566148893672e354898f6da7cc42a60aaf6945"
+        },
+        "precharge_end": {
+          "raw_row_1based": 413,
+          "time_token_s": "1.82000000000000E-08",
+          "values_V": {
+            "v(sn1)": "-0.00213215369426971",
+            "v(sn2)": "-0.00212551677812859",
+            "v(bl)": "0.134918209221575",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "cached_canonical_row_token_sha256": "f881857fa5a175d2bafd9aa9d6884d53dcf360916b1d6dac13afbc9c18d71803"
+        },
+        "after_isolation": {
+          "raw_row_1based": 513,
+          "time_token_s": "3.01000000000000E-08",
+          "values_V": {
+            "v(sn1)": "-0.00213206670763797",
+            "v(sn2)": "-0.00212542923462227",
+            "v(bl)": "0.599999999981874",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "cached_canonical_row_token_sha256": "d1348b5da45de61e45147f9eaabce83a5d8a68d2575fd5b00900982a02e35198"
+        }
+      }
+    },
+    {
+      "state": "b1",
+      "run_id": "auto-r04-l08-p000-nodal-whr-b1-zero-mc2-v1-4305462e206c4c2f",
+      "windows": [
+        {
+          "start_ns": "18.2",
+          "end_ns": "30",
+          "start_method": "exact_cached_row",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 113,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "1.02445448647409",
+              "end_V": "1.02445440444705",
+              "delta_V": "-8.202704E-8",
+              "min_V": "1.02445440444692",
+              "max_V": "1.02445448647409",
+              "peak_to_peak_V": "8.202717E-8"
+            },
+            "v(sn2)": {
+              "start_V": "1.02440591182686",
+              "end_V": "1.0244058292559",
+              "delta_V": "-8.257096E-8",
+              "min_V": "1.0244058292559",
+              "max_V": "1.02440591182686",
+              "peak_to_peak_V": "8.257096E-8"
+            },
+            "v(bl)": {
+              "start_V": "1.06214438174068",
+              "end_V": "0.600000000000004",
+              "delta_V": "-0.462144381740676",
+              "min_V": "0.600000000000004",
+              "max_V": "1.06214438174068",
+              "peak_to_peak_V": "0.462144381740676"
+            },
+            "v(wl1)": {
+              "start_V": "0.0",
+              "end_V": "0.0",
+              "delta_V": "0.0",
+              "min_V": "0.0",
+              "max_V": "0.0",
+              "peak_to_peak_V": "0.0"
+            },
+            "v(wl2)": {
+              "start_V": "0.0",
+              "end_V": "0.0",
+              "delta_V": "0.0",
+              "min_V": "0.0",
+              "max_V": "0.0",
+              "peak_to_peak_V": "0.0"
+            },
+            "v(drive)": {
+              "start_V": "0.6",
+              "end_V": "0.6",
+              "delta_V": "0.0",
+              "min_V": "0.6",
+              "max_V": "0.6",
+              "peak_to_peak_V": "0.0"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.46214438174068"
+        },
+        {
+          "start_ns": "21",
+          "end_ns": "24",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "linear_interpolation_between_actual_cached_rows",
+          "interior_actual_row_count": 6,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "1.024454404453527237111034112",
+              "end_V": "1.024454404447070000000000000",
+              "delta_V": "-6.457237111034112E-12",
+              "min_V": "1.02445440444692",
+              "max_V": "1.024454404453527237111034112",
+              "peak_to_peak_V": "6.607237111034112E-12"
+            },
+            "v(sn2)": {
+              "start_V": "1.024405829264251834904932704",
+              "end_V": "1.024405829255932917165306848",
+              "delta_V": "-8.318917739625856E-12",
+              "min_V": "1.024405829255932917165306848",
+              "max_V": "1.024405829264251834904932704",
+              "peak_to_peak_V": "8.318917739625856E-12"
+            },
+            "v(bl)": {
+              "start_V": "0.6000451424617586813333447872",
+              "end_V": "0.6000000245651626885761699264",
+              "delta_V": "-0.0000451178965959927571748608",
+              "min_V": "0.6000000245651626885761699264",
+              "max_V": "0.6000451424617586813333447872",
+              "peak_to_peak_V": "0.0000451178965959927571748608"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0E-14",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0E-14",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.60000000000000",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.0000451424617586813333447872"
+        },
+        {
+          "start_ns": "21",
+          "end_ns": "30",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 40,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "1.024454404453527237111034112",
+              "end_V": "1.02445440444705",
+              "delta_V": "-6.477237111034112E-12",
+              "min_V": "1.02445440444692",
+              "max_V": "1.024454404453527237111034112",
+              "peak_to_peak_V": "6.607237111034112E-12"
+            },
+            "v(sn2)": {
+              "start_V": "1.024405829264251834904932704",
+              "end_V": "1.0244058292559",
+              "delta_V": "-8.351834904932704E-12",
+              "min_V": "1.0244058292559",
+              "max_V": "1.024405829264251834904932704",
+              "peak_to_peak_V": "8.351834904932704E-12"
+            },
+            "v(bl)": {
+              "start_V": "0.6000451424617586813333447872",
+              "end_V": "0.600000000000004",
+              "delta_V": "-0.0000451424617546813333447872",
+              "min_V": "0.600000000000004",
+              "max_V": "0.6000451424617586813333447872",
+              "peak_to_peak_V": "0.0000451424617546813333447872"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.6",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.0000451424617586813333447872"
+        },
+        {
+          "start_ns": "22",
+          "end_ns": "30",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 38,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "1.024454404446997911181624672",
+              "end_V": "1.02445440444705",
+              "delta_V": "5.2088818375328E-14",
+              "min_V": "1.024454404446997911181624672",
+              "max_V": "1.02445440444707",
+              "peak_to_peak_V": "7.2088818375328E-14"
+            },
+            "v(sn2)": {
+              "start_V": "1.024405829256700888183753280",
+              "end_V": "1.0244058292559",
+              "delta_V": "-8.00888183753280E-13",
+              "min_V": "1.0244058292559",
+              "max_V": "1.024405829256700888183753280",
+              "peak_to_peak_V": "8.00888183753280E-13"
+            },
+            "v(bl)": {
+              "start_V": "0.6000036856333623340092634592",
+              "end_V": "0.600000000000004",
+              "delta_V": "-0.0000036856333583340092634592",
+              "min_V": "0.600000000000004",
+              "max_V": "0.6000036856333623340092634592",
+              "peak_to_peak_V": "0.0000036856333583340092634592"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.6",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "0.0000036856333623340092634592"
+        },
+        {
+          "start_ns": "24",
+          "end_ns": "30",
+          "start_method": "linear_interpolation_between_actual_cached_rows",
+          "end_method": "exact_cached_row",
+          "interior_actual_row_count": 34,
+          "range_scope": "cached rows plus interpolated endpoints, not a continuous-time bound",
+          "signals": {
+            "v(sn1)": {
+              "start_V": "1.024454404447070000000000000",
+              "end_V": "1.02445440444705",
+              "delta_V": "-2.0000000000000E-14",
+              "min_V": "1.02445440444705",
+              "max_V": "1.024454404447070000000000000",
+              "peak_to_peak_V": "2.0000000000000E-14"
+            },
+            "v(sn2)": {
+              "start_V": "1.024405829255932917165306848",
+              "end_V": "1.0244058292559",
+              "delta_V": "-3.2917165306848E-14",
+              "min_V": "1.0244058292559",
+              "max_V": "1.024405829255932917165306848",
+              "peak_to_peak_V": "3.2917165306848E-14"
+            },
+            "v(bl)": {
+              "start_V": "0.6000000245651626885761699264",
+              "end_V": "0.600000000000004",
+              "delta_V": "-2.45651586885761699264E-8",
+              "min_V": "0.600000000000004",
+              "max_V": "0.6000000245651626885761699264",
+              "peak_to_peak_V": "2.45651586885761699264E-8"
+            },
+            "v(wl1)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(wl2)": {
+              "start_V": "0E-14",
+              "end_V": "0.0",
+              "delta_V": "0E-14",
+              "min_V": "0E-14",
+              "max_V": "0E-14",
+              "peak_to_peak_V": "0E-14"
+            },
+            "v(drive)": {
+              "start_V": "0.60000000000000",
+              "end_V": "0.6",
+              "delta_V": "0E-14",
+              "min_V": "0.60000000000000",
+              "max_V": "0.60000000000000",
+              "peak_to_peak_V": "0E-14"
+            }
+          },
+          "BL_max_abs_bias_from_0p6_V": "2.45651626885761699264E-8"
+        }
+      ],
+      "candidate_points": [
+        {
+          "method": "linear_interpolation_between_actual_cached_rows",
+          "time_ns": "21",
+          "values_V": {
+            "v(sn1)": "1.024454404453527237111034112",
+            "v(sn2)": "1.024405829264251834904932704",
+            "v(bl)": "0.6000451424617586813333447872",
+            "v(wl1)": "0E-14",
+            "v(wl2)": "0E-14",
+            "v(drive)": "0.60000000000000"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 452,
+              "time_token_s": "2.06458582653424E-08",
+              "values_V": {
+                "v(sn1)": "1.02445440446163",
+                "v(sn2)": "1.02440582927256",
+                "v(bl)": "0.600091363136756",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "a771ffe981d95e0509b48162bd9337d11847b18801cf775f8bdfd2c3a68ce122"
+            },
+            {
+              "raw_row_1based": 453,
+              "time_token_s": "2.11458582653424E-08",
+              "values_V": {
+                "v(sn1)": "1.02445440445019",
+                "v(sn2)": "1.02440582926083",
+                "v(bl)": "0.600026105825242",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "1a7e5aad88684f3ee6d7f8dd5057c406b353cb7133f4339e5a0d3d82f9bd8e06"
+            }
+          ],
+          "right_weight": "0.7082834693152",
+          "bracket_width_ns": "0.5000000000000",
+          "neighbor_secant_V_per_ns": {
+            "v(sn1)": "-2.288E-11",
+            "v(sn2)": "-2.346E-11",
+            "v(bl)": "-0.000130514623028",
+            "v(wl1)": "0E+12",
+            "v(wl2)": "0E+12",
+            "v(drive)": "0E+12"
+          },
+          "delay_to_read_ns": "10.9",
+          "elapsed_since_WL1_release_ns": "2.9",
+          "elapsed_since_drive_ramp_end_ns": "2.8",
+          "BL_bias_from_0p6_V": "0.0000451424617586813333447872",
+          "BL_max_actual_neighbor_abs_bias_V": "0.000091363136756",
+          "SN1_delta_from_18p2ns_V": "-8.2020562762888965888E-8",
+          "SN1_delta_to_30ns_V": "-6.477237111034112E-12"
+        },
+        {
+          "method": "linear_interpolation_between_actual_cached_rows",
+          "time_ns": "22",
+          "values_V": {
+            "v(sn1)": "1.024454404446997911181624672",
+            "v(sn2)": "1.024405829256700888183753280",
+            "v(bl)": "0.6000036856333623340092634592",
+            "v(wl1)": "0E-14",
+            "v(wl2)": "0E-14",
+            "v(drive)": "0.60000000000000"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 454,
+              "time_token_s": "2.16458582653424E-08",
+              "values_V": {
+                "v(sn1)": "1.02445440444692",
+                "v(sn2)": "1.02440582925748",
+                "v(bl)": "0.600007459399226",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "7797a8ad4c2e53562c91862d1226d4b5e3689fcc83ada153d7746f6a74f0b7e1"
+            },
+            {
+              "raw_row_1based": 455,
+              "time_token_s": "2.21458582653424E-08",
+              "values_V": {
+                "v(sn1)": "1.02445440444703",
+                "v(sn2)": "1.02440582925638",
+                "v(bl)": "0.600002131354697",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "5264ef6e478d4119e6448b8a821dd4e2ba70c83d7f04432538d0aa1dd0c27a2f"
+            }
+          ],
+          "right_weight": "0.7082834693152",
+          "bracket_width_ns": "0.5000000000000",
+          "neighbor_secant_V_per_ns": {
+            "v(sn1)": "2.2E-13",
+            "v(sn2)": "-2.2E-12",
+            "v(bl)": "-0.000010656089058",
+            "v(wl1)": "0E+12",
+            "v(wl2)": "0E+12",
+            "v(drive)": "0E+12"
+          },
+          "delay_to_read_ns": "9.9",
+          "elapsed_since_WL1_release_ns": "3.9",
+          "elapsed_since_drive_ramp_end_ns": "3.8",
+          "BL_bias_from_0p6_V": "0.0000036856333623340092634592",
+          "BL_max_actual_neighbor_abs_bias_V": "0.000007459399226",
+          "SN1_delta_from_18p2ns_V": "-8.2027092088818375328E-8",
+          "SN1_delta_to_30ns_V": "5.2088818375328E-14"
+        },
+        {
+          "method": "linear_interpolation_between_actual_cached_rows",
+          "time_ns": "24",
+          "values_V": {
+            "v(sn1)": "1.024454404447070000000000000",
+            "v(sn2)": "1.024405829255932917165306848",
+            "v(bl)": "0.6000000245651626885761699264",
+            "v(wl1)": "0E-14",
+            "v(wl2)": "0E-14",
+            "v(drive)": "0.60000000000000"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 458,
+              "time_token_s": "2.36458582653424E-08",
+              "values_V": {
+                "v(sn1)": "1.02445440444707",
+                "v(sn2)": "1.02440582925594",
+                "v(bl)": "0.600000049717738",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "7ea646f1206a221e006fb9d7b912f399647dde48ffdb16e7a53304ba098f337e"
+            },
+            {
+              "raw_row_1based": 459,
+              "time_token_s": "2.41458582653424E-08",
+              "values_V": {
+                "v(sn1)": "1.02445440444707",
+                "v(sn2)": "1.02440582925593",
+                "v(bl)": "0.60000001420572",
+                "v(wl1)": "0.0",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "e037ba2adaccc1e3461bc71aaa0d0a55a714c5604f243f72f381094b22d5f233"
+            }
+          ],
+          "right_weight": "0.7082834693152",
+          "bracket_width_ns": "0.5000000000000",
+          "neighbor_secant_V_per_ns": {
+            "v(sn1)": "0.0",
+            "v(sn2)": "-2E-14",
+            "v(bl)": "-7.1024036E-8",
+            "v(wl1)": "0E+12",
+            "v(wl2)": "0E+12",
+            "v(drive)": "0E+12"
+          },
+          "delay_to_read_ns": "7.9",
+          "elapsed_since_WL1_release_ns": "5.9",
+          "elapsed_since_drive_ramp_end_ns": "5.8",
+          "BL_bias_from_0p6_V": "2.45651626885761699264E-8",
+          "BL_max_actual_neighbor_abs_bias_V": "4.9717738E-8",
+          "SN1_delta_from_18p2ns_V": "-8.2027020000000000000E-8",
+          "SN1_delta_to_30ns_V": "-2.0000000000000E-14"
+        }
+      ],
+      "readout_31p9ns": {
+        "point": {
+          "method": "exact_cached_row",
+          "time_ns": "31.9",
+          "values_V": {
+            "v(sn1)": "0.767465471675259",
+            "v(sn2)": "1.02440720062502",
+            "v(bl)": "0.626057299430457",
+            "v(wl1)": "2.5",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "neighbors": [
+            {
+              "raw_row_1based": 638,
+              "time_token_s": "3.19000000000000E-08",
+              "values_V": {
+                "v(sn1)": "0.767465471675259",
+                "v(sn2)": "1.02440720062502",
+                "v(bl)": "0.626057299430457",
+                "v(wl1)": "2.5",
+                "v(wl2)": "0.0",
+                "v(drive)": "0.6"
+              },
+              "cached_canonical_row_token_sha256": "84e97766f60157e47ab9fb89300d8d547fd883c43c85945a4dcd6d0f88ad61dc"
+            }
+          ],
+          "right_weight": "0",
+          "bracket_width_ns": "0"
+        },
+        "signed_BL_margin_V": "0.026057299430457",
+        "formula": "Vbl-0.6"
+      },
+      "edge_observations": {
+        "sn1_write_on_end": {
+          "raw_row_1based": 328,
+          "time_token_s": "1.80000000000000E-08",
+          "values_V": {
+            "v(sn1)": "1.0262066540376",
+            "v(sn2)": "1.02440744885486",
+            "v(bl)": "1.19967590031094",
+            "v(wl1)": "2.5",
+            "v(wl2)": "0.0",
+            "v(drive)": "1.2"
+          },
+          "cached_canonical_row_token_sha256": "d6481769ebe7f7b6b4622dc63691732cd3dd38ea0168043b161c27dc22fdfc67"
+        },
+        "sn1_write_released": {
+          "raw_row_1based": 352,
+          "time_token_s": "1.81000000000000E-08",
+          "values_V": {
+            "v(sn1)": "1.02445491374126",
+            "v(sn2)": "1.0244059189359",
+            "v(bl)": "1.19968817064994",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "1.2"
+          },
+          "cached_canonical_row_token_sha256": "9c901937b8b327fdd030667d89c53d52ef598e10ff19b1a791d6c7291e5d31bb"
+        },
+        "hold_end": {
+          "raw_row_1based": 494,
+          "time_token_s": "3.00000000000000E-08",
+          "values_V": {
+            "v(sn1)": "1.02445440444705",
+            "v(sn2)": "1.0244058292559",
+            "v(bl)": "0.600000000000004",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "cached_canonical_row_token_sha256": "53638212f2b515b70c35e39a1776adf539e4474655a4b5556d5f48a2e182fdd9"
+        },
+        "precharge_end": {
+          "raw_row_1based": 378,
+          "time_token_s": "1.82000000000000E-08",
+          "values_V": {
+            "v(sn1)": "1.02445448647409",
+            "v(sn2)": "1.02440591182686",
+            "v(bl)": "1.06214438174068",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "cached_canonical_row_token_sha256": "df7b008c7560de3d1efb9de18ffd1278914cbda12a32044aff8ca9dd9f555331"
+        },
+        "after_isolation": {
+          "raw_row_1based": 517,
+          "time_token_s": "3.01000000000000E-08",
+          "values_V": {
+            "v(sn1)": "1.02445440444705",
+            "v(sn2)": "1.0244058292559",
+            "v(bl)": "0.600000000000004",
+            "v(wl1)": "0.0",
+            "v(wl2)": "0.0",
+            "v(drive)": "0.6"
+          },
+          "cached_canonical_row_token_sha256": "f772ab13f6a93d23cd711df1b7ddd83f28dbc6a38797dc21ab3836910246ba87"
+        }
+      }
+    }
+  ],
+  "cross_state_candidate_separation": [
+    {
+      "time_ns": "21",
+      "SN1_b1_minus_b0_V": "1.026586473930698994666733266816",
+      "BL_b1_minus_b0_V": "0.0001349794145943114180497264"
+    },
+    {
+      "time_ns": "22",
+      "SN1_b1_minus_b0_V": "1.026586473608383813316472479840",
+      "BL_b1_minus_b0_V": "0.0000110204376295636993333536"
+    },
+    {
+      "time_ns": "24",
+      "SN1_b1_minus_b0_V": "1.026586473001423520806884519812",
+      "BL_b1_minus_b0_V": "7.35006493462757062720E-8"
+    }
+  ],
+  "limitations": [
+    "Old r04 L08/p000 is not certified r06 D0.",
+    "Old per-instance atomic PMI and 15ns refresh/fine-step window are not new O2 or 22ns matched controls.",
+    "18.2ns ends the drive ramp; BL is still settling.",
+    "Candidate brackets up to 0.5ns and interpolation do not bound continuous-time or numerical error.",
+    "31.9ns destructive SN1 charge-sharing margin is not a persistent particle flip label.",
+    "Zero source has relative_error=null and cannot validate nonzero-source integral tolerance.",
+    "No mesh/time refinement, repeatability acceptance, new qualification or gate evaluation; old rejected attempts retained."
+  ]
+}

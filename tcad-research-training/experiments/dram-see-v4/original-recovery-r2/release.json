@@ -1,0 +1,39 @@
+{
+  "schema": "dram-see-v4-cleanup-origin-resume-release-r2",
+  "passed": true,
+  "created_utc": "2026-10-14T12:20:59.884805+00:00",
+  "files_sha256": {
+    "experiments/dram-see-v4/original-recovery-r2/campaign_runner.py": "33fe62aca2c2157210ccfe6a083b4955e499612b85b7e55f38c06635260ed502",
+    "experiments/dram-see-v4/original-recovery-r2/cleanup_plan.py": "1e2d84c3df18efce59b92684551d1e099a9e11a952d3b8cf83ee1bc4fd3ff4e7",
+    "experiments/dram-see-v4/original-recovery-r2/continue.py": "a1fb6e6e8a7e789542ec54b55cf60755e5fdee68f90cb33a7664a7d5dc3636da",
+    "experiments/dram-see-v4/original-recovery-r2/README.md": "5d164f1d4ba40068efd2a7bdbe32ad41aa87328c63c6e20b73a998e47701d89a",
+    "experiments/dram-see-v4/original-recovery-r2/release_guard.py": "9368a9fed5607db38a07cd6cfc024c40533af7515005d8ab59bb66bab8ebc209",
+    "experiments/dram-see-v4/original-recovery-r2/resume-contract.json": "6362dbb961ea48ce243ccb64f71d084c1f4f00f12b2086519669dda025e1845a",
+    "experiments/dram-see-v4/original-recovery-r2/test_cleanup_origin.py": "b80df5e2232c6560ee9dc365e965e67fa6cbabf3403e7d717542b9f950787644",
+    "experiments/dram-see-v4/original-recovery-r2/test_resume.py": "2b0dd7fd3dbe314f353418a1116b7e3fa9636506a807aeffed118d24a045edc8"
+  },
+  "validation_evidence": [
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/cleanup-recovery-review-20261014/evidence.json",
+      "sha256": "88e45f37add3fd308cde9fb5f4318b0e59f2d352e2e8d7ff03dcdb6d21a34e34"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/cleanup-resume-validation-20261014/evidence.json",
+      "sha256": "8a81b19bb1817e7e8bddb9b86343ea47f0f03ed12c585e4a0e50f14cbdfd3974"
+    },
+    {
+      "path": "local_runtime/dram-see-v4/interface-completion-r1/recovery-20261014/cleanup-recovery-r2/20261014T121119Z/root-acceptance.json",
+      "sha256": "03be82477d14e39cfc6b577054d254056a0d134930b5a4ee72cec62f7f4b4284"
+    }
+  ],
+  "original_r1_release": {
+    "path": "experiments/dram-see-v4/original-recovery-r1/release.json",
+    "sha256": "5f36ce180ce52c525e8bc023d50f18c8d080ad9f1d5c1f565af642f66bb8076f"
+  },
+  "resume_contract": {
+    "path": "experiments/dram-see-v4/original-recovery-r2/resume-contract.json",
+    "sha256": "6362dbb961ea48ce243ccb64f71d084c1f4f00f12b2086519669dda025e1845a"
+  },
+  "physical_threshold_changes": false,
+  "new_solver_calls_for_resume": 0
+}

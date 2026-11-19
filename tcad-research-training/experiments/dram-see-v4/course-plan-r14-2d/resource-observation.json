@@ -1,0 +1,49 @@
+{
+  "schema": "dram-see-v4-plan-resource-observation-r14",
+  "purpose": "Read-only resource evidence for the user-requested 2D-first plan revision; no scheduler action",
+  "host": {
+    "observed_utc": "2026-10-19T10:06:46.6532645Z",
+    "source": "PowerShell Get-CimInstance Win32_OperatingSystem/Win32_Processor; Get-Process vmware-vmx; Get-PSDrive E",
+    "total_visible_ram_GiB": 31.19,
+    "free_physical_ram_GiB": 2.21,
+    "total_virtual_memory_GiB": 67.19,
+    "free_virtual_memory_GiB": 40.99,
+    "cpu": "AMD Ryzen 9 7945HX with Radeon Graphics",
+    "physical_cores": 16,
+    "logical_processors": 32,
+    "vmware_vmx_pid": 26024,
+    "vmware_vmx_working_set_GiB": 27.93,
+    "vmware_vmx_private_memory_GiB": 0.18,
+    "E_drive_used_GiB": 497.12,
+    "E_drive_free_GiB": 456.75,
+    "note": "Rounded snapshot, not a resource allocation or quota. VM process memory must not be added to guest RSS as independent physical memory."
+  },
+  "guest_original_run_observation": {
+    "source_repo_relative": "local_runtime/dram-see-v4/continuous/actual-usage/20261019T100607Z-d3-r15-native.json",
+    "source_sha256": "16340d3beaf6b7b52133b6d8087959a37e6a27de1dba2a6be6a57cc5d725e4c1",
+    "observed_client_time": "2026-10-19T03:06:07.580387-07:00",
+    "run_id": "20261018T030610Z-v4-continuous-b1-d3-r15",
+    "status": "RUNNING",
+    "native_exit_code": null,
+    "MemTotal_KiB": 16247384,
+    "MemAvailable_KiB": 58748,
+    "SwapTotal_KiB": 52428788,
+    "SwapFree_KiB": 19297052,
+    "sdevice_rss_KiB": 15219748,
+    "sdevice_swap_KiB": 32714888,
+    "sdevice_cpu_seconds": 21045.05,
+    "log_bytes": 143077,
+    "note": "Read an existing original-run observation; this side conversation did not execute SSH, the observer, solver, cancellation, or collection. Linux /proc kB is recorded here as KiB."
+  },
+  "previous_plan_sha256": {
+    "CONTINUOUS-GOAL-PLAN.md": "ed66aaf6997e7e43466755363c35ac3df851c33cfbd804eff3f6bc10ce9a271c",
+    "GOAL-PROMPT.md": "9d12a0c28f72c6220f1b955790c469778fb9470ee3c627340ce9f258baf6e386"
+  },
+  "official_local_manual": {
+    "path_repo_relative": "local_runtime/dram-see-v1/sdevice_ug.pdf",
+    "version": "W-2024.09",
+    "sha256": "98f37002013ccc2e73c0316e3ea66fd7d06fd773abac7caaa3d362ea85d5c5b0",
+    "sections": ["AreaFactor", "Carrier Generation by Heavy Ions, pages 813-814, Table 142"]
+  },
+  "implementation_or_native_validation_performed": false
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Sentaurus Cloud Runner"
+  short_description: "Run and recover existing TCAD cloud jobs"
+  default_prompt: "Use $sentaurus-vm-runner to inspect the current TCAD cloud run and follow its existing runner."

@@ -1,0 +1,62 @@
+{
+  "schema": "dram-se-r04-mc2-prefix-observations-r1",
+  "utc": "2026-11-17T15:08:09.601773+00:00",
+  "input_revision": "mc2-prefix-diagnostic-r1 frozen v1",
+  "result": "same_execution_inputs_not_bitwise_repeatable_in_recorded_short_runs",
+  "evidence": {
+    "main_review": "experiments/dram-se-r04/electrical/mc2-prefix-result-r1/main-review.json",
+    "main_review_sha256": "c2a7f6ec3ff486dfc4d0a5ca78a5d427b0b33665ea2f894f4e9d90c014bcd55c",
+    "failure_inspection": "experiments/dram-se-r04/electrical/mc2-prefix-result-r1/failure-inspection.json",
+    "failure_inspection_sha256": "1900b84ebebd1b0aef5afb5e1b9a9d167d0997b90759b48c2e0d61b6e0054a2f"
+  },
+  "circuit": {
+    "rows": 5,
+    "columns": 18,
+    "different_tokens_by_native_row": [
+      0,
+      0,
+      6,
+      6,
+      11
+    ],
+    "different_tokens": 23
+  },
+  "device": {
+    "rows": 4,
+    "columns": 87,
+    "different_tokens_by_native_row": [
+      0,
+      7,
+      13,
+      23
+    ],
+    "different_tokens": 43
+  },
+  "first_static_circuit_difference": {
+    "native_row_1based": 3,
+    "field": "v(bl)",
+    "b_minus_a_V": "1.345805E-19"
+  },
+  "first_positive_step_b_minus_a_bl_V": "1.281470E-19",
+  "e_h_inventory_tokens_identical": true,
+  "all_printed_G_UF0_UF4_exact_zero": true,
+  "actual_assembly_solver_threads": 2,
+  "final_time_s": "1e-13",
+  "accepted_steps_each": 1,
+  "rejected_steps_each": 0,
+  "event_prefix_failure": {
+    "run_id": "auto-r04-l08-mc2-prefix-b0-event0-v1-52784acbf25644fc",
+    "stage": "runner resource admission before native SDevice launch",
+    "direct_error": "FileNotFoundError /proc/3855/task/4184/stat inside mc_snapshot",
+    "sdevice_exit_code": null,
+    "repair_proposed": false
+  },
+  "scientific_decision": "Existing full-response exact criterion and unknown labels remain unchanged. Reuse existing native mixed-mode Plot device/circuit state for a separate bounded load/continuation diagnostic if static source and syntax checks pass.",
+  "causal_root_found": false,
+  "full_transient_uncertainty_bound_established": false,
+  "old_event_zero_pair_accepted": false,
+  "independent_new_primaries": 0,
+  "r05_denominator_credit": 0,
+  "formal_training_started": false,
+  "upset": "unknown"
+}

@@ -1,0 +1,16 @@
+{
+  "created_utc": "2026-10-13T15:36:55.327881+00:00",
+  "tcad_invocations": 5,
+  "tcad_cap": 19,
+  "tcad_remaining": 14,
+  "protected_files": 86,
+  "protected_unchanged": true,
+  "audit_records": 22,
+  "failure_records": 10,
+  "native_3d_manifests": 3,
+  "locally_unresolved_operations": [],
+  "limitations": [
+    "This index does not replace raw run audits or a live remote process/lock check.",
+    "Scientific failure and successful collection are separate states."
+  ]
+}

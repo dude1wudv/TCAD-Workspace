@@ -1,0 +1,134 @@
+[
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r1/operation.json",
+    "sha256": "b99a0b96e43edf8b339088cf8a0264741d5fb4c8e6b9b78b3648201a36eeec90",
+    "label": "r2-a1-tdr-diagnostic-r1",
+    "state": "FAILED_COLLECTED",
+    "ssh_exit_code": 2,
+    "remote_exit_code": 2,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T12:19:38.476091+00:00",
+    "finished_utc": "2026-10-13T12:19:59.849302+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r2/operation.json",
+    "sha256": "20c45c63d2b3ff32f412afec99d94846af84789be64f459cafbe790a251cb39a",
+    "label": "r2-a1-tdr-diagnostic-r2",
+    "state": "FAILED_COLLECTED",
+    "ssh_exit_code": 1,
+    "remote_exit_code": 1,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T12:23:42.135416+00:00",
+    "finished_utc": "2026-10-13T12:24:01.768909+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/r2-a1-tdr-diagnostic-r3/operation.json",
+    "sha256": "c6cf3b654c4aee073ea346a4068e3a766b1374be50c6f18c7cbafdfccb5e4792",
+    "label": "r2-a1-tdr-diagnostic-r3",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T12:32:50.975436+00:00",
+    "finished_utc": "2026-10-13T12:33:12.181403+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-compile-r1/operation.json",
+    "sha256": "581fd2ba1005ca8ba4425c49eb3e2f739b2e19db78619b9b900e6c912f8e5c5a",
+    "label": "witness-compile-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T11:36:14.544657+00:00",
+    "finished_utc": "2026-10-13T11:36:38.171433+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-fixed-e-s1-r1/operation.json",
+    "sha256": "3545554b03e746173edb4f5195562c14d6d2b58f62ce7a9be0a9c4c10c1c1b44",
+    "label": "witness-fixed-e-s1-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T12:07:59.141592+00:00",
+    "finished_utc": "2026-10-13T12:08:12.856006+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-fixed-h-s1-r1/operation.json",
+    "sha256": "21bb98d47fa9533f61980f647d81afcedf603c5351429fcde90598a1cd42f0b9",
+    "label": "witness-fixed-h-s1-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T11:54:42.526123+00:00",
+    "finished_utc": "2026-10-13T11:54:57.108276+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-fixed-h-s2-r1/operation.json",
+    "sha256": "10351b7f3b7e28350656db88404206c460037ce079d5e35593c3b2acd09cdc12",
+    "label": "witness-fixed-h-s2-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T12:05:43.085585+00:00",
+    "finished_utc": "2026-10-13T12:05:57.671843+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-fixed-h-s3-r1/operation.json",
+    "sha256": "abdc543444e8a291547c90ffdefd8ab287650a350a36295493820aef594ad271",
+    "label": "witness-fixed-h-s3-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T12:07:13.177155+00:00",
+    "finished_utc": "2026-10-13T12:07:27.919149+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-init-e-r1/operation.json",
+    "sha256": "921c11a243a3f8af0bc07340f00663da321c6d049e09bdd15915e65abaabae20",
+    "label": "witness-init-e-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T11:38:07.886955+00:00",
+    "finished_utc": "2026-10-13T11:38:21.148316+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-init-h-r1/operation.json",
+    "sha256": "cd12087316a543eb3d478aef492ae04416e215e0dbe06158a17fbaa6a932a653",
+    "label": "witness-init-h-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T11:37:23.885996+00:00",
+    "finished_utc": "2026-10-13T11:37:39.106207+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-pilot-e-r1/operation.json",
+    "sha256": "0a9f5c268edd648e6768a8586918df64eebbb80ab5beef4a7fcfc90caed0059d",
+    "label": "witness-pilot-e-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T11:43:47.868377+00:00",
+    "finished_utc": "2026-10-13T11:44:01.147429+00:00"
+  },
+  {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/witness-pilot-h-r1/operation.json",
+    "sha256": "94f11649da40abc8943e5aeb106d8bc5d785f5714145a03af9b4fab5d1232110",
+    "label": "witness-pilot-h-r1",
+    "state": "COLLECTED_PENDING_AUDIT",
+    "ssh_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0,
+    "started_utc": "2026-10-13T11:42:16.931185+00:00",
+    "finished_utc": "2026-10-13T11:42:30.541563+00:00"
+  }
+]

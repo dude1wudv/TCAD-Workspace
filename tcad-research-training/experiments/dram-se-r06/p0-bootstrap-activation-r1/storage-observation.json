@@ -1,0 +1,33 @@
+{
+  "utc": "2026-11-17T17:53:06.557490+00:00",
+  "purpose": "bounded storage observation before two small P0 proposals; not scientific acceptance",
+  "host": {
+    "/": {
+      "total_bytes": 181312401408,
+      "used_bytes": 114965377024,
+      "free_bytes": 66347024384
+    },
+    "/srv/tcad-isolated-vm/rocky9-20261116/overlay": {
+      "status": "not_observed",
+      "error": "[Errno 13] Permission denied: '/srv/tcad-isolated-vm/rocky9-20261116/overlay'"
+    }
+  },
+  "minimum_host_free_bytes": 21474836480,
+  "capacities_must_not_be_added": true,
+  "prior_failed_attempt": "statvfs overlay returned PermissionError before any remote command or output write",
+  "guest_storage_exit_code": 0,
+  "guest_storage_stdout": "Filesystem                1B-blocks        Used   Available Use% Mounted on\n/dev/mapper/centos-home 93382512640 32596955136 60785557504  35% /home\nsda  536870912000\n",
+  "guest_storage_stderr": "/etc/profile.d/lang.sh: line 29: warning: setlocale: LC_TIME: cannot change locale (en_US.UTF-8)\n",
+  "guest_storage_command": [
+    "ssh",
+    "-F",
+    "/etc/tcad-centos79/ssh_config",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ConnectTimeout=8",
+    "tcad-guest-sim",
+    "df -B1 /home; lsblk -bdn -o NAME,SIZE"
+  ],
+  "guest_unobserved_is_not_solver_failure": true
+}

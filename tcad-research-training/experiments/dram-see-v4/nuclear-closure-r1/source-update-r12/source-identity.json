@@ -1,0 +1,18 @@
+{
+  "candidate": {
+    "path": "experiments/dram-see-v4/nuclear-closure-r1/source-update-r12/source_kernel_r12.hpp",
+    "sha256": "7fccf1497de68fb3ce993c02b00ac4ca324f4f9ee5b5065f367c0533a82c7383"
+  },
+  "execution_enabled": false,
+  "namespace_byte_identical": true,
+  "namespace_sha256": "5dc8438676d5b6323882bcbb41ecab20ad0585a6ceb5fe73513ffe82aea053b6",
+  "original": {
+    "path": "experiments/dram-see-v4/nuclear-closure-r1/pmi_source.C",
+    "sha256": "2eab722cb20b1b66258fbbcd7d02b29436c5b4b243369143d6cc83dc7de3290c"
+  },
+  "original_namespace_byte_range": [
+    450,
+    6835
+  ],
+  "schema": "nuclear-source-kernel-identity-r12"
+}

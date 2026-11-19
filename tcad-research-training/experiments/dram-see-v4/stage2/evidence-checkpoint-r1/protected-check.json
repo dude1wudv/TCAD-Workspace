@@ -1,0 +1,522 @@
+{
+  "checked_utc": "2026-10-13T12:48:54.243611+00:00",
+  "passed": true,
+  "files": [
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/models.json",
+      "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+      "actual_sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/training-data.json",
+      "sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+      "actual_sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/responses.csv",
+      "sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+      "actual_sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+      "unchanged": true
+    },
+    {
+      "path": "reports/final-r4/delivery-manifest.json",
+      "sha256": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e",
+      "actual_sha256": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/documents/course-report.tex",
+      "sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953",
+      "actual_sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/documents/research-paper.tex",
+      "sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379",
+      "actual_sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/slides/output/dram-see-v3-mentor-r4.pptx",
+      "sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+      "actual_sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+      "unchanged": true
+    },
+    {
+      "path": "reports/mentor-rewrite-r5/qa/package-manifest.json",
+      "sha256": "4fa21e87acd7386cf96035f4d3251b5f5cd4462f56564cfb9da8ca09380328e7",
+      "actual_sha256": "4fa21e87acd7386cf96035f4d3251b5f5cd4462f56564cfb9da8ca09380328e7",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/audit_probe.py",
+      "sha256": "d79c0c0989a15e074e39d6ec721b39b5430ded7d4b8f8b6c6f3de122f9fba1c1",
+      "actual_sha256": "d79c0c0989a15e074e39d6ec721b39b5430ded7d4b8f8b6c6f3de122f9fba1c1",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/build_probe.py",
+      "sha256": "3ead51ba029e642a8a1fca4dfe0ab2afa69a269a7ea4d1d2d05c1ffbd2851a00",
+      "actual_sha256": "3ead51ba029e642a8a1fca4dfe0ab2afa69a269a7ea4d1d2d05c1ffbd2851a00",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/hadronic-check.md",
+      "sha256": "90c0ac3345e55a1190d6d10dea377d974336bbbf5fbdd13b9de1ad7d5421edf9",
+      "actual_sha256": "90c0ac3345e55a1190d6d10dea377d974336bbbf5fbdd13b9de1ad7d5421edf9",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/plot_results.py",
+      "sha256": "76ccc8520068244c10093251d7d060c18852450e0cf102c713fa97b90581e3ad",
+      "actual_sha256": "76ccc8520068244c10093251d7d060c18852450e0cf102c713fa97b90581e3ad",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/preflight.py",
+      "sha256": "562ffc40fa88726e0af65d10631301eb7ae0f243a4f9e71889b0435bef69ebc2",
+      "actual_sha256": "562ffc40fa88726e0af65d10631301eb7ae0f243a4f9e71889b0435bef69ebc2",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/README-audit.md",
+      "sha256": "1710bf13b9d0eba230ab7740703510aab6f492bb9a583ce6c832b6b4dc641596",
+      "actual_sha256": "1710bf13b9d0eba230ab7740703510aab6f492bb9a583ce6c832b6b4dc641596",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/README-source.md",
+      "sha256": "bb3033bb1ecffc313d949e90abac6df216911e2d0f46227dd294c92af4e5db1f",
+      "actual_sha256": "bb3033bb1ecffc313d949e90abac6df216911e2d0f46227dd294c92af4e5db1f",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/report.md",
+      "sha256": "1dadd6f4f127738aa7fdf06a4f25f21b5087b4dc1e404674e37858faa395b5f7",
+      "actual_sha256": "1dadd6f4f127738aa7fdf06a4f25f21b5087b4dc1e404674e37858faa395b5f7",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/a0-b1-r1.json",
+      "sha256": "2187d55137b327086c56c66273f0e74c18125168b8d5ba1fc5255260500f35f3",
+      "actual_sha256": "2187d55137b327086c56c66273f0e74c18125168b8d5ba1fc5255260500f35f3",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/a1-b1-r1.json",
+      "sha256": "4d123b3b676964a257f1ea3a76107334e70761b6296bfc9ed107209f8eaa2281",
+      "actual_sha256": "4d123b3b676964a257f1ea3a76107334e70761b6296bfc9ed107209f8eaa2281",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/a4-b1-r1.json",
+      "sha256": "5f96e5a0045fbc7c4a98368ed0e6a8691061bbbb1f91dbfce38ee13fe5632608",
+      "actual_sha256": "5f96e5a0045fbc7c4a98368ed0e6a8691061bbbb1f91dbfce38ee13fe5632608",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/case-summary.csv",
+      "sha256": "1c056357a22fb11e99b3f2196c66c802cfa3e898cdcdd135a2699dbf601e07ff",
+      "actual_sha256": "1c056357a22fb11e99b3f2196c66c802cfa3e898cdcdd135a2699dbf601e07ff",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/comparison.json",
+      "sha256": "741b5435773fe115e14473c04e26e219f28ca6005a9ad953d8d6880625bd2189",
+      "actual_sha256": "741b5435773fe115e14473c04e26e219f28ca6005a9ad953d8d6880625bd2189",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/execution-freeze.json",
+      "sha256": "c5ad8760f2b812ef0a589c1b2fae98b7588c9a8944166fddc6640931b75e2c0e",
+      "actual_sha256": "c5ad8760f2b812ef0a589c1b2fae98b7588c9a8944166fddc6640931b75e2c0e",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/failures.json",
+      "sha256": "6683894af647b3d87046ddd1cd0fb3479bec86c7e1da112845c41d964daab87a",
+      "actual_sha256": "6683894af647b3d87046ddd1cd0fb3479bec86c7e1da112845c41d964daab87a",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/figure-provenance.json",
+      "sha256": "a676b0d8d0b07a4fcc1f82c37355a15550cc58fdba772f89985fac285e2c07be",
+      "actual_sha256": "a676b0d8d0b07a4fcc1f82c37355a15550cc58fdba772f89985fac285e2c07be",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/final-review.json",
+      "sha256": "cda44764464f3a57e0758bdfd05720ba52eb7e710b480031896beba88407c87b",
+      "actual_sha256": "cda44764464f3a57e0758bdfd05720ba52eb7e710b480031896beba88407c87b",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/raw-artifact-index.json",
+      "sha256": "a9b9fde6581db31f68427a81d406431bfe22efdb5fbae70038144ca538812b53",
+      "actual_sha256": "a9b9fde6581db31f68427a81d406431bfe22efdb5fbae70038144ca538812b53",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/readiness.json",
+      "sha256": "e80875a9afee56e04fd89b2e14690f625f6dac6fb7bd836c21846d8fea09667b",
+      "actual_sha256": "e80875a9afee56e04fd89b2e14690f625f6dac6fb7bd836c21846d8fea09667b",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/source-probe-curves.pdf",
+      "sha256": "130aa487df6690a638927499029c2a9c490ec449b13ed827119fa299e54bc6f1",
+      "actual_sha256": "130aa487df6690a638927499029c2a9c490ec449b13ed827119fa299e54bc6f1",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/source-probe-curves.png",
+      "sha256": "2a2b740f6b969c5f46a6bc9681cf20990cffebe0eb5868e330c0ac1d59fb1da9",
+      "actual_sha256": "2a2b740f6b969c5f46a6bc9681cf20990cffebe0eb5868e330c0ac1d59fb1da9",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/results/summary.json",
+      "sha256": "b9d5f99fd18873a3317d85409984b645ae2192a9941019006bff994968c127d3",
+      "actual_sha256": "b9d5f99fd18873a3317d85409984b645ae2192a9941019006bff994968c127d3",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/run-index.json",
+      "sha256": "74555f01c7b3b7fc5a685fbd6dbb22a774fcf0d43148345fa2adb75a4c7776f8",
+      "actual_sha256": "74555f01c7b3b7fc5a685fbd6dbb22a774fcf0d43148345fa2adb75a4c7776f8",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/run-plan.md",
+      "sha256": "1ffcf9b7630d879f0bab11b22629f66cb761bd76e882ed29aca56e6b162284f6",
+      "actual_sha256": "1ffcf9b7630d879f0bab11b22629f66cb761bd76e882ed29aca56e6b162284f6",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/run_once.py",
+      "sha256": "44d70da603c4a0e8c40a746116e728db69c3d26ff0f378f4c882d6654ecb89d7",
+      "actual_sha256": "44d70da603c4a0e8c40a746116e728db69c3d26ff0f378f4c882d6654ecb89d7",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/source_contract.json",
+      "sha256": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb",
+      "actual_sha256": "760bcf8ce2c5de8f487d1e0985112864c15e9e022ba668190479b1d1e4fb1beb",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/source-probe/test_source_probe.py",
+      "sha256": "75936b90ed16ae2d57f340d0918b7619ec8b8e5ac3b4711eeedd3b543aa1e6f4",
+      "actual_sha256": "75936b90ed16ae2d57f340d0918b7619ec8b8e5ac3b4711eeedd3b543aa1e6f4",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/audit_transport.py",
+      "sha256": "cb1b6f9c499ff429b18c71ffa63b21213c6205f7c683d120bba26a020f5f1d8f",
+      "actual_sha256": "cb1b6f9c499ff429b18c71ffa63b21213c6205f7c683d120bba26a020f5f1d8f",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/collect_record.py",
+      "sha256": "93e89d2539599dd07cdd25d13cb2a37c113bb06b035d0bba2ac125256ff7c72a",
+      "actual_sha256": "93e89d2539599dd07cdd25d13cb2a37c113bb06b035d0bba2ac125256ff7c72a",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/download_data.py",
+      "sha256": "c314a279d0fdaa736568dcd7a47d50e4e7eb88e248f0e24f91c3fb1e6faa3623",
+      "actual_sha256": "c314a279d0fdaa736568dcd7a47d50e4e7eb88e248f0e24f91c3fb1e6faa3623",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/environment-spec.json",
+      "sha256": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+      "actual_sha256": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/environment.md",
+      "sha256": "ad7fc74b7a511848016df978ffccea5f5dbff840bd6da07f845f805a96a812d4",
+      "actual_sha256": "ad7fc74b7a511848016df978ffccea5f5dbff840bd6da07f845f805a96a812d4",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/operation.py",
+      "sha256": "55d4b650b047be490a1aeb6b5c6d97c833e9bcab3c7ccbfc17ce7ee53c930d1b",
+      "actual_sha256": "55d4b650b047be490a1aeb6b5c6d97c833e9bcab3c7ccbfc17ce7ee53c930d1b",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/plot_results.py",
+      "sha256": "109eaa8373c227ba66a7ad3d0fd49e04ccc6baba46523d8918855aea30807d11",
+      "actual_sha256": "109eaa8373c227ba66a7ad3d0fd49e04ccc6baba46523d8918855aea30807d11",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/prepare_run.py",
+      "sha256": "cc6d12aa6e2ca57663708a83270800f81900a67088b10a265a076cc0c6dfe23e",
+      "actual_sha256": "cc6d12aa6e2ca57663708a83270800f81900a67088b10a265a076cc0c6dfe23e",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/probe-contract.json",
+      "sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+      "actual_sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/README-audit.md",
+      "sha256": "d39d447ca83b388eeb4347bb1984db69d5469fe5a375d4caf636486f4cc72351",
+      "actual_sha256": "d39d447ca83b388eeb4347bb1984db69d5469fe5a375d4caf636486f4cc72351",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/README-transport.md",
+      "sha256": "099990806b89b5c0cd77899f05d79cc52f89a542b118f09088cce6449b6384af",
+      "actual_sha256": "099990806b89b5c0cd77899f05d79cc52f89a542b118f09088cce6449b6384af",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/report.md",
+      "sha256": "0f9991fb23e483a539747c636d2994fb287dd0a03ab7b658385757f8d71d15eb",
+      "actual_sha256": "0f9991fb23e483a539747c636d2994fb287dd0a03ab7b658385757f8d71d15eb",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/download-record.json",
+      "sha256": "5036633538b6b38d3565e04e7e5aa759d6ccfa4cc6e889746897964ae3c1ce98",
+      "actual_sha256": "5036633538b6b38d3565e04e7e5aa759d6ccfa4cc6e889746897964ae3c1ce98",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/e-constructors.csv",
+      "sha256": "4983ce0d536639d32a0629b81d9135846d2793a766b5ecc44be4d412171e3377",
+      "actual_sha256": "4983ce0d536639d32a0629b81d9135846d2793a766b5ecc44be4d412171e3377",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/e-cuts.csv",
+      "sha256": "f6e2dce9bf072f4382e89e73696a5d3e6680d2d365bfcee11fea7d4fab3983fd",
+      "actual_sha256": "f6e2dce9bf072f4382e89e73696a5d3e6680d2d365bfcee11fea7d4fab3983fd",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/e-hadronic-models.csv",
+      "sha256": "57d29137601fad45a245e62f0f057bcf23d52311bc045c8673744cfa712decbe",
+      "actual_sha256": "57d29137601fad45a245e62f0f057bcf23d52311bc045c8673744cfa712decbe",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/e-processes.csv",
+      "sha256": "37f8fb2f5d4e91a7f5428f1129467ad36f77eb0ad7c164af00c78b0e2949bbc3",
+      "actual_sha256": "37f8fb2f5d4e91a7f5428f1129467ad36f77eb0ad7c164af00c78b0e2949bbc3",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/event-run-summary.csv",
+      "sha256": "4adb770dbaf69c22dfbfc53dc5b2c03ba21e5882f21b10af539bdb2fa719dd74",
+      "actual_sha256": "4adb770dbaf69c22dfbfc53dc5b2c03ba21e5882f21b10af539bdb2fa719dd74",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/failures.json",
+      "sha256": "d37baacad500bb98be45cc5994ab014c0c66ed6630b7e46135b67ab5e56d3bc1",
+      "actual_sha256": "d37baacad500bb98be45cc5994ab014c0c66ed6630b7e46135b67ab5e56d3bc1",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/figure-provenance.json",
+      "sha256": "6ac6bdac900feaf33d898cab6c9590bbe7eb3f6684c12f79484fb088aa6950a5",
+      "actual_sha256": "6ac6bdac900feaf33d898cab6c9590bbe7eb3f6684c12f79484fb088aa6950a5",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/final-review.json",
+      "sha256": "65ce06ef003c7d8df8f56811cad18245862d627b8864a8e504a9d48dd6b6699a",
+      "actual_sha256": "65ce06ef003c7d8df8f56811cad18245862d627b8864a8e504a9d48dd6b6699a",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/format-gate.json",
+      "sha256": "0735df2084e664d3c7030fe68ab11510d654e01f4ad944a83b3882fbab19e8b5",
+      "actual_sha256": "0735df2084e664d3c7030fe68ab11510d654e01f4ad944a83b3882fbab19e8b5",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/format-h5-a0-r1-audit.json",
+      "sha256": "33dbf31fab8ef6c0392293ac67f774cd6bf7d9f937825b730be1153d8704eb46",
+      "actual_sha256": "33dbf31fab8ef6c0392293ac67f774cd6bf7d9f937825b730be1153d8704eb46",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/h-constructors.csv",
+      "sha256": "0b89356ef93485224a39c7de9e2ac59f621b3757a5462be76078bd4b849593c6",
+      "actual_sha256": "0b89356ef93485224a39c7de9e2ac59f621b3757a5462be76078bd4b849593c6",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/h-cuts.csv",
+      "sha256": "f6e2dce9bf072f4382e89e73696a5d3e6680d2d365bfcee11fea7d4fab3983fd",
+      "actual_sha256": "f6e2dce9bf072f4382e89e73696a5d3e6680d2d365bfcee11fea7d4fab3983fd",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/h-hadronic-models.csv",
+      "sha256": "e7d2b6d2d7a1d92ed9e8071d31448a05f495be1365e2730dcac8488203630608",
+      "actual_sha256": "e7d2b6d2d7a1d92ed9e8071d31448a05f495be1365e2730dcac8488203630608",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/h-processes.csv",
+      "sha256": "0feefe8c01e135639c83faf97d820781c8cc6ff359dfc34b244b7d8714328e3e",
+      "actual_sha256": "0feefe8c01e135639c83faf97d820781c8cc6ff359dfc34b244b7d8714328e3e",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/init-e-r1-audit.json",
+      "sha256": "1269e1918e89e97905e37f2df4e352e6d69a22c7648dea9384503cd12a7ca297",
+      "actual_sha256": "1269e1918e89e97905e37f2df4e352e6d69a22c7648dea9384503cd12a7ca297",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/init-h-r2-audit.json",
+      "sha256": "a101efb2a2e81bf42bcbaaf142f33a714d75b64f9db4e6304430035b53fcef80",
+      "actual_sha256": "a101efb2a2e81bf42bcbaaf142f33a714d75b64f9db4e6304430035b53fcef80",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/initialization-gate.json",
+      "sha256": "d25bc1bc3e7d1167b9cbd466825170ae15d65d02c4c6e2032445360bd0632cc0",
+      "actual_sha256": "d25bc1bc3e7d1167b9cbd466825170ae15d65d02c4c6e2032445360bd0632cc0",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/initialization-summary.json",
+      "sha256": "15857b0bea30624c555070f0dd08806f1cfe4cae43f900ae7189c47829324df8",
+      "actual_sha256": "15857b0bea30624c555070f0dd08806f1cfe4cae43f900ae7189c47829324df8",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/installed-dataset-inventory.json",
+      "sha256": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+      "actual_sha256": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/installed-environment.sh",
+      "sha256": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+      "actual_sha256": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/miss-h-e5-a0-r1-audit.json",
+      "sha256": "d498e3b5c43e9c9bc2e91e8f5546d5e7bbe8ec3be3272f80ef0cbc654af2803f",
+      "actual_sha256": "d498e3b5c43e9c9bc2e91e8f5546d5e7bbe8ec3be3272f80ef0cbc654af2803f",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-checks.pdf",
+      "sha256": "d00f4d241eb114ea33afa4255f54519f97ddffa6c3254287d2578bf3d755a606",
+      "actual_sha256": "d00f4d241eb114ea33afa4255f54519f97ddffa6c3254287d2578bf3d755a606",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-checks.png",
+      "sha256": "74e28b3e2355bf18f8e18a105fd15522fc814ee3cc16068e9cf344d8bf19e468",
+      "actual_sha256": "74e28b3e2355bf18f8e18a105fd15522fc814ee3cc16068e9cf344d8bf19e468",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-e-e5-a0-r1-audit.json",
+      "sha256": "081334bb78d629d65c047d9160323737a7c427d98d73ab7d479eb9de772d08a8",
+      "actual_sha256": "081334bb78d629d65c047d9160323737a7c427d98d73ab7d479eb9de772d08a8",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e1-a0-r1-audit.json",
+      "sha256": "b4b41d3db9f4975ed896e82df3409997fa3adf6a42fd72af6806607e1c14a815",
+      "actual_sha256": "b4b41d3db9f4975ed896e82df3409997fa3adf6a42fd72af6806607e1c14a815",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e1-a30-r1-audit.json",
+      "sha256": "b2f3c2e396014d5746e6b129e41860a67204e9d0ad1f4e6d7feb7938e9fbeb1e",
+      "actual_sha256": "b2f3c2e396014d5746e6b129e41860a67204e9d0ad1f4e6d7feb7938e9fbeb1e",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e100-a0-r1-audit.json",
+      "sha256": "168002799a9bff64bf1808f09d98431fb3d3e8f62900f2ec60727f13115888fe",
+      "actual_sha256": "168002799a9bff64bf1808f09d98431fb3d3e8f62900f2ec60727f13115888fe",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e100-a30-r1-audit.json",
+      "sha256": "d37f10f6d25d0ef31c10cad4884ecd17c39e356351e434597c9c45cbf7bedf00",
+      "actual_sha256": "d37f10f6d25d0ef31c10cad4884ecd17c39e356351e434597c9c45cbf7bedf00",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e20-a0-r1-audit.json",
+      "sha256": "cfa8cc370e11f087dd0b1a1584f7bf965232ec40938bc4b795cc60b12889fd6f",
+      "actual_sha256": "cfa8cc370e11f087dd0b1a1584f7bf965232ec40938bc4b795cc60b12889fd6f",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e20-a30-r1-audit.json",
+      "sha256": "11a47339d0f0d5c07787256397688c1351b2b1482211cc9a6a257bab5b889b2f",
+      "actual_sha256": "11a47339d0f0d5c07787256397688c1351b2b1482211cc9a6a257bab5b889b2f",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e5-a0-r1-audit.json",
+      "sha256": "56ba5ef5ce8665f0dec25c41d2ba0b69b9e2fb4b3824b56b2341a62d57e3065a",
+      "actual_sha256": "56ba5ef5ce8665f0dec25c41d2ba0b69b9e2fb4b3824b56b2341a62d57e3065a",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/proton-h-e5-a30-r1-audit.json",
+      "sha256": "7e4480f4ba23ca791d4385c2bccd4e9b39ba56bba1cb34ec4f4887afa71200f6",
+      "actual_sha256": "7e4480f4ba23ca791d4385c2bccd4e9b39ba56bba1cb34ec4f4887afa71200f6",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/raw-artifact-index.json",
+      "sha256": "51d9d04de6c0c32b42d5ffebb77024a000d97d8e83732efd0ab2b567b34aaf32",
+      "actual_sha256": "51d9d04de6c0c32b42d5ffebb77024a000d97d8e83732efd0ab2b567b34aaf32",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/results/summary.json",
+      "sha256": "4ecded7d58f0852ab2b9cbfa30eec05d66692c3bbbceaa1f55c799a26b07df75",
+      "actual_sha256": "4ecded7d58f0852ab2b9cbfa30eec05d66692c3bbbceaa1f55c799a26b07df75",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/run-index.json",
+      "sha256": "238c4ac8140a93d29d99d6c75e1d89b531ddcb4e7319d3d9a89270716a17e65e",
+      "actual_sha256": "238c4ac8140a93d29d99d6c75e1d89b531ddcb4e7319d3d9a89270716a17e65e",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/run-plan.md",
+      "sha256": "3e9df27cfc0cad55bde80c8757090001408e54cdb2660d14fc8dbe00a16501b3",
+      "actual_sha256": "3e9df27cfc0cad55bde80c8757090001408e54cdb2660d14fc8dbe00a16501b3",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/test_transport.py",
+      "sha256": "e9c72c7453a921f26b1abdaab79371727daa9752e3fd3058ec24107cc2208d6c",
+      "actual_sha256": "e9c72c7453a921f26b1abdaab79371727daa9752e3fd3058ec24107cc2208d6c",
+      "unchanged": true
+    },
+    {
+      "path": "experiments/dram-see-v4/transport-probe/transport_probe.cc",
+      "sha256": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254",
+      "actual_sha256": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254",
+      "unchanged": true
+    }
+  ]
+}

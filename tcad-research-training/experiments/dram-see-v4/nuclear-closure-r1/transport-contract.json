@@ -1,0 +1,3262 @@
+{
+  "automatic_retry": false,
+  "binary_call_limit": 107,
+  "charged_max_step_um": 0.02,
+  "closure_revision": "nuclear-closure-r1",
+  "csv_arithmetic_tolerances": {
+    "direction_norm_abs": 1e-10,
+    "energy_abs_MeV": 1e-12,
+    "energy_relative": 1e-09,
+    "position_abs_um": 1e-09,
+    "time_abs_ns": 1e-09
+  },
+  "events_for_probability": false,
+  "geometry": {
+    "axes": {
+      "x": "source-to-drain lateral",
+      "y": "positive into silicon",
+      "z": "extruded device width"
+    },
+    "boundaries": {
+      "implementation": "Leave uncontacted outer faces without electrodes; verify native mesh contact areas and solver boundary inventory.",
+      "uncontacted_faces": "Homogeneous natural Neumann electrostatic potential boundary (zero normal potential derivative) and zero normal electron/hole current; no artificial z electrodes.",
+      "z_contact_names": [],
+      "z_faces_um": [
+        -0.5,
+        0.5
+      ]
+    },
+    "contacts": [
+      {
+        "axis": "y",
+        "coordinate_um": 0.0,
+        "face_probe_um": [
+          0.1,
+          0.0,
+          0.0
+        ],
+        "max_um": [
+          0.3,
+          0.0,
+          0.5
+        ],
+        "min_um": [
+          0.0,
+          0.0,
+          -0.5
+        ],
+        "name": "source",
+        "region": "R.Si"
+      },
+      {
+        "axis": "y",
+        "coordinate_um": 0.0,
+        "face_probe_um": [
+          0.75,
+          0.0,
+          0.0
+        ],
+        "max_um": [
+          0.85,
+          0.0,
+          0.5
+        ],
+        "min_um": [
+          0.55,
+          0.0,
+          -0.5
+        ],
+        "name": "drain",
+        "region": "R.Si"
+      },
+      {
+        "axis": "y",
+        "coordinate_um": -0.005,
+        "face_probe_um": [
+          0.425,
+          -0.005,
+          0.0
+        ],
+        "max_um": [
+          0.55,
+          -0.005,
+          0.5
+        ],
+        "min_um": [
+          0.3,
+          -0.005,
+          -0.5
+        ],
+        "name": "gate",
+        "region": "R.Ox"
+      },
+      {
+        "axis": "y",
+        "coordinate_um": 1.2,
+        "face_probe_um": [
+          0.425,
+          1.2,
+          0.0
+        ],
+        "max_um": [
+          0.85,
+          1.2,
+          0.5
+        ],
+        "min_um": [
+          0.0,
+          1.2,
+          -0.5
+        ],
+        "name": "body",
+        "region": "R.Si"
+      }
+    ],
+    "coordinate_system": "AsIs",
+    "dimension": 3,
+    "doping": {
+      "body": {
+        "region": "R.Si",
+        "species": "BoronActiveConcentration",
+        "value_cm3": 1e+17
+      },
+      "source_drain": {
+        "baselines": [
+          {
+            "id": "S.Base",
+            "max_um": [
+              0.27,
+              0.0,
+              0.5
+            ],
+            "min_um": [
+              0.0,
+              0.0,
+              -0.5
+            ]
+          },
+          {
+            "id": "D.Base",
+            "max_um": [
+              0.85,
+              0.0,
+              0.5
+            ],
+            "min_um": [
+              0.5800000000000001,
+              0.0,
+              -0.5
+            ]
+          }
+        ],
+        "depth_um": 0.12,
+        "evaluation": "Eval",
+        "lateral_gauss_factor": 0.4,
+        "peak_position_um": 0.0,
+        "peak_value_cm3": 1e+20,
+        "positive_normal": [
+          0,
+          1,
+          0
+        ],
+        "reference_window": "Closed Polygon; corner order (xmin,0,zmin),(xmin,0,zmax),(xmax,0,zmax),(xmax,0,zmin),repeat first; right-hand normal +y; Positive placement.",
+        "replace": "NoReplace",
+        "species": "ArsenicActiveConcentration",
+        "value_at_depth_cm3": 1e+17
+      },
+      "transport_rule": "Electrical dopants do not add Geant4 material species in this representative model. Transport uses the declared bulk Si and SiO2.",
+      "z_rule": "Lateral Gaussian decays only outside the primary domain (Smesh UG p182). The polygon spans the complete z width, so the inherited xy analytical profile is constant in z inside silicon. Native mesh slice verification is still required."
+    },
+    "extent_um": {
+      "max": [
+        0.85,
+        1.2,
+        0.5
+      ],
+      "min": [
+        0.0,
+        -0.005,
+        -0.5
+      ]
+    },
+    "geometry_id": "planar-l025-extruded-w100-3d-r1",
+    "material_density_status": "Nominal standard material values for the shared geometric model; actual Geant4 material inventory must match before using transport output.",
+    "material_scope": "Only explicit Si and gate oxide solids; contacts are ideal boundary conditions with zero volume, not metal layers. No unmodelled BEOL, passivation, capacitor body, polysilicon gate or surrounding package is inferred.",
+    "schema": "dram-see-v4-shared-geometry-3d-r1",
+    "solids": [
+      {
+        "density_g_cm3": 2.33,
+        "geant4_material": "G4_Si",
+        "id": "R.Si",
+        "max_um": [
+          0.85,
+          1.2,
+          0.5
+        ],
+        "min_um": [
+          0.0,
+          0.0,
+          -0.5
+        ],
+        "sde_material": "Silicon",
+        "shape": "cuboid"
+      },
+      {
+        "density_g_cm3": 2.2,
+        "geant4_material": "G4_SILICON_DIOXIDE",
+        "id": "R.Ox",
+        "max_um": [
+          0.55,
+          0.0,
+          0.5
+        ],
+        "min_um": [
+          0.3,
+          -0.005,
+          -0.5
+        ],
+        "sde_material": "Oxide",
+        "shape": "cuboid"
+      }
+    ],
+    "status": "representative extruded geometry; not a calibrated commercial DRAM or a 90 nm model",
+    "syntax_evidence": {
+      "sde_ug_pages": [
+        232,
+        242,
+        243,
+        553,
+        567,
+        568,
+        574
+      ],
+      "sdevice_ug_pages": [
+        58,
+        59
+      ],
+      "smesh_ug_pages": [
+        37,
+        175,
+        181,
+        182
+      ]
+    },
+    "tcad_ready_for_real_transport_events": false,
+    "units": {
+      "concentration": "cm^-3",
+      "density": "g/cm^3",
+      "length": "um"
+    }
+  },
+  "geometry_path": "experiments/dram-see-v4/source-interface-3d-r1/geometry-contract.json",
+  "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+  "physics": {
+    "E": "G4EmStandardPhysics_option4 + StepLimiterPhysics",
+    "H": "QGSP_BIC + ReplacePhysics(G4EmStandardPhysics_option4) + StepLimiterPhysics"
+  },
+  "production_cut_um": 0.01,
+  "requests": [
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "P0",
+      "energy_MeV": 100.0,
+      "event_count": 0,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-init-h",
+      "mode": "init",
+      "seed": 40142001,
+      "stage": "initialization",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "E",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "P0",
+      "energy_MeV": 100.0,
+      "event_count": 0,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-init-e",
+      "mode": "init",
+      "seed": 40142002,
+      "stage": "initialization",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "P0",
+      "energy_MeV": 100.0,
+      "event_count": 2,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-normal-h",
+      "mode": "normal",
+      "seed": 40142101,
+      "stage": "pilot",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "E",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "P0",
+      "energy_MeV": 100.0,
+      "event_count": 2,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-normal-e",
+      "mode": "normal",
+      "seed": 40142102,
+      "stage": "pilot",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        1.85,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "P0",
+      "energy_MeV": 100.0,
+      "event_count": 2,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-miss-h",
+      "mode": "miss",
+      "seed": 40142103,
+      "stage": "pilot",
+      "surface_position_um": null
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "E",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        1.85,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "P0",
+      "energy_MeV": 100.0,
+      "event_count": 2,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-miss-e",
+      "mode": "miss",
+      "seed": 40142104,
+      "stage": "pilot",
+      "surface_position_um": null
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N1",
+      "energy_MeV": 100.0,
+      "event_count": 1000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-000",
+      "mode": "normal",
+      "seed": 50150001,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N2",
+      "energy_MeV": 100.0,
+      "event_count": 9000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-001",
+      "mode": "normal",
+      "seed": 50150002,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-002",
+      "mode": "normal",
+      "seed": 50150003,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-003",
+      "mode": "normal",
+      "seed": 50150004,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-004",
+      "mode": "normal",
+      "seed": 50150005,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-005",
+      "mode": "normal",
+      "seed": 50150006,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-006",
+      "mode": "normal",
+      "seed": 50150007,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-007",
+      "mode": "normal",
+      "seed": 50150008,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-008",
+      "mode": "normal",
+      "seed": 50150009,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-009",
+      "mode": "normal",
+      "seed": 50150010,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N3",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-010",
+      "mode": "normal",
+      "seed": 50150011,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-011",
+      "mode": "normal",
+      "seed": 50150012,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-012",
+      "mode": "normal",
+      "seed": 50150013,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-013",
+      "mode": "normal",
+      "seed": 50150014,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-014",
+      "mode": "normal",
+      "seed": 50150015,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-015",
+      "mode": "normal",
+      "seed": 50150016,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-016",
+      "mode": "normal",
+      "seed": 50150017,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-017",
+      "mode": "normal",
+      "seed": 50150018,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-018",
+      "mode": "normal",
+      "seed": 50150019,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-019",
+      "mode": "normal",
+      "seed": 50150020,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-020",
+      "mode": "normal",
+      "seed": 50150021,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-021",
+      "mode": "normal",
+      "seed": 50150022,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-022",
+      "mode": "normal",
+      "seed": 50150023,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-023",
+      "mode": "normal",
+      "seed": 50150024,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-024",
+      "mode": "normal",
+      "seed": 50150025,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-025",
+      "mode": "normal",
+      "seed": 50150026,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-026",
+      "mode": "normal",
+      "seed": 50150027,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-027",
+      "mode": "normal",
+      "seed": 50150028,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-028",
+      "mode": "normal",
+      "seed": 50150029,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-029",
+      "mode": "normal",
+      "seed": 50150030,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-030",
+      "mode": "normal",
+      "seed": 50150031,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-031",
+      "mode": "normal",
+      "seed": 50150032,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-032",
+      "mode": "normal",
+      "seed": 50150033,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-033",
+      "mode": "normal",
+      "seed": 50150034,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-034",
+      "mode": "normal",
+      "seed": 50150035,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-035",
+      "mode": "normal",
+      "seed": 50150036,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-036",
+      "mode": "normal",
+      "seed": 50150037,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-037",
+      "mode": "normal",
+      "seed": 50150038,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-038",
+      "mode": "normal",
+      "seed": 50150039,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-039",
+      "mode": "normal",
+      "seed": 50150040,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-040",
+      "mode": "normal",
+      "seed": 50150041,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-041",
+      "mode": "normal",
+      "seed": 50150042,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-042",
+      "mode": "normal",
+      "seed": 50150043,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-043",
+      "mode": "normal",
+      "seed": 50150044,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-044",
+      "mode": "normal",
+      "seed": 50150045,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-045",
+      "mode": "normal",
+      "seed": 50150046,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-046",
+      "mode": "normal",
+      "seed": 50150047,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-047",
+      "mode": "normal",
+      "seed": 50150048,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-048",
+      "mode": "normal",
+      "seed": 50150049,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-049",
+      "mode": "normal",
+      "seed": 50150050,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-050",
+      "mode": "normal",
+      "seed": 50150051,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-051",
+      "mode": "normal",
+      "seed": 50150052,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-052",
+      "mode": "normal",
+      "seed": 50150053,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-053",
+      "mode": "normal",
+      "seed": 50150054,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-054",
+      "mode": "normal",
+      "seed": 50150055,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-055",
+      "mode": "normal",
+      "seed": 50150056,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-056",
+      "mode": "normal",
+      "seed": 50150057,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-057",
+      "mode": "normal",
+      "seed": 50150058,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-058",
+      "mode": "normal",
+      "seed": 50150059,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-059",
+      "mode": "normal",
+      "seed": 50150060,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-060",
+      "mode": "normal",
+      "seed": 50150061,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-061",
+      "mode": "normal",
+      "seed": 50150062,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-062",
+      "mode": "normal",
+      "seed": 50150063,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-063",
+      "mode": "normal",
+      "seed": 50150064,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-064",
+      "mode": "normal",
+      "seed": 50150065,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-065",
+      "mode": "normal",
+      "seed": 50150066,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-066",
+      "mode": "normal",
+      "seed": 50150067,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-067",
+      "mode": "normal",
+      "seed": 50150068,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-068",
+      "mode": "normal",
+      "seed": 50150069,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-069",
+      "mode": "normal",
+      "seed": 50150070,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-070",
+      "mode": "normal",
+      "seed": 50150071,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-071",
+      "mode": "normal",
+      "seed": 50150072,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-072",
+      "mode": "normal",
+      "seed": 50150073,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-073",
+      "mode": "normal",
+      "seed": 50150074,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-074",
+      "mode": "normal",
+      "seed": 50150075,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-075",
+      "mode": "normal",
+      "seed": 50150076,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-076",
+      "mode": "normal",
+      "seed": 50150077,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-077",
+      "mode": "normal",
+      "seed": 50150078,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-078",
+      "mode": "normal",
+      "seed": 50150079,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-079",
+      "mode": "normal",
+      "seed": 50150080,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-080",
+      "mode": "normal",
+      "seed": 50150081,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-081",
+      "mode": "normal",
+      "seed": 50150082,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-082",
+      "mode": "normal",
+      "seed": 50150083,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-083",
+      "mode": "normal",
+      "seed": 50150084,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-084",
+      "mode": "normal",
+      "seed": 50150085,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-085",
+      "mode": "normal",
+      "seed": 50150086,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-086",
+      "mode": "normal",
+      "seed": 50150087,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-087",
+      "mode": "normal",
+      "seed": 50150088,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-088",
+      "mode": "normal",
+      "seed": 50150089,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-089",
+      "mode": "normal",
+      "seed": 50150090,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-090",
+      "mode": "normal",
+      "seed": 50150091,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-091",
+      "mode": "normal",
+      "seed": 50150092,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-092",
+      "mode": "normal",
+      "seed": 50150093,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-093",
+      "mode": "normal",
+      "seed": 50150094,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-094",
+      "mode": "normal",
+      "seed": 50150095,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-095",
+      "mode": "normal",
+      "seed": 50150096,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-096",
+      "mode": "normal",
+      "seed": 50150097,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-097",
+      "mode": "normal",
+      "seed": 50150098,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-098",
+      "mode": "normal",
+      "seed": 50150099,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-099",
+      "mode": "normal",
+      "seed": 50150100,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "angle_deg": 0.0,
+      "arm": "H",
+      "beam_direction": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "beam_position_um": [
+        0.7,
+        -1.005,
+        0.0
+      ],
+      "closure_stage": "N4",
+      "energy_MeV": 100.0,
+      "event_count": 10000,
+      "geometry_id": "planar-l025-extruded-w100-3d-r1",
+      "geometry_sha256": "3fb882383484e35445192b23169981d0061b650b06c64f132d1fb4ba63fd755d",
+      "label": "nc-r1-h-100",
+      "mode": "normal",
+      "seed": 50150101,
+      "stage": "fixed",
+      "surface_position_um": [
+        0.7,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "requires_native_dynamic_ion_inventory": true,
+  "retry_limit": 2,
+  "schema": "dram-see-v4-matched-transport-contract-r1",
+  "scope": "Fixed natural nuclear witness stages in the identical representative device geometry; no rate inference",
+  "step_limit_scope": "all declared device solids; charged particles only",
+  "tcad_mapping": false,
+  "total_primary_events": 1000008,
+  "world_half_um": [
+    10.85,
+    11.2,
+    10.5
+  ],
+  "world_material": "G4_Galactic",
+  "world_rule": "Origin-centred vacuum cuboid: max absolute entity coordinate + 10 um per axis"
+}

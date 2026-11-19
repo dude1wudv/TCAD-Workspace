@@ -1,0 +1,53 @@
+{
+  "schema": "dram-see-v3",
+  "label": "l035-alpha-a30-s202610394",
+  "gate_length_um": 0.35,
+  "particle": "alpha",
+  "energy_MeV": 5.0,
+  "angle_deg": 30,
+  "seed": 202610394,
+  "event_count": 1,
+  "surface_impact_um": [
+    0.8,
+    0.0,
+    0.0
+  ],
+  "launch_position_um": [
+    0.8005773502691896,
+    -0.001,
+    0.0
+  ],
+  "direction": [
+    -0.49999999999999994,
+    0.8660254037844387,
+    0.0
+  ],
+  "exit_position_um": [
+    0.10717967697244934,
+    1.2,
+    0.0
+  ],
+  "exit_boundary": "bottom",
+  "conversion_eV_per_pair": 3.6,
+  "converted": [
+    {
+      "event": 0,
+      "ionizing_MeV": 0.209756607798359,
+      "charge_pc": 0.009335198217823137,
+      "track_length_um": 1.3856406460551016,
+      "let_pc_per_um": 0.00673709900499838
+    }
+  ],
+  "source_sha256": "8f3ec870dad0905be7516bf657ed033d8cf5c5ade7cef938a941622b2f483ce2",
+  "binary_sha256": "830cd8480bc11a27b243f6662d0e64a71d5b382a45bfd1e80f8e199bfdfdb67f",
+  "files_sha256": {
+    "steps.csv": "c297f37394d57df1b8f57f84e0997856d54b7ecbde7a34472f2dade9afde3a56",
+    "events.csv": "96759238c81795955d2ecc2cd05f2626f5e6212c730b963e6f156202a9870ef9"
+  },
+  "operation_exit_code": 0,
+  "collection_exit_code": 0,
+  "operation_label": "g4-l035-alpha-a30-s202610394",
+  "operation_archive_sha256": "67e2c664cd8cc68ceb18fc6d11df4fa6602759c16aeebb2c2f078bbf9b5c8ded",
+  "command": "${V1_INSTALLED_ROOT}/build/transport 0.35 alpha 5 30 202610394 1",
+  "scope": "one predeclared independent silicon event; EM-only; uniform equivalent straight track; no oxide transport"
+}

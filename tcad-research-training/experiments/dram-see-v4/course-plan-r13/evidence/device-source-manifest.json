@@ -1,0 +1,85 @@
+{
+  "schema": "dram-see-v4-device-source-manifest-v1",
+  "task_id": "R13-BCAT-EVIDENCE",
+  "retrieved_utc_date": "2026-10-16",
+  "status": "evidence_complete_pending_parent_acceptance",
+  "selected_branch": "lee2020_figure2c_asymmetry_bcat",
+  "model_execution_authorized_by_this_file": false,
+  "cache_root_repo_relative": "local_runtime/dram-see-v4/course-plan-r13/device-evidence",
+  "sources": [
+    {
+      "id": "lee2020",
+      "doi": "10.3390/electronics9111908",
+      "title": "Partial Isolation Type Buried Channel Array Transistor (Pi-BCAT) for a Sub-20 nm DRAM Cell Transistor",
+      "authors": ["Jin-sung Lee", "Jin-hyo Park", "Geon Kim", "Hyun Duck Choi", "Myoung Jin Lee"],
+      "published_date": "2020-11-13",
+      "publisher_page": "https://www.mdpi.com/2079-9292/9/11/1908",
+      "pdf": {
+        "url": "https://mdpi-res.com/d_attachment/electronics/electronics-09-01908/article_deploy/electronics-09-01908.pdf",
+        "filename": "electronics-09-01908.pdf",
+        "http_status": 200,
+        "bytes": 8784190,
+        "sha256": "29553c99e5861dd99168bc4ea76d894b2b06de87670f7fb545a8fa2198a1fb1a",
+        "pages": 14
+      },
+      "xml": {
+        "url": "https://mdpi-res.com/d_attachment/electronics/electronics-09-01908/article_deploy/electronics-09-01908.xml",
+        "filename": "electronics-09-01908.xml",
+        "http_status": 200,
+        "bytes": 78074,
+        "sha256": "a7389b6602962ead40d36bdeb53e324ea75e5a791da1cc0bee49c0fe3839ac5e"
+      },
+      "pdf_text": "electronics-09-01908-layout.txt",
+      "xml_extract": "electronics-09-01908-xml-extract.txt",
+      "rendered_pages": [2, 3, 4, 5, 6, 12],
+      "visually_inspected_pages": [2, 3, 4, 5, 12],
+      "render_dpi": 150,
+      "render_filename_pattern": "2020-page-{page:02d}.png",
+      "selected_branch_locator": "PDF p3 Figure 2(c); XML sec2-electronics-09-01908",
+      "electrical_table_locator": "PDF p12 Table 1; XML electronics-09-01908-t001",
+      "native_deck_available": false,
+      "experimental_calibration_verified": false
+    },
+    {
+      "id": "kim2024",
+      "doi": "10.3390/electronics13040681",
+      "title": "Mitigating WL-to-WL Disturbance in Dynamic Random-Access Memory (DRAM) through Adopted Spherical Shallow Trench Isolation with Silicon Nitride Layer in the Buried Channel Array Transistor (BCAT)",
+      "authors": ["Yeon-Seok Kim", "Chang-Young Lim", "Min-Woo Kwon"],
+      "published_date": "2024-02-07",
+      "publisher_page": "https://www.mdpi.com/2079-9292/13/4/681",
+      "pdf": {
+        "url": "https://mdpi-res.com/d_attachment/electronics/electronics-13-00681/article_deploy/electronics-13-00681.pdf",
+        "filename": "electronics-13-00681.pdf",
+        "http_status": 200,
+        "bytes": 3358642,
+        "sha256": "e3aefa08bf80a47a79fe0998e19ba23c815018da86dcf3e3d0cb9e416381f59d",
+        "pages": 11
+      },
+      "xml": {
+        "url": "https://mdpi-res.com/d_attachment/electronics/electronics-13-00681/article_deploy/electronics-13-00681.xml",
+        "filename": "electronics-13-00681.xml",
+        "http_status": 200,
+        "bytes": 59076,
+        "sha256": "907e6fc7f3d351ac79a1ef0ce3ca02d7a4df9f64ca1b350611fd8db487fb52c3"
+      },
+      "pdf_text": "electronics-13-00681-layout.txt",
+      "xml_extract": "electronics-13-00681-xml-extract.txt",
+      "rendered_pages": [3],
+      "visually_inspected_pages": [3],
+      "render_dpi": 150,
+      "render_filename_pattern": "2024-page-{page:02d}.png",
+      "geometry_table_locator": "PDF p3 Table 1; XML electronics-13-00681-t001",
+      "use": "advanced_bcat_context_and_separate_comparator_only",
+      "native_deck_available": false,
+      "experimental_calibration_verified": false
+    }
+  ],
+  "access_and_extraction_notes": [
+    "Browser fetches of the publisher article pages returned HTTP 429; public publisher static PDF and XML attachments were retrieved successfully by PowerShell Invoke-WebRequest.",
+    "No PDFs were present in project papers/ or literature/; these two directed publisher downloads supplied the source corpus.",
+    "Bundled pdftotext.exe was absent at the probed path. Existing bundled pypdf extracted 14 and 11 pages successfully.",
+    "An initial XML console print failed on GBK encoding of U+2212; UTF-8 retry completed both XML extracts.",
+    "All numerical source data were checked against publisher PDF/XML; selected diagrams and axes were visually inspected. No source native simulation deck was obtained or executed."
+  ],
+  "unperformed": ["SDE", "SDevice", "Geant4", "SSH", "compilation", "training", "software_installation", "budget_update", "publishing"]
+}

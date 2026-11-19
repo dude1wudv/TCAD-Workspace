@@ -1,0 +1,196 @@
+{
+  "schema": "source-field-audit-3d-r1-contract",
+  "dimension": 3,
+  "source_cases": [
+    "A0",
+    "A1"
+  ],
+  "window_s": [
+    9.5e-10,
+    1.05e-09
+  ],
+  "conversion": {
+    "elementary_charge_C": 1.602176634e-19,
+    "um3_to_cm3": 1e-12,
+    "C_to_fC": 1000000000000000.0
+  },
+  "normalization": "Native volume integral only; no effective 2D thickness and no AreaFactor multiplier",
+  "native_fields": {
+    "G": "HeavyIonGeneration",
+    "ONE": "SFA3D_One",
+    "XG": "SFA3D_XG",
+    "YG": "SFA3D_YG",
+    "ZG": "SFA3D_ZG"
+  },
+  "rois_um6": {
+    "Total": [
+      0,
+      0,
+      -0.5,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "Left": [
+      0,
+      0,
+      -0.5,
+      0.425,
+      1.2,
+      0.5
+    ],
+    "Right": [
+      0.425,
+      0,
+      -0.5,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "Center": [
+      0.395,
+      0,
+      -0.5,
+      0.455,
+      1.2,
+      0.5
+    ],
+    "Low": [
+      0,
+      0,
+      -0.5,
+      0.85,
+      0.45,
+      0.5
+    ],
+    "Middle": [
+      0,
+      0.45,
+      -0.5,
+      0.85,
+      0.75,
+      0.5
+    ],
+    "High": [
+      0,
+      0.75,
+      -0.5,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "LowerLeft": [
+      0,
+      0,
+      -0.5,
+      0.425,
+      0.6,
+      0.5
+    ],
+    "UpperLeft": [
+      0,
+      0.6,
+      -0.5,
+      0.425,
+      1.2,
+      0.5
+    ],
+    "ZNegative": [
+      0,
+      0,
+      -0.5,
+      0.85,
+      1.2,
+      0
+    ],
+    "ZPositive": [
+      0,
+      0,
+      0,
+      0.85,
+      1.2,
+      0.5
+    ],
+    "CenterTube": [
+      0.395,
+      0,
+      -0.03,
+      0.455,
+      1.2,
+      0.03
+    ]
+  },
+  "partitions": [
+    [
+      "Left",
+      "Right"
+    ],
+    [
+      "Low",
+      "Middle",
+      "High"
+    ],
+    [
+      "LowerLeft",
+      "UpperLeft",
+      "Right"
+    ],
+    [
+      "ZNegative",
+      "ZPositive"
+    ]
+  ],
+  "tube_definition": "Rectangular observation tube: |x-0.425|<=0.03 um and |z|<=0.03 um, full silicon y extent. This is not a cylindrical source or a new source width.",
+  "audit_tolerances": {
+    "source_relative": 0.05,
+    "zero_charge_fC": 1e-06,
+    "final_time_abs_s": 1e-18,
+    "roi_fraction_abs": 0.05,
+    "partition_relative": 0.05,
+    "centroid_abs_um": 0.01,
+    "time_centroid_abs_s": 5e-13,
+    "generation_waveform_relative": 0.05,
+    "active_generation_fraction": 0.001,
+    "offline_charge_abs_fC": 1e-06,
+    "offline_charge_relative": 0.001
+  },
+  "units": {
+    "G_integral": "um^3 cm^-3 s^-1",
+    "moment_integral": "um^4 cm^-3 s^-1",
+    "ONE_integral": "um^3",
+    "coordinates": "um"
+  },
+  "native_api_evidence": {
+    "private_document": "local_runtime/vdmos-tid-training/references/svisual_ug-installed-private.pdf",
+    "edition": "W-2024.09",
+    "pages": [
+      237,
+      309,
+      310,
+      426
+    ],
+    "claim": "integrate_field applies to 2D and 3D plots; a six-number window is xmin ymin zmin xmax ymax zmax; returndomain is volume for 3D",
+    "sha256": "760ed0b33b1d9cff837442d0d28db3aeda59fca03666f5089bfe865ad96acf3e"
+  },
+  "limits": [
+    "Native integration API verified from installed licensed guide; no native 3D extraction execution is claimed until the pilot runs.",
+    "Only the frozen A0/A1 artificial source is implemented; arbitrary real tracks, point deposition and nonzero direction-z are not accepted by this revision.",
+    "Field audit alone does not validate mesh convergence, circuit response, matched A0, device calibration or nuclear coupling.",
+    "Missing A0 HeavyIonGeneration is structural zero evidence, never a measured numerical zero.",
+    "Native node-field integration is not a solver control-volume integral."
+  ],
+  "frozen_library_sha256": {
+    "experiments/dram-see-v4/source-probe/audit_probe.py": "d79c0c0989a15e074e39d6ec721b39b5430ded7d4b8f8b6c6f3de122f9fba1c1",
+    "experiments/dram-see-v3/r50-main/audit.py": "acf560c69d7ae849cd6ccc7d136da286f12e32ec94b1e886aa114430b8332bc7",
+    "experiments/dram-see-v3/r50-main/metrics.py": "911daf34a0238ab14f3d3949d2b647a3a2d8dbb976ef9a28f34ff19896764187",
+    "experiments/dram-see-v4/source-interface-r3/audit_interface.py": "479199fdb1d9e100a39847456038d4e8a808652496433688a648eabd863e0396",
+    "experiments/dram-see-v4/source-interface-r3/build_interface.py": "98c327b3230a7402694a7b2ce7db6376509cd6638b916e16ed2cc60404c79bd5",
+    "experiments/dram-see-v4/source-interface-r3/oracle.py": "718c4903de8cc68cdaa5c7e36bdb56d2b9f690b9016df082b745f7ca62862fdf",
+    "experiments/dram-see-v4/source-interface-r2/audit_interface.py": "2b6f81290ed894c377fbd0781444e86de50992aa0919212e28d088371c31230f",
+    "experiments/dram-see-v4/source-interface-r2/build_interface.py": "039ab97397e344145eca77c38018e5c50dd515083f59257a064dd34eab9fa53f",
+    "experiments/dram-see-v4/source-interface-r2/source_contract.json": "41bea845de61349d864bd28c7e7eb21e66894cfeeb73364c27a39fc6285844cd",
+    "experiments/dram-see-v4/source-interface-r3/source_contract.json": "d865e7d25ab79fb9bc3e78721e3f47f248bac68959b3e03e3e81555101094d1f",
+    "experiments/dram-see-v4/source-field-audit-r2/audit_fields.py": "5269653bccfabf0a30bd1d839d357fa5df9f5f738edd49df40b93c472d6d0272",
+    "experiments/dram-see-v4/source-field-audit-r2/field_contract.json": "8fb5d56e958b6b861d7af360a30cb315fcb7c6a262af32d6a75b92ca81c9115f"
+  }
+}

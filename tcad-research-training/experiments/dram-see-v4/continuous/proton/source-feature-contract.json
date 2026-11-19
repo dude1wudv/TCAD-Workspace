@@ -1,0 +1,25 @@
+{
+  "schema": "continuous-particle-source-feature-contract-v1",
+  "feature_order": ["source_present", "Q_Si_fC", "M_x_fC_um", "M_y_fC_um", "M_z_fC_um", "M_xx_fC_um2", "M_xy_fC_um2", "M_xz_fC_um2", "M_yy_fC_um2", "M_yz_fC_um2", "M_zz_fC_um2", "M_t_fC_ps", "M_tt_fC_ps2"],
+  "units": {"source_present": "1", "Q_Si_fC": "fC", "M_x_fC_um": "fC um", "M_y_fC_um": "fC um", "M_z_fC_um": "fC um", "M_xx_fC_um2": "fC um^2", "M_xy_fC_um2": "fC um^2", "M_xz_fC_um2": "fC um^2", "M_yy_fC_um2": "fC um^2", "M_yz_fC_um2": "fC um^2", "M_zz_fC_um2": "fC um^2", "M_t_fC_ps": "fC ps", "M_tt_fC_ps2": "fC ps^2"},
+  "definitions": {
+    "domain": "Exact prescribed finite silicon material mask; integrate all time without tail renormalization",
+    "Q": "integral_Si integral_R dQ(r,t)",
+    "M_i": "integral (r_i-r0_i) dQ over finite Si and all time",
+    "M_ij": "integral (r_i-r0_i)(r_j-r0_j) dQ over finite Si and all time",
+    "M_t": "integral ((t-epoch_s)/1e-12) dQ over finite Si and all time",
+    "M_tt": "integral ((t-epoch_s)/1e-12)^2 dQ over finite Si and all time",
+    "source_present": "1 for an explicitly prescribed positive source; 0 only for explicitly absent or zero input source, never for missing inputs or failed integration",
+    "normalization": "None: charge-weighted raw moments, never divide features by Q",
+    "zero_interpretation": "All 13 features are zero; explanatory centroid/covariance/time variance are null; no claim of measured native zero"
+  },
+  "origins": {"proton_r0": "Original request.json target_um, not measured native track position", "proton_epoch": "Source-contract input epoch_s", "alpha_r0": "Input model.alpha.position_nm / 1000", "alpha_epoch": "Input model.alpha.time_center_ns / 1e9"},
+  "kernels": {
+    "proton": "Sum original positive Si ionizing-step charges times uniform segment-u convolution of normalized isotropic 3D Gaussian exp(-r^2/w^2), w=0.03um, and Gaussian time sigma=2ps; includes all zero-length and late source rows",
+    "alpha": "Original 101-node 5MeV ASTAR electronic LET LUT, linearly interpolated along z=0..1um, times normalized transverse exp(-rho^2/w^2)/(pi w^2), w=0.05um, and common Gaussian time sigma=0.2ps; no longitudinal Gaussian convolution"
+  },
+  "numerics": {"normalized_absolute": 1e-11, "relative": 1e-8, "refinement_factor": 0.25, "feature_refinement_gate": "abs(delta)<=100*normalized_absolute*max(1,allocated_charge_fC)+10*relative*abs(refined_value), with numbers expressed in each declared feature unit", "interpretation": "Numerical repeatability evidence, not a rigorous error bound or native source qualification"},
+  "permitted_inputs": ["Original Geant4 complete-event source rows", "Original ASTAR table", "Prescribed source includes and parameters", "Input geometry and model source parameters", "Pure independent reference implementation"],
+  "prohibited_dependencies": ["Actual accepted BE clock", "TCAD HeavyIonGeneration or any field", "Native generated or collected charge", "DeltaV or endpoint response", "Stored-bit-dependent response", "Training fit or output statistics"],
+  "scope": "Current S2 only; conditional device-response surrogate given prescribed source summary and device conditions; no energy-angle-only stochastic event or population risk prediction"
+}

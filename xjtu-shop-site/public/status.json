@@ -1,0 +1,22 @@
+{
+  "generated_at": "2026-11-16T00:00:00Z",
+  "overall": "operational",
+  "services": [
+    {
+      "id": "research-site",
+      "state": "operational",
+      "checked_at": "2026-11-16T00:00:00Z"
+    },
+    {
+      "id": "tcad-controller",
+      "state": "operational",
+      "checked_at": "2026-11-16T00:00:00Z"
+    },
+    {
+      "id": "simulation-runtime",
+      "state": "operational",
+      "checked_at": "2026-11-16T00:00:00Z"
+    }
+  ],
+  "maintenance": null
+}

@@ -1,0 +1,11 @@
+{
+  "measured_data_only": true,
+  "classification_generated": false,
+  "input_sha256": {
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r3\\audits\\r3-a1-b1-base-r1\\audit.json": "5032f357344843e8a9ce31070316a0eabc8c96f40f994658c08752b1061aed84",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r3\\audits\\r3-a1-b1-base-r1\\device.csv": "a115af169c91ba1e7ca5d4e251d401e43a28f1ff20855322bd1136683bcd93b8",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r3\\audits\\r3-a1-b1-base-r1\\circuit.csv": "32b447ff0a01f57e3d4b5138d4abfd8497f141e0e20a418b586cfe49df62b336",
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\source-interface-r2\\audits\\r2-a0-b1-base-r1\\circuit.csv": "0da287ad061470b2a2cf0977b8d0d9387c3e6ad42c6b9ce3dd2b63791c869d77",
+    "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v4\\stage2\\plot_source_measurement.py": "6724c24c7dd1be128646c26bb719a96abf3f38c9225661f943ba87f8b6afb754"
+  }
+}

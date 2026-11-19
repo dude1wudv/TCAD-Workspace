@@ -1,0 +1,4 @@
+interface:
+  display_name: "ARIS Anything"
+  short_description: "ARIS research workflow index"
+  default_prompt: "Use ARIS-Anything to route this research task to the smallest relevant ARIS workflow."

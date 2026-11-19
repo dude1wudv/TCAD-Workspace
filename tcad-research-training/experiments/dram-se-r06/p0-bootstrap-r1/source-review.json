@@ -1,0 +1,12 @@
+{
+  "status": "passed_source_transform_only",
+  "original_sha256": "6c2360c8b75840561fb61a61dccc8fddde0d4e14061f65cbd1a6f748bdb77b75",
+  "patched_sha256": "3d735507c8d7f976c217bcb2c6eb679bae70fb426f99adca0959a9e6a7a6c549",
+  "log_version": "r06-o2-global-r1",
+  "physical_and_solver_code_unchanged": true,
+  "callback_detail_limit_per_plugin_image": 512,
+  "initialization_detail_limit_per_plugin_image": 4,
+  "progress_policy": "powers of two >=1024; callback count, never accepted steps",
+  "errors_suppressed": false,
+  "native_compilation_or_execution_verified": false
+}

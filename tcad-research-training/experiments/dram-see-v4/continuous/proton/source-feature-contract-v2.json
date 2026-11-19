@@ -1,0 +1,30 @@
+{
+  "schema": "continuous-particle-source-feature-contract-v2",
+  "version_id": "v2-alpha-surface",
+  "feature_order": ["source_present", "Q_Si_fC", "M_x_fC_um", "M_y_fC_um", "M_z_fC_um", "M_xx_fC_um2", "M_xy_fC_um2", "M_xz_fC_um2", "M_yy_fC_um2", "M_yz_fC_um2", "M_zz_fC_um2", "M_t_fC_ps", "M_tt_fC_ps2"],
+  "units": {"source_present": "1", "Q_Si_fC": "fC", "M_x_fC_um": "fC um", "M_y_fC_um": "fC um", "M_z_fC_um": "fC um", "M_xx_fC_um2": "fC um^2", "M_xy_fC_um2": "fC um^2", "M_xz_fC_um2": "fC um^2", "M_yy_fC_um2": "fC um^2", "M_yz_fC_um2": "fC um^2", "M_zz_fC_um2": "fC um^2", "M_t_fC_ps": "fC ps", "M_tt_fC_ps2": "fC ps^2"},
+  "definitions": {
+    "domain": "Exact input finite silicon material mask; all time, without tail renormalization",
+    "Q": "integral_Si integral_R dQ(r,t)",
+    "M_i": "integral (r_i-r0_i) dQ over finite Si and all time",
+    "M_ij": "integral (r_i-r0_i)(r_j-r0_j) dQ over finite Si and all time",
+    "M_t": "integral ((t-epoch_s)/1e-12) dQ over finite Si and all time",
+    "M_tt": "integral ((t-epoch_s)/1e-12)^2 dQ over finite Si and all time",
+    "source_present": "1 for this explicitly prescribed positive alpha source; missing inputs or failed integration never become zero",
+    "normalization": "None: charge-weighted raw moments, never divide features by Q",
+    "zero_interpretation": "An explicitly supported zero source would have all-zero raw features and null explanatory moments; this alpha v2 builder currently accepts amplitude 1 only"
+  },
+  "origins": {"alpha_r0": "Input source-request.position_um, checked against model.alpha.position_nm / 1000", "alpha_epoch": "Input source-request.epoch_s, checked against model.alpha.time_center_ns / 1e9"},
+  "kernel": {
+    "spatial": "Piecewise-linear original ASTAR-derived electronic line charge on actual finite ray-box path 0<=s<=L, times exp(-(u^2+v^2)/w^2)/(pi*w^2), w=0.05um, in orthonormal ray coordinates; finite perpendicular axial end planes; no longitudinal convolution",
+    "temporal": "Common prescribed epoch 15ns, Gaussian sigma=0.2ps; relative first moment 0 and second moment Q*sigma_ps^2 at double precision; no along-track flight-time model",
+    "energy": "At modeled Si surface, 3/5/7MeV; piecewise linear Se(E), Sn(E) from bound original ASTAR; exact interval integration of dE/ds=-rho*1e-4*(Se+Sn); charge from Se only, rho=2.33g/cm^3, 3.6eV/pair",
+    "geometry": "gate_top_depth_nm=70/80/90 and sn_junction_depth_nm=82/87/92; current exact BCAT finite Si material mask and input doping agreement required",
+    "direction": "theta=0/30deg from +z, phi=180deg; d=(-sin(theta),0,cos(theta)), e_u=(cos(theta),0,sin(theta)), e_v=(0,1,0)",
+    "material_proof": "Centerline must be proven entirely Silicon by exact ray-box endpoints, x<-outer_trench_radius and y=0 in active; otherwise reject. Gaussian non-Si tails are clipped, not propagated through oxide or converted to Si charge."
+  },
+  "numerics": {"normalized_absolute": 1e-11, "relative": 1e-8, "refinement_factor": 0.25, "profile_spacing_um": 0.01, "profile_refinement_factor": 0.5, "feature_refinement_gate": "abs(delta)<=100*normalized_absolute*max(1,allocated_charge_fC)+10*relative*abs(refined_value), with numbers expressed in each declared feature unit", "lut_charge_gate": "abs(Q_LUT-Q_CSDA)<=max(1e-6fC,0.001*Q_CSDA), inherited from original alpha offline mapping criterion", "interpretation": "Quadrature repeatability and profile-resolution comparisons are numerical evidence, not rigorous error bounds or native source qualification"},
+  "permitted_inputs": ["Original pinned ASTAR silicon table", "Input model and analytic material geometry", "Explicit source request", "Deterministically derived profile, source contract and includes", "Fixed independent reference implementation"],
+  "prohibited_dependencies": ["Actual accepted BE clock", "TCAD HeavyIonGeneration or any field", "Native generated or collected charge", "DeltaV or endpoint response", "Stored-bit-dependent response", "Training fit or output statistics"],
+  "scope": "Conditional device-response surrogate given prescribed source summary and device conditions; Si-surface alpha model only, no commercial stack propagation or population risk. V2 is not registered with the v1 dispatcher or device/data admission by this implementation."
+}

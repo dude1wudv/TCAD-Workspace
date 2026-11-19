@@ -1,0 +1,538 @@
+{
+  "schema": "dram-see-v4-transport-audit-v1",
+  "mode": "events",
+  "run_dir": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v4\\transport-probe\\runs\\proton-e-e5-a0-r1",
+  "passed": true,
+  "status": "TRANSPORT_RECORD_PROBE_PASSED",
+  "checks": {
+    "real_exits_and_frozen_hashes": {
+      "passed": true
+    },
+    "binary_source_environment_data_provenance": {
+      "passed": true
+    },
+    "initialized_mode_request_and_geometry": {
+      "passed": true
+    },
+    "serial_affinity": {
+      "passed": true
+    },
+    "actual_physics_inventory": {
+      "passed": true
+    },
+    "primary_events_tracks_steps_and_zero_events": {
+      "passed": true
+    },
+    "receipt_stable": {
+      "passed": true
+    }
+  },
+  "errors": [],
+  "audit_code_sha256": "cb1b6f9c499ff429b18c71ffa63b21213c6205f7c683d120bba26a020f5f1d8f",
+  "tolerances": {
+    "energy_abs_MeV": 1e-12,
+    "energy_relative": 1e-09,
+    "time_abs_ns": 1e-09,
+    "position_abs_um": 1e-09,
+    "direction_norm_abs": 1e-10
+  },
+  "limits": [
+    "Arithmetic and provenance validation, not Geant4 physics calibration or statistical convergence.",
+    "No full rest-mass/nuclear-excitation/escaped-energy balance is claimed.",
+    "All primary events, zero silicon deposition, all tracked descendants and all recorded steps remain in denominator.",
+    "QGSP_BIC standard neutron tracking cut at 10000 ns is retained and counted; delayed histories beyond it are outside scope.",
+    "No TCAD source mapping, joint injection, DRAM response or particle event-rate estimate."
+  ],
+  "physics_calibrated": false,
+  "full_mass_energy_conservation_verified": false,
+  "record_sha256": "35cf3d0409ba4b084bbc60e78d57c0772ab6853bf9c6f481f04c516db984c28c",
+  "run_id": "proton-e-e5-a0-r1",
+  "exit_codes": {
+    "runner_exit_code": 0,
+    "remote_exit_code": 0,
+    "collection_exit_code": 0
+  },
+  "runner_exit_code_scope": "SSH process exit; not an additional independent solver subprocess exit",
+  "raw_archive": {
+    "path": "local_runtime/dram-see-v4/transport-probe/operations/proton-e-e5-a0-r1/results.tar",
+    "sha256": "e187e12f230a510b62b95a274ebf29310ff222d9a2e2278ccff10e76abd42c50"
+  },
+  "input_sha256": {
+    "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+    "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+    "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+    "input-hashes.sha256": "331d841d23173079cf3965cfef6ad61962f2ded0a5d62c489a6e132b9b0f4676",
+    "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+    "request.json": "e116e980b46f7f3a760b6fc9888b63fab14535a019c8f48187aa186ed73603b9",
+    "task.sh": "6b02abf8ff1de0bdb8a8329a77d932ad492c8db0b9db67312b9c226855ef780c",
+    "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+    "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+  },
+  "output_sha256": {
+    "affinity.txt": "4b5cf7f7bcf6a9e32dff9fad6616d286ded9c4b287cce35012013ea753328498",
+    "constructors.csv": "c27230fdb226434d6a8908f0c30d9df9c65615dd5a27ef4d1082bf506641716f",
+    "cuts.csv": "9af2d9a96347a448de354d47142b05cadfa48d66a16b023e7755ba3aae0b52b8",
+    "dataset-inventory.json": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+    "elements.csv": "564ffc1c387ded7dafe288c4754a32005794acf706b8cb58b8d07256822371a8",
+    "environment-spec.json": "2dec9a4edf26b49d2a91a4dd6c080d0b7010b13b9b65523c56858687e6bc77a4",
+    "environment.sh": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+    "events.csv": "ae555d6a64a1808709271f76d898425f5cdff5c010bae3403392c72e3df86116",
+    "execution.log": "7ab1c54c37b948f02f90c6e45073dcbcdb29935ed584a989818de6fa87eb7bd5",
+    "exit-code.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "hadronic-models.csv": "57d29137601fad45a245e62f0f057bcf23d52311bc045c8673744cfa712decbe",
+    "input-hashes.sha256": "331d841d23173079cf3965cfef6ad61962f2ded0a5d62c489a6e132b9b0f4676",
+    "materials.csv": "c7967eeaf2b33a87451f31d3bb0430d1df919b9105a29e1b45bb4e2494267806",
+    "metadata.json": "42b6ad710acb925b5a38f49bb18e7cd134dbe57f7d6b182e5d4f524a0509db61",
+    "probe-contract.json": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+    "probe-reservation.lock": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "processes.csv": "466c05af9359d121289aba2bc7b9424c2c613b9b8845fad613cd712ee3bc5fc5",
+    "provenance.sha256": "d293b6cdf642ce9aeec97fe06066ac6cdf9ac837abc0ef9736d84ced2c28225c",
+    "request.json": "e116e980b46f7f3a760b6fc9888b63fab14535a019c8f48187aa186ed73603b9",
+    "run.sh": "9214812a4ce1cad8d50637a2f1af1e02c36defb96c12e18c0ced718814f276c5",
+    "started-utc.txt": "28c3ac44e1e16aaeee011039faaf1934907aff5204255d5f9805dd1de71a93d9",
+    "status-history.jsonl": "f32fb4edc0502ca9b927a7fb54ecebe3d727f4bea2d9d15b7c6a1d2b35141a55",
+    "status.json": "e8664fe4ff38a675c981c80f7b0d683f670cfbe7c13d68dd419042792c937690",
+    "steps.csv": "4f7c15025d3174f42136b4ead5473831843a0da2cf9b536ce754f9fc91a9faa5",
+    "task.sh": "6b02abf8ff1de0bdb8a8329a77d932ad492c8db0b9db67312b9c226855ef780c",
+    "tracks.csv": "d2c0d05ef27501e5d95ae653fd42d286c3497d054428f866353967d9beae8f0c",
+    "transport_probe": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+    "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+  },
+  "probe_contract_sha256": "cc81d03481a5f11020a334ed76c343824deb6c06966b7f759ecd4731e4cea6ce",
+  "request": {
+    "label": "proton-e-e5-a0-r1",
+    "mode": "thin",
+    "arm": "E",
+    "energy_MeV": 5,
+    "angle_deg": 0,
+    "seed": 40131301,
+    "event_count": 2,
+    "geometry_id": "v4-thin-si-l025-r1",
+    "geometry_sha256": "42981d3bd8a25459442b096ba2bff736263338f13cba6786c68af1f4ab20b7de",
+    "miss": 0,
+    "stage": "small-events"
+  },
+  "binary_evidence": "actual_local_binary_hash",
+  "binary_sha256": "24ea90c255a987a734271de3b21a22efed1ac77b50fd944e8ba4d6f868267ee2",
+  "environment_sha256": "cef690b40a4ed61118a6f3c8457d4620dae0e42afca00caa9b8a4ae605da46fe",
+  "dataset_inventory_sha256": "a3cccfcb8c6730d2378e25c1a6bc42d3aba0c7745625c87824779adce9f1c03e",
+  "source_sha256": {
+    "transport_probe.cc": "0bb75092efe41c3ac1ff53c7ae8c3b7016eedd95ae27a2baf1bcf8a0d2540254"
+  },
+  "data_binding": {
+    "required_for_arm": {
+      "G4LEDATA": "G4EMLOW7.13",
+      "G4ENSDFSTATEDATA": "G4ENSDFSTATE2.3"
+    },
+    "inventory": [
+      {
+        "env": "G4LEDATA",
+        "path": "/home/tcad/research-training/dram-see-v1/software/data-complete/G4EMLOW7.13",
+        "file_count": 11209,
+        "bytes": 489005134,
+        "content_manifest_sha256": "910435bdeb62f9951f43a78a1d81cd7fb6013f53e18a7d02b3d770ffe0917c98"
+      },
+      {
+        "env": "G4ENSDFSTATEDATA",
+        "path": "/home/tcad/research-training/dram-see-v1/software/data/G4ENSDFSTATE2.3",
+        "file_count": 3,
+        "bytes": 1788263,
+        "content_manifest_sha256": "0f632edf73f960138cce994e1213b39bcc94320860a57374cb6fc590b684d6f6"
+      },
+      {
+        "env": "G4LEVELGAMMADATA",
+        "path": "/home/tcad/research-training/dram-see-v4/software/data/PhotonEvaporation5.7",
+        "file_count": 3110,
+        "bytes": 37449830,
+        "content_manifest_sha256": "3c297e48a194d2099b5cd1ce4327ded787d9a3df7fa1f8eb43ca46563f433818"
+      },
+      {
+        "env": "G4PARTICLEXSDATA",
+        "path": "/home/tcad/research-training/dram-see-v4/software/data/G4PARTICLEXS3.1.1",
+        "file_count": 2000,
+        "bytes": 22482907,
+        "content_manifest_sha256": "f21a696fdab229815ae5a0a77cd823b24360e67f70b2da96cba27f3cb9aa1eb6"
+      }
+    ],
+    "scope": "Original recorded content-manifest hashes, not a new read of remote dataset bytes."
+  },
+  "metadata": {
+    "schema": "v4-transport-probe-r1",
+    "mode": "thin",
+    "arm": "E",
+    "energy_MeV": 5,
+    "angle_deg": 0,
+    "seed": 40131301,
+    "events_requested": 2,
+    "miss": false,
+    "geant4_version": "$Name: geant4-10-07-patch-03 $",
+    "geant4_version_number": 1073,
+    "run_manager": "G4RunManager",
+    "multithreaded_run_manager": false,
+    "requested_threads": 1,
+    "compiler": "10.2.0",
+    "rng_engine": "MixMaxRng",
+    "production_cut_um": 0.01,
+    "max_step_um": 0.02,
+    "max_step_region": "Si",
+    "step_limiter_charged_only": true,
+    "primary_particle": "proton",
+    "beam_position_um": [
+      0.7,
+      -0.001,
+      0
+    ],
+    "beam_direction": [
+      0,
+      1,
+      0
+    ],
+    "surface_position_um": [
+      0.7,
+      0,
+      0
+    ],
+    "silicon_bounds_um": {
+      "x": [
+        0,
+        0.85
+      ],
+      "y": [
+        0,
+        1.2
+      ],
+      "z": [
+        -0.5,
+        0.5
+      ]
+    },
+    "world_half_extent_um": 10,
+    "standard_neutron_time_limit_ns": null,
+    "user_track_killing": false,
+    "initialization_method": "Initialize_then_BeamOn_0",
+    "inventory_phases": [
+      "post_zero_event_init",
+      "post_events"
+    ],
+    "units": {
+      "length": "um",
+      "time": "ns",
+      "energy": "MeV",
+      "charge": "eplus",
+      "direction": "unit_vector"
+    },
+    "scope": "Interface and mechanism records only; E retains Opt4 nuclear stopping/NIEL; H retains standard 10us neutron tracking limit; no SEE probability or TCAD response",
+    "cut_semantics": "Production cut is a secondary-production range threshold, not a stop-track cutoff or max step; BeamOn(0) builds tables without particle events",
+    "ancestry_semantics": "Reconstruct creator ancestry from parent_id and creator_type/subtype; primary_hadronic_seen flags track primary type-fHadronic interactions in actual event order, not creator ancestry",
+    "output_precision_digits": 17
+  },
+  "status_record": {
+    "schema": "v4-transport-probe-status-r1",
+    "state": "COMPLETED",
+    "events_requested": 2,
+    "events_completed": 2,
+    "tracks_completed": 3,
+    "steps_recorded": 131,
+    "beam_on_called": true,
+    "initialized": true,
+    "zero_event_beam_on_called": true,
+    "nonzero_event_beam_on_called": true,
+    "physics_tables_built": true,
+    "error": null
+  },
+  "geometry": {
+    "silicon_bounds_um": {
+      "x": [
+        0,
+        0.85
+      ],
+      "y": [
+        0,
+        1.2
+      ],
+      "z": [
+        -0.5,
+        0.5
+      ]
+    },
+    "world_half_extent_um": 10,
+    "beam_position_um": [
+      0.7,
+      -0.001,
+      0
+    ],
+    "beam_direction": [
+      0,
+      1,
+      0
+    ],
+    "surface_position_um": [
+      0.7,
+      0,
+      0
+    ]
+  },
+  "serial_evidence": {
+    "run_manager": "G4RunManager",
+    "requested_threads": 1,
+    "observed_threads": [
+      1
+    ],
+    "observed_cpu_lists": [
+      "0"
+    ]
+  },
+  "physics_inventory": {
+    "constructors": [
+      {
+        "phase": "post_zero_event_init",
+        "index": "0",
+        "name": "G4EmStandard_opt4",
+        "physics_type": "2"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "index": "1",
+        "name": "stepLimiter",
+        "physics_type": "0"
+      },
+      {
+        "phase": "post_events",
+        "index": "0",
+        "name": "G4EmStandard_opt4",
+        "physics_type": "2"
+      },
+      {
+        "phase": "post_events",
+        "index": "1",
+        "name": "stepLimiter",
+        "physics_type": "0"
+      }
+    ],
+    "proton_processes": [
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "0",
+        "process": "Transportation",
+        "process_type": "1",
+        "process_subtype": "91",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "1",
+        "process": "msc",
+        "process_type": "2",
+        "process_subtype": "10",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "2",
+        "process": "hIoni",
+        "process_type": "2",
+        "process_subtype": "2",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "3",
+        "process": "hBrems",
+        "process_type": "2",
+        "process_subtype": "3",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "4",
+        "process": "hPairProd",
+        "process_type": "2",
+        "process_subtype": "4",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "5",
+        "process": "CoulombScat",
+        "process_type": "2",
+        "process_subtype": "1",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "6",
+        "process": "nuclearStopping",
+        "process_type": "2",
+        "process_subtype": "8",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "7",
+        "process": "StepLimiter",
+        "process_type": "7",
+        "process_subtype": "401",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_zero_event_init",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "8",
+        "process": "UserSpecialCut",
+        "process_type": "7",
+        "process_subtype": "402",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "0",
+        "process": "Transportation",
+        "process_type": "1",
+        "process_subtype": "91",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "1",
+        "process": "msc",
+        "process_type": "2",
+        "process_subtype": "10",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "2",
+        "process": "hIoni",
+        "process_type": "2",
+        "process_subtype": "2",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "3",
+        "process": "hBrems",
+        "process_type": "2",
+        "process_subtype": "3",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "4",
+        "process": "hPairProd",
+        "process_type": "2",
+        "process_subtype": "4",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "5",
+        "process": "CoulombScat",
+        "process_type": "2",
+        "process_subtype": "1",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "6",
+        "process": "nuclearStopping",
+        "process_type": "2",
+        "process_subtype": "8",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "7",
+        "process": "StepLimiter",
+        "process_type": "7",
+        "process_subtype": "401",
+        "hadronic_model_count": "0"
+      },
+      {
+        "phase": "post_events",
+        "particle": "proton",
+        "pdg": "2212",
+        "process_index": "8",
+        "process": "UserSpecialCut",
+        "process_type": "7",
+        "process_subtype": "402",
+        "hadronic_model_count": "0"
+      }
+    ],
+    "hadronic_models": [],
+    "energy_cut_unavailable_rows": 0,
+    "cut_scope": "Initialize plus BeamOn(0) builds tables without primary events; unavailable energy tables fail.",
+    "model_range_scope": "Reported global model limits, not material-specific coverage."
+  },
+  "event_summary": {
+    "primary_event_denominator": 2,
+    "tracks": 3,
+    "steps": 131,
+    "zero_si_events": 0,
+    "events_with_hadronic_steps": 0,
+    "track_species_counts": {
+      "proton": 2,
+      "e-": 1
+    },
+    "hadronic_creator_track_counts": {},
+    "hadronic_interaction_step_counts": {},
+    "si_ionizing_MeV": 0.019671403686874707,
+    "escaped_track_count": 2,
+    "escaped_kinetic_energy_MeV": 9.980328596313125,
+    "neutron_tracking_cut_steps": 0,
+    "neutron_tracking_cut_tracks": 0,
+    "scope": "Descriptive counts for fixed probes; no event-probability or full nuclear mass-energy closure estimate."
+  },
+  "derived_track_lineage": [
+    {
+      "event_id": 0,
+      "track_id": 1,
+      "creator_lineage_has_hadronic": false,
+      "meaning": "At least one creator process in the parent chain has Geant4 process type 4; not every post-interaction primary step."
+    },
+    {
+      "event_id": 0,
+      "track_id": 2,
+      "creator_lineage_has_hadronic": false,
+      "meaning": "At least one creator process in the parent chain has Geant4 process type 4; not every post-interaction primary step."
+    },
+    {
+      "event_id": 1,
+      "track_id": 1,
+      "creator_lineage_has_hadronic": false,
+      "meaning": "At least one creator process in the parent chain has Geant4 process type 4; not every post-interaction primary step."
+    }
+  ]
+}

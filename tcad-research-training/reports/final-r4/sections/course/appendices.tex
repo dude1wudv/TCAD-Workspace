@@ -1,0 +1,36 @@
+\section{课程要求与代理可交付材料}
+\small
+\begin{longtable}{p{0.22\textwidth}p{0.43\textwidth}p{0.27\textwidth}}
+\toprule 课程要求&本次可核查技术材料&待人工完成或适用限制\\\midrule
+\endfirsthead\toprule 课程要求&本次可核查技术材料&待人工完成或适用限制\\\midrule\endhead
+DRAM、SEE与AI方法&第1至4章、公式及参数来源&学生个人理解与答辩表现\\
+2至3人合作&可按模型、平台、数据分析登记职责&姓名、学号、真实贡献和日期\\
+可行性、方案、步骤和进度&第1、4、5章与materials索引&教师对方案和变更的审核\\
+环境与资源&Windows和Linux VM的真实远程访问式流程&实验室服务器/模型正式交接\\
+基础模型与源项传递&二维1T1C输入、G4事件、源积分审计&未校准真实DRAM工艺\\
+自然语言参数遍历&R50已验收preview/audit/locate及拒绝行为&学生现场演示尚未发生\\
+多尺寸/粒子/方向评估&完整64事件、128响应与固定分层&范围外的能量、位置与工艺未验证\\
+拟合、外推与验证&训练LOCO、64冻结预测及全量独立评分&未建立商业可靠性外推\\
+工艺与数值敏感性&14氧化层case、固定两边界目标及匹配细化&未完成变化材料栈的输运重算\\
+总结与作品演示&完整报告、研究稿、PPT及只读演示脚本&教师评审、试讲、答辩、考核待发生\\
+\bottomrule\end{longtable}\normalsize
+\section{成员与实际活动登记}
+指导教师李洋来自课程大纲，不能据此声称本报告已获教师审核。
+真实参与者应填写成员姓名/学号、职责、完成时间与可核查贡献，并另存方案审核、
+资源交接、试讲反馈、正式演示/答辩及教师考核记录。AI工具不计作小组成员。
+课程评分权重为导师20\%、报告20\%、答辩或作品演示60\%；本报告不预测成绩。
+
+\section{只读复现与演示}
+\begin{enumerate}
+\item 核验本包\sourcepath{sources.json}、\sourcepath{delivery-manifest.json}及输入快照清单，说明固定分母和模型边界。
+\item 展示受约束R50请求的预览、审计与指定事件定位。历史映射快照的24小时语法字段不决定当前无限预算。
+\item 选择一行\sourcepath{data/snapshot/response-sources.json}，定位actual tag、owner plan、case-freeze、run ID和input/archive SHA。
+\item 对照源事件和匹配control/neutral，解释2.8~ns的$\Delta Q$及4~ns的$D,M,\Delta M$。
+\item 展示预测冻结时间及真实测试提交索引，分别解释留出/外推误差、原r4评分和最终数值证据评分。
+\item 展示DATA PLOT、原生场图和owned窗口的不同证据用途；核场变量、单位、4~ns和run来源。
+\item 解释R50主线四个原始FAILED、null退出码及相应确定性重试；完整历史账本7条FAILED均保留，费用以完整唯一账本为准。
+\end{enumerate}
+上述是供参与者采用的步骤，不是已完成学生现场演示记录。耗时求解使用事先冻结归档并明确标注预先运行；
+本报告构建及演示资料均不启动新仿真。
+\par\medskip\noindent
+\input{tables/provenance-short.tex}

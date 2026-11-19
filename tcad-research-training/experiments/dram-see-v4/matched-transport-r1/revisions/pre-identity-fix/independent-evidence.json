@@ -1,0 +1,44 @@
+{
+  "review": "independent offline review of matched-transport-r1 frozen current version",
+  "passed": false,
+  "scope": "offline source and synthetic-fixture verification only; no Geant compile, native run, SSH, or solver",
+  "finding": {
+    "severity": "medium",
+    "title": "run_id is not bound to frozen request label",
+    "details": "audit_matched._receipt accepts record.run_id independent of record.request.label and copies it to report.run_id; control.gate_initialization validates request and audit/code hashes but does not enforce audit/record run_id equals request.label. Synthetic receipt with only run_id changed to wrong-run-id was accepted.",
+    "source": {
+      "audit_matched_py": "experiments/dram-see-v4/matched-transport-r1/audit_matched.py:117-120",
+      "metadata_validation": "experiments/dram-see-v4/matched-transport-r1/audit_matched.py:287",
+      "initialization_gate": "experiments/dram-see-v4/matched-transport-r1/control.py:318"
+    }
+  },
+  "tests": [
+    {
+      "command": "local_runtime/vdmos-analysis-venv/Scripts/python.exe -B -m unittest discover -v -s experiments/dram-see-v4/matched-transport-r1/tests -p 'test_*.py'",
+      "exit_code": 0,
+      "result": "55 tests passed",
+      "log": "local_runtime/dram-see-v4/three-dimensional-pilot-r1/validation/matched-transport/existing-tests.log"
+    },
+    {
+      "command": "local_runtime/vdmos-analysis-venv/Scripts/python.exe -B -m unittest discover -v -s experiments/dram-see-v4/matched-transport-r1 -p test_independent_review.py",
+      "exit_code": 0,
+      "result": "1 synthetic reproducer passed; acceptance demonstrates current gap",
+      "test": "experiments/dram-see-v4/matched-transport-r1/test_independent_review.py",
+      "log": "local_runtime/dram-see-v4/three-dimensional-pilot-r1/validation/matched-transport/identity-reproducer.log"
+    }
+  ],
+  "input_sha256": {
+    "experiments/dram-see-v4/matched-transport-r1/transport_matched.cc": "0E510E397B5DD2EC03BCD14CB70D99DC33B59B469646D2920B0F4137A9161C27",
+    "experiments/dram-see-v4/matched-transport-r1/audit_matched.py": "3A9E0F8F30A0915CD425F63E26316E7C53D25DFB63A6B62DFF0BC26DFA66E40B",
+    "experiments/dram-see-v4/source-interface-3d-r1/geometry-contract.json": "3FB882383484E35445192B23169981D0061B650B06C64F132D1FB4BA63FD755D",
+    "experiments/dram-see-v4/matched-transport-r1/test_independent_review.py": "90414EBC36BC068A0FD8C7CA6A957CD9194A707B75725CB32CA290876548EF6F",
+    "experiments/dram-see-v4/matched-transport-r1/matched-contract.json": "EBFDA09FC00F1A0DF5F870380AF7A5FE7F2F4826DBADB5960AE1B2B8201301DC",
+    "experiments/dram-see-v4/matched-transport-r1/control.py": "86187D9AAD6902B2249062FDEC8179E721F62CF6542DD5C39763FC7760732D0E"
+  },
+  "unverified": [
+    "Geant4/native compilation and execution",
+    "native geometry/material instantiation and physical transport behavior",
+    "any claim of native evidence"
+  ],
+  "timestamp_utc": "2026-10-14T04:16:30Z"
+}
