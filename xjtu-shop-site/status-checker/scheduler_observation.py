@@ -831,6 +831,8 @@ def metadata(manifest, intent, run, parameters):
         kind, case = 'diagnostic', None
     else:
         kind = 'formal' if case else 'research'
+    if kind == 'diagnostic' and device == 'P0':
+        device = None
     count = re.search(r'-b[01]-(?:rep)?([0-9]{1,3})(?:-|$)', run) if kind == 'benchmark' else None
     return kind, case, device, bit, int(count[1]) if count else None
 
