@@ -66,8 +66,8 @@ pwsh -File scripts/git-auto-pull.ps1
 
 行为：
 
-- 工作区干净时，先 `git fetch`，再尝试 `git merge --ff-only origin/main`。
-- 本地有未提交改动、分支分叉或快进失败时，只写日志，不覆盖文件。
+- 已跟踪文件没有本地修改时，先 `git fetch`，再尝试 `git merge --ff-only origin/main`；未跟踪的本地数据不阻止拉取，若与远端新增文件冲突则由 Git 拒绝合并并记录日志。
+- 已跟踪文件有未提交改动、分支分叉或快进失败时，只写日志，不覆盖文件。
 - 不自动 stash、不自动 reset、不自动解决冲突。
 - 日志：`logs/git-auto-pull.log`。
 

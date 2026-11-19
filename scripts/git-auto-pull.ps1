@@ -37,7 +37,7 @@ try {
         return
     }
 
-    $dirty = & git status --porcelain
+    $dirty = & git status --porcelain --untracked-files=no
     if ($dirty) {
         Write-Log 'skip: working tree has local changes'
         return
@@ -48,12 +48,12 @@ try {
         $env:HTTPS_PROXY = 'http://127.0.0.1:7890'
     }
 
-    $fetchCode = Invoke-Git @('fetch', '--prune', $Remote, $Branch)
+    $fetchCode = Invoke-Git @('fetch', '--prune', $Remote)
     if ($fetchCode -ne 0) {
         Write-Log 'fetch failed with current proxy settings; retrying direct'
         Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
         Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
-        $fetchCode = Invoke-Git @('fetch', '--prune', $Remote, $Branch)
+        $fetchCode = Invoke-Git @('fetch', '--prune', $Remote)
     }
     if ($fetchCode -ne 0) {
         Write-Log 'skip: fetch failed'
