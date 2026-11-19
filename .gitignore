@@ -34,6 +34,7 @@ venv/
 .ruff_cache/
 .mypy_cache/
 .ipynb_checkpoints/
+*.egg-info/
 
 # Node and frontend build output
 node_modules/
@@ -59,9 +60,11 @@ coverage/
 /sites/
 /artifacts/
 /tmp/
+/.tmp-*/
 /machines/
 /vendor/
 /status-live*.html
+/output/
 
 # Research runtime and raw data
 /tcad-research-training/local_runtime/
@@ -105,6 +108,14 @@ coverage/
 *.hdf5
 *.tdr
 *.plt
+*.sav
+*.aux
+*.bbl
+*.blg
+*.out
+*.fls
+*.fdb_latexmk
+*.synctex.gz
 *.pdf
 *.doc
 *.docx
