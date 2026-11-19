@@ -8,7 +8,7 @@
 - 默认分支：`main`
 - 结构：单仓库，不包含 Git 子模块
 - 内容：DRAM 单粒子效应研究的仿真代码、计划、对齐文档、前端源码和小型证据
-- 不包含：原始数据、运行目录、服务器配置、许可证、密钥和大型二进制
+- 不包含：原始数据、运行目录、服务器凭证、许可证、密钥和大型二进制
 
 ## 云端代理工作流
 
@@ -26,7 +26,7 @@
 - 计划、推断、诊断证据和正式结论要分开写。
 - 不把短测试、单次求解或静态截图当成完整验收。
 - 不提交 `local_runtime/`、`output/`、`node_modules/`、`dist/`、`vendor/`、原始数据、视频、压缩包、PDF、DOCX 或大图。
-- 不提交服务器地址、SSH 别名、许可证、Token、密钥和本地 `AGENTS.local.md`。
+- 不新增服务器地址、SSH 别名、许可证、Token、密钥和本地 `AGENTS.local.md`；仓库中的部署默认值不含凭证。
 - 需要 SSH、求解、部署、清理或许可证操作时，只在 PR 中写建议，不直接执行。
 
 ## 验证命令
@@ -58,7 +58,7 @@ npm run test:status
 
 ## 合并后的本地自动拉取
 
-Windows 计划任务 `TCAD-Workspace-AutoPull` 每 5 分钟运行一次：
+Windows 计划任务 `TCAD-Workspace-AutoPull` 每 5 分钟运行一次，并在错过计划后尽快补跑：
 
 ```powershell
 pwsh -File scripts/git-auto-pull.ps1
