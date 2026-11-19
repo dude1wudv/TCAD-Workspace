@@ -495,6 +495,7 @@ def z_baseline_reuse_verified(case, manifests, p0_admissions, plan_path, plan_sh
 
 COUNT_FIELDS = ("planned", "archived", "solved", "accepted", "running", "failed", "remaining")
 LEGACY_COHORTS = ("core", "reserve", "control")
+LEGACY_CASE_PREFIXES = ("m1-r05-", "r05-", "R05-")
 SEALED_BLOCKS = {"HR", "HP"}
 NON_FORMAL_KINDS = {"benchmark", "performance_probe", "diagnostic", "p0_diagnostic"}
 DIAGNOSTIC_SCOPE = "p0_diagnostic"
@@ -628,7 +629,10 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
         raise ValueError("Invalid research gate path")
     gate_dir = gate_dir.rstrip("/\\")
 
-    legacy = bool(conditions) and all("block" not in case and case.get("cohort") in LEGACY_COHORTS for case in cases)
+    legacy = bool(conditions and cases) and all(
+        "block" not in case and case.get("cohort") in LEGACY_COHORTS
+        and str(case.get("case_id")).startswith(LEGACY_CASE_PREFIXES) for case in cases
+    )
     seen = {}
     for case in cases:
         identity = case.get("case_id")
@@ -728,6 +732,7 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
         scientific = admission(intent)
         task_admission = task.get("scientific_admission")
         scope = scientific.get("scope") or (task_admission.get("scope") if isinstance(task_admission, dict) else None) or task.get("scope")
+        task_running = task.get("state") == "running" and not scheduler.get("observation_stale")
         if (identity in sealed_ids or tagged_case in sealed_ids or run_id in private_runs
                 or task.get("sealed") is True or task.get("holdout") or scope == "holdout_evaluation"):
             continue
@@ -738,8 +743,8 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             bucket, previous_run, was_running = diagnostics.get(key, (diagnostic_bucket(scope), run_id, False))
             if key not in diagnostics:
                 diagnostics_from_scheduler.add(bucket)
-            diagnostics[key] = (bucket, previous_run or run_id, was_running or task.get("state") == "running")
-        elif task.get("state") == "running" and identity in seen and run_id not in excluded_runs:
+            diagnostics[key] = (bucket, previous_run or run_id, was_running or task_running)
+        elif task_running and identity in seen and run_id not in excluded_runs:
             running.add(identity)
 
     public_diagnostics = {"P0": {key: 0 for key in COUNT_FIELDS if key not in {"accepted", "remaining"}}}

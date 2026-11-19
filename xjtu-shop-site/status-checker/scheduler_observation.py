@@ -46,7 +46,7 @@ PROGRESS_STAGES = {
     'run': 'Running', 'post': 'Post-processing', 'complete': 'Complete',
 }
 PROGRESS_NUMBERS = ('current', 'target', 'rate_per_hour', 'simulation_time_ns', 'stepsize_s', 'error',
-                    'assembly_s', 'solve_s', 'step_wall_s')
+                    'assembly_s', 'solve_s', 'step_wall_s', 'goal_time_ns')
 PROGRESS_MODES = ('ratio', 'pulse', 'whr')
 PROGRESS_UNITS = ('ns', 's', 'events', 'particles', 'steps', 'iterations', 'percent', 'fraction', '%')
 
@@ -83,6 +83,8 @@ def iso(value):
 
 def parse_transient_log(log, engine='sdevice', finished=False):
     """Take the latest attempt's start and the latest confirmed Newton result."""
+    if engine == 'geant4':
+        return parse_geant4_log(log, finished=finished)
     if engine in ('snmesh', 'sde'):
         return {'phase': 'mesh'}
     matcher = (
@@ -185,7 +187,7 @@ def read_task_progress(path):
             if os.fstat(handle.fileno()).st_size > limit:
                 return {}
         data = obj(json.loads(raw.decode('utf-8-sig')))
-    except (OSError, ValueError):
+    except (OSError, ValueError, RecursionError):
         return {}
     if data.get('schema') != 'tcad-task-progress-v1':
         return {}
@@ -744,7 +746,7 @@ def normalized_progress(value, goal=None, whr=None):
     result['stage'] = public.get('stage') or result['phase']
     result['stage_label'] = PROGRESS_STAGES.get(result['stage'])
     result['source'] = data['source'] if data.get('source') in ('progress_json', 'sentaurus_log', 'geant4_log') else None
-    result['goal_time_ns'] = finite(goal)
+    result['goal_time_ns'] = finite(goal) if goal is not None else result['goal_time_ns']
     if result['unit'] == 'ns':
         if result['simulation_time_ns'] is None:
             result['simulation_time_ns'] = result['current']
@@ -864,7 +866,9 @@ def observed_task(path, manifest, intent, processes, cpus, detail, widths, obser
     started = iso(manifest.get('started_utc')) or min((row['started_at'] for row in processes if row['started_at']), default=None)
     end = (iso(detail.get('finished_at')) or iso(detail.get('finished_mtime_at'))
            or iso(manifest.get('finished_utc')) or iso(manifest.get('collected_utc')))
-    progress = dict(obj(detail.get('progress')), goal_time_ns=detail.get('goal_time_ns'), whr=detail.get('whr'))
+    progress = dict(obj(detail.get('progress')), whr=detail.get('whr'))
+    if detail.get('goal_time_ns') is not None:
+        progress['goal_time_ns'] = detail['goal_time_ns']
     if progress.get('simulation_time_ns') is None and state in ('completed', 'failed', 'collecting', 'uncollected'):
         progress['simulation_time_ns'] = finite(manifest.get('final_time_ns', manifest.get('simulation_time_ns')))
     return {

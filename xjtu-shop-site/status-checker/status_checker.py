@@ -29,7 +29,7 @@ from research_projection import (
 )
 from progress_store import load_public_progress
 from input_parameters import read_input_parameters
-from scheduler_observation import fs_space, has_holdout_marker, load_scheduler, storage_fields
+from scheduler_observation import fs_space, has_holdout_marker, load_scheduler, public_identity, storage_fields
 from telemetry_history import HISTORY_PATH, update_history
 
 
@@ -224,6 +224,7 @@ def manifest_index(runs_root: Path) -> dict[str, dict]:
         manifest = read_json(path)
         run_id = manifest.get("run_id")
         if isinstance(run_id, str):
+            manifest["_scheduler_task_id"] = public_identity(manifest, path)
             index[run_id] = manifest
     return index
 
@@ -750,7 +751,8 @@ def build_status(
         }
         projection_state = "unavailable"
     research["projection_state"] = projection_state or ("fresh" if research.get("available") else "unavailable")
-    if not research.get("projected_at") and research.get("available"):
+    if (not research.get("projected_at") and research.get("available")
+            and mode in {"full", "both"} and projection_state == "fresh"):
         research["projected_at"] = checked_at
     health = {
         "services": build_service_health(services, scheduler, simulation["active_batch"]),
@@ -891,6 +893,8 @@ def main() -> int:
             raise ValueError("Conflicting status destinations")
         if args.mode == "live":
             cached, saved_at = load_cached_research(args.research_cache)
+            if cached is not None and not cached.get("projected_at"):
+                cached = dict(cached, projected_at=saved_at)
             research_age = age_seconds(saved_at, dt.datetime.now(UTC))
             research_state = "unavailable" if cached is None else (
                 "fresh" if research_age is not None and research_age <= FRESHNESS_LIMIT_SECONDS * 2

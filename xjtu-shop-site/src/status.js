@@ -179,19 +179,25 @@ function renderHealth(payload, scheduler, batch, research, services) {
   const health = payload.health || {};
   const freshness = health.freshness || {};
   const simulation = health.simulation || {};
-  const projection = freshness.research_projection_state ?? research?.projection_state;
-  const baseServices = services.filter((service) => !licenseService(service));
-  const serviceState = health.services?.state ?? payload.overall ?? (baseServices.every((service) => service.state === 'operational') ? 'operational' : 'unknown');
+  const projection = freshness.research_projection_state ?? research?.projection_state ??
+    (research?.available ? (research.observation_stale ? 'stale' : 'fresh') : 'unavailable');
+  const states = services.filter((service) => !licenseService(service)).map((service) => service.state);
+  const fallbackServiceState = states.every((state) => state === 'operational') ? 'operational'
+    : states.every((state) => state === 'offline') ? 'offline'
+    : states.some((state) => ['offline', 'degraded'].includes(state)) ? 'degraded'
+    : states.includes('maintenance') ? 'maintenance' : 'unknown';
+  const serviceState = health.services?.state ?? payload.overall ?? (states.length ? fallbackServiceState : 'unknown');
   const schedulerAge = freshness.scheduler_age_seconds ?? age(scheduler.observedAt);
   const freshnessState = freshness.state ?? (scheduler.stale ? (scheduler.hasObservation ? 'stale' : 'unknown') : 'fresh');
   const running = scheduler.tasks.filter((task) => task.state === 'running');
   const observed = !scheduler.stale;
-  const active = simulation.active_tasks ?? (observed ? scheduler.active_groups ?? running.length : null);
+  const legacy = !scheduler.hasObservation && payload.simulation?.observed && !payload.simulation.observation_stale ? payload.simulation : null;
+  const active = simulation.active_tasks ?? (observed ? scheduler.active_groups ?? running.length : legacy?.running_groups);
   const stalled = simulation.stalled_tasks ?? (observed ? running.filter((task) => task.health === 'stalled').length : null);
   const fine = simulation.fine_step_tasks ?? (observed ? running.filter((task) => ['fine_step', 'slow_convergence'].includes(task.health)).length : null);
   const uncollected = simulation.uncollected_tasks ?? (observed ? batch.collecting ?? scheduler.tasks.filter((task) => ['collecting', 'uncollected'].includes(task.state)).length : null);
   const paused = batch.pause?.active || serviceState === 'maintenance' || services.some((service) => service.state === 'maintenance');
-  const simulationState = simulation.state ?? (scheduler.stale ? 'unknown' : paused ? 'paused' : stalled ? 'stalled' : fine ? 'fine_step' : active ? 'healthy' : uncollected ? 'collecting' : 'idle');
+  const simulationState = simulation.state ?? (paused ? 'paused' : !observed && !legacy ? 'unknown' : stalled ? 'stalled' : fine ? 'fine_step' : active ? 'healthy' : uncollected ? 'collecting' : 'idle');
   const findings = [
     [b('服务就绪', 'Services'), serviceState, services.map((service) => `${serviceName(service)} · ${label(service.state)}`)],
     [b('数据新鲜', 'Data freshness'), freshnessState, [
@@ -385,7 +391,7 @@ function taskCard(task, scheduler, history) {
   const phase = progress.stage || progress.phase;
   const stage = state.lang === 'zh' && labels[phase] ? label(phase) : progress.stage_label || (phase ? label(phase) : '');
   const whr = !progress.mode || progress.mode === 'whr' ? renderWhr(progress, state.lang) : '';
-  const taskProgress = whr || (finite(reading.current) || finite(reading.target) || stage ? `<div class="task-progress">
+  const taskProgress = whr || (finite(reading.current) || finite(reading.target) ? `<div class="task-progress">
     <p>${esc(stage || b('任务进度', 'Task progress'))} · <strong>${number(reading.current, 6)} / ${number(reading.target, 6)} ${esc(reading.unit)}</strong></p>
     ${meter(reading.current, reading.target, b('任务进度', 'Task progress'))}</div>` : '');
   const reason = taskHealthDetail(task);
@@ -585,16 +591,22 @@ const currentResearch = () => {
 };
 
 function researchActivity(payload, scheduler) {
-  if (payload.activity_feed) return payload.activity_feed;
-  const live = scheduler.tasks.filter((task) => ['running', 'collecting', 'uncollected'].includes(task.state));
-  const recent = payload.simulation?.recent_runs || [];
+  const feed = payload.activity_feed;
+  if (feed?.mode && feed.live_items && feed.recent_outcomes) return feed;
+  const simulation = payload.simulation || {};
+  const legacy = !scheduler.hasObservation && simulation.observed && !simulation.observation_stale;
+  const live = legacy ? (simulation.current_runs || []).map((item) => ({ ...item, label: item.group, state: 'running' }))
+    : scheduler.tasks.filter((task) => ['running', 'collecting', 'uncollected'].includes(task.state));
+  const recent = simulation.recent_runs || [];
   const finished = recent.filter((task) => task.finished_at && ['completed', 'failed', 'uncollected'].includes(task.state));
-  const recentOutcomes = finished.length ? finished : (payload.simulation?.recent_activity || []).map((item) => ({ ...item, label: item.group }));
-  return { mode: scheduler.stale ? 'stale' : live.length ? 'active' : 'idle', live_items: live, recent_outcomes: recentOutcomes };
+  const recentOutcomes = finished.length ? finished : (simulation.recent_activity || []).map((item) => ({ ...item, label: item.group }));
+  return { mode: feed?.mode ?? (scheduler.stale && !legacy ? 'stale' : live.length ? 'active' : 'idle'),
+    live_items: feed?.live_items ?? live, recent_outcomes: feed?.recent_outcomes ?? recentOutcomes };
 }
 
 function updateResearch(payload, scheduler, research) {
-  update('research', sectionDivider('06', b('科研计划', 'Research')) + renderResearch(research, state.lang, researchActivity(payload, scheduler)));
+  const projectionState = research?.projection_state ?? payload.health?.freshness?.research_projection_state;
+  update('research', sectionDivider('06', b('科研计划', 'Research')) + renderResearch({ ...research, projection_state: projectionState }, state.lang, researchActivity(payload, scheduler)));
 }
 
 function render() {
@@ -650,11 +662,12 @@ function tick() {
   if (document.hidden) return;
   const payload = newestPayload();
   const threshold = sampleThreshold(payload);
-  const sample = payload?.simulation?.scheduler?.observed_at || payload?.generated_at;
+  const scheduler = payload?.simulation?.scheduler || payload?.simulation?.benchmark;
+  const sample = scheduler?.observed_at || scheduler?.virtual_machine?.observed_at || payload?.generated_at;
   const seconds = age(sample);
   const heartbeat = document.getElementById('heartbeat');
   const live = state.liveMode === 'online' && payload === state.live;
-  const expired = payload && (!validSample(sample, threshold) || payload.stale || payload.simulation?.scheduler?.observation_stale);
+  const expired = payload && (!validSample(sample, threshold) || payload.stale || scheduler?.observation_stale);
   const errored = state.liveMode === 'error' && (payload !== state.full || state.fullFailed) || !payload && state.fullFailed;
   const delayed = seconds != null && seconds > (live ? 45 : 90);
   const [status, color] = expired ? [b('采样过期', 'Sample stale'), 'bad'] :

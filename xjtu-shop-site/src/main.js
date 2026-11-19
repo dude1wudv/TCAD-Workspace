@@ -299,11 +299,11 @@ function updateStatus() {
   const summary = state.status?.research_summary ?? state.status?.research;
   const stage = state.lang === 'zh' ? simulation?.summary_zh || simulation?.summary_en : simulation?.summary_en || simulation?.summary_zh;
   const stats = summary?.totals;
-  const progress = [summary?.revision, ...[
+  const progress = summary ? [summary.revision, ...[
     [stats?.planned ?? summary?.budget?.total_cases, 'plannedLabel'],
     [stats?.solved, 'solvedLabel'],
     [stats?.running ?? simulation?.active_tasks, 'runningLabel'],
-  ].filter(([value]) => Number.isFinite(value)).map(([value, caption]) => `${text(caption)} ${value}`)].filter(Boolean);
+  ].filter(([value]) => Number.isFinite(value)).map(([value, caption]) => `${text(caption)} ${value}`)].filter(Boolean) : [];
   document.getElementById('stage-reading').textContent = stage || text('stageText');
   document.getElementById('plan-label').textContent = progress.length ? text('planLabel') : text('scopeLabel');
   document.getElementById('plan-reading').textContent = progress.length ? progress.join(' · ') : text('scopeText');

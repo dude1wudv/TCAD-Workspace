@@ -1,7 +1,7 @@
 const view = { cohort: null, query: '', filter: 'all', limit: 12 };
 const words = {
   zh: {
-    title: '首月科研计划', core: '核心计划', reserve: '备用计划', control: '无粒子对照',
+    title: '科研计划', core: '核心计划', reserve: '备用计划', control: '无粒子对照',
     blocks: '研究区块', zeroCases: '无粒子基线', locked: '封存', loadingCases: '等待公开逐例清单',
     publicCases: '条公开案例', search: '搜索案例', searchHint: '搜索案例 ID、器件、辐照条件或 B0/B1',
     caseFilter: '案例状态筛选', matches: '匹配', statisticsSnapshotUnknown: '统计资格快照待核对',
@@ -20,10 +20,11 @@ const words = {
     proof: '正式结果以原任务归档及科学验收为准。历史探针单独保留。',
     currentActivity: '当前动态', recentOutcomes: '最近结果', idle: '当前空闲', activityStale: '调度观测待更新', noOutcomes: '暂无近期结果',
     completed: '已完成', collecting: '待收集', uncollected: '已退出待收集', healthy: '正常推进', stalled: '停滞预警',
-    fine_step: '微步收敛', slow_convergence: '慢收敛', verified_success: '已核验', verified_failure: '核验失败',
+    fine_step: '微步收敛', slow_convergence: '慢收敛', collection_overdue: '收集超时', verified_success: '已核验', verified_failure: '核验失败',
     verified_interrupted: '已中断', awaiting_collection: '待收集', sealedTask: '封存留出任务', unmatchedTask: '未关联任务',
     projectionStale: '科研投影待更新（展示上一份成功快照）',
     maintenanceNotes: '维护备注（人工记录）', oldNote: '备注已过期', updateUnknown: '更新时间未知',
+    log: '日志',
     codex: 'Codex', next: '下一步', evidence: '已关联证据',
     preparing: '输入准备', transport: '粒子输运', device: '器件求解',
     analysis: '结果分析', validation: '验证', none: '常规推进', newton_nonconvergence: '牛顿不收敛',
@@ -44,7 +45,7 @@ const words = {
     requested_threads: '数值线程', numerical_threads: '数值线程', grid_points: '网格点', research_samples: '新增科研样本', stored_bit: '存储位',
   },
   en: {
-    title: 'Month-one research plan', core: 'Core plan', reserve: 'Reserve', control: 'Particle-free',
+    title: 'Research plan', core: 'Core plan', reserve: 'Reserve', control: 'Particle-free',
     blocks: 'Research blocks', zeroCases: 'Z baselines', locked: 'Sealed', loadingCases: 'Awaiting public case manifest',
     publicCases: 'public cases', search: 'Search cases', searchHint: 'Search case ID, device, radiation or B0/B1',
     caseFilter: 'Filter by case status', matches: 'Showing', statisticsSnapshotUnknown: 'Qualification snapshot pending',
@@ -63,10 +64,11 @@ const words = {
     proof: 'Formal results require original collection and scientific evidence. Historical probes are kept separately.',
     currentActivity: 'Current activity', recentOutcomes: 'Recent outcomes', idle: 'Currently idle', activityStale: 'Awaiting a fresh scheduler sample', noOutcomes: 'No recent outcomes',
     completed: 'Completed', collecting: 'Collecting', uncollected: 'Exited, pending collection', healthy: 'Advancing', stalled: 'Stalled',
-    fine_step: 'Fine steps', slow_convergence: 'Slow convergence', verified_success: 'Verified', verified_failure: 'Verification failed',
+    fine_step: 'Fine steps', slow_convergence: 'Slow convergence', collection_overdue: 'Collection overdue', verified_success: 'Verified', verified_failure: 'Verification failed',
     verified_interrupted: 'Interrupted', awaiting_collection: 'Awaiting collection', sealedTask: 'Sealed holdout', unmatchedTask: 'Unmatched task',
     projectionStale: 'Research projection awaiting update (last successful snapshot shown)',
     maintenanceNotes: 'Maintenance notes (manual records)', oldNote: 'Note expired', updateUnknown: 'Update time unknown',
+    log: 'Log',
     codex: 'Codex', next: 'Next', evidence: 'Evidence linked',
     preparing: 'Preparation', transport: 'Transport', device: 'Device solve',
     analysis: 'Analysis', validation: 'Validation', none: 'On track', newton_nonconvergence: 'Newton nonconvergence',
@@ -177,7 +179,7 @@ export function renderResearch(research, lang, activity) {
   const blocks = research?.blocks ?? Object.entries(research?.counts || {}).map(([id, counts]) => ({ id, counts }));
   const selected = blocks.find((block) => block.id === view.cohort);
   const cohort = selected?.id ?? 'total';
-  const blockCounts = (block) => block.counts ?? research.counts?.[block.id] ?? block;
+  const blockCounts = (block) => block.counts ?? (block.planned != null ? block : research.counts?.[block.id]) ?? block;
   const sealed = new Set(blocks.filter((block) => block.sealed).map((block) => block.id));
   const progress = (research?.progress || []).filter((entry) => !entry.sealed && !sealedId(entry.case_id) && !sealed.has(entry.block || entry.cohort));
   const activityMarkup = renderActivity(activity, lang, sealed);
@@ -248,7 +250,7 @@ function renderParameters(research, lang, cohort, sealed) {
 
 const activityTones = {
   running: 'good', healthy: 'good', completed: 'good', verified_success: 'good',
-  fine_step: 'warn', slow_convergence: 'warn', collecting: 'warn', uncollected: 'warn', awaiting_collection: 'warn',
+  fine_step: 'warn', slow_convergence: 'warn', collecting: 'warn', uncollected: 'warn', awaiting_collection: 'warn', collection_overdue: 'warn',
   failed: 'bad', stalled: 'bad', verified_failure: 'bad', verified_interrupted: 'warn',
 };
 const activityBadge = (lang, key) => key ? `<span class="badge ${activityTones[key] || 'neutral'}">${esc(text(lang, key))}</span>` : '';
@@ -280,10 +282,11 @@ function renderActivity(activity, lang, sealed) {
     const cpu = item.cpu_set?.length ? `CPU ${item.cpu_set.join(', ')}` : '';
     const engine = item.engine || progress.engine || item.processes?.find((process) => process.engine !== 'post')?.engine;
     const batch = lang === 'zh' ? item.batch_label || item.batch_label_en : item.batch_label_en || item.batch_label;
-    const timing = [activityTime(item.elapsed_seconds), relativeTime(lang, item.log_age_seconds)].filter(Boolean);
+    const logAge = relativeTime(lang, item.log_age_seconds);
+    const timing = [activityTime(item.elapsed_seconds), logAge && `${text(lang, 'log')} ${logAge}`].filter(Boolean);
     return `<article class="case-row" data-key="current-${esc(item.id || index)}">
       <div><strong>${esc(name(item))}</strong><span>${activityBadge(lang, item.state)}${item.health !== item.state ? activityBadge(lang, item.health) : ''}</span></div>
-      ${hidden ? '' : `<p>${[batch, engine, cpu].filter(Boolean).map(esc).join(' · ')}</p>
+      ${hidden ? '' : `${batch || engine || cpu ? `<p>${[batch, engine, cpu].filter(Boolean).map(esc).join(' · ')}</p>` : ''}
       ${reading || stage ? `<p>${[stage, reading].filter(Boolean).map(esc).join(' · ')}</p>` : ''}
       ${timing.length ? `<small>${timing.map(esc).join(' · ')}</small>` : ''}${detail ? `<small>${esc(detail)}</small>` : ''}`}
     </article>`;
