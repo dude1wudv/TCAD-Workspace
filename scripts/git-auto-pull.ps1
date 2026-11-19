@@ -17,11 +17,13 @@ function Write-Log {
 }
 
 function Invoke-Git {
-    param([string[]]$Arguments)
+    param([string[]]$Arguments, [switch]$Quiet)
     $output = & git @Arguments 2>&1
     $code = $LASTEXITCODE
-    foreach ($line in $output) {
-        if ($null -ne $line) { Write-Log ([string]$line) }
+    if (-not $Quiet) {
+        foreach ($line in $output) {
+            if ($null -ne $line) { Write-Log ([string]$line) }
+        }
     }
     return $code
 }
@@ -48,9 +50,9 @@ try {
         $env:HTTPS_PROXY = 'http://127.0.0.1:7890'
     }
 
-    $fetchCode = Invoke-Git @('fetch', '--prune', $Remote)
+    $fetchCode = Invoke-Git @('fetch', '--prune', $Remote) -Quiet
     if ($fetchCode -ne 0) {
-        Write-Log 'fetch failed with current proxy settings; retrying direct'
+        Write-Log 'fetch via proxy failed; retrying direct'
         Remove-Item Env:HTTP_PROXY -ErrorAction SilentlyContinue
         Remove-Item Env:HTTPS_PROXY -ErrorAction SilentlyContinue
         $fetchCode = Invoke-Git @('fetch', '--prune', $Remote)
