@@ -45,17 +45,15 @@ npm run test:status
 
 本仓库的公开版 `AGENTS.md` 只包含通用协作约定；公开文档中的服务器地址、SSH 别名和许可信息已脱敏。代码中的部署默认路径来自本机运行配置，只作默认值，不含密钥；完整本地约定保存在不入库的 `AGENTS.local.md`。
 
-## 本地自动拉取
+## 本地同步
 
-Windows 计划任务 `TCAD-Workspace-AutoPull` 每 5 分钟检查一次 `origin/main`。已跟踪文件没有本地改动且可以快进时才拉取；本地有未提交改动、分叉或拉取失败时只写日志，不覆盖本地文件。
-
-手动执行：
+PR 合并后，在本地工作区手动执行：
 
 ```powershell
-pwsh -File scripts/git-auto-pull.ps1
+git pull --ff-only origin main
 ```
 
-日志默认写入 `logs/git-auto-pull.log`。
+拉取前先确认已跟踪文件没有未提交改动；未跟踪的原始数据不受影响。
 
 ## 不进入仓库
 

@@ -16,7 +16,7 @@
 2. 只改与任务相关的文件，先读对应目录的 `README.md`、`AGENTS.md` 和计划。
 3. 本地或云端执行最小验证，记录实际命令和结果。
 4. 提交并开 Pull Request，说明改动、验证、未验证项和风险。
-5. 由维护者合并到 `main`。本地自动拉取任务随后更新工作区。
+5. 由维护者合并到 `main`。本地维护者按需手动同步工作区。
 
 不要直接推送 `main`。不要在 PR 中混入无关格式化、批量重命名或临时文件。
 
@@ -56,32 +56,21 @@ npm run test:status
 - 涉及前端时，注明桌面/移动、亮色/暗色或状态数据的变化范围。
 - 不提交构建产物、缓存、日志和本地配置。
 
-## 合并后的本地自动拉取
+## 合并后的本地同步
 
-Windows 计划任务 `TCAD-Workspace-AutoPull` 每 5 分钟运行一次，并在错过计划后尽快补跑：
+合并 PR 后，在本地工作区手动执行：
 
 ```powershell
-pwsh -File scripts/git-auto-pull.ps1
+git pull --ff-only origin main
 ```
 
-行为：
+如果已跟踪文件有未提交改动、分支分叉或无法快进，先自行提交、stash 或处理冲突。不要用 reset 覆盖本地改动。
 
-- 已跟踪文件没有本地修改时，先 `git fetch`，再尝试 `git merge --ff-only origin/main`；未跟踪的本地数据不阻止拉取，若与远端新增文件冲突则由 Git 拒绝合并并记录日志。
-- 已跟踪文件有未提交改动、分支分叉或快进失败时，只写日志，不覆盖文件。
-- 不自动 stash、不自动 reset、不自动解决冲突。
-- 日志：`logs/git-auto-pull.log`。
-
-手动检查：
+检查状态和历史：
 
 ```powershell
 git status --short --branch
 git log --oneline -5
-```
-
-关闭自动拉取：
-
-```powershell
-Unregister-ScheduledTask -TaskName 'TCAD-Workspace-AutoPull' -Confirm:$false
 ```
 
 ## 旧仓库与恢复
