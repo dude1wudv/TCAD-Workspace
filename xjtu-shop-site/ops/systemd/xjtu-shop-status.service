@@ -1,0 +1,14 @@
+[Unit]
+Description=Generate the redacted xjtu.shop live status
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/srv/xjtu-shop-site/status-checker
+ExecStartPre=-/usr/bin/python3 -B /srv/xjtu-shop-site/status-checker/scheduler_observation.py
+ExecStart=/usr/bin/python3 -B /srv/xjtu-shop-site/status-checker/status_checker.py \
+    --mode live \
+    --live-output /srv/xjtu-shop-site/dist/live.json \
+    --live-mirror-output /srv/xjtu-shop-site/dist-status/live.json
+TimeoutStartSec=25s

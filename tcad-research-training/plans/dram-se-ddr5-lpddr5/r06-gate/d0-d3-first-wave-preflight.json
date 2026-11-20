@@ -1,0 +1,1713 @@
+{
+  "schema": "tcad-r06-d0-d3-first-wave-preflight-v1",
+  "plan_id": "dram-se-ddr5-lpddr5",
+  "revision": "r0.6",
+  "generated_at": "2026-11-20T02:14:11.440536Z",
+  "artifact_role": "local_preflight_only_not_queue_or_admission",
+  "source_manifest": {
+    "path": "plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json",
+    "sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+  },
+  "contract": {
+    "path": "plans/dram-se-ddr5-lpddr5/r06-gate/contract.json",
+    "sha256": "550ee6764bb0e94c65fafacd17d0273541c8a540aa761ad8e9587b6466150b37",
+    "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6"
+  },
+  "scope": {
+    "profiles": [
+      "D0-nominal",
+      "D1-short-channel",
+      "D2-narrow-fin",
+      "D3-low-acceptor"
+    ],
+    "response_blocks": [
+      "T",
+      "S",
+      "R"
+    ],
+    "response_case_count": 104,
+    "transport_pool_count": 24,
+    "z_bridge_cases": 8,
+    "excluded_blocks": [
+      "HR",
+      "HP",
+      "AL"
+    ],
+    "first_transport_wave_candidates": 6,
+    "first_t_probe_limit": 8,
+    "response_case_count_semantics": "P1_preparation_envelope_admit_in_dependency_order",
+    "deferred_profiles": [
+      "LHS01-development",
+      "LHS02-development",
+      "LHS03-development",
+      "LHS04-development",
+      "LHS05-development",
+      "LHS06-development"
+    ]
+  },
+  "readiness": {
+    "p0_gate_passed": false,
+    "all_target_profiles_qualified": false,
+    "transport_frames_materialized": false,
+    "sampling_records_materialized": false,
+    "response_inputs_hashed": false,
+    "production_admissions_created": 0,
+    "queue_submitted": 0,
+    "semantics": "snapshot_of_missing_evidence_not_a_new_runtime_gate",
+    "other_profile_failure_scope": "pause_its_dependent_branch_only"
+  },
+  "transport_pools": [
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "C0",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "C1",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 1
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "G0",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 1
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "G1",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "G2",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "G3",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "G4",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-geometry-source-d0-d3",
+      "radiation_id": "G5",
+      "profile_ids": [
+        "D0-nominal",
+        "D3-low-acceptor"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "C0",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "C1",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 1
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "G0",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 1
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "G1",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "G2",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "G3",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "G4",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d1-short-channel",
+      "radiation_id": "G5",
+      "profile_ids": [
+        "D1-short-channel"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "C0",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "C1",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 1
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "G0",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 1
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "G1",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "G2",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "G3",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "G4",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    },
+    {
+      "crn_group_id": "crn-independent-d2-narrow-fin",
+      "radiation_id": "G5",
+      "profile_ids": [
+        "D2-narrow-fin"
+      ],
+      "status": "pending_p0_gate",
+      "priority": 2
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "r06-t-d0-nominal-shape-a-x10-b1",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-a-x3-b1",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-a-x30-b1",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-b-x10-b1",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-b-x3-b1",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-b-x30-b1",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-a-x10-b1",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-a-x3-b1",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-a-x30-b1",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-b-x10-b1",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-b-x3-b1",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-b-x30-b1",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-a-x10-b1",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-a-x3-b1",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-a-x30-b1",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-b-x10-b1",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-b-x3-b1",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-b-x30-b1",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-a-x10-b1",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-a-x3-b1",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-a-x30-b1",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-b-x10-b1",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-b-x3-b1",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-b-x30-b1",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-a-x10-b0",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d0-nominal-shape-b-x30-b0",
+      "block": "T",
+      "profile_id": "D0-nominal",
+      "radiation_id": "C1",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-a-x10-b0",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G0",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d1-short-channel-shape-b-x30-b0",
+      "block": "T",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C1",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-a-x10-b0",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d2-narrow-fin-shape-b-x30-b0",
+      "block": "T",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-a-x10-b0",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G0",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-t-d3-low-acceptor-shape-b-x30-b0",
+      "block": "T",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C1",
+      "stored_bit": 0,
+      "pair_id": null,
+      "statistics_intent": false,
+      "selection_mechanism": "threshold_scaled",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "adaptive_threshold_probes"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p00-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d0-nominal-p00",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p00-b0",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d0-nominal-p00",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p01-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d0-nominal-p01",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p01-b0",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G1",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d0-nominal-p01",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p02-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d0-nominal-p02",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p02-b0",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G2",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d0-nominal-p02",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p03-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p04-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p05-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p06-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p07-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p08-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p09-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p10-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d0-nominal-p11-b1",
+      "block": "S",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p00-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p01-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p02-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p03-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d1-short-channel-p03",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p03-b0",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G3",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d1-short-channel-p03",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p04-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d1-short-channel-p04",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p04-b0",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G4",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d1-short-channel-p04",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p05-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d1-short-channel-p05",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p05-b0",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G5",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d1-short-channel-p05",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p06-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p07-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p08-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p09-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p10-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d1-short-channel-p11-b1",
+      "block": "S",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p00-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d2-narrow-fin-p00",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p00-b0",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d2-narrow-fin-p00",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p01-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p02-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p03-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p04-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p05-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p06-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d2-narrow-fin-p06",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p06-b0",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C0",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d2-narrow-fin-p06",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p07-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d2-narrow-fin-p07",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p07-b0",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d2-narrow-fin-p07",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p08-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p09-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p10-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d2-narrow-fin-p11-b1",
+      "block": "S",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p00-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p01-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d3-low-acceptor-p01",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p01-b0",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G1",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d3-low-acceptor-p01",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p02-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d3-low-acceptor-p02",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p02-b0",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G2",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d3-low-acceptor-p02",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p03-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": "r06-s-d3-low-acceptor-p03",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p03-b0",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G3",
+      "stored_bit": 0,
+      "pair_id": "r06-s-d3-low-acceptor-p03",
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p04-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p05-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p06-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p07-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p08-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p09-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p10-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-s-d3-low-acceptor-p11-b1",
+      "block": "S",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "stratified_pi",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d0-nominal-p00-b1",
+      "block": "R",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d0-nominal-p01-b1",
+      "block": "R",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d0-nominal-p02-b1",
+      "block": "R",
+      "profile_id": "D0-nominal",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d1-short-channel-p00-b1",
+      "block": "R",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d1-short-channel-p01-b1",
+      "block": "R",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G4",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d1-short-channel-p02-b1",
+      "block": "R",
+      "profile_id": "D1-short-channel",
+      "radiation_id": "G5",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d2-narrow-fin-p00-b1",
+      "block": "R",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d2-narrow-fin-p01-b1",
+      "block": "R",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "C1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d2-narrow-fin-p02-b1",
+      "block": "R",
+      "profile_id": "D2-narrow-fin",
+      "radiation_id": "G0",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d3-low-acceptor-p00-b1",
+      "block": "R",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G1",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d3-low-acceptor-p01-b1",
+      "block": "R",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G2",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    },
+    {
+      "case_id": "r06-r-d3-low-acceptor-p02-b1",
+      "block": "R",
+      "profile_id": "D3-low-acceptor",
+      "radiation_id": "G3",
+      "stored_bit": 1,
+      "pair_id": null,
+      "statistics_intent": true,
+      "selection_mechanism": "simple_random",
+      "status": "pending_p0_gate",
+      "production_admission": null,
+      "admission_stage": "after_complete_frame_selection_and_case_draw_map"
+    }
+  ],
+  "z_bridge": [
+    {
+      "case_id": "r06-z-d0-nominal-b0",
+      "profile_id": "D0-nominal",
+      "stored_bit": 0,
+      "pair_id": "r06-z-d0-nominal",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d0-nominal-b1",
+      "profile_id": "D0-nominal",
+      "stored_bit": 1,
+      "pair_id": "r06-z-d0-nominal",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d1-short-channel-b0",
+      "profile_id": "D1-short-channel",
+      "stored_bit": 0,
+      "pair_id": "r06-z-d1-short-channel",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d1-short-channel-b1",
+      "profile_id": "D1-short-channel",
+      "stored_bit": 1,
+      "pair_id": "r06-z-d1-short-channel",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d2-narrow-fin-b0",
+      "profile_id": "D2-narrow-fin",
+      "stored_bit": 0,
+      "pair_id": "r06-z-d2-narrow-fin",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d2-narrow-fin-b1",
+      "profile_id": "D2-narrow-fin",
+      "stored_bit": 1,
+      "pair_id": "r06-z-d2-narrow-fin",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d3-low-acceptor-b0",
+      "profile_id": "D3-low-acceptor",
+      "stored_bit": 0,
+      "pair_id": "r06-z-d3-low-acceptor",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    },
+    {
+      "case_id": "r06-z-d3-low-acceptor-b1",
+      "profile_id": "D3-low-acceptor",
+      "stored_bit": 1,
+      "pair_id": "r06-z-d3-low-acceptor",
+      "deck_timing_version": "r06-hold-window-v1",
+      "status": "pending_p0_gate",
+      "preferred_action": "reuse_matching_qualified_full_whr_p0_baseline"
+    }
+  ]
+}

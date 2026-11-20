@@ -371,3 +371,26 @@ R 文献/资料
 - month-one-cases-r05.json及CASE-MANIFEST-CONTRACT.md已正式部署，444唯一case、216主响应pair、384/48/12层、16/2工况；全部planned且task/run/baseline/验收映射未绑定。primary_index是计划位置，b0/b1是同源配对；增强、随机、对照、各类留出不混计，connected provenance分组不泄漏。该清单不是新执行账本。历史r04一个基准器件的event4 b0/b1两条有条件未翻转与性能probe独立展示，不填进r0.5分母。
 - 网页状态从原queue/runtime/manifest和新observation投影，维护web-observation只按时效使用，自主恢复后回归原observation。线上Codex可按<PUBLIC_SITE_DIR>/ops/PROGRESS-INTERFACE.md正式CLI写私有展示库的issue/action/phase、短说明、下一步和证据；它不修改运行事实或科学验收，不需手改status.json/前端。公开只用正式case_id或BENCH别名，不把真实r04 run_id换前缀公开。
 - 既有automation tcad已迁入本会话并恢复每小时ACTIVE，接续最新4×2和预算；复用已确认结果，不重复探针/API/环境验证。当前不启动正式训练、超参搜索或新网页部署。
+
+<!-- operator-p0-d0-d3-preparation-20261120:begin -->
+## 2026-11-20 UTC P0 收尾与 D0–D3 自动衔接
+
+用户于本机 2026-11-19 明确要求：“先整理P0收尾项和D0-D3第一波正式admission的准备清单，你和线上bot衔接好，这边P0算完整理好就自行推进D0-D3。不要停下来再问一遍我是否执行。”
+
+原线上 bot 接续 [P0 收尾与 D0–D3 准备清单](P0-CLOSEOUT-AND-D0-D3-FIRST-WAVE-PREP-r06-20261120.md)
+以及 [准备范围机器清单](r06-gate/d0-d3-first-wave-preflight.json)。
+104 个 T/S/R 响应槽位、8 个 Z 桥接槽位和 24 个输运池是准备范围；
+首次优先核对 Z 复用、G0/C1 的 6 个候选池和每个合格 profile 的首个
+shape-a/shape-b b1 探针，后续档位按真实反馈决定。
+四项共同 P0 科学证据和目标 profile 双状态资格满足后，
+自动经原 Runtime 生成并提交正式 admission；其它 profile 的局部问题
+只暂停其依赖分支。S/R 等完整 frame、selection、case_draw_map 冻结后接续，
+HR/HP 按原模型冻结规则封存，AL 保留后续条件。
+
+当前清单记录的是准备时的缺口，线上应接续较新的原生证据。保持
+contract、冻结 manifest、原 run/repair 身份、队列单写者和资源策略；
+无需用户二次放行。请在下一次实质研究 checkpoint 引用该清单，
+记录已接手的 P0 缺口和 gate 通过后的下一批对象，并保存简短交接收据至
+`local_runtime/server-codex/handovers/20261120-p0-d0-d3/ack.json`。
+无需为确认单独新开纯报告轮次。
+<!-- operator-p0-d0-d3-preparation-20261120:end -->

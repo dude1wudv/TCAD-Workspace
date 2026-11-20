@@ -1,0 +1,13 @@
+[Unit]
+Description=Project the formal xjtu.shop research plan
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/srv/xjtu-shop-site/status-checker
+ExecStart=/usr/bin/python3 -B /srv/xjtu-shop-site/status-checker/status_checker.py \
+    --mode full \
+    --output /srv/xjtu-shop-site/dist/status.json \
+    --mirror-output /srv/xjtu-shop-site/dist-status/status.json
+TimeoutStartSec=120s

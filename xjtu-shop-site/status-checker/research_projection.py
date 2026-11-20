@@ -663,7 +663,7 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             if sealed_intent(intent) or identity in sealed_ids:
                 private_runs.add(run_id)
         if diagnostic_scope(scope) and not sealed_intent(intent) and identity not in sealed_ids:
-            diagnostics[task_id] = (diagnostic_bucket(scope), run_id, False)
+            diagnostics[task_id] = (diagnostic_bucket(scope), run_id, False, None)
             if isinstance(run_id, str):
                 diagnostic_run_tasks[run_id] = task_id
                 excluded_runs.add(run_id)
@@ -740,18 +740,25 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             if task_id is None:
                 continue
             key = task_id if task_id in diagnostics else diagnostic_run_tasks.get(run_id, task_id)
-            bucket, previous_run, was_running = diagnostics.get(key, (diagnostic_bucket(scope), run_id, False))
+            bucket, previous_run, was_running, scheduler_state = diagnostics.get(
+                key, (diagnostic_bucket(scope), run_id, False, None))
             if key not in diagnostics:
                 diagnostics_from_scheduler.add(bucket)
-            diagnostics[key] = (bucket, previous_run or run_id, was_running or task_running)
+            task_state = task.get("state") if task.get("state") in {
+                "running", "collecting", "uncollected", "completed", "failed", "pending", "unknown",
+            } else None
+            diagnostics[key] = (bucket, previous_run or run_id, was_running or task_running,
+                                task_state or scheduler_state)
         elif task_running and identity in seen and run_id not in excluded_runs:
             running.add(identity)
 
     public_diagnostics = {"P0": {key: 0 for key in COUNT_FIELDS if key not in {"accepted", "remaining"}}}
-    for bucket, run_id, scheduler_running in diagnostics.values():
+    for bucket, run_id, scheduler_running, scheduler_state in diagnostics.values():
         count = public_diagnostics.setdefault(bucket, dict.fromkeys(public_diagnostics["P0"], 0))
         archived = is_archived(manifests.get(run_id, {}))
         state = execution(manifests.get(run_id, {}), runs.get(run_id, {}), fresh)
+        if scheduler_state in {"collecting", "uncollected", "completed", "failed"} and state == "running":
+            state = "pending"
         if scheduler_running and state == "pending":
             state = "running"
             diagnostics_from_scheduler.add(bucket)
