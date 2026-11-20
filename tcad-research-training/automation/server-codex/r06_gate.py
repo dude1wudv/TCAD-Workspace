@@ -183,8 +183,8 @@ def verify_p0(workspace, contract, manifest, task, inputs, intents):
     need(task["backend"] == "tcad", "TCAD diagnostic backend differs")
     spec = read(project / "project.json")
     threads, cores = spec.get("native_threads"), spec.get("native_cores")
-    need(type(threads) is int and type(cores) is int and threads == cores and threads in (1, 2),
-         "P0 requires an explicit matching one-core or two-core resource declaration")
+    need(type(threads) is int and type(cores) is int and threads == cores and threads in (1, 2, 4),
+         "P0 requires matching native_threads and native_cores set to 1, 2 or 4")
     tools = {step.get("tool") for step in spec.get("steps", [])}
     need(bool(tools) and tools <= {"sde", "snmesh", "sdevice", "tdx", "svisual"},
          "unsupported diagnostic tool")

@@ -1,26 +1,24 @@
 """Extract D1 solver and readout metrics and compare two runs offline."""
 
 import argparse
+from contextlib import contextmanager
 import csv
 from decimal import Decimal, InvalidOperation
-from io import StringIO
-from itertools import chain
+from io import StringIO, TextIOWrapper
 import json
 import math
 from pathlib import Path
 import re
+import tarfile
+
+from reject_trace import summarize_attempts
 
 
 NUMBER = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 NS = Decimal("1e-9")
 REF_V = Decimal("0.6")
 MARGIN_LIMIT_V = Decimal("1e-4")
-ATTEMPT = re.compile(r"^\s*Computing BE-step from " + NUMBER + r" s to (" + NUMBER + r") s")
-CONVERGED = re.compile(
-    r"^\s*(?:Error smaller than 1\b|RHS smaller than\b|"
-    r"(?:Finished, because )?\|RHS\| (?:is )?less than\b|(?:time )?step accepted\b)", re.I)
-REJECTED = re.compile(
-    r"^\s*(?:Newton didn.t converge\b|(?:time )?step rejected\b|#iterations larger than\b)", re.I)
+ATTEMPT = re.compile(r"^\s*Computing BE-step from (" + NUMBER + r") s to (" + NUMBER + r") s", re.M)
 ILS = re.compile(r"^\s*Linear solver(?: \(submethod\))?\s*:\s*ILS\b", re.I | re.M)
 ITERATION = re.compile(r"\s*\d+(?:\s+" + NUMBER + r"){4}\s+\d+\s+(\d+)\s+" + NUMBER + r"\s*")
 LOG_METRICS = ("accepted_steps", "rejected_steps", "total_assembly_s", "total_solve_s",
@@ -29,35 +27,17 @@ LOG_METRICS = ("accepted_steps", "rejected_steps", "total_assembly_s", "total_so
 
 def parse_log(text):
     """Count completed BE attempts and sum the logged assembly and solve times."""
-    accepted = rejected = 0
-    last_ns = None
-    endpoint = status = None
+    trace = summarize_attempts(StringIO(text))
     in_table = False
     max_ils_iters = None
     has_ils = bool(ILS.search(text))
-    for line in chain(text.splitlines(), ("Starting solve of next problem:",)):
-        attempt = ATTEMPT.match(line)
-        if attempt or line.strip() == "Starting solve of next problem:":
-            if status == "accepted":
-                accepted += 1
-                last_ns = float(endpoint / NS)
-            elif status == "rejected":
-                rejected += 1
-            endpoint = Decimal(attempt[1]) if attempt else None
-            status = None
-
-        if endpoint is not None:
-            if REJECTED.match(line):
-                status = "rejected"
-            elif status is None and CONVERGED.match(line):
-                status = "accepted"
-
-        if has_ils:
+    if has_ils:
+        for line in StringIO(text):
             if line.lstrip().startswith("Iteration") and "#iterative" in line:
                 in_table = True
             elif in_table and (row := ITERATION.fullmatch(line)):
                 max_ils_iters = max(max_ils_iters or 0, int(row[1]))
-            elif line.lstrip().startswith("Finished, because") or attempt:
+            elif line.lstrip().startswith("Finished, because") or ATTEMPT.match(line):
                 in_table = False
 
     def timings(label):
@@ -65,10 +45,10 @@ def parse_log(text):
             r"^\s*" + label + r":[ \t]*(" + NUMBER + r")[ \t]+s\b", text, re.I | re.M)]
 
     assembly, solve, wall = (timings(label) for label in ("Assembly time", "Solve time", "wallclock"))
-    return dict(accepted_steps=accepted, rejected_steps=rejected,
+    return dict(accepted_steps=trace["accepted_steps"], rejected_steps=trace["rejected_steps"],
                 total_assembly_s=math.fsum(assembly) if assembly else None,
                 total_solve_s=math.fsum(solve) if solve else None,
-                total_wall_s=wall[-1] if wall else None, last_sim_time_ns=last_ns,
+                total_wall_s=wall[-1] if wall else None, last_sim_time_ns=trace["last_accepted_ns"],
                 max_ils_iters=max_ils_iters)
 
 
@@ -137,33 +117,95 @@ def compare_metrics(baseline, candidate, *, stored_bit=1):
     delta_margin = number(candidate[margin]) - number(baseline[margin])
     delta = {key: candidate[key] - baseline[key] for key in LOG_METRICS
              if baseline.get(key) is not None and candidate.get(key) is not None}
-    return dict(stored_bit=stored_bit, delta_metrics=delta, delta_margin_V=float(delta_margin),
-                margin_limit_V=float(MARGIN_LIMIT_V), margin_pass=abs(delta_margin) < MARGIN_LIMIT_V)
+    result = dict(stored_bit=stored_bit, delta_metrics=delta, delta_margin_V=float(delta_margin),
+                  margin_limit_V=float(MARGIN_LIMIT_V), margin_pass=abs(delta_margin) < MARGIN_LIMIT_V)
+    if "rejection_window" in baseline or "rejection_window" in candidate:
+        left, right = baseline.get("rejection_window"), candidate.get("rejection_window")
+        if (not left or not right or left["bounds_ns"] != right["bounds_ns"] or
+                left["window_kind"] != right["window_kind"]):
+            raise ValueError("A/B rejection windows must have the same bounds")
+        if baseline.get("sample_time_ns") is None or baseline["sample_time_ns"] != candidate.get("sample_time_ns"):
+            raise ValueError("A/B margins must use the same native readout time")
+        start, end = left["bounds_ns"]
+        for metrics, window in ((baseline, left), (candidate, right)):
+            first, last = metrics.get("first_attempt_ns"), metrics.get("last_sim_time_ns")
+            if first is None or first > start or last is None or last < end:
+                raise ValueError("Both native logs must span the requested rejection window")
+            if not window["accepted_steps"] or window["incomplete_steps"]:
+                raise ValueError("Window has no accepted steps or contains an unfinished attempt")
+        result["delta_window_rejected_steps"] = right["rejected_steps"] - left["rejected_steps"]
+        timed = all(window["timed_steps"] == window["accepted_steps"] + window["rejected_steps"]
+                    for window in (left, right))
+        for key in ("attempt_wall_s", "rejected_wall_s"):
+            result[f"delta_window_{key}"] = (right[key] - left[key] if timed and
+                                             left[key] is not None and right[key] is not None else None)
+        result["readout_sign_preserved"] = number(candidate[margin]).compare(0) == number(baseline[margin]).compare(0)
+    return result
+
+
+def diagnose(lines, bounds, open_window=False):
+    if bounds is None:
+        if open_window:
+            raise ValueError("--open-window requires --window-ns")
+        return summarize_attempts(lines)
+    start, end = (number(value) for value in bounds)
+    if not 0 <= start < end:
+        raise ValueError("Expected 0 <= start < end in ns")
+    summary = summarize_attempts(lines, start_ns=start, end_ns=end, open_window=open_window)
+    return {**summary, "bounds_ns": [float(start), float(end)], "window_kind": "open" if open_window else "closed"}
+
+
+@contextmanager
+def native_text(path, member):
+    if path.suffix.lower() == ".tar":
+        with tarfile.open(path, "r:") as archive:
+            matches = [entry for entry in archive if entry.isfile() and Path(entry.name).name == member]
+            if len(matches) != 1:
+                raise ValueError(f"Expected exactly one {member} in {path}; found {len(matches)}")
+            with TextIOWrapper(archive.extractfile(matches[0]), encoding="utf-8") as stream:
+                yield stream
+    else:
+        with path.open(encoding="utf-8") as stream:
+            yield stream
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_subparsers(dest="mode", required=True)
+    trace = modes.add_parser("diagnose", help="Locate rejected native BE steps without a waveform")
+    trace.add_argument("log", type=Path)
     extract = modes.add_parser("extract", help="Print metrics JSON from native results")
     extract.add_argument("log", type=Path)
     extract.add_argument("circuit", type=Path, nargs="?", help="DF-ISE or CSV readout waveform")
     extract.add_argument("--sample-ns", type=float, default=31.9)
     extract.add_argument("--tolerance-ns", type=float, default=0.001)
+    for mode in (trace, extract):
+        mode.add_argument("--window-ns", nargs=2, metavar=("START", "END"), type=Decimal)
+        mode.add_argument("--open-window", action="store_true", help="Exclude both printed target boundaries")
     compare = modes.add_parser("compare", help="Compare baseline and candidate metrics JSON")
     compare.add_argument("baseline", type=Path)
     compare.add_argument("candidate", type=Path)
     compare.add_argument("--stored-bit", type=int, choices=(0, 1), default=1)
     args = parser.parse_args()
-    if args.mode == "extract":
-        result = parse_log(args.log.read_text(encoding="utf-8"))
+    if args.mode == "diagnose":
+        with native_text(args.log, "transient_des.log") as stream:
+            result = diagnose(stream, args.window_ns, args.open_window)
+    elif args.mode == "extract":
+        with native_text(args.log, "transient_des.log") as stream:
+            text = stream.read()
+        result = parse_log(text)
+        if args.window_ns is not None or args.open_window:
+            first = ATTEMPT.search(text)
+            result["first_attempt_ns"] = float(Decimal(first[1]) / NS) if first else None
+            result["rejection_window"] = diagnose(StringIO(text), args.window_ns, args.open_window)
         if args.circuit is not None:
-            result.update(parse_circuit(args.circuit.read_text(encoding="utf-8"),
-                                        sample_ns=args.sample_ns, tolerance_ns=args.tolerance_ns))
+            with native_text(args.circuit, "circuit.plt") as stream:
+                result.update(parse_circuit(stream.read(), sample_ns=args.sample_ns, tolerance_ns=args.tolerance_ns))
     else:
         result = compare_metrics(json.loads(args.baseline.read_bytes()), json.loads(args.candidate.read_bytes()),
                                  stored_bit=args.stored_bit)
     print(json.dumps(result, indent=2, allow_nan=False))
-    return int(args.mode == "compare" and not result["margin_pass"])
+    return int(args.mode == "compare" and not (result["margin_pass"] and result.get("readout_sign_preserved", True)))
 
 
 if __name__ == "__main__":

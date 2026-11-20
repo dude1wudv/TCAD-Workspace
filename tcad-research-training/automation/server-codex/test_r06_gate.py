@@ -117,6 +117,25 @@ class AdmissionTests(unittest.TestCase):
         self.assertEqual(self.verify()["scope"], "p0_diagnostic")
         self.assertNotIn("passed", self.verify())
 
+    def test_p0_accepts_frozen_four_core_resources_and_rejects_other_widths(self):
+        project = self.root / self.task["project"]
+        spec = gate.read(project / "project.json")
+        self.save("inputs/zero/project.json", dict(spec, native_threads=4, native_cores=4))
+        with self.assertRaises(gate.Pending):
+            self.verify()
+        for threads, cores, accepted in (
+                (1, 1, True), (2, 2, True), (4, 4, True),
+                (3, 3, False), (4, 2, False), (True, True, False)):
+            with self.subTest(threads=threads, cores=cores):
+                self.save("inputs/zero/project.json", dict(spec, native_threads=threads, native_cores=cores))
+                self.admission["input_sha256"] = gate.input_hashes(project)
+                self.save("p0/" + self.task["id"] + ".json", self.admission)
+                if accepted:
+                    self.assertEqual(self.verify()["scope"], "p0_diagnostic")
+                else:
+                    with self.assertRaisesRegex(gate.Pending, "matching native_threads"):
+                        self.verify()
+
     def test_legacy_new_task_is_held_and_bad_manifest_cannot_fall_back(self):
         for task_id in ("old-task", "another-old-id"):
             task = dict(self.task, id=task_id)

@@ -1,11 +1,15 @@
 """Exercise D1 deck edits and A/B metrics with native-format snippets."""
 
 from decimal import Decimal
+from io import StringIO
 import json
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import unittest
+from unittest.mock import patch
 
-from analyze_ab import compare_metrics, parse_circuit, parse_log
-from prepare import block, transients, transform_deck
+from analyze_ab import compare_metrics, diagnose, parse_circuit, parse_log
+from prepare import block, freeze_project, transients, transform_deck
 
 
 DECK = '''* Original D1 zero-source deck
@@ -128,6 +132,27 @@ def times(deck):
 
 
 class DeckTests(unittest.TestCase):
+    def test_solver_only_freeze_preserves_physics_resources_and_endpoint(self):
+        with TemporaryDirectory() as folder, patch("prepare.HERE", Path(folder)):
+            project = Path(folder) / "baseline"
+            project.mkdir()
+            source = DECK.replace("\n", "\r\n").encode()
+            (project / "device.cmd").write_bytes(source)
+            spec = dict(name="original", native_threads=1, native_cores=1, steps=[])
+            (project / "project.json").write_text(json.dumps(spec))
+            (project / "source.dat").write_bytes(b"unchanged")
+            candidate = freeze_project(project, "pardiso_only")
+            self.assertEqual((candidate / "device.cmd").read_bytes(), source.replace(b"ILS(set=1)", b"ParDiSo"))
+            self.assertEqual(json.loads((candidate / "project.json").read_bytes()), spec | {"name": "pardiso_only"})
+            self.assertEqual((candidate / "source.dat").read_bytes(), b"unchanged")
+            self.assertEqual((project / "device.cmd").read_bytes(), source)
+            with self.assertRaises(FileExistsError):
+                freeze_project(project, "pardiso_only")
+            with self.assertRaisesRegex(ValueError, "preserves"):
+                freeze_project(project, "ils2_only", end_ns=30.925)
+            with self.assertRaisesRegex(ValueError, "already uses"):
+                freeze_project(candidate, "pardiso_only")
+
     def test_pardiso_updates_only_global_solver_settings(self):
         deck = transform_deck(DECK)
         for token in ("Number_Of_Threads=2", "Iterations=25", "NotDamped=8", "RHSMin=1e-10",
@@ -199,6 +224,26 @@ class DeckTests(unittest.TestCase):
 
 
 class AnalysisTests(unittest.TestCase):
+    def test_comparable_window_and_readout(self):
+        window = diagnose(StringIO(LOG), (31.8, 32.0))
+        baseline = parse_log(LOG) | parse_circuit(PLT) | {"first_attempt_ns": 31.8, "rejection_window": window}
+        result = compare_metrics(baseline, baseline)
+        self.assertEqual(result["delta_window_attempt_wall_s"], 0)
+        self.assertEqual(result["delta_window_rejected_steps"], 0)
+        self.assertTrue(result["readout_sign_preserved"])
+        for changes, message in (({"last_sim_time_ns": 31.9}, "span"),
+                                 ({"sample_time_ns": 31.8}, "readout time"),
+                                 ({"rejection_window": window | {"bounds_ns": [31.8, 31.9]}}, "same bounds")):
+            with self.assertRaisesRegex(ValueError, message):
+                compare_metrics(baseline, baseline | changes)
+        partial = baseline | {"rejection_window": window | {"timed_steps": 0}}
+        self.assertIsNone(compare_metrics(baseline, partial)["delta_window_attempt_wall_s"])
+        positive = baseline | {"write1_margin_V": 0.00001}
+        negative = baseline | {"write1_margin_V": -0.00001}
+        result = compare_metrics(positive, negative)
+        self.assertTrue(result["margin_pass"])
+        self.assertFalse(result["readout_sign_preserved"])
+
     def test_native_timer_summary_and_ils_max_include_rejected_work(self):
         self.assertEqual(parse_log(LOG), {
             "accepted_steps": 2, "rejected_steps": 1, "total_assembly_s": 2.5, "total_solve_s": 2.25,

@@ -681,6 +681,33 @@ class RuntimeTests(unittest.TestCase):
         waiting = next(row for row in result["pending_tasks"] if row["id"] == "dual-wait")
         self.assertEqual(waiting["eligible_slots"], [6, 7])
 
+    def test_thirteen_slot_pool_routes_frozen_resources(self):
+        cpu_sets = [[cpu] for cpu in range(12)] + [[12, 13, 14, 15]]
+        self.cfg.update(parallel_capacity=13, cpu_sets=cpu_sets,
+                        requested_threads=[1] * 12 + [4])
+        self.save(self.profile, self.cfg)
+        self.policy["max_parallel_jobs"] = 13
+        for name, width in (("quad-a", 4), ("quad-wait", 4), ("old-dual", 2)):
+            task = self.task(name)
+            project = self.workspace / task["project"] / "project.json"
+            self.save(project, dict(runtime.read_json(project), native_threads=width, native_cores=width))
+        for cpu in range(13):
+            self.task(f"single-{cpu:02}")
+
+        result = self.engine().tick()
+        self.assertEqual(result["profile_resources"]["schema"], runtime.DYNAMIC_SLOTS_SCHEMA)
+        self.assertEqual(result["active_count"], 13)
+        by_id = {row["id"]: row for row in result["runs"]}
+        self.assertEqual(by_id["quad-a"]["slot"], 12)
+        self.assertEqual(by_id["quad-a"]["requested_resources"]["cpu_set"], [12, 13, 14, 15])
+        for cpu in range(12):
+            self.assertEqual(by_id[f"single-{cpu:02}"]["requested_resources"]["cpu_set"], [cpu])
+        waiting = {row["id"]: row for row in result["pending_tasks"]}
+        self.assertEqual(waiting["quad-wait"]["eligible_slots"], [12])
+        self.assertEqual(waiting["single-12"]["eligible_slots"], list(range(12)))
+        self.assertTrue(any(row["id"] == "old-dual" and row["reason"] == "task_requires_revision"
+                            for row in result["blocked_tasks"]))
+
     def test_multicore_historical_transport_failure_defers_until_idle_original_profile(self):
         self.task("old-transport", backend="geant4")
         self.engine().tick()
