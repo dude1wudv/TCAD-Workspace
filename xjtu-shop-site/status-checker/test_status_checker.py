@@ -100,7 +100,8 @@ class StatusCheckerTests(unittest.TestCase):
             patch("status_checker.system_metrics", return_value={}),
         ):
             result = build_status(runner=fake_runner, observation_path=observation,
-                                  runtime_path=runtime, runs_root=runs)
+                                  runtime_path=runtime, runs_root=runs,
+                                  scheduler_path=observation.parent / "missing-scheduler.json")
         self.assertEqual(result["schema_version"], 2)
         self.assertEqual(result["research"]["totals"]["planned"], 396)
         self.assertEqual(result["research"]["totals"]["solved"], 0)

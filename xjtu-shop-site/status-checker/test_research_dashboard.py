@@ -14,7 +14,7 @@ class ResearchDashboardTests(unittest.TestCase):
         module = (Path(__file__).resolve().parents[1] / "src/research-dashboard.js").as_uri()
         source = (
             "import assert from 'node:assert/strict';\n"
-            "import {renderResearch, renderRunProgress, parameterMarkup, bindResearch} from "
+            "import {renderResearch, parameterMarkup, bindResearch} from "
             + json.dumps(module) + ";\n" + script
         )
         result = subprocess.run(["node", "--input-type=module"], input=source, encoding="utf-8",
@@ -27,11 +27,15 @@ const count = (planned) => ({planned,solved:0,accepted:0,remaining:planned,runni
 const research = {
   available:true, revision:'r0.6', totals:count(396),
   budget:{total_cases:396,zero_cases:26,profile_count:13,radiation_count:10,statistics_intent_cases:214,statistics_eligible_cases:0,manifest_eligible_cases:0},
+  statistics_snapshot_status:'not_connected',
   counts:Object.fromEntries(Object.entries({Z:26,T:68,S:150,R:12,HR:28,HP:30,AL:82}).map(([key,n])=>[key,count(n)])),
-  diagnostics:{P0:{planned:3,solved:2,running:1,failed:0}},
+  diagnostics:{P0:{planned:3,solved:2,running:1,failed:0,included_in_formal_plan:false}},
 };
 const html = renderResearch(research,'zh');
-for (const text of ['396 计划槽位','13 器件','10 辐照条件','统计用途上限 214','统计资格快照待接入','清单资格标记 0','工程完成','科学通过','P0 前置诊断','诊断单独记录，不计入正式计划完成数']) assert.ok(html.includes(text),text);
+const visible = html.replace(/<[^>]*>/g, ' ').replace(/\\s+/g, ' ').trim();
+for (const text of ['计划槽位 396','器件 13','辐照条件 10','统计用途上限 214',
+  '统计资格快照待接入','清单资格标记 0','工程完成 0','科学通过 0',
+  'P0 前置诊断','诊断单独记录，不计入正式计划完成数']) assert.ok(visible.includes(text),text);
 assert.ok(!html.includes('当前统计合格'));
 for (const block of ['Z','T','S','R','HR','HP','AL']) assert.ok(html.includes('data-cohort="'+block+'"'),block);
 assert.ok(html.includes('value="0"'));
@@ -47,7 +51,9 @@ const root = {addEventListener:(event,callback)=>{callbacks[event]=callback;}};
 bindResearch(root,()=>{});
 callbacks.click({target:{closest:()=>chip}});
 const html = renderResearch({
-  available:true,revision:'r0.6',counts:{HR:{planned:28,solved:1,accepted:0,remaining:28}},
+  available:true,revision:'r0.6',
+  blocks:[{id:'HR',sealed:true,counts:{planned:28,solved:1,accepted:0,remaining:28}}],
+  counts:{HR:{planned:28,solved:1,accepted:0,remaining:28}},
   cases:[{case_id:'r06-hr-hidden-b1',block:'HR',cohort:'HR',state:'solved',profile_id:'private-result'}],
   progress:[{case_id:'r06-hp-hidden-b1',note:'private-holdout-note'}],
   profiles:[{id:'H0',sealed:true,parameters:{NA_relative:987654321}}],
@@ -55,12 +61,15 @@ const html = renderResearch({
 },'zh');
 assert.ok(html.includes('封存中，仅显示区块汇总'));
 for (const secret of ['private-result','r06-hr-hidden','private-holdout-note','987654321','123456789','case-manifest']) assert.ok(!html.includes(secret),secret);
-assert.equal(renderRunProgress({case_id:'r06-hr-hidden-b1',note:'secret'},'zh'),'');
 """)
 
     def test_r05_layout_and_english_still_render(self):
         self.render_check("""
-const research = {available:true,revision:'r0.5',counts:{core:{planned:384,solved:1,accepted:0,remaining:384,pairs:192}},cases:[],conditions:[],profiles:[]};
+const research = {available:true,revision:'r0.5',counts:{
+  core:{planned:384,solved:1,accepted:0,remaining:384,pairs:192},
+  reserve:{planned:48,solved:0,accepted:0,remaining:48,pairs:24},
+  control:{planned:12,solved:0,accepted:0,remaining:12,pairs:6},
+},cases:[],conditions:[],profiles:[]};
 const html = renderResearch(research,'en');
 for (const text of ['data-cohort="core"','data-cohort="reserve"','data-cohort="control"','384','192','r0.5','Engineering complete']) assert.ok(html.includes(text),text);
 assert.ok(!html.includes('data-cohort="HR"'));

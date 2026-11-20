@@ -78,6 +78,22 @@ class RunnerSchedulerV2Tests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "requested_threads"):
             self.tcad.parallel_capacity(bad_threads)
 
+    def test_thirteen_slot_policy_preserves_pool_identity(self):
+        cpu_sets = [[cpu] for cpu in range(12)] + [[12, 13, 14, 15]]
+        cfg = dict(self.base_cfg, parallel_capacity=13, cpu_sets=cpu_sets,
+                   requested_threads=[1] * 12 + [4])
+        directory = "/home/tcad/research-training/runs/new-job"
+        policy = self.tcad.parallel_policy(cfg, 12, "new-job", directory)
+
+        self.assertEqual(policy["schema"], "tcad-shared-gate-slots-v2")
+        self.assertEqual(policy["pool_root"], self.base_cfg["remote_root"])
+        self.assertEqual(policy["connection_identity"], self.tcad.connection_identity(self.base_cfg))
+        self.assertEqual(policy["cpu_sets"], cpu_sets)
+        self.assertEqual(policy["cpu_set"], [12, 13, 14, 15])
+        self.assertEqual(policy["requested_threads"], 4)
+        with self.assertRaises(ValueError):
+            self.tcad.parallel_policy(cfg, 13, "new-job", directory)
+
     def test_preflight_reserve_rejection_rolls_back_staging_without_dirty_manifest(self):
         cfg = dict(self.base_cfg, parallel_capacity=3,
                    cpu_sets=[[0, 1, 2], [3, 4, 5], [6, 7, 8]], requested_threads=3)
