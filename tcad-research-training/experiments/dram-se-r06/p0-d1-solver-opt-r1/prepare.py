@@ -10,6 +10,7 @@ from shutil import copyfile
 
 HERE = Path(__file__).resolve().parent
 VARIANTS = {"pardiso_damped_r12": "ParDiSo", "ils2_damped_r12": "ILS(set=2)"}
+SOLVER_ONLY = {"pardiso_only": "ParDiSo", "ils2_only": "ILS(set=2)"}
 NUMBER = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
 IGNORED = re.compile(r'"(?:\\.|[^"\\])*"|^[ \t]*\*[^\r\n]*|#[^\r\n]*', re.M)
 TRANSIENT = re.compile(r"\bTransient\s*\(")
@@ -180,18 +181,34 @@ def checkpoint_files(prefix):
     return [prefix + "_access_des.sav", prefix + "_circuit_des.sav"]
 
 
-def freeze_project(project, variant, *, end_ns=32.1, save_checkpoint_ns=None, load_checkpoint=None):
+def freeze_project(project, variant, *, end_ns=argparse.SUPPRESS, save_checkpoint_ns=None, load_checkpoint=None):
     name = variant
     if save_checkpoint_ns is not None:
         name += "_save_" + checkpoint_name(Decimal(str(save_checkpoint_ns)))
     if load_checkpoint is not None:
         name += "_load_" + Path(load_checkpoint).name
     target = HERE / "inputs" / name
-    deck = transform_deck((project / "device.cmd").read_bytes().decode("utf-8"),
-                          submethod=VARIANTS[variant], end_ns=end_ns,
-                          save_checkpoint_ns=save_checkpoint_ns, load_checkpoint=load_checkpoint)
+    source = (project / "device.cmd").read_bytes().decode("utf-8")
     spec = json.loads((project / "project.json").read_bytes())
-    spec.update(name=name, native_threads=2, native_cores=2)
+    if variant in SOLVER_ONLY:
+        if end_ns != argparse.SUPPRESS or save_checkpoint_ns is not None or load_checkpoint is not None:
+            raise ValueError("A solver-only comparison preserves the baseline time range and checkpoint")
+        start, stop = block(source, "Math")
+        pattern = r"\bSubMethod\s*=\s*(\w+(?:\s*\([^()]*\))?)"
+        matches = list(re.finditer(pattern, masked(source[start:stop]), re.I))
+        if len(matches) != 1:
+            raise ValueError("Expected one explicit global SubMethod for the solver-only comparison")
+        match = matches[0]
+        method = SOLVER_ONLY[variant]
+        if re.sub(r"\s+", "", match[1]).casefold() == method.casefold():
+            raise ValueError("Baseline already uses the requested SubMethod")
+        deck = source[:start + match.start(1)] + method + source[start + match.end(1):]
+    else:
+        deck = transform_deck(source, submethod=VARIANTS[variant],
+                              end_ns=32.1 if end_ns == argparse.SUPPRESS else end_ns,
+                              save_checkpoint_ns=save_checkpoint_ns, load_checkpoint=load_checkpoint)
+        spec.update(native_threads=2, native_cores=2)
+    spec["name"] = name
     checkpoint_inputs = checkpoint_files(load_checkpoint) if load_checkpoint is not None else []
     for path in checkpoint_inputs:
         if not (project / path).is_file():
@@ -225,13 +242,12 @@ def freeze_project(project, variant, *, end_ns=32.1, save_checkpoint_ns=None, lo
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("project", type=Path, help="Input project directory")
-    parser.add_argument("--variant", required=True, choices=VARIANTS)
-    parser.add_argument("--end-ns", type=float, default=32.1)
+    parser.add_argument("--variant", required=True, choices=(*VARIANTS, *SOLVER_ONLY))
+    parser.add_argument("--end-ns", type=float, default=argparse.SUPPRESS)
     parser.add_argument("--save-checkpoint-ns", type=float)
     parser.add_argument("--load-checkpoint", help="Checkpoint file prefix relative to the input project")
     args = parser.parse_args()
-    target = freeze_project(args.project, args.variant, end_ns=args.end_ns,
-                            save_checkpoint_ns=args.save_checkpoint_ns, load_checkpoint=args.load_checkpoint)
+    target = freeze_project(**vars(args))
     print(json.dumps({"project": target.as_posix(), "variant": args.variant, "frozen": True, "queued": False}))
 
 
