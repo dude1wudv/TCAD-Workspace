@@ -625,8 +625,8 @@ function render() {
     localized(payload.health?.simulation?.summary_zh, payload.health?.simulation?.summary_en) ||
     (payload.generated_at ? b('等待调度态势摘要', 'Awaiting a scheduler summary') :
       state.fullFailed ? b('状态数据暂时不可用', 'Status data unavailable') : b('正在读取状态数据…', 'Loading status…'));
-  update('overview', `<md-elevated-card class="m3-card overview-shell"><div class="overview"><div><h1>${b('仿真状态看板', 'Simulation status')}</h1>
-    <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}</md-elevated-card>`);
+  update('overview', `<md-elevated-card class="m3-card overview-shell"><div class="overview-frame"><div class="overview"><div><h1>${b('仿真状态看板', 'Simulation status')}</h1>
+    <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}</div></md-elevated-card>`);
   update('kpis', renderKpis(payload, scheduler, batch, research, services));
   const sample = scheduler.hasObservation ? `${scheduler.stale ? b('观测快照', 'Snapshot') : b('采样', 'Sampled')} · ${date(scheduler.observedAt)}` : '';
   const matrixHint = state.selectedTask ? b('点击空白处或 Esc 取消选中', 'Click outside or press Esc to clear') : sample;
