@@ -559,10 +559,16 @@ summary { cursor: pointer; color: var(--accent); font-weight: 650; user-select: 
   color: var(--muted); font-size: 12px; font-weight: 600;
 }
 .budget-chip strong { color: var(--text); font-size: 14px; font-weight: 800; }
-.budget-chip.primary { background: var(--accent-bg); color: var(--accent-strong); }
-.budget-chip.primary strong { color: var(--accent-strong); }
-:root[data-theme="dark"] .budget-chip.primary,
-:root[data-theme="dark"] .budget-chip.primary strong { color: var(--accent); }
+.budget-chip.is-interactive {
+  position: relative; overflow: hidden; cursor: pointer;
+  border: 1px solid var(--border); background: var(--panel);
+  transition: transform 0.2s var(--ease), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.budget-chip.is-interactive:hover { background: var(--inset); border-color: var(--border-strong); transform: translateY(-1px); }
+.budget-chip[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-bg); color: var(--accent-strong); }
+.budget-chip[aria-pressed="true"] strong { color: var(--accent-strong); }
+:root[data-theme="dark"] .budget-chip[aria-pressed="true"],
+:root[data-theme="dark"] .budget-chip[aria-pressed="true"] strong { color: var(--accent); }
 
 .plan-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 10px; margin-block: 4px 16px; }
 .plan-block {
