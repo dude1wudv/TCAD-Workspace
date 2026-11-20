@@ -1,4 +1,4 @@
-const view = { cohort: null, query: '', filter: 'all', limit: 12 };
+const view = { cohort: null, query: '', filter: 'all', limit: 12, budgetTab: null };
 const words = {
   zh: {
     title: '科研计划', core: '核心计划', reserve: '备用计划', control: '无粒子对照',
@@ -11,6 +11,8 @@ const words = {
     HR: 'HR 辐照留出', HP: 'HP 器件留出', AL: 'AL 主动学习',
     statisticsIntent: '统计用途上限', statisticsSnapshotPending: '统计资格快照待接入', statisticsSnapshotConnected: '统计资格快照已接入',
     statisticsEligible: '统计资格通过', manifestEligible: '清单资格标记', radiation: '辐照条件',
+    statisticsPublicCount: '公开统计用途案例', statisticsScopeHint: '公开区块（S、R）含统计用途案例；其余位于封存留出区块，不展示逐例明细。',
+    publicCount: '公开', closePanel: '收起',
     sealed: '封存中，仅显示区块汇总',
     p0: 'P0 前置诊断', p0Badge: '独立记录', p0Note: '诊断单独记录，不计入正式计划完成数。正式基线须有对应案例和验收证据。',
     notesTitle: '统计口径与说明',
@@ -55,6 +57,8 @@ const words = {
     HR: 'HR Radiation holdout', HP: 'HP Profile holdout', AL: 'AL Active learning',
     statisticsIntent: 'Statistical intent', statisticsSnapshotPending: 'Statistical qualification snapshot not connected', statisticsSnapshotConnected: 'Statistical qualification snapshot connected',
     statisticsEligible: 'Statistically qualified', manifestEligible: 'Manifest eligible', radiation: 'Radiation',
+    statisticsPublicCount: 'Public statistical cases', statisticsScopeHint: 'Public blocks (S, R) contain statistical-intent cases; remaining cases are in sealed holdouts.',
+    publicCount: 'public', closePanel: 'Close',
     sealed: 'Sealed · block summary only',
     p0: 'P0 diagnostics', p0Badge: 'Tracked separately', p0Note: 'Diagnostics are separate from the formal plan. Formal baselines require a case mapping and acceptance evidence.',
     notesTitle: 'Methodology & definitions',
@@ -208,18 +212,31 @@ export function renderResearch(research, lang, activity) {
       <span class="plan-block-foot">${label('accepted')} ${count(items, 'accepted')}${items?.pairs != null ? ` · ${count(items, 'pairs')} ${label('pairs')}` : ''}</span>
     </button>`;
   }).join('')}</div>` : '';
-  const budgetTarget = (key) => key === 'total_cases' && blocks.length ? 'total'
-    : key === 'zero_cases' && blocks.some((block) => block.id === 'Z') ? 'Z' : null;
+  const publicProfiles = (research.profiles || []).filter((item) => !item.sealed && !sealed.has(item.block || item.cohort));
+  const publicRadiations = (research.radiations || []).filter((item) => !item.sealed && !sealed.has(item.block || item.cohort));
+  const budgetTab = (view.budgetTab === 'profiles' && publicProfiles.length)
+    || (view.budgetTab === 'radiations' && publicRadiations.length)
+    || (view.budgetTab === 'statistics' && budget.statistics_intent_cases != null) ? view.budgetTab : null;
+  const budgetAction = (key) => {
+    if (key === 'total_cases' && blocks.length) return { attr: 'cohort', value: 'total' };
+    if (key === 'zero_cases' && blocks.some((block) => block.id === 'Z')) return { attr: 'cohort', value: 'Z' };
+    if (key === 'profile_count' && publicProfiles.length) return { attr: 'budget-tab', value: 'profiles' };
+    if (key === 'radiation_count' && publicRadiations.length) return { attr: 'budget-tab', value: 'radiations' };
+    if (key === 'statistics_intent_cases') return { attr: 'budget-tab', value: 'statistics' };
+    return null;
+  };
   const budgetKeys = [['total_cases', 'planned'], ['zero_cases', 'zeroCases'], ['profile_count', 'profile'],
     ['radiation_count', 'radiation'], ['statistics_intent_cases', 'statisticsIntent']].filter(([key]) => budget[key] != null);
   const snapshotStatus = { connected: 'statisticsSnapshotConnected', not_connected: 'statisticsSnapshotPending' }[research.statistics_snapshot_status] || 'statisticsSnapshotUnknown';
   const diagnostics = Object.entries(research.diagnostics || {});
   return `${heading}${warning}<md-elevated-card class="m3-card research-panel"><div class="card-body">
     ${budgetKeys.length ? `<div class="budget-chips">${budgetKeys.map(([key, caption]) => {
-      const target = budgetTarget(key);
-      if (!target) return `<span class="budget-chip">${label(caption)} <strong>${count(budget, key)}</strong></span>`;
-      return `<button type="button" class="budget-chip is-interactive" data-key="budget-${esc(target)}" data-cohort="${esc(target)}" aria-pressed="${cohort === target}"><md-ripple></md-ripple>${label(caption)} <strong>${count(budget, key)}</strong></button>`;
+      const action = budgetAction(key);
+      if (!action) return `<span class="budget-chip">${label(caption)} <strong>${count(budget, key)}</strong></span>`;
+      const pressed = action.attr === 'cohort' ? !budgetTab && cohort === action.value : budgetTab === action.value;
+      return `<button type="button" class="budget-chip is-interactive" data-key="budget-${esc(action.value)}" data-${action.attr}="${esc(action.value)}" aria-pressed="${pressed}"><md-ripple></md-ripple>${label(caption)} <strong>${count(budget, key)}</strong></button>`;
     }).join('')}</div>` : ''}
+    ${renderBudgetDetail(research, lang, budgetTab, publicProfiles, publicRadiations, sealed, snapshotStatus)}
     ${matrix}
     <div class="plan-overview">${total}${stats(counts, ['planned', 'solved', 'accepted', 'remaining'])}</div>
     ${diagnostics.map(([id, entry]) => `<div class="p0-summary"><div class="p0-head"><h3>${label(id === 'P0' ? 'p0' : id)}</h3>${entry.included_in_formal_plan === false ? `<span class="badge neutral">${label('p0Badge')}</span>` : ''}</div>${stats(entry.counts ?? entry, ['planned', 'solved', 'running', 'failed'], 'recorded')}</div>`).join('')}
@@ -240,6 +257,38 @@ export function renderResearch(research, lang, activity) {
       </details>
     </div>
   </div></md-elevated-card>`;
+}
+
+function renderBudgetDetail(research, lang, budgetTab, profiles, radiations, sealed, snapshotStatus) {
+  if (!budgetTab) return '';
+  const label = (key) => esc(text(lang, key));
+  const publicCases = (research.cases || []).filter((item) => !item.sealed && !sealedId(item.case_id) && !sealed.has(item.block || item.cohort));
+  const header = (title) => `<div class="budget-detail-head"><strong>${title}</strong><button type="button" class="filter-chip" data-budget-tab="close"><md-ripple></md-ripple>${label('closePanel')}</button></div>`;
+  if (budgetTab === 'profiles' || budgetTab === 'radiations') {
+    const isProfile = budgetTab === 'profiles';
+    const items = isProfile ? profiles : radiations;
+    const totalCount = research.budget?.[isProfile ? 'profile_count' : 'radiation_count'] ?? items.length;
+    const countLabel = items.length < totalCount ? `${items.length} ${label('publicCount')} / ${esc(totalCount)}` : esc(items.length);
+    const caseCount = (id) => publicCases.filter((item) => (isProfile ? item.profile_id : (item.radiation_id || item.condition_id)) === id).length;
+    return `<div class="budget-detail" data-key="budget-detail-${budgetTab}">${header(`${label(isProfile ? 'profile' : 'radiation')} · ${countLabel}`)}
+      <div class="case-grid">${items.map((item) => `<article class="case-row">
+        <div><strong>${esc(item.id)}</strong>${publicCases.length ? `<small>${caseCount(item.id)} ${label('publicCases')}</small>` : ''}</div>
+        <div class="parameter-line">${parameterMarkup(item.parameters, lang)}</div>
+      </article>`).join('')}</div></div>`;
+  }
+  const budget = research.budget || {};
+  const publicStatCount = publicCases.filter((item) => item.statistics_intent).length;
+  const eligibleDisplay = snapshotStatus === 'statisticsSnapshotConnected' && budget.statistics_eligible_cases != null
+    ? esc(budget.statistics_eligible_cases) : label('unknown');
+  return `<div class="budget-detail" data-key="budget-detail-statistics">${header(`${label('statisticsIntent')} · ${esc(budget.statistics_intent_cases ?? '—')}`)}
+    <div class="plan-stats">
+      <div><span>${label('statisticsIntent')}</span><strong>${esc(budget.statistics_intent_cases ?? '—')}</strong></div>
+      <div><span>${label('statisticsPublicCount')}</span><strong>${esc(publicStatCount)}</strong></div>
+      <div><span>${label('manifestEligible')}</span><strong>${esc(budget.manifest_eligible_cases ?? '—')}</strong></div>
+      <div><span>${label('statisticsEligible')}</span><strong>${eligibleDisplay}</strong></div>
+    </div>
+    <p class="budget-detail-note">${label(snapshotStatus)} · ${label('statisticsScopeHint')}</p>
+  </div>`;
 }
 
 function renderParameters(research, lang, cohort, sealed) {
@@ -319,8 +368,13 @@ export function bindResearch(root, render) {
   root.addEventListener('click', (event) => {
     const button = event.target.closest('button');
     if (!button) return;
-    if (button.dataset.cohort) view.cohort = button.dataset.cohort;
-    else if (button.dataset.caseFilter) view.filter = button.dataset.caseFilter;
+    if (button.dataset.cohort) {
+      view.cohort = button.dataset.cohort;
+      view.budgetTab = null;
+    } else if (button.dataset.budgetTab) {
+      const next = button.dataset.budgetTab;
+      view.budgetTab = next === 'close' || view.budgetTab === next ? null : next;
+    } else if (button.dataset.caseFilter) view.filter = button.dataset.caseFilter;
     else if (button.id !== 'moreCases') return;
     view.limit = button.id === 'moreCases' ? view.limit + 24 : 12;
     render();

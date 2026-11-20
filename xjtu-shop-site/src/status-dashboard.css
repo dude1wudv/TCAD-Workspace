@@ -569,6 +569,15 @@ summary { cursor: pointer; color: var(--accent); font-weight: 650; user-select: 
 .budget-chip[aria-pressed="true"] strong { color: var(--accent-strong); }
 :root[data-theme="dark"] .budget-chip[aria-pressed="true"],
 :root[data-theme="dark"] .budget-chip[aria-pressed="true"] strong { color: var(--accent); }
+.budget-detail {
+  margin-bottom: 16px; padding: 14px 16px;
+  border: 1px solid var(--border); border-radius: 16px; background: var(--inset);
+}
+.budget-detail-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.budget-detail-head strong { font-size: 14px; font-weight: 750; }
+.budget-detail .case-row { background: var(--panel); }
+.budget-detail .plan-stats > div { background: var(--panel); }
+.budget-detail-note { margin-top: 10px; color: var(--muted); font-size: 12px; line-height: 1.5; }
 
 .plan-matrix { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 10px; margin-block: 4px 16px; }
 .plan-block {
