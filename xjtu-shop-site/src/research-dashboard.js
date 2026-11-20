@@ -208,12 +208,18 @@ export function renderResearch(research, lang, activity) {
       <span class="plan-block-foot">${label('accepted')} ${count(items, 'accepted')}${items?.pairs != null ? ` · ${count(items, 'pairs')} ${label('pairs')}` : ''}</span>
     </button>`;
   }).join('')}</div>` : '';
+  const budgetTarget = (key) => key === 'total_cases' && blocks.length ? 'total'
+    : key === 'zero_cases' && blocks.some((block) => block.id === 'Z') ? 'Z' : null;
   const budgetKeys = [['total_cases', 'planned'], ['zero_cases', 'zeroCases'], ['profile_count', 'profile'],
     ['radiation_count', 'radiation'], ['statistics_intent_cases', 'statisticsIntent']].filter(([key]) => budget[key] != null);
   const snapshotStatus = { connected: 'statisticsSnapshotConnected', not_connected: 'statisticsSnapshotPending' }[research.statistics_snapshot_status] || 'statisticsSnapshotUnknown';
   const diagnostics = Object.entries(research.diagnostics || {});
   return `${heading}${warning}<md-elevated-card class="m3-card research-panel"><div class="card-body">
-    ${budgetKeys.length ? `<div class="budget-chips">${budgetKeys.map(([key, caption]) => `<span class="budget-chip${key === 'total_cases' ? ' primary' : ''}">${label(caption)} <strong>${count(budget, key)}</strong></span>`).join('')}</div>` : ''}
+    ${budgetKeys.length ? `<div class="budget-chips">${budgetKeys.map(([key, caption]) => {
+      const target = budgetTarget(key);
+      if (!target) return `<span class="budget-chip">${label(caption)} <strong>${count(budget, key)}</strong></span>`;
+      return `<button type="button" class="budget-chip is-interactive" data-key="budget-${esc(target)}" data-cohort="${esc(target)}" aria-pressed="${cohort === target}"><md-ripple></md-ripple>${label(caption)} <strong>${count(budget, key)}</strong></button>`;
+    }).join('')}</div>` : ''}
     ${matrix}
     <div class="plan-overview">${total}${stats(counts, ['planned', 'solved', 'accepted', 'remaining'])}</div>
     ${diagnostics.map(([id, entry]) => `<div class="p0-summary"><div class="p0-head"><h3>${label(id === 'P0' ? 'p0' : id)}</h3>${entry.included_in_formal_plan === false ? `<span class="badge neutral">${label('p0Badge')}</span>` : ''}</div>${stats(entry.counts ?? entry, ['planned', 'solved', 'running', 'failed'], 'recorded')}</div>`).join('')}
