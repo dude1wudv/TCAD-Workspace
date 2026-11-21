@@ -52,6 +52,27 @@ class SchedulerTests(unittest.TestCase):
                 return engine.tick(allow_submit=False)
         self.fail('Original channel did not dispatch expected jobs')
 
+    def test_verified_never_launched_reserves_nothing_unless_remote_conflicts(self):
+        engine = self.engine(read_only=True)
+        intent = dict(run_id='old-run', backend='geant4')
+        engine.intents = {'old': intent}
+        checked = dict(status='failed_unlaunched', occupied=False, launch_reconciled=True,
+                       terminal_reconciled=True, collected=False)
+        with mock.patch.object(module.runtime.Runtime, '_observe', side_effect=lambda *a, **kw: dict(checked)), \
+             mock.patch.object(engine, '_record', return_value=None):
+            for live, leased, ok in [(False,False,True),(True,False,True),(False,True,True),(False,False,False)]:
+                engine._verified_unlaunched_this_tick = set()
+                engine._invalid_records = False
+                engine.snapshot = dict(ok=ok, locks_verified=True, runs={'old': {'alive':live}},
+                    leases=[{'state':'ACTIVE','policy':{'work_id':'old-run'}}] if leased else [])
+                view=engine._observe('old', intent, [])
+                conflict=live or leased or not ok
+                self.assertEqual(view['occupied'], conflict)
+                self.assertEqual(engine._invalid_records, conflict)
+                self.assertEqual(len(engine._reservations()), int(conflict))
+            engine._verified_unlaunched_this_tick = set()
+            self.assertEqual(len(engine._reservations()), 1)  # Nothing carries into the next tick.
+
     def test_read_only_disables_inherited_storage_and_offload_workers(self):
         engine=self.engine(read_only=True)
         engine.policy.update(result_retention_enabled=True,result_gdrive_offload_enabled=True)

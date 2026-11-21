@@ -17,6 +17,12 @@ python3 -B controller.py --policy <POLICY> reconcile --read-only
 2. 先排整机阻塞：暂停、发现不确定、未知租约、未登记原生求解、存储下限、许可、维护窗口。再看池排空、串行 runner 通道、收集、隔离和按宽度供料。`candidate_supply_by_width` 是通过科学/依赖初筛且未提交的候选数，不是资源准入或在跑数。
 3. 已交接的 17 vCPU 配置为 TCAD `12×1 + 1×4`，后台另留 1 核；Geant4 最多 4 项，只在原共享池安全排空后切换。设备的 13 个科学 profile 与 TCAD 的 13 个执行槽互不对应。以冻结输入决定宽度；禁止改线程数、重复选事件、用诊断任务凑数。缺四核供料时如实报空。已有占位不等于原生运行重叠。
 
+## 只跑开发仿真、收原始数据
+
+如果目的只是收集新的开发 TCAD 仿真输出，给原队列一条普通任务：`{"id":"raw-dev-example","backend":"tcad","project":"local_runtime/raw-development/raw-dev-example"}`。由原规划者写队列；示例不是待运行输入。项目目录要放实际的新 deck 和匹配槽宽的 `project.json`，不需要额外的科研准入文件。不把已有正式任务、修复任务、封存样本或诊断复制改名来占槽。
+
+调度器在提交前重验输入，记录 `scope=raw_development` 和输入摘要，使用原槽锁、许可检查与归档释放流程。输出是原始开发数据，不自动进入正式 case、统计或训练。已有正式任务仍按原绑定收集。共享池已开始排空时，不混跑另一种 profile，也不把待派发条目算作在跑。
+
 ## 准备并发布一波，不新增调度者
 
 - 生产者先核对[开发首波范围](../../plans/dram-se-ddr5-lpddr5/P0-CLOSEOUT-AND-D0-D3-FIRST-WAVE-PREP-r06-20261120.md)，用现有科研脚本 **stage** 到新目录：基线复用 → 原输运池 → 完整 primary frame（保留零沉积）→ 冻结 selection/case_draw_map → 材料化输入、依赖、正式准入 → 单任务 proposal。不要把 `stage` 和 `publish` 混用；服务器独有科学脚本不在控制器包内。未有生成规则时交给规划者补，不凭位置推造 deck。

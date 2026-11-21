@@ -524,6 +524,23 @@ class Runtime:
         return module.verified_unlaunched_receipt(cfg, record, path.parent)
 
     def _scientific_admission(self, task, inputs=None):
+        # A new development deck can be run for raw data, without declaring a
+        # formal case or writing a scientific admission. Never reinterpret an
+        # existing proposal, repair, transport request or holdout as raw work.
+        if task['id'].startswith('raw-dev-'):
+            expected = 'local_runtime/raw-development/' + task['id']
+            if (task['backend'] != 'tcad' or task['project'] != expected
+                    or task.get('adopt_run_id') or task.get('repair_of')
+                    or 'wave_admission_sha256' in task):
+                raise ValueError('Raw development requires its own new TCAD task and input directory')
+            original, comparison = self._inputs(task)
+            if not original or (inputs is not None and inputs != original):
+                raise ValueError('Raw development inputs changed before submission')
+            if any(v.get('input_digest') == comparison or v.get('input_sha256') == original
+                   or v.get('project') == expected for v in self.intents.values()):
+                raise ValueError('Raw development input already has an original intent')
+            return {'scope': 'raw_development', 'input_digest': comparison,
+                    'statistics_eligible': False, 'training_eligible': False}
         if "scientific_gate" not in self.policy:
             return None
         source = Path(__file__).with_name("r06_gate.py")

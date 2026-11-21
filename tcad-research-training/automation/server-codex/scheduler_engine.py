@@ -138,6 +138,8 @@ class SchedulerEngine(runtime.Runtime):
     def _reservations(self):
         values = []
         for key, intent in self.intents.items():
+            if key in getattr(self, '_verified_unlaunched_this_tick', ()):
+                continue
             if intent.get("scheduler",{}).get("not_invoked") or intent.get("scheduler",{}).get("preflight_receipt"):continue
             try:
                 record = self._record(intent)
@@ -210,6 +212,24 @@ class SchedulerEngine(runtime.Runtime):
                         meta.update(state="QUARANTINED", quarantined_at=time.time())
                         events.append({"type": "quarantined", "id": task_id, "run_id": intent["run_id"]})
         view = super()._observe(task_id, intent, events, probe=False)
+        if (view.get('status') == 'failed_unlaunched' and view.get('launch_reconciled') is True
+                and view.get('terminal_reconciled') is True and view.get('occupied') is False):
+            # Original runner/sidecar verified *this tick*. A historical failure
+            # alone, missing manifest, or stale probe never establishes release.
+            remote = self.snapshot.get('runs', {}).get(task_id, {})
+            leased = any(l.get('state') != 'COLLECTED' and l.get('policy', {}).get('work_id') == intent['run_id']
+                         for l in self.snapshot.get('leases', []))
+            if (self.snapshot.get('ok') and self.snapshot.get('locks_verified') is True and not leased
+                    and not remote.get('alive') and not remote.get('descendants_alive') and not remote.get('error')
+                    and remote.get('status') not in ('RUNNING', 'DESCENDANTS_ALIVE')):
+                self._verified_unlaunched_this_tick.add(task_id)
+                view['task_state'] = 'FAILED_UNLAUNCHED'
+                return view
+            # Conflicting evidence stays occupied; no dispatch based on a dead receipt.
+            self._invalid_records = True
+            view.update(occupied=True, status='reconciliation_pending', task_state='UNKNOWN_REMOTE',
+                        reason='unlaunched_receipt_live_conflict')
+            return view
         if view["collected"]:
             record = self._record(intent)
             state = ("TERMINATED" if record.get("execution_outcome") == "TERMINATED_BY_OPERATOR" else
@@ -364,6 +384,7 @@ class SchedulerEngine(runtime.Runtime):
     def tick(self, allow_submit=True):
         started = time.monotonic()
         self._admission_blocks={}
+        self._verified_unlaunched_this_tick = set()
         self._profile()
         records = {}
         invalid = []
