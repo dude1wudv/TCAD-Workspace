@@ -311,8 +311,11 @@ class Runtime:
                 raise ValueError("Expected tcad-work-items-v1 with tasks array")
         except (OSError, ValueError, AttributeError) as exc:
             return {}, [{"id": None, "reason": "invalid_queue", "detail": str(exc)}]
+        return self._parse_tasks(data["tasks"])
+
+    def _parse_tasks(self, proposals):
         tasks, errors, duplicates = {}, [], set()
-        for proposal in data["tasks"]:
+        for proposal in proposals:
             task_id = proposal.get("id") if isinstance(proposal, dict) else None
             try:
                 if not isinstance(task_id, str) or not ID_PATTERN.fullmatch(task_id):
@@ -352,6 +355,11 @@ class Runtime:
                     if not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{64}', value) or 'scientific_gate' not in self.policy:
                         raise ValueError('Wave task requires a pinned scientific admission')
                     task['wave_admission_sha256'] = value
+                if 'supply_input_digest' in proposal:
+                    value = proposal['supply_input_digest']
+                    if not task_id.startswith('raw-dev-') or not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{64}', value):
+                        raise ValueError('Invalid staged raw development input digest')
+                    task['supply_input_digest'] = value
                 if "priority" in proposal:
                     if type(proposal["priority"]) is not int:
                         raise ValueError("priority must be an integer; smaller values run first")
@@ -534,6 +542,8 @@ class Runtime:
                     or 'wave_admission_sha256' in task):
                 raise ValueError('Raw development requires its own new TCAD task and input directory')
             original, comparison = self._inputs(task)
+            if 'supply_input_digest' in task and task['supply_input_digest'] != digest(original):
+                raise ValueError('Raw development inputs differ from approved supply')
             if not original or (inputs is not None and inputs != original):
                 raise ValueError('Raw development inputs changed before submission')
             if any(v.get('input_digest') == comparison or v.get('input_sha256') == original
@@ -1042,6 +1052,18 @@ class Runtime:
         return sum(bool(intent.get("repair_of")) and self._lineage(task_id) == root
                    for task_id, intent in self.intents.items())
 
+    def _new_intent_fields(self):
+        return {}
+
+    def _staged_tasks(self, queued, allow_submit):
+        return {}
+
+    def _publish_candidates(self, tasks, staged, candidates, allow_submit):
+        return candidates
+
+    def _order_candidates(self, candidates):
+        return sorted(candidates, key=lambda task: (task.get("priority", 100), not bool(task["repair_of"])))
+
     def _submit(self, task, slot, inputs, input_digest, events):
         # Rechecked per item, so a disarm/signal during a batch takes
         # effect before the next intent is committed or original runner called.
@@ -1078,7 +1100,7 @@ class Runtime:
                   "input_sha256": inputs, "input_digest": input_digest,
                   "repair_of": task["repair_of"], "repair_reason": task["repair_reason"],
                   "requested_resources": self._slot_resources(slot, profile["cfg"]),
-                  "submission_intent_at": time.time()}
+                  "submission_intent_at": time.time(), **self._new_intent_fields()}
         if scientific_admission is not None:
             intent["scientific_admission"] = scientific_admission
         self.intents[task_id] = intent
@@ -1140,7 +1162,9 @@ class Runtime:
         idle_validated=set()
         self._profile()
         tasks, blocked = self._load_tasks()
-        dependency_errors = self._dependency_errors(tasks)
+        staged = self._staged_tasks(tasks, allow_submit)
+        proposals = {**staged, **tasks}
+        dependency_errors = self._dependency_errors(proposals)
         blocked.extend({"id": task_id, "reason": reason} for task_id, reason in dependency_errors.items())
         events, views = [], {}
         for task_id, intent in self.intents.items():
@@ -1164,8 +1188,10 @@ class Runtime:
         if self.transport and (None in schemas or len(schemas) > 1):
             uncertain = True
         phase = next(iter(schemas)) if len(schemas) == 1 else None
-        pending, candidates = [], []
-        for task_id, task in tasks.items():
+        pending, candidates, needed_transport = [], [], set()
+        switching = self.policy.get("pool_switching", {})
+        dependency_mode = switching.get("dependency_mode") is True
+        for task_id, task in proposals.items():
             if task_id in self.intents:
                 if self.intents[task_id]["task_digest"] != digest(task):
                     blocked.append({"id": task_id, "reason": "submitted_task_definition_changed",
@@ -1176,7 +1202,8 @@ class Runtime:
             if task_id in dependency_errors:
                 continue
             try:
-                self._scientific_admission(task)
+                staged_inputs = self._inputs(task)[0] if task_id in staged else None
+                self._scientific_admission(task, staged_inputs)
             except (OSError, ValueError, TypeError, KeyError, ImportError) as exc:
                 pending.append({"id": task_id, "reason": "scientific_gate_pending",
                                 "detail": str(exc)})
@@ -1186,6 +1213,13 @@ class Runtime:
             reason = "dependencies_pending" if waiting else "required_artifacts_pending" if missing else None
             if reason:
                 pending.append({"id": task_id, "reason": reason, "depends_on": waiting, "requires": missing})
+                if dependency_mode and task['backend'] == 'tcad' and waiting:
+                    try:
+                        self._inputs(task)
+                        self._eligible_slots(task)
+                    except (OSError, ValueError, TypeError, KeyError):
+                        continue
+                    needed_transport.update(waiting)
                 continue
             try:
                 if "cpu_sets" in self.profiles[task["backend"]]["cfg"] and task["backend"] == "geant4":
@@ -1221,17 +1255,22 @@ class Runtime:
                 candidates.append(task)
             except (OSError, ValueError, TypeError, KeyError) as exc:
                 blocked.append({"id": task_id, "reason": "task_requires_revision", "detail": str(exc)})
-        pool = scheduler_pool.PoolStateMachine(self.state.setdefault("pool_state", {}),
-                                               self.policy.get("pool_switching"))
+        candidates = self._publish_candidates(tasks, staged, candidates, allow_submit and not uncertain)
+        pool = scheduler_pool.PoolStateMachine(self.state.setdefault("pool_state", {}), switching)
         ready_profiles = [{"id": task["id"],
                            "profile": self.profiles[task["backend"]]["resources"]["schema"],
                            "priority": task.get("priority", 100),
+                           "required_transport": task["backend"] == "geant4" and (
+                               task["id"] in needed_transport or (task.get("repair_of") is not None
+                               and self._lineage(task["repair_of"]) in needed_transport)),
                            "repair": bool(task["repair_of"]), "order": index}
                           for index, task in enumerate(candidates)]
-        _, selected = pool.reconcile(live, ready_profiles, time.time())
+        transport_profile = self.profiles.get("geant4", {}).get("resources", {}).get("schema")
+        terminal = {key for key, view in views.items()
+                    if not view["occupied"] and (view["collected"] or view.get("terminal_reconciled") or view["status"] == "collection_pending")}
+        _, selected = pool.reconcile(live, ready_profiles, time.time(), transport_profile=transport_profile, terminal_ids=terminal)
         draining = pool.state["state"] == "DRAINING"
-        candidates.sort(key=lambda task: (task.get("priority", 100), not bool(task["repair_of"])))
-        for task in candidates:
+        for task in self._order_candidates(candidates):
             task_id, parent = task["id"], task["repair_of"]
             profile = self.profiles[task["backend"]]
             target = profile["resources"]["schema"]
@@ -1240,7 +1279,7 @@ class Runtime:
                     pending.append({"id": task_id, "reason": "submission_not_authorized"})
                 elif uncertain:
                     pending.append({"id": task_id, "reason": "original_pool_discovery_uncertain"})
-                elif draining or (selected is not None and selected != target):
+                elif draining or not pool.allows(task_id, target) or (selected is not None and selected != target):
                     pending.append({"id": task_id, "reason": "pool_profile_waiting_for_idle",
                                     "current_schema": phase, "requested_schema": target,
                                     "detail": "Wait for verified collection and lease release; keep original task/run identities"})

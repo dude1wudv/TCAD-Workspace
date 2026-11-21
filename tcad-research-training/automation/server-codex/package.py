@@ -32,11 +32,13 @@ RUNTIME = ("controller.py", "task.md", "report.schema.json", "policy.example.jso
            "test_retention.py", "test_result_maintenance.py", "test_gdrive_offload.py",
            "r06_gate.py", "intent_reconciliation.py",
            "month_one.py", "month_one_wave.py", "test_month_one.py", "scheduler_pool.py", "scheduler_probe.py", "scheduler_collector.py",
-           "scheduler_admission.py", "scheduler_engine.py", "scheduler_planner.py",
-           "test_scheduler.py", "test_scheduler_pool.py")
+           "scheduler_admission.py", "scheduler_engine.py", "scheduler_planner.py", "scheduler_supply.py",
+           "test_scheduler.py", "test_scheduler_pool.py", "test_scheduler_supply.py", "SLOT-WORKERS.md")
+RUNNER_SOURCES = ("scripts/tcad.py", "scripts/runner_termination.py",
+                  "experiments/dram-see-v4/transport-probe/operation.py")
 
 
-def package(destination, runtime_only=False):
+def package(destination, runtime_only=False, slot_workers=False):
     files, excluded = {}, {}
     candidates = set()
     if not runtime_only:
@@ -59,6 +61,11 @@ def package(destination, runtime_only=False):
         files["project/" + rel.as_posix()] = path.read_bytes()
     for name in RUNTIME:
         files["runtime/" + name] = (HERE / name).read_bytes()
+    if slot_workers:
+        if not runtime_only:
+            raise ValueError("Slot worker staging requires a runtime-only release")
+        for name in RUNNER_SOURCES:
+            files["runtime/runner-source/" + name] = (ROOT / name).read_bytes()
     example = json.loads(files["runtime/work-items.example.json"])
     if example.get("schema") != "tcad-work-items-v1" or example.get("tasks") != []:
         raise ValueError("Runtime work-items example must contain an empty task list")
@@ -100,5 +107,6 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--runtime-only", action="store_true", help="Package only the controller runtime files")
+    parser.add_argument("--slot-workers", action="store_true", help="Include the matching runner sources for staged deployment")
     args = parser.parse_args()
-    print(json.dumps(package(args.output, runtime_only=args.runtime_only), ensure_ascii=False, indent=2))
+    print(json.dumps(package(args.output, runtime_only=args.runtime_only, slot_workers=args.slot_workers), ensure_ascii=False, indent=2))

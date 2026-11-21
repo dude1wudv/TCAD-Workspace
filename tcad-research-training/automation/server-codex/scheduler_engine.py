@@ -1,7 +1,9 @@
 """Deterministic production adapter around the original Runtime and runners."""
 import collections
+from datetime import datetime
 import importlib.util
 import json
+import re
 from pathlib import Path
 import sys
 import time
@@ -28,9 +30,11 @@ class SchedulerEngine(runtime.Runtime):
     def __init__(self, policy, ready, read_only=False):
         super().__init__(policy, ready)
         self.read_only = read_only
+        self.slot_workers = policy.get("dispatch_mode") == "slot_workers"
         if read_only:
             self.can_submit = lambda: False
-        self.channel = None if read_only else collector.AsyncCollectorPool(policy.get("collect_concurrency", 1))
+        self.channel = None if read_only else collector.AsyncCollectorPool(
+            policy.get("collect_concurrency", 1), slot_workers=self.slot_workers)
         self.probe = probe_module.BatchRemoteProbe(policy, read_only=read_only)
         self.admission = admission_module.ResourceAdmissionController(policy)
         self.snapshot = {"ok": False, "runs": {}}
@@ -38,6 +42,7 @@ class SchedulerEngine(runtime.Runtime):
         self._queue_cache = None
         self._queue_signature = None
         self._admission_blocks = {}
+        self.supply_report = None
 
     def _save(self):
         if not self.read_only:
@@ -54,6 +59,43 @@ class SchedulerEngine(runtime.Runtime):
             self._queue_signature = signature
         tasks, errors = self._queue_cache
         return dict(tasks), list(errors)
+
+    def _staged_tasks(self, queued, allow_submit):
+        self.supply_report = None
+        if not self.policy.get("scheduler_supply") or not allow_submit or not self.can_submit():
+            return {}
+        supply = sidecar("scheduler_supply")
+        try:
+            self._staged, self._supply_load = supply.load(self.policy, self, sidecar("r06_gate"))
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            self.supply_report = {"publication_held": str(exc)[:200]}
+            return {}
+        staged, errors = self._parse_tasks(self._staged.values())
+        for error in errors:
+            self._supply_load["blocked"][str(error["id"])] = error["detail"]
+        self.supply_report = {key: self._supply_load[key] for key in ("existing", "published", "blocked")}
+        return {key: task for key, task in staged.items() if key not in queued}
+
+    def _publish_candidates(self, tasks, staged, candidates, allow_submit):
+        queued = [task for task in candidates if task["id"] in tasks]
+        if not staged or not allow_submit:
+            return queued
+        try:
+            ready = {task["id"]: self._ready_widths[task["id"]] for task in candidates if task["id"] in staged}
+            self.supply_report = sidecar("scheduler_supply").publish(
+                self.policy, self, sidecar("r06_gate"), runtime.write_json, staged=self._staged,
+                report=self._supply_load, ready=ready,
+                queued={task["id"]: self._ready_widths[task["id"]] for task in queued})
+        except (OSError, ValueError, KeyError, TypeError) as exc:
+            self.supply_report = {"publication_held": str(exc)[:200]}
+            return queued
+        tasks.update({key: staged[key] for key in self.supply_report["published"]})
+        return [task for task in candidates if task["id"] in tasks]
+
+    def _order_candidates(self, candidates):
+        if not self.slot_workers:
+            return super()._order_candidates(candidates)
+        return sorted(candidates, key=lambda task: task["id"].startswith("raw-dev-"))
 
     def _delay(self, intent, error):
         if error.get("kind") == "operation_pending":return
@@ -82,6 +124,20 @@ class SchedulerEngine(runtime.Runtime):
         if record is None or not worker._receipt(intent,record):
             raise ValueError('Original archive verification failed')
 
+    def _new_intent_fields(self):
+        return {"execution_protocol": "seal_then_collect_v1"} if self.slot_workers else {}
+
+    @staticmethod
+    def _sealed(intent, record):
+        if intent.get("execution_protocol") != "seal_then_collect_v1" or not record:
+            return None
+        seal = record.get("sealed_snapshot")
+        if (record.get("parallel_slot_released") is True and isinstance(seal, dict)
+                and re.fullmatch(r"[0-9a-f]{64}", str(seal.get("sha256")))
+                and type(seal.get("bytes")) is int and seal["bytes"] > 0):
+            return seal
+        return None
+
     def _invoke(self, intent, command):
         if self.read_only:
             raise RuntimeError("Read-only reconciliation cannot invoke an original runner")
@@ -91,7 +147,12 @@ class SchedulerEngine(runtime.Runtime):
             if self.snapshot.get("ok") and observed and not observed.get("error"):
                 return {"ok": True, "payload": observed}
             return {"ok": False, "kind": "endpoint_unavailable"}
-        if self.channel.submit(intent["run_id"], command, self._argv(intent, command), self.workspace,
+        if not self.channel.available(command, intent["run_id"]):
+            return {"ok": False, "kind": "operation_pending"}
+        argv = self._argv(intent, command)
+        if command == "run" and intent.get("execution_protocol") == "seal_then_collect_v1":
+            argv += ["--staged-launch"]
+        if self.channel.submit(intent["run_id"], command, argv, self.workspace,
                                self._runner_environment(), self.timeout,
                                self.can_submit if command == "run" else None,
                                 (lambda payload:self._verify_collection(intent,payload)) if command=="collect" else None):
@@ -135,15 +196,19 @@ class SchedulerEngine(runtime.Runtime):
         self._admission_blocks[task['id']]=verdict
         return False
 
-    def _reservations(self):
+    def _reservations(self, skip=None):
         values = []
         for key, intent in self.intents.items():
+            if intent is skip:
+                continue
             if key in getattr(self, '_verified_unlaunched_this_tick', ()):
                 continue
             if intent.get("scheduler",{}).get("not_invoked") or intent.get("scheduler",{}).get("preflight_receipt"):continue
             try:
                 record = self._record(intent)
-                if record and self._receipt(intent, record) and record.get("parallel_slot_released") is True:continue
+                if self._sealed(intent, record) or (record and self._receipt(intent, record)
+                        and record.get("parallel_slot_released") is True):
+                    continue
             except (OSError, ValueError, KeyError, TypeError):
                 pass  # An unresolved reservation still consumes its full allowance.
             values.append({"backend": intent["backend"],
@@ -158,7 +223,7 @@ class SchedulerEngine(runtime.Runtime):
         self.state.setdefault('scheduler_metrics',{}).setdefault('ready_since',{}).setdefault(task['id'],time.time())
 
     def _admission(self, task, slot):
-        if self.channel and self.channel.operations:
+        if self.channel and not self.channel.available("run"):
             verdict={"allowed":False,"blocking_dimension":"runner_channel","detail":"Original owner-locked runner channel busy"}
             self._admission_blocks[task['id']]=verdict
             return verdict
@@ -171,6 +236,38 @@ class SchedulerEngine(runtime.Runtime):
         # First production revision follows the plan's alert-only watchdog policy.
         return {"status": "alert_only", "reason": reason, "cancel_supported": True,
                 "action": "An explicit operator cancel request is required"}
+
+    def _retry_staged_reservation(self, task_id, intent, view):
+        metadata = intent["scheduler"]
+        if (not self.channel.available("run", intent["run_id"])
+                or time.time() < intent.get("next_probe_at", 0) or not self.can_submit()
+                or self.ready.get("new_jobs_authorized") is not True):
+            return
+        if (not self.snapshot.get("ok") or self.snapshot.get("locks_verified") is not True
+                or any(item.get("policy", {}).get("work_id") == intent["run_id"]
+                       for item in self.snapshot.get("leases", [])) or self._record(intent) is not None):
+            return
+        queued, _ = self._load_tasks()
+        task = queued.get(task_id)
+        if not task or runtime.digest(task) != intent["task_digest"]:
+            view["reason"] = "staged_reservation_task_changed"
+            return
+        try:
+            inputs, digest = self._inputs(task, slot=intent["slot"])
+            if inputs != intent["input_sha256"] or digest != intent["input_digest"]:
+                raise ValueError("Original input snapshot changed")
+            profile = self.profiles[intent["backend"]]
+            width = self._slot_resources(intent["slot"], profile["cfg"])["requested_threads"]
+        except (OSError, ValueError, TypeError, KeyError):
+            view["reason"] = "staged_reservation_input_changed"
+            return
+        reservations = self._reservations(skip=intent)
+        if not self.admission.evaluate(task, width, self.snapshot, reservations)["allowed"]:
+            view["reason"] = "staged_reservation_resource_wait"
+            return
+        metadata.pop("reservation_retry")
+        self._save()
+        self._invoke(intent, "run")
 
     def _observe(self, task_id, intent, events, probe=True):
         meta = intent.get("scheduler", {})
@@ -192,6 +289,14 @@ class SchedulerEngine(runtime.Runtime):
                       and self._preflight_rejected(intent,outcome['payload'].get('receipt'))):
                     meta.update(preflight_receipt=outcome['payload']['receipt'],state='FAILED_UNLAUNCHED')
                     events.append({'type':'preflight_rejected','id':task_id,'run_id':intent['run_id']})
+                elif (command == "run" and intent.get("execution_protocol") and outcome.get("returncode") == 74
+                      and isinstance(outcome.get("payload"), dict)
+                      and outcome["payload"].get("status") == "ORIGINAL_ALLOCATOR_BUSY"
+                      and outcome["payload"].get("reservation_acquired") is False
+                      and outcome["payload"].get("solver_launched") is False
+                      and self._record(intent) is None):
+                    meta["reservation_retry"] = True
+                    self._delay(intent, outcome)
                 elif outcome["ok"]:
                     for key in ("failures", "error_class", "error", "manual_attention"):
                         meta.pop(key, None)
@@ -206,12 +311,32 @@ class SchedulerEngine(runtime.Runtime):
                     self._delay(intent, outcome)
                     if command=='cancel' and meta.get('error_class') not in ('TRANSIENT_NETWORK','TRANSIENT_LOCK_BUSY'):meta['cancel_manual_attention']=True
                     observed = self.snapshot.get("runs", {}).get(task_id, {})
-                    if (command == "collect" and meta.get("error_class") == "PERMANENT_CONTRACT_ERROR"
+                    if (command in ("collect", "seal") and meta.get("error_class") == "PERMANENT_CONTRACT_ERROR"
                             and self.snapshot.get("ok") and observed.get("status") == "FINISHED"
                             and observed.get("alive") is False and not observed.get("error")):
                         meta.update(state="QUARANTINED", quarantined_at=time.time())
                         events.append({"type": "quarantined", "id": task_id, "run_id": intent["run_id"]})
         view = super()._observe(task_id, intent, events, probe=False)
+        if meta.get("reservation_retry"):
+            view.update(task_state="SUBMITTING", reason="waiting_for_allocator")
+            return view
+        if view.get("reason") != "original_record_unusable" and not view["collected"]:
+            record = self._record(intent)
+            seal = self._sealed(intent, record)
+            if seal:
+                view.update(occupied=False, status="collection_pending", task_state="SEALED",
+                            reason="waiting_for_archive_transfer", sealed_utc=seal.get("sealed_utc"))
+                if (not self.read_only and self.channel.available("collect", intent["run_id"])
+                        and time.time() >= intent.get("next_probe_at", 0)):
+                    verdict = self.admission.evaluate({"sealed_bytes": seal["bytes"]}, 0,
+                                                      self.snapshot, self._reservations(), action="transfer")
+                    if verdict["allowed"]:
+                        self._invoke(intent, "collect")
+                    else:
+                        view["reason"] = "collection_admission_" + verdict["blocking_dimension"]
+                if self.channel and self.channel.command(intent["run_id"]) == "collect":
+                    view["task_state"] = "TRANSFERRING"
+                return view
         if (view.get('status') == 'failed_unlaunched' and view.get('launch_reconciled') is True
                 and view.get('terminal_reconciled') is True and view.get('occupied') is False):
             # Original runner/sidecar verified *this tick*. A historical failure
@@ -271,19 +396,28 @@ class SchedulerEngine(runtime.Runtime):
         elif not view['collected']:
             view['status']='reconciliation_pending'
             view['task_state']='COLLECTABLE' if observed.get('status')=='FINISHED' and observed.get('alive') is False else 'UNKNOWN_REMOTE'
+        identity = observed.get("identity") or {}
+        rebooted = (observed.get("status") == "LOST_WITHOUT_EXIT" and observed.get("alive") is False
+                    and not observed.get("descendants_alive") and self.snapshot.get("boot_id")
+                    and identity.get("boot_id") and identity["boot_id"] != self.snapshot["boot_id"])
+        if intent.get("execution_protocol") and rebooted:
+            view.update(task_state="COLLECTABLE", reason="original_reboot_reconciliation")
         if meta.get('cancel_manual_attention'):view['reason']='cancellation_requires_operator_review'
         elif meta.get('cancel_request') and observed.get('status')=='RUNNING':view['task_state']='CANCEL_REQUESTED'
 
         if self.channel and self.channel.command(intent["run_id"]):
             command = self.channel.command(intent["run_id"])
-            view["task_state"] = {"collect": "COLLECTING", "cancel": "TERMINATING", "run": "SUBMITTING"}[command]
-        elif (not self.read_only and not self.channel.operations and time.time() >= intent.get("next_probe_at", 0)
-              and (view["collected"] or (observed.get("status") == "FINISHED" and observed.get("alive") is False))):
+            view["task_state"] = {"collect": "COLLECTING", "seal": "SEALING", "cancel": "TERMINATING", "run": "SUBMITTING"}[command]
+        else:
+            command = "seal" if not view["collected"] and intent.get("execution_protocol") else "collect"
+        if (not self.read_only and self.channel.available(command, intent["run_id"])
+              and command in ("seal", "collect") and time.time() >= intent.get("next_probe_at", 0)
+              and (view["collected"] or view["task_state"] == "COLLECTABLE")):
             verdict = self.admission.evaluate(intent, view["requested_resources"]["requested_threads"],
-                                              self.snapshot, self._reservations(), action="collect")
+                                              self.snapshot, self._reservations(), action=command)
             if verdict["allowed"]:
-                self._invoke(intent, "collect")
-                view["task_state"] = "COLLECTING"
+                self._invoke(intent, command)
+                view["task_state"] = "SEALING" if command == "seal" else "COLLECTING"
             else:
                 view["reason"] = "collection_admission_" + verdict["blocking_dimension"]
         return view
@@ -370,7 +504,10 @@ class SchedulerEngine(runtime.Runtime):
         for key, intent in self.intents.items():
             meta = intent.get("scheduler", {})
             request = meta.get("cancel_request")
-            if not request or meta.get("cancel_manual_attention") or self.channel.operations or time.time()<intent.get("next_probe_at",0):continue
+            if (not request or meta.get("cancel_manual_attention")
+                    or not self.channel.available("cancel", intent["run_id"])
+                    or time.time() < intent.get("next_probe_at", 0)):
+                continue
             observed = self.snapshot.get("runs", {}).get(key, {})
             if not self.snapshot.get("ok") or observed.get("error"):continue
             if observed.get("status") == "FINISHED":continue
@@ -380,6 +517,62 @@ class SchedulerEngine(runtime.Runtime):
             meta["cancel_invoked"] = True
             self._save()
             self.channel.submit(intent["run_id"], "cancel", argv, self.workspace, self._runner_environment(), max(self.timeout, request["grace_seconds"] + 30))
+
+    def _flow(self, observation, diagnostics, allow_submit):
+        pool = self.state.get("pool_state", {})
+        profile = next((entry for entry in self.profiles.values()
+                        if entry["resources"]["schema"] == pool.get("profile")), self.profiles["tcad"])
+        resources = profile["resources"]
+        limit = self.transport["limit"] if self.transport and profile is self.profiles.get("geant4") else self.limit
+        backend = "geant4" if profile is self.profiles.get("geant4") else "tcad"
+        native = {item.get("cwd") for item in self.snapshot.get("processes_with_solver_names", [])}
+        pending = {item["id"]: item["reason"] for item in observation["pending_tasks"]}
+        reasons = collections.defaultdict(set)
+        for task_id, (candidate_backend, width) in self._ready_widths.items():
+            if candidate_backend == backend and task_id in pending:
+                reasons[width].add(pending[task_id])
+        occupied = {item["slot"]: item for item in observation["runs"] + observation["external_runs"]
+                    if item.get("occupied") is not False and type(item.get("slot")) is int}
+        slots = []
+        for slot, cores in enumerate(resources["cpu_sets"][:limit]):
+            width = len(cores)
+            run = occupied.get(slot)
+            state, reason = "unknown", "unknown"
+            if run:
+                task_id = run.get("id")
+                phase = diagnostics.get(task_id, {}).get("task_state")
+                record = self._probe_records.get(task_id, {})
+                if record.get("remote_directory") in native:
+                    state = "running"
+                elif phase in ("COLLECTING", "SEALING", "COLLECTABLE"):
+                    state = "sealing"
+                elif phase == "QUARANTINED":
+                    state = "quarantined"
+                elif phase == "SUBMITTING":
+                    state = "launching"
+                reason = None if state != "unknown" else "unknown"
+            elif not observation["discovery_uncertain"]:
+                state = "free"
+                if not allow_submit or not self.can_submit():
+                    reason = "paused"
+                elif pool.get("state") == "DRAINING" or "pool_profile_waiting_for_idle" in reasons[width]:
+                    reason = "backend_switch"
+                elif any(item.startswith("admission_") and item != "admission_runner_channel" for item in reasons[width]):
+                    reason = "resource_wait"
+                elif reasons[width]:
+                    reason = "dispatch_pending"
+                else:
+                    reason = "no_ready_task"
+            slots.append({"slot": slot, "threads": width, "state": state, "reason": reason})
+        waiting = [run for run in observation["runs"] if run["status"] == "collection_pending"]
+        ages = []
+        for run in waiting:
+            try:
+                ages.append(max(0, time.time() - datetime.fromisoformat(run["sealed_utc"]).timestamp()))
+            except (ValueError, TypeError):
+                continue
+        return {"schema": "tcad-dispatch-flow-v1", "slots": slots,
+                "collection": {"pending": len(waiting), "oldest_wait_seconds": max(ages, default=None)}}
 
     def tick(self, allow_submit=True):
         started = time.monotonic()
@@ -391,7 +584,9 @@ class SchedulerEngine(runtime.Runtime):
         for key, intent in self.intents.items():
             try:
                 record = self._record(intent)
-                if record and not (self._receipt(intent, record) and record.get("parallel_slot_released") is True):records[key] = record
+                if record and not (self._sealed(intent, record) or (self._receipt(intent, record)
+                        and record.get("parallel_slot_released") is True)):
+                    records[key] = record
             except (OSError, ValueError, TypeError, KeyError) as exc:
                 invalid.append({"id": key, "detail": str(exc)[:300]})
         self._probe_records, self._invalid_records = records, bool(invalid)
@@ -404,6 +599,11 @@ class SchedulerEngine(runtime.Runtime):
         observation = super().tick(allow_submit=allow_submit and not self.read_only)
         if invalid:observation["discovery_uncertain"] = True
         pool = self.state.get("pool_state", {})
+        if allow_submit and not self.read_only and not observation["discovery_uncertain"] and pool.get("state") != "DRAINING":
+            for view in observation["runs"]:
+                intent = self.intents[view["id"]]
+                if intent.get("scheduler", {}).get("reservation_retry"):
+                    self._retry_staged_reservation(view["id"], intent, view)
         breakdown = dict(collections.Counter(item["reason"] for item in observation["pending_tasks"]))
         events = observation["events"]
         dispatched = [event["id"] for event in events if event["type"] == "submission_requested"]
@@ -452,6 +652,10 @@ class SchedulerEngine(runtime.Runtime):
         states=collections.Counter(item.get('task_state') for item in diagnostics.values())
         observation['scheduler']['pool']['slots']={'total':self.slots,'running':observation['running_count'],'collecting':states['COLLECTING'],'quarantined':states['QUARANTINED'],'free':max(0,self.slots-observation['active_count'])}
         observation["scheduler"]["fresh_max_age_seconds"] = max(30, 3 * self.policy.get("poll_interval_seconds", 5))
+        if self.slot_workers:
+            observation["scheduler"]["flow"] = self._flow(observation, diagnostics, allow_submit and not self.read_only)
+        if self.supply_report is not None:
+            observation["scheduler"]["supply"] = self.supply_report
         if not self.read_only:
             self._save()
             metrics = self.state_dir / "metrics.jsonl"

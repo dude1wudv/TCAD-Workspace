@@ -39,6 +39,7 @@
 | `…virtual_machine.storage` | `total_bytes/used_bytes/available_bytes/used_percent`。`total_bytes` 为虚拟机分配空间（逻辑容量），`available_bytes` 为虚拟机剩余空间 |
 | `…virtual_machine.daemon_health` | `lmgrd`、`snpslmd` 各含 `alive/elapsed_seconds`，表示进程存活和运行时长 |
 | `simulation.scheduler` | 新增 `schema/label_en/layout_widths/active_groups/active_solvers`。`layout_widths` 为每个配置槽位的核数，缺配置时按实际绑定推导。`active_slots` 按绑定核心去重，`active_groups` 按任务目录计数，`active_solvers` 按求解进程计数 |
+| `simulation.dispatch_flow` | 可选。取自控制器私有观测的 `scheduler.flow`，沿用该观测的 `utc` 与有效期。两路输出均包含 `schema:"tcad-dispatch-flow-v1"/state/observed_at/fresh_max_age_seconds`，新鲜时附白名单 `slots[{slot,threads,state,reason}]/collection{pending,oldest_wait_seconds}`。`slot` 为槽位序号，每条槽位最多计一个运行任务。过期或结构未知时省略槽位和积压数，旧观测省略整个字段 |
 | `…scheduler.slots[]` | 新增 `usage_percent/task_ids`。单一占用者时 `task_id` 和 `cluster` 均为任务 ID，同一多核任务的各核共享 `cluster`。重叠绑定时 `task_id` 为 `null`，`task_ids` 含全部占用者 |
 | `…scheduler.tasks[]` | 新增 `case_id/device/stored_bit/batch_label/batch_label_en/finished_at/health/collection_result`，以及任务级 `cpu_percent/rss_bytes/hwm_bytes/threads` 和 `processes[]`。每进程含 `engine/cpu_set/started_at/cpu_percent/rss_bytes/hwm_bytes/threads`，进程 CPU 百分比按单核为 100 |
 | `…tasks[].parameters` | v2 白名单为 `node_count/integrator/temperature_K/stored_bit/source_variant`，缺值时可省略 |

@@ -5,7 +5,7 @@ have no execution deadline; --timeout limits only the local synchronous wait.
 All native work keeps the original ownership, pinned SSH and shared solver lock.
 """
 import argparse
-from contextlib import nullcontext
+from contextlib import ExitStack, nullcontext
 from datetime import datetime, timezone
 import hashlib
 import importlib.util
@@ -73,11 +73,21 @@ def operation_folder(label):
     return RUNTIME / 'operations' / label
 
 
-def save_record(folder, record):
+def save_record(folder, record, *, durable=False):
     record['updated_utc'] = utc()
     pending = folder / ('operation.' + uuid.uuid4().hex + '.tmp')
-    pending.write_text(json.dumps(record, indent=2) + '\n', encoding='utf-8')
+    with pending.open('x', encoding='utf-8') as stream:
+        stream.write(json.dumps(record, indent=2) + '\n')
+        if durable:
+            stream.flush()
+            os.fsync(stream.fileno())
     os.replace(pending, folder / 'operation.json')
+    if durable and sys.platform != 'win32':
+        descriptor = os.open(folder, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
 
 
 def connection_identity(cfg):
@@ -193,6 +203,12 @@ def reconcile_unlaunched_operation(tcad, cfg, ssh, label, *,
                                    proof_ssh=None, proof_transport=None,
                                    sim_ssh=None):
     """Close only an original, proven never-reserved/never-launched intent."""
+    with tcad.record_writer(operation_folder(label)):
+        return _reconcile_unlaunched_operation(tcad, cfg, ssh, label, proof_ssh=proof_ssh,
+                                               proof_transport=proof_transport, sim_ssh=sim_ssh)
+
+
+def _reconcile_unlaunched_operation(tcad, cfg, ssh, label, *, proof_ssh, proof_transport, sim_ssh):
     folder, record = read_record(cfg, label)
     verifier = _reconciliation_module()
     if verifier.verified_unlaunched_receipt(cfg, record, folder):
@@ -251,13 +267,13 @@ def _reconciliation_summary(record, folder):
                 receipt=str(folder / 'launch-reconciliation.json'))
 
 
-def status_operation(tcad, cfg, ssh, label):
+def status_operation(tcad, cfg, ssh, label, *, for_seal=False):
     folder, record = read_record(cfg, label)
     if verified_unlaunched_receipt(cfg, record, folder):
         return dict(_reconciliation_summary(record, folder), status='NOT_LAUNCHED',
                     alive=False, remote_exit_code=None, ssh_exit_code=record.get('ssh_exit_code'))
     policy = tcad.parallel_record_policy(cfg, record)
-    if policy and not record.get('parallel_slot_released'):
+    if not for_seal and policy and 'sealed_snapshot' not in record and not record.get('parallel_slot_released'):
         lease = tcad.parallel_query(cfg, ssh, record, 'verify')
         if lease.get('identity') is not None:
             record['process_identity'] = check_identity(record, lease['identity'])
@@ -270,6 +286,8 @@ def status_operation(tcad, cfg, ssh, label):
         # Downstream packages bind operation.json itself; completed receipts stay immutable.
         return dict(summary(record, folder), status='FINISHED', alive=False, local_state=record['state'],
                     observation_source='completed_local_receipt')
+    if 'sealed_snapshot' in record:
+        return dict(record['last_observation'], local_state=record['state'], ssh_exit_code=record['ssh_exit_code'])
     if record.get('submission_phase') in ('INPUT_FREEZE', 'REMOTE_STAGING') or record['state'] == 'FAILED_BEFORE_LAUNCH':
         return dict(label=label, status='NOT_LAUNCHED', local_state=record['state'],
                     remote_exit_code=None, ssh_exit_code=record['ssh_exit_code'])
@@ -304,14 +322,16 @@ def assert_no_outstanding_operation(tcad, cfg, ssh):
     for path in (RUNTIME / 'operations').glob('*/operation.json'):
         record = json.loads(path.read_text(encoding='utf-8'))
         if (record.get('schema') == SCHEMA and record.get('state') not in (*COMPLETE_STATES, 'FAILED_BEFORE_LAUNCH')
-                and record.get('submission_phase') not in ('INPUT_FREEZE', 'REMOTE_STAGING')):
-            observed = status_operation(tcad, cfg, ssh, record['label'])
-            raise RuntimeError('Reconcile the original outstanding operation before a new launch: '
-                               + record['label'] + ' ' + observed['status'])
+                and (record.get('staged_launch') or record.get('submission_phase') not in ('INPUT_FREEZE', 'REMOTE_STAGING'))
+                and not tcad.sealed_and_released(record)):
+            with tcad.record_writer(path.parent):
+                observed = status_operation(tcad, cfg, ssh, record['label'])
+                raise RuntimeError('Reconcile the original outstanding operation before a new launch: '
+                                   + record['label'] + ' ' + observed['status'])
     tcad.assert_no_active_run(cfg, ssh)
 
 
-def render_wrapper(tcad, cfg, directory, label, capture_svisual, policy=None):
+def render_wrapper(tcad, cfg, directory, label, capture_svisual, policy=None, *, staged_launch=False):
     base = cfg['remote_root'].rstrip('/')
     capture_installation = cfg['tool_bin'].rstrip('/').rsplit('/', 1)[0]
     lines = [
@@ -347,7 +367,7 @@ def render_wrapper(tcad, cfg, directory, label, capture_svisual, policy=None):
     if policy:
         start = lines.index('exec 9>' + shlex.quote(base + '/.solver.lock'))
         stop = lines.index('date -u +%Y-%m-%dT%H:%M:%SZ > started-utc.txt') + 1
-        lines = lines[:start] + tcad.parallel_shell_lines(policy, 'activate') + [
+        lines = lines[:start] + tcad.parallel_shell_lines(policy, 'activate', staged_launch=staged_launch) + [
             'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMEXPR_NUM_THREADS=1',
             'cpu=' + str(policy['cpu']), 'taskset -pc "$cpu" $$',
             "awk '/^(Threads|Cpus_allowed_list):/' /proc/self/status > affinity.txt",
@@ -429,50 +449,73 @@ def extract_original(folder, archive, index):
     staging.rename(destination)
 
 
+def operation_snapshot_context(record):
+    return dict(input_sha256=record['input_sha256'], script_sha256=record['script_sha256'],
+                identity=record.get('process_identity'), required_outputs=[],
+                raw_exit_files=['operation-task-exit-code.txt'] + (
+                    ['svisual-exit-code.txt', 'svisual-process-admission-exit-code.txt']
+                    if record['capture_svisual_requested'] else []))
+
+
+def seal_operation(tcad, cfg, ssh, label):
+    with tcad.record_writer(operation_folder(label)):
+        folder, record = read_record(cfg, label)
+        tcad.parallel_record_policy(cfg, record)
+        if record.get('schema') != SCHEMA:
+            raise ValueError('Historical operation retains its original collection and exit semantics')
+        if tcad.sealed_snapshot(record) is None:
+            if record['state'] in COMPLETE_STATES:
+                raise ValueError('Use collect to finish the existing original collection')
+            observed = status_operation(tcad, cfg, ssh, label, for_seal=True)
+            folder, record = read_record(cfg, label)
+            receipt = tcad.seal_observed(cfg, ssh, folder, record, observed, operation_snapshot_context(record),
+                                         save_record, 'operation.json')
+            previous = record.get('collection_snapshot')
+            if previous is not None and previous != receipt:
+                raise ValueError('Immutable original collection snapshot changed')
+            record['collection_snapshot'] = receipt
+        return dict(tcad.finish_seal(cfg, ssh, folder, record, save_record), label=label)
+
+
 def collect_operation(tcad, cfg, ssh, label):
     folder, record = read_record(cfg, label)
     policy = tcad.parallel_record_policy(cfg, record)
     if record.get('schema') != SCHEMA:
         raise ValueError('Historical operation retains its original collection and exit semantics')
+    sealed = tcad.sealed_snapshot(record)
+    interrupted_snapshot = record.get('interrupted_collection_snapshot') if sealed is not None else None
     target = folder / 'results.tar'
     if record['state'] in COMPLETE_STATES:
         if sha(target) != record['archive_sha256']:
             raise ValueError('Previously collected immutable archive changed')
         index = verify_operation_archive(tcad, target, record)
+        if interrupted_snapshot is not None:
+            tcad.verify_interrupted_archive(target, record, index, interrupted_snapshot,
+                                            record['interrupted_collection_context'])
         verify_extracted(folder / 'collected', index, target)
-        if policy and not record.get('parallel_slot_released'):
+        if sealed is None and policy and not record.get('parallel_slot_released'):
             tcad.parallel_release(cfg, ssh, record)
             save_record(folder, record)
         return summary(record, folder)
-    observed = status_operation(tcad, cfg, ssh, label)
-    if observed['status'] != 'FINISHED' or observed['alive']:
-        raise RuntimeError('Only the completed original operation can be collected: ' + observed['status'])
-    folder, record = read_record(cfg, label)
+    if sealed is None:
+        observed = status_operation(tcad, cfg, ssh, label)
+        if observed['status'] != 'FINISHED' or observed['alive']:
+            raise RuntimeError('Only the completed original operation can be collected: ' + observed['status'])
+        folder, record = read_record(cfg, label)
     qdir = shlex.quote(record['remote_directory'])
-    snapshot_context=dict(input_sha256=record['input_sha256'],script_sha256=record['script_sha256'],
-        identity=record.get('process_identity'),required_outputs=[],
-        raw_exit_files=['operation-task-exit-code.txt']+(['svisual-exit-code.txt','svisual-process-admission-exit-code.txt'] if record['capture_svisual_requested'] else []))
-    snapshot_code='snapshot_context='+repr(snapshot_context)+'\n'+tcad.SNAPSHOT_CODE
-    # A descendant retaining fd 9 prevents collection of a still-active job.
-    command = ('set -e; cd ' + qdir + '; exec 9>'
-               + shlex.quote(cfg['remote_root'].rstrip('/') + '/.solver.lock')
-               + '; flock -n 9 || exit 75; mkdir -p .collection; exec 8>.collection/snapshot.lock; '
-               + "flock -n 8 || exit 75; /usr/bin/python3 - <<'TCAD_SNAPSHOT'\n"
-               + snapshot_code + '\nTCAD_SNAPSHOT\n')
-    if policy:
-        command = '\n'.join(['set -e', 'cd ' + qdir] + tcad.parallel_shell_lines(policy, 'collect') + [
-            'mkdir -p .collection; exec 8>.collection/snapshot.lock; flock -n 8 || exit 75',
-            "/usr/bin/python3 - <<'TCAD_SNAPSHOT'", snapshot_code, 'TCAD_SNAPSHOT', ''])
     try:
-        response = tcad.remote(ssh, command, capture_output=True, text=True, timeout=300)
-        snapshot = json.loads(response.stdout)
-        previous = record.get('collection_snapshot')
-        if previous and previous != snapshot:
-            raise ValueError('Immutable original collection snapshot changed')
-        record['collection_snapshot'] = snapshot
-        save_record(folder, record)
+        snapshot = sealed
+        if snapshot is None:
+            command = tcad.snapshot_command(cfg, record, operation_snapshot_context(record))
+            response = tcad.remote(ssh, command, capture_output=True, text=True, timeout=300)
+            snapshot = json.loads(response.stdout)
+            previous = record.get('collection_snapshot')
+            if previous and previous != snapshot:
+                raise ValueError('Immutable original collection snapshot changed')
+            record['collection_snapshot'] = snapshot
+            save_record(folder, record)
         if target.exists():
-            if sha(target) != snapshot['sha256']:
+            if sha(target) != snapshot['sha256'] or (sealed is not None and target.stat().st_size != snapshot['bytes']):
                 raise ValueError('Refusing to replace a different existing archive')
         else:
             partial = folder / 'results.partial.tar'
@@ -512,6 +555,9 @@ def collect_operation(tcad, cfg, ssh, label):
         if record['collection_exit_code'] != 0:
             raise ValueError('No actual successful original archive transfer')
         index = verify_operation_archive(tcad, target, record)
+        if interrupted_snapshot is not None:
+            tcad.verify_interrupted_archive(target, record, index, interrupted_snapshot,
+                                            record['interrupted_collection_context'])
         raw_names = ['exit-code.txt', 'operation-task-exit-code.txt']
         if record['capture_svisual_requested']:
             raw_names += ['svisual-exit-code.txt', 'svisual-process-admission-exit-code.txt']
@@ -533,14 +579,18 @@ def collect_operation(tcad, cfg, ssh, label):
             if termination['execution_outcome']=='TERMINATED_BY_OPERATOR':
                 record.update(execution_outcome='TERMINATED_BY_OPERATOR',derived_exit_code=termination.get('derived_exit_code'))
         finished_file=folder/'collected/finished-utc.txt'
-        finished_utc=finished_file.read_text().strip() if finished_file.is_file() or not termination else None
+        finished_utc = (finished_file.read_text().strip()
+                        if finished_file.is_file() or not (termination or interrupted_snapshot) else None)
+        if interrupted_snapshot is not None:
+            record.update(execution_outcome='INTERRUPTED_UNKNOWN_EXIT', interruption_reason='ORIGINAL_BOOT_REPLACED',
+                          interruption_proof_sha256=interrupted_snapshot['interruption_proof_sha256'])
         record.update(archive_sha256=snapshot['sha256'], collected_bytes=snapshot['bytes'],
                       collection_verified=True, collected_utc=utc(),
                       finished_utc=finished_utc,
                       state='COLLECTED_PENDING_AUDIT' if record['remote_exit_code'] == 0 else 'FAILED_COLLECTED')
         record.pop('collection_error', None)
         save_record(folder, record)
-        if policy:
+        if policy and sealed is None:
             tcad.parallel_release(cfg, ssh, record)
             save_record(folder, record)
     except BaseException as exc:
@@ -556,7 +606,7 @@ def summary(record, folder):
             'archive': str(folder / 'results.tar')}
 
 
-def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot=None):
+def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot=None, release_launch_owner=None):
     folder = operation_folder(label)
     directory = cfg['remote_root'].rstrip('/') + '/dram-see-v4/transport-probe/operations/' + label
     policy = tcad.parallel_policy(cfg, parallel_slot, label, directory, 'operation') if parallel_slot is not None else None
@@ -606,6 +656,8 @@ def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot
         record['connection_identity'] = tcad.connection_identity(cfg)
     if policy:
         record['parallel_policy'] = policy
+    if release_launch_owner is not None:
+        record['staged_launch'] = True
     if timeout is not None:
         record['local_wait_timeout_s'] = timeout
     folder.mkdir(parents=True, exist_ok=False)
@@ -620,6 +672,7 @@ def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot
         if actual != record['input_sha256'] or hashlib.sha256(task_bytes).hexdigest() != record['input_sha256']['task.sh']:
             raise ValueError('Input changed while freezing the original operation')
         wrapper = render_wrapper(tcad, cfg, directory, label, capture_svisual,
+                                 **({'staged_launch': True} if release_launch_owner is not None else {}),
                                  **({'policy': policy} if policy else {}))
         (folder / 'run.sh').write_text(wrapper, encoding='utf-8', newline='\n')
         record.update(wrapper_sha256=sha(folder / 'run.sh'), script_sha256=sha(folder / 'run.sh'),
@@ -627,6 +680,10 @@ def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot
         save_record(folder, record)
         if policy:
             tcad.parallel_query(cfg, ssh, record, 'reserve')
+        if release_launch_owner is not None:
+            save_record(folder, record, durable=True)
+            tcad.sync_directory(folder.parent)
+            release_launch_owner()
         tcad.remote(ssh, 'set -e; umask 077; mkdir -p ' + shlex.quote(base + '/dram-see-v4/transport-probe/operations')
                     + '; mkdir ' + shlex.quote(directory), timeout=30)
         with (folder / 'inputs.tar').open('rb') as stream:
@@ -641,6 +698,9 @@ def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot
         record.update(ssh_exit_code=result.returncode,
                       state='LAUNCH_REQUESTED' if result.returncode == 0 else 'LAUNCH_UNCERTAIN')
         save_record(folder, record)
+    except tcad.ReservationBusy as exc:
+        tcad.retain_busy_attempt(folder, label, exc)
+        raise
     except BaseException as exc:
         record.update(state='REQUIRES_READ_ONLY_RECONCILIATION' if record['submission_phase'] == 'LAUNCH'
                       else 'FAILED_BEFORE_LAUNCH', error=repr(exc))
@@ -663,16 +723,30 @@ def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot
         time.sleep(min(60, max(0.1, timeout - (time.monotonic() - started))) if timeout is not None else 60)
 
 
-def run(label, inputs, timeout=None, *, detach=False, owner_held=False, connection=None, parallel_slot=None):
+def run(label, inputs, timeout=None, *, detach=False, owner_held=False, connection=None, parallel_slot=None,
+        staged_launch=False):
     """Run once, or locate a repeated label. owner_held is for an already-held caller lock."""
     operation_folder(label)
     if timeout is not None and (isinstance(timeout, bool) or timeout <= 0):
         raise ValueError('Optional local wait timeout must be positive')
+    if staged_launch and (not detach or parallel_slot is None or owner_held):
+        raise ValueError('--staged-launch requires --detach, --parallel-slot and runner-owned scheduling')
     tcad = load_tcad(connection)
-    with nullcontext() if owner_held else tcad.original_ownership():
-        cfg, ssh, _ = tcad.connection()
-        result = _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach,
-                                **({'parallel_slot': parallel_slot} if parallel_slot is not None else {}))
+    try:
+        with ExitStack() as launch_owner, ExitStack() as writers:
+            if not owner_held:
+                tcad.enter_launch_owner(launch_owner, staged_launch)
+            folder = operation_folder(label)
+            writers.enter_context(tcad.record_writer(folder))
+            if staged_launch and not folder.exists():
+                writers.enter_context(tcad.staged_project_writer(Path(inputs)))
+            cfg, ssh, _ = tcad.connection()
+            result = _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach,
+                                    **({'release_launch_owner': launch_owner.close} if staged_launch else {}),
+                                    **({'parallel_slot': parallel_slot} if parallel_slot is not None else {}))
+    except tcad.ReservationBusy as exc:
+        print(json.dumps(exc.payload()), flush=True)
+        return tcad.RESERVATION_BUSY_EXIT_CODE
     print(json.dumps(result, indent=2), flush=True)
     state = result.get('state', result.get('local_state'))
     accepted = (result.get('status') == 'RUNNING'
@@ -683,23 +757,32 @@ def run(label, inputs, timeout=None, *, detach=False, owner_held=False, connecti
 
 def status(label, *, owner_held=False, connection=None):
     tcad = load_tcad(connection)
-    with nullcontext() if owner_held else tcad.original_ownership():
+    with (nullcontext() if owner_held else tcad.original_ownership()), tcad.record_writer(operation_folder(label)):
         cfg, ssh, _ = tcad.connection()
         return status_operation(tcad, cfg, ssh, label)
 
 
 def collect(label, *, owner_held=False, connection=None):
     tcad = load_tcad(connection)
-    with nullcontext() if owner_held else tcad.original_ownership():
+    folder = operation_folder(label)
+    with (tcad.record_writer(folder) if owner_held else tcad.collection_owner(folder, 'operation.json')):
         cfg, ssh, _ = tcad.connection()
         return collect_operation(tcad, cfg, ssh, label)
 
 
+def seal(label, *, connection=None):
+    tcad = load_tcad(connection)
+    cfg, ssh, _ = tcad.connection()
+    return seal_operation(tcad, cfg, ssh, label)
+
+
 def cancel(label, *, connection=None, reason, grace_seconds=15, requested_by='operator'):
     tcad=load_tcad(connection)
-    with tcad.original_ownership():
+    with tcad.original_ownership(), tcad.record_writer(operation_folder(label)):
         cfg,ssh,_=tcad.connection()
         folder,record=read_record(cfg,label)
+        if 'sealed_snapshot' in record:
+            raise ValueError('Original operation is already sealed')
         return tcad.termination_module().cancel(tcad,cfg,ssh,folder,record,reason,grace_seconds,requested_by)
 
 
@@ -721,8 +804,9 @@ def main(argv=None):
     connection_parser.add_argument('--connection', type=Path)
     connection_args, argv = connection_parser.parse_known_args(argv)
     parser = argparse.ArgumentParser(description=__doc__, parents=[connection_parser])
-    if argv and argv[0] in ('status', 'collect', 'reconcile-unlaunched', 'cancel') and not (len(argv) > 1 and Path(argv[1]).is_dir()):
-        parser.add_argument('command', choices=('status', 'collect', 'reconcile-unlaunched', 'cancel'))
+    commands = ('status', 'collect', 'seal', 'reconcile-unlaunched', 'cancel')
+    if argv and argv[0] in commands and not (len(argv) > 1 and Path(argv[1]).is_dir()):
+        parser.add_argument('command', choices=commands)
         parser.add_argument('label')
         parser.add_argument('--json', action='store_true')
         parser.add_argument('--privileged-proof', action='store_true')
@@ -738,7 +822,7 @@ def main(argv=None):
             return 0
         if args.privileged_proof and args.command != 'reconcile-unlaunched':
             parser.error('--privileged-proof is only valid for reconcile-unlaunched')
-        handler = {'status': status, 'collect': collect, 'reconcile-unlaunched': reconcile_unlaunched}[args.command]
+        handler = {'status': status, 'collect': collect, 'seal': seal, 'reconcile-unlaunched': reconcile_unlaunched}[args.command]
         result = handler(args.label, connection=connection_args.connection,
                          **({'privileged_proof': True} if args.privileged_proof else {}))
         print(json.dumps(result, indent=2), flush=True)
@@ -746,11 +830,14 @@ def main(argv=None):
     parser.add_argument('label')
     parser.add_argument('inputs', type=Path)
     parser.add_argument('--detach', action='store_true')
+    parser.add_argument('--staged-launch', action='store_true',
+                        help='Release local scheduling ownership after a detached parallel reservation')
     parser.add_argument('--parallel-slot', type=int, choices=range(9))
     parser.add_argument('--timeout', type=float, default=None,
                         help='Optional local wait in seconds; does not stop or resubmit the original job')
     args = parser.parse_args(argv)
     return run(args.label, args.inputs, args.timeout, detach=args.detach, connection=connection_args.connection,
+               **({'staged_launch': True} if args.staged_launch else {}),
                **({'parallel_slot': args.parallel_slot} if args.parallel_slot is not None else {}))
 
 

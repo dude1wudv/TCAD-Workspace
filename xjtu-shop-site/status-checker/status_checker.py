@@ -30,7 +30,7 @@ from research_projection import (
 )
 from progress_store import load_public_progress
 from input_parameters import read_input_parameters
-from scheduler_observation import fs_space, has_holdout_marker, load_scheduler, public_identity, storage_fields
+from scheduler_observation import finite, fs_space, has_holdout_marker, integer, load_scheduler, public_identity, storage_fields
 from telemetry_history import HISTORY_PATH, update_history
 
 
@@ -57,6 +57,9 @@ STATS_SNAPSHOT_PATH = os.environ.get("TCAD_STATUS_STATS_SNAPSHOT")
 VM_OVERLAY_PATH = Path(os.environ.get("TCAD_STATUS_VM_OVERLAY", "/srv/tcad-isolated-vm/rocky9-20261116/overlay"))
 SERVER_STORAGE_WARNING_BYTES = 20 * 1024**3
 FRESHNESS_LIMIT_SECONDS = 180
+DISPATCH_FLOW_SCHEMA = "tcad-dispatch-flow-v1"
+DISPATCH_SLOT_STATES = {"running", "launching", "sealing", "quarantined", "free", "unknown"}
+DISPATCH_FREE_REASONS = {"no_ready_task", "resource_wait", "backend_switch", "paused", "dispatch_pending", "unknown"}
 PUBLIC_REDACTION = re.compile(
     r"/(?:home|srv|var)/|(?<![a-z0-9])(?:run_id|pid|ssh|lm_license_file)(?![a-z0-9])", re.I,
 )
@@ -164,6 +167,51 @@ def parse_time(value: object) -> dt.datetime | None:
 def public_time(value: object) -> str | None:
     parsed = parse_time(value)
     return parsed.isoformat().replace("+00:00", "Z") if parsed else None
+
+
+def observation_max_age(observation: dict) -> int:
+    threshold = observation.get("fresh_max_age_seconds")
+    return threshold if type(threshold) is int and 30 <= threshold <= OBSERVATION_STALE_SECONDS else OBSERVATION_STALE_SECONDS
+
+
+def project_dispatch_flow(observation: dict, now: dt.datetime) -> dict | None:
+    scheduler = observation.get("scheduler")
+    source = scheduler.get("flow") if isinstance(scheduler, dict) else None
+    if not isinstance(source, dict) or source.get("schema") != DISPATCH_FLOW_SCHEMA:
+        return None
+    stamp = parse_time(observation.get("utc"))
+    threshold = observation_max_age(observation)
+    result = {"schema": DISPATCH_FLOW_SCHEMA, "state": "unknown", "observed_at": public_time(observation.get("utc")),
+              "fresh_max_age_seconds": threshold}
+    if stamp is None:
+        return result
+    if not -60 <= (now - stamp).total_seconds() <= threshold:
+        return {**result, "state": "stale"}
+    rows = source.get("slots")
+    if not isinstance(rows, list):
+        return result
+    slots, seen = [], set()
+    for row in rows:
+        if not isinstance(row, dict):
+            return result
+        slot = integer(row.get("slot"), maximum=2**53 - 1)
+        threads = integer(row.get("threads"), minimum=1, maximum=2**53 - 1)
+        if slot is None or threads is None or slot in seen:
+            return result
+        seen.add(slot)
+        state, reason = row.get("state"), row.get("reason")
+        if not isinstance(state, str) or state not in DISPATCH_SLOT_STATES:
+            state = "unknown"
+        if reason is not None and (not isinstance(reason, str) or reason not in DISPATCH_FREE_REASONS):
+            reason = "unknown"
+        slots.append({"slot": slot, "threads": threads, "state": state, "reason": reason})
+    collection = source.get("collection")
+    collection = collection if isinstance(collection, dict) else {}
+    pending = integer(collection.get("pending"), maximum=2**53 - 1)
+    oldest = finite(collection.get("oldest_wait_seconds"))
+    return {**result, "state": "fresh", "slots": slots, "collection": {
+        "pending": pending, "oldest_wait_seconds": oldest if oldest is not None and oldest >= 0 else None,
+    }}
 
 
 def epoch_to_iso(value: object) -> str | None:
@@ -347,9 +395,7 @@ def simulation_status(
     runs = normalized_runs
     current = now or dt.datetime.now(UTC)
     age = max(0.0, (current - parse_time(observed_at)).total_seconds()) if observed else None
-    threshold = observation.get("fresh_max_age_seconds", OBSERVATION_STALE_SECONDS)
-    if type(threshold) is not int or not 30 <= threshold <= OBSERVATION_STALE_SECONDS:
-        threshold = OBSERVATION_STALE_SECONDS
+    threshold = observation_max_age(observation)
     total = len(runs)
     running = [item for item in runs if str(item.get("status")).lower() == "running"]
     collected = [item for item in runs if item.get("collected")]
@@ -715,21 +761,24 @@ def build_status(
     current = dt.datetime.now(UTC)
     # Prefer the newest host-side observation. This never calls a guest runner.
     selected_path = observation_path
+    controller_observation = read_json(observation_path)
     if observation_path == OBSERVATION_PATH:
-        candidates = [(path, read_json(path)) for path in (observation_path, WEB_OBSERVATION_PATH)]
+        candidates = [(observation_path, controller_observation), (WEB_OBSERVATION_PATH, read_json(WEB_OBSERVATION_PATH))]
         if candidates[1][1].get("controller_mode") == "autonomous":
             # The maintenance owner explicitly hands back to the regular observer.
             selected_path = observation_path
         else:
             web_age = age_seconds(candidates[1][1].get("utc"), current)
-            web_limit = candidates[1][1].get("fresh_max_age_seconds")
-            web_limit = web_limit if type(web_limit) is int and 30 <= web_limit <= 180 else FRESHNESS_LIMIT_SECONDS
+            web_limit = observation_max_age(candidates[1][1])
             if web_age is not None and web_age <= web_limit:
                 selected_path, _ = max(candidates, key=lambda pair: public_time(pair[1].get("utc")) or "")
             else:
                 selected_path = observation_path
-    observation = read_json(selected_path)
+    observation = controller_observation if selected_path == observation_path else read_json(selected_path)
     simulation = simulation_status(selected_path, runtime_path, runs_root, now=current)
+    dispatch_flow = project_dispatch_flow(controller_observation, current)
+    if dispatch_flow is not None:
+        simulation["dispatch_flow"] = dispatch_flow
     scheduler = load_scheduler(scheduler_path)
     if scheduler is not None:
         simulation["scheduler"] = scheduler

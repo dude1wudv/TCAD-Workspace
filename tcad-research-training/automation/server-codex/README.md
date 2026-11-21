@@ -104,6 +104,8 @@ python -B automation/server-codex/package.py --output <新的源代码包路径>
 
 ## 共享池异步调度（兼容 v2 策略）
 
+十三槽独立派发、虚拟机封存与后台收集见 [十三槽派发与收集](SLOT-WORKERS.md)。
+
 `SchedulerEngine` 继续使用原 `Runtime` 的科学准入、输入校验、repair 谱系和原提交意图。每轮只做一次有界只读 SSH 采样；原提交、取消和收集共用一个后台串行通道，保留全局 owner、gate、槽锁和原租约。原运行器验证归档并确认释放后才能补槽。未确认启动的原 ID 继续保留预约；只有原运行器出具、校验通过的未启动证明才可解除预约。
 
 新策略示例见 `policy.example.json`。默认心跳 5 秒；内存估算只预留未被实测 RSS 覆盖的部分。服务器剩余空间、虚拟机剩余空间与服务器上虚拟机磁盘文件可增长空间分别准入，不能相加。实际配置要求磁盘文件增长核验时，设置独立的 `resources.backing_disk_path` 和 `require_backing_disk=true`。许可守护进程只影响 TCAD，席位数未知时保留原运行器验证。首版 `collect_concurrency` 必须为 1。
