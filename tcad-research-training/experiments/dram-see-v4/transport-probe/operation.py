@@ -34,6 +34,7 @@ RESERVED_INPUTS = {
     'run.sh', 'exit-code.txt', 'operation-task-exit-code.txt', 'process-identity.json',
     'execution.log', 'launch.log', 'launch-pid.txt', 'started-utc.txt',
     'finished-utc.txt', 'shared-lock-evidence.txt', 'affinity.txt',
+    'termination-request.json', 'termination-killed.json', 'termination-signal.txt',
     '_collection-members.json', '.collection', '.launch-claim',
 }
 
@@ -314,7 +315,12 @@ def render_wrapper(tcad, cfg, directory, label, capture_svisual, policy=None):
     capture_installation = cfg['tool_bin'].rstrip('/').rsplit('/', 1)[0]
     lines = [
         '#!/bin/bash', 'set -euo pipefail', 'umask 077', 'cd ' + shlex.quote(directory),
-        'trap \'rc=$?; printf "%s\\n" "$rc" > exit-code.txt; date -u +%Y-%m-%dT%H:%M:%SZ > finished-utc.txt\' EXIT',
+        '_tcad_signal_rc=0',
+        '_tcad_on_signal() { _tcad_signal_rc="$2"; printf "%s\\n" "$1" > termination-signal.txt; trap "" TERM INT HUP; kill -TERM -- -$$ 2>/dev/null || true; exit "$2"; }',
+        'trap \'_tcad_on_signal TERM 143\' TERM',
+        'trap \'_tcad_on_signal INT 130\' INT',
+        'trap \'_tcad_on_signal HUP 129\' HUP',
+        'trap \'rc=$?; if [ "$_tcad_signal_rc" -ne 0 ]; then rc="$_tcad_signal_rc"; fi; printf "%s\\n" "$rc" > exit-code.txt; date -u +%Y-%m-%dT%H:%M:%SZ > finished-utc.txt\' EXIT',
         'exec > execution.log 2>&1',
     ] + tcad.process_identity_lines(label) + [
         'exec 9>' + shlex.quote(base + '/.solver.lock'),
@@ -508,22 +514,43 @@ def collect_operation(tcad, cfg, ssh, label):
         if record['capture_svisual_requested']:
             raw_names += ['svisual-exit-code.txt', 'svisual-process-admission-exit-code.txt']
         exits, errors = tcad.capture_archive_exit_codes(target, raw_names)
-        if exits['exit-code.txt'] != record['remote_exit_code']:
+        term_record = None
+        term_killed = False
+        if 'termination-request.json' in index:
+            with tarfile.open(target) as archive:
+                term_record = json.load(archive.extractfile('termination-request.json'))
+                if (not isinstance(term_record, dict) or term_record.get('schema') != 'tcad-termination-request-v1'
+                        or term_record.get('run_id') != label):
+                    raise ValueError('Invalid archived termination-request.json')
+                term_killed = 'termination-killed.json' in index
+        if term_record is None and exits['exit-code.txt'] != record['remote_exit_code']:
             raise ValueError('Observed and archived original exits differ')
+        if term_record is not None and (record.get('remote_exit_code') in (None, 0)):
+            record['remote_exit_code'] = 137 if term_killed else 143
         record['operation_task_exit_code'] = exits['operation-task-exit-code.txt']
         record['raw_exit_codes'] = exits
         record['capture_exit_errors'] = errors
         if record['capture_svisual_requested']:
             record['tool_exit_codes']['svisual'] = exits['svisual-exit-code.txt']
             record['process_admission_exit_code'] = exits['svisual-process-admission-exit-code.txt']
-        if record['remote_exit_code'] == 0 and (errors or any(value != 0 for value in exits.values())):
+        if term_record is None and record['remote_exit_code'] == 0 and (errors or any(value != 0 for value in exits.values())):
             raise ValueError('Success marker conflicts with original task/native exits')
         extract_original(folder, target, index)
-        finished_utc = (folder / 'collected/finished-utc.txt').read_text().strip()
+        finished_path = folder / 'collected/finished-utc.txt'
+        finished_utc = finished_path.read_text().strip() if finished_path.is_file() else utc()
         record.update(archive_sha256=snapshot['sha256'], collected_bytes=snapshot['bytes'],
                       collection_verified=True, collected_utc=utc(),
-                      finished_utc=finished_utc,
-                      state='COLLECTED_PENDING_AUDIT' if record['remote_exit_code'] == 0 else 'FAILED_COLLECTED')
+                      finished_utc=finished_utc)
+        if term_record is not None:
+            requested_by = str(term_record.get('requested_by') or 'operator').upper()
+            record.update(
+                state='FAILED_COLLECTED',
+                execution_outcome='TERMINATED_BY_' + re.sub(r'[^A-Z0-9]+', '_', requested_by).strip('_'),
+                termination_record=term_record,
+                terminated_killed=term_killed,
+            )
+        else:
+            record['state'] = 'COLLECTED_PENDING_AUDIT' if record['remote_exit_code'] == 0 else 'FAILED_COLLECTED'
         record.pop('collection_error', None)
         save_record(folder, record)
         if policy:
@@ -620,8 +647,12 @@ def _run_operation(tcad, cfg, ssh, label, inputs, timeout, detach, parallel_slot
         tcad.remote(ssh, 'cat > ' + shlex.quote(directory + '/run.sh'), input=wrapper.encode(), timeout=30)
         record.update(state='LAUNCH_REQUESTED', submission_phase='LAUNCH')
         save_record(folder, record)
-        command = ('set -e; cd ' + shlex.quote(directory) + '; mkdir .launch-claim || exit 76; '
-                   '(nohup bash ./run.sh </dev/null >launch.log 2>&1 & echo $! > launch-pid.txt)')
+        command = (
+            'set -e; cd ' + shlex.quote(directory) + '; mkdir .launch-claim || exit 76; '
+            '(if command -v setsid >/dev/null 2>&1; then '
+            'setsid bash ./run.sh </dev/null >launch.log 2>&1 & '
+            'else nohup bash ./run.sh </dev/null >launch.log 2>&1 & fi; echo $! > launch-pid.txt)'
+        )
         with (folder / 'stdout.txt').open('xb') as out, (folder / 'stderr.txt').open('xb') as err:
             result = subprocess.run(tcad.remote_argv(ssh, command), stdout=out, stderr=err, timeout=30)
         record.update(ssh_exit_code=result.returncode,
@@ -681,6 +712,43 @@ def collect(label, *, owner_held=False, connection=None):
         return collect_operation(tcad, cfg, ssh, label)
 
 
+def cancel_operation(tcad, cfg, ssh, label, reason='operator_cancel', *, requested_by='operator', grace_seconds=15):
+    folder, record = read_record(cfg, label)
+    if record.get('schema') != SCHEMA:
+        raise ValueError('Cancel requires a v2 operation record')
+    if record['state'] in COMPLETE_STATES:
+        return dict(label=label, status='ALREADY_TERMINAL', local_state=record['state'],
+                    was_alive=False, still_alive=False)
+    req = dict(
+        run_id=label,
+        remote_directory=record['remote_directory'],
+        script_sha256=record['script_sha256'],
+        expected_identity=record.get('process_identity'),
+        requested_by=str(requested_by or 'operator'),
+        reason=str(reason or 'operator_cancel'),
+        requested_utc=utc(),
+        grace_seconds=max(1, min(int(grace_seconds), 120)),
+    )
+    result = tcad.remote_python(ssh, tcad.CANCEL_CODE, [json.dumps(req, sort_keys=True)],
+                                timeout=max(45, req['grace_seconds'] + 30))
+    record['termination_requested_utc'] = req['requested_utc']
+    record['termination_reason'] = req['reason']
+    record['termination_requested_by'] = req['requested_by']
+    record['last_cancel_result'] = result
+    save_record(folder, record)
+    return dict(result, label=label, status='CANCEL_COMPLETED' if not result.get('still_alive') else 'CANCEL_PENDING',
+                local_state=record['state'])
+
+
+def cancel(label, *, reason='operator_cancel', requested_by='operator', grace_seconds=15,
+           owner_held=False, connection=None):
+    tcad = load_tcad(connection)
+    with nullcontext() if owner_held else tcad.original_ownership():
+        cfg, ssh, _ = tcad.connection()
+        return cancel_operation(tcad, cfg, ssh, label, reason=reason,
+                                requested_by=requested_by, grace_seconds=grace_seconds)
+
+
 def reconcile_unlaunched(label, *, connection=None, privileged_proof=False):
     tcad = load_tcad(connection)
     with tcad.original_ownership():
@@ -699,17 +767,24 @@ def main(argv=None):
     connection_parser.add_argument('--connection', type=Path)
     connection_args, argv = connection_parser.parse_known_args(argv)
     parser = argparse.ArgumentParser(description=__doc__, parents=[connection_parser])
-    if argv and argv[0] in ('status', 'collect', 'reconcile-unlaunched') and not (len(argv) > 1 and Path(argv[1]).is_dir()):
-        parser.add_argument('command', choices=('status', 'collect', 'reconcile-unlaunched'))
+    if argv and argv[0] in ('status', 'collect', 'cancel', 'reconcile-unlaunched') and not (len(argv) > 1 and Path(argv[1]).is_dir()):
+        parser.add_argument('command', choices=('status', 'collect', 'cancel', 'reconcile-unlaunched'))
         parser.add_argument('label')
         parser.add_argument('--json', action='store_true')
         parser.add_argument('--privileged-proof', action='store_true')
+        parser.add_argument('--reason', default='operator_cancel')
+        parser.add_argument('--by', dest='requested_by', default='operator')
+        parser.add_argument('--grace-seconds', type=int, default=15)
         args = parser.parse_args(argv)
         if args.privileged_proof and args.command != 'reconcile-unlaunched':
             parser.error('--privileged-proof is only valid for reconcile-unlaunched')
-        handler = {'status': status, 'collect': collect, 'reconcile-unlaunched': reconcile_unlaunched}[args.command]
-        result = handler(args.label, connection=connection_args.connection,
-                         **({'privileged_proof': True} if args.privileged_proof else {}))
+        if args.command == 'cancel':
+            result = cancel(args.label, reason=args.reason, requested_by=args.requested_by,
+                            grace_seconds=args.grace_seconds, connection=connection_args.connection)
+        else:
+            handler = {'status': status, 'collect': collect, 'reconcile-unlaunched': reconcile_unlaunched}[args.command]
+            result = handler(args.label, connection=connection_args.connection,
+                             **({'privileged_proof': True} if args.privileged_proof else {}))
         print(json.dumps(result, indent=2), flush=True)
         return 0
     parser.add_argument('label')

@@ -12,11 +12,32 @@
   "cycle_timeout_seconds": 1200,
   "minimum_interval_seconds": 300,
   "maximum_cycles_per_start": 0,
-  "poll_interval_seconds": 30,
+  "poll_interval_seconds": 5,
   "runner_timeout_seconds": 120,
   "failure_backoff_seconds": 300,
   "max_failure_backoff_seconds": 3600,
   "repair_attempt_limit": 2,
+  "scheduler_version": "v3",
+  "planner_mode": "disabled",
+  "collect_concurrency": 4,
+  "batch_probe_enabled": true,
+  "pool_switching": {
+    "strategy": "priority_with_dwell",
+    "min_profile_dwell_seconds": 1800
+  },
+  "resources": {
+    "enabled": true,
+    "min_available_memory_gib": 3.5,
+    "min_host_disk_free_gib": 20.0,
+    "min_remote_disk_free_gib": 10.0,
+    "require_tcad_license_alive": true,
+    "default_memory_gib": {
+      "tcad_1": 1.5,
+      "tcad_2": 2.5,
+      "tcad_4": 4.0,
+      "geant4_1": 1.5
+    }
+  },
   "result_retention_enabled": false,
   "result_gdrive_offload_enabled": false,
   "result_gdrive_delete_local_raw": false,

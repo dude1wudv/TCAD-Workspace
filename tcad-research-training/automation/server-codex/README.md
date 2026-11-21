@@ -1,8 +1,15 @@
-# 服务器 Codex 自主推进 v2
+# 服务器自主调度引擎 v3（确定性核心 + 可选异步规划侧车）
+
+> **v3 架构变更**：调度热路径已全面替换为纯确定性事件驱动引擎（`scheduler_engine.py`、`scheduler_pool.py`、`scheduler_admission.py`、`scheduler_probe.py`、`scheduler_collector.py`），LLM 规划（`scheduler_planner.py`）默认关闭（`planner_mode: "disabled"`）或按需以非阻塞异步侧车运行（`on_demand_async`），绝不阻塞任务派发、收集与剖面切换。全部既有科学准入（`r06_gate.py`）、历史账本（`runtime.json` / `manifest.json` / `operation.json`）、共享槽位协议（`.solver-slots/slot-N.json`）及 `status-checker` 投影契约保持 100% 兼容。
+>
+> 新增运维命令：
+> - `controller.py --policy <policy.json> explain`：输出当前池状态、四维资源水位、隔离槽位与“本轮决策单一答案”。
+> - `controller.py --policy <policy.json> cancel <task_id_or_run_id> --reason '<原因>'`：通过经身份验证的 `tcad.py cancel` / `operation.py cancel` 正规终止作业并走取消归档释放槽位。
+> - `controller.py --policy <policy.json> drain --to <tcad|geant4> [--reason '<原因>']` / `drain --cancel`：显式排空并切换资源剖面。
 
 按需原生 Astra 顾问见 [ADVISOR.md](ADVISOR.md)：Sol保持主模型，
 顾问使用 `auto/gpt-6-astra/high`，通过原生子代理及同会话续问工作。
-新控制器在模型等待期间继续使用原Runtime收集、补槽；顾问不占求解槽。
+新控制器在模型等待期间继续使用确定性调度核心收集、补槽；顾问不占求解槽。
 活动服务采用无重启部署时，监督循环改进在下一次正常启动后生效。
 
 当前实现对应 [DRAM 新研究计划](../../plans/dram-se-ddr5-lpddr5/PLAN.md)：DDR5负责工程截面、错误率和外部验证，LPDDR5负责TCAD代表结构与机理。服务使用服务器现有 Magpie 路由。开发与验证期间保持禁用，不启动仿真。实际验证与部署状态见 [VALIDATION.md](VALIDATION.md)。
