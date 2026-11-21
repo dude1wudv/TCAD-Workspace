@@ -15,6 +15,7 @@ import json
 import math
 import os
 import re
+import stat
 import subprocess
 import sys
 import tempfile
@@ -659,6 +660,43 @@ def build_activity_feed(scheduler: dict | None, simulation: dict, now: dt.dateti
     return {"mode": mode, "live_items": live_items[:8], "recent_outcomes": outcomes[:8]}
 
 
+MAINTENANCE_PATH = Path(os.environ.get('TCAD_MAINTENANCE_SUMMARY', '/var/lib/tcad-run-maintenance/summary.json'))
+MAINTENANCE_STAGES = ('find_or_extract_readout', 'verify_extraction_handoff', 'inspect_retained_result',
+                      'inspect_backup_receipt', 'diagnose_or_reconcile', 'unsupported_format', 'await_release',
+                      'metadata_review', 'identity_review', 'manifest_review')
+
+
+def maintenance_summary(path, now):
+    result = {'version': 1, 'state': 'unknown', 'observed_at': None, 'counts': None,
+              'selected_archive_bytes': None, 'reclaimed_bytes': None}
+    try:
+        if path.resolve() != path.absolute() or not path.is_file():
+            return result
+        flags = os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0) | getattr(os, 'O_NONBLOCK', 0)
+        with os.fdopen(os.open(path, flags), 'rb') as stream:
+            st = os.fstat(stream.fileno())
+            if not stat.S_ISREG(st.st_mode) or st.st_size > 16384:
+                return result
+            raw = stream.read(16385)
+            if len(raw)>16384: return result
+            doc = json.loads(raw)
+        if not isinstance(doc,dict) or doc.get('schema')!='tcad-maintenance-summary-v1': return result
+        stamp = parse_time(doc.get('observed_at'))
+        if stamp is None or stamp.tzinfo is None: return result
+        seconds = (now-stamp).total_seconds()
+        if seconds < -5: return result
+        result['observed_at'] = stamp.astimezone(UTC).isoformat()
+        if seconds > 180: return {**result, 'state':'stale'}
+        counts, sizes = doc['counts'], doc['selected_local_archive_bytes']
+        if not isinstance(counts,dict) or not isinstance(sizes,dict) or set(counts)!=set(sizes): return result
+        if set(counts)-set(MAINTENANCE_STAGES): return result
+        if any(type(n) is not int or not 0<=n<=2**53-1 for n in (*counts.values(),*sizes.values())): return result
+        return {**result, 'state':'fresh', 'counts':{k:counts.get(k,0) for k in MAINTENANCE_STAGES},
+                'selected_archive_bytes':sizes.get('find_or_extract_readout',0)}
+    except (OSError, RuntimeError, KeyError, ValueError, TypeError, OverflowError):
+        return result
+
+
 def build_status(
     maintenance: str | None = None,
     runner: Callable[..., subprocess.CompletedProcess] = subprocess.run,
@@ -770,6 +808,7 @@ def build_status(
         "activity_feed": build_activity_feed(scheduler, simulation, current),
         "research": research,
         "maintenance": maintenance,
+        "maintenance_summary": maintenance_summary(MAINTENANCE_PATH, current),
     }
 
 
