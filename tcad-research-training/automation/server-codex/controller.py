@@ -134,8 +134,12 @@ def validate_scheduler(policy):
     for backend,widths in estimates.items():
         if not isinstance(widths,dict) or any(not re.fullmatch(r'[1-9][0-9]*',key) or not positive(value) for key,value in widths.items()):raise Refused('Invalid task memory estimates')
     switching=policy.get('pool_switching',{})
-    if not isinstance(switching,dict) or set(switching)-{'min_profile_dwell_seconds','max_profile_ready_wait_seconds'}:raise Refused('Invalid pool switching configuration')
+    if not isinstance(switching,dict) or set(switching)-{'min_profile_dwell_seconds','max_profile_ready_wait_seconds','dependency_mode'}:raise Refused('Invalid pool switching configuration')
     for key,value in switching.items():
+        if key == 'dependency_mode':
+            if type(value) is not bool:
+                raise Refused('dependency_mode must be boolean')
+            continue
         if type(value) not in (int,float) or not 0<=value<=604800:raise Refused('Invalid pool switching time: '+key)
 
 
@@ -146,6 +150,8 @@ def policy_at(path):
     policy = dict(DEFAULTS, **policy)
     if policy["planner_mode"] not in ("disabled", "on_demand_async"):
         raise Refused("planner_mode must be disabled or on_demand_async")
+    if policy.get("dispatch_mode", "legacy") not in ("legacy", "slot_workers"):
+        raise Refused("dispatch_mode must be legacy or slot_workers")
     if type(policy["collect_concurrency"]) is not int or policy["collect_concurrency"] != 1:
         raise Refused("Original owner-lock protocol requires collect_concurrency=1")
     paths = ("workspace", "state_dir", "runner_python", "task_file", "plan_file", "queue_file")
@@ -181,8 +187,16 @@ def policy_at(path):
     if "watchdog" in policy:
         validate_watchdog(policy["watchdog"])
     validate_scheduler(policy)
-    if 'month_one_wave' in policy and (policy['planner_mode'] != 'disabled' or 'scientific_gate' not in policy):
+    if 'month_one_wave' in policy and (policy['planner_mode'] != 'disabled' or 'scientific_gate' not in policy
+                                      or policy.get('dispatch_mode') == 'slot_workers'):
         raise Refused('Month-one wave requires exclusive queue handoff and scientific gate')
+    if 'scheduler_supply' in policy:
+        supply = policy['scheduler_supply']
+        if (policy.get('dispatch_mode') != 'slot_workers' or policy['planner_mode'] != 'disabled'
+                or 'scientific_gate' not in policy or 'month_one_wave' in policy
+                or not isinstance(supply, dict) or set(supply) != {'waves'}
+                or not isinstance(supply['waves'], list) or not 1 <= len(supply['waves']) <= 32):
+            raise Refused('Scheduler supply needs slot_workers, sole queue ownership, scientific gate and 1..32 approved waves')
     return policy
 
 
@@ -696,7 +710,7 @@ def new_artifact_created(policy, prior, checkpoint, started_ns):
     return False
 
 
-def sleep_poll(seconds, stop, state, wakeup=None, paths=()):
+def sleep_poll(seconds, stop, state, wakeup=None, paths=(), keep_reconciling=False):
     def signatures():
         values = []
         for path in paths:
@@ -707,7 +721,7 @@ def sleep_poll(seconds, stop, state, wakeup=None, paths=()):
     prior = signatures()
     until = time.monotonic() + seconds
     while time.monotonic() < until and not stop["requested"]:
-        if (state / "pause.json").exists() or signatures() != prior:break
+        if (not keep_reconciling and (state / "pause.json").exists()) or signatures() != prior:break
         if wakeup is not None and wakeup.is_set():
             wakeup.clear();break
         time.sleep(min(.5, max(0, until - time.monotonic())))
@@ -730,7 +744,9 @@ def binding(policy):
         "transport_max_parallel_jobs": policy.get("transport_max_parallel_jobs"),
         "scientific_gate": policy.get("scientific_gate"),
         "month_one_wave": policy.get("month_one_wave"),
+        "scheduler_supply": policy.get("scheduler_supply"),
         "planner_mode": policy.get("planner_mode", "on_demand_async"),
+        "dispatch_mode": policy.get("dispatch_mode", "legacy"),
         "collect_concurrency": policy.get("collect_concurrency", 1),
         "resources": policy.get("resources"),
         "probe_timeout_seconds": policy.get("probe_timeout_seconds",15),
@@ -793,6 +809,7 @@ def serve(policy_file, once=False):
         ready = readiness_at(initial)
         stamp = identity_stamp(initial, ready)
         runtime = create_runtime(initial, ready)
+        keep_reconciling = initial.get("dispatch_mode") == "slot_workers"
         planner = scheduler_module('scheduler_planner').AsyncPlanner() if initial.get('planner_mode') != 'disabled' else None
         previous = read_json(state / "checkpoint.json") if (state / "checkpoint.json").exists() else None
         if previous and previous.get("state") in ("running", "uncertain") and previous.get("cycle"):
@@ -816,7 +833,7 @@ def serve(policy_file, once=False):
                 policy = policy_at(policy_file)
                 if not policy["enabled"] or stop["requested"]:
                     break
-                if (state / "pause.json").exists():
+                if not keep_reconciling and (state / "pause.json").exists():
                     break
                 if binding(policy) != binding(initial):
                     pause(initial, "Execution identity changed; restart against the explicit new handoff")
@@ -831,14 +848,18 @@ def serve(policy_file, once=False):
                 if time.time() < runtime_retry_after:
                     if once:
                         break
-                    sleep_poll(policy["poll_interval_seconds"], stop, state)
+                    sleep_poll(policy["poll_interval_seconds"], stop, state, keep_reconciling=keep_reconciling)
                     continue
                 try:
                     # Always reconcile existing IDs before considering any launch.
-                    if recovering:
+                    if keep_reconciling:
+                        may_submit = runtime.can_submit() and not recovering
+                        observation = runtime.tick(allow_submit=may_submit)
+                        recovering = observation.get("discovery_uncertain", False)
+                    elif recovering:
                         observation = runtime.tick(allow_submit=False)
                         recovering = False
-                    if (runtime.can_submit()
+                    if (not keep_reconciling and runtime.can_submit()
                             and not observation.get("discovery_uncertain", False)):
                         wave = None
                         if 'month_one_wave' in policy and ready.get('new_jobs_authorized') is True:
@@ -850,7 +871,7 @@ def serve(policy_file, once=False):
                         observation = runtime.tick(allow_submit=runtime.can_submit())
                         if wave is not None:
                             observation.setdefault('scheduler', {})['month_one_wave'] = wave
-                    else:
+                    elif not keep_reconciling:
                         recovering = True
                     runtime_errors = 0
                     write_json(state / "observation.json", {"utc": utc(), **observation})
@@ -867,13 +888,13 @@ def serve(policy_file, once=False):
                         "retry_after": runtime_retry_after, "failure_count": runtime_errors})
                     if once:
                         break
-                    sleep_poll(policy["poll_interval_seconds"], stop, state)
+                    sleep_poll(policy["poll_interval_seconds"], stop, state, keep_reconciling=keep_reconciling)
                     continue
-                if (stop["requested"] or (state / "pause.json").exists()
-                        or not policy_at(policy_file)["enabled"]):
+                paused = (state / "pause.json").exists()
+                if (stop["requested"] or (paused and not keep_reconciling) or not policy_at(policy_file)["enabled"]):
                     break
                 event_key = watch_key(policy, previous, observation)
-                if planner and planner.pending is None and should_wake(policy, previous, observation, event_key):
+                if not paused and planner and planner.pending is None and should_wake(policy, previous, observation, event_key):
                     context = {"prior": previous, "baseline": observation, "event_key": event_key,
                                "started_ns": time.time_ns()}
                     planner.start(run_cycle, context, policy, ready, previous, stop, observation,
@@ -908,7 +929,7 @@ def serve(policy_file, once=False):
                 channel = getattr(runtime, 'channel', None)
                 sleep_poll(policy["poll_interval_seconds"], stop, state,
                            wakeup=channel.wakeup if channel else None,
-                           paths=(policy["queue_file"], state / 'commands'))
+                           paths=(policy["queue_file"], state / 'commands'), keep_reconciling=keep_reconciling)
         finally:
             stop["requested"] = True
             if planner:planner.close()
@@ -945,6 +966,8 @@ def main(argv=None):
     drain.add_argument("--reason", default="Operator requested drain")
     prepare = commands.add_parser('prepare-wave', help='Print pinned wave JSON for explicitly staged proposals; no queue writes')
     prepare.add_argument('proposals', nargs='+', help='Workspace-relative staged proposal files')
+    raw_prepare = commands.add_parser('prepare-raw-wave', help='Print a pinned wave for approved raw development proposals')
+    raw_prepare.add_argument('proposals', nargs='+', help='Workspace-relative staged proposal files')
     explain = commands.add_parser("explain")
     target = explain.add_mutually_exclusive_group()
     target.add_argument('--month-one', action='store_true', help='Private read-only frozen case index')
@@ -978,6 +1001,27 @@ def main(argv=None):
             if 'scientific_gate' not in policy:
                 raise Refused('Wave preparation requires the frozen scientific gate')
             result = scheduler_module('month_one_wave').prepare(policy, scheduler_module('r06_gate'), args.proposals)
+        elif args.command == 'prepare-raw-wave':
+            gate = scheduler_module('r06_gate')
+            engine = scheduler_module('scheduler_engine').SchedulerEngine(policy, readiness_at(policy), read_only=True)
+            engine._profile()
+            gate.need(1 <= len(args.proposals) <= 13, 'one wave accepts 1..13 proposals')
+            entries, seen = [], set()
+            for name in args.proposals:
+                ref = {'path': name, 'sha256': gate.sha(gate.path_at(engine.workspace, name))}
+                proposal = gate.read_reference(engine.workspace, ref)
+                rows = proposal.get('tasks')
+                gate.need(proposal.get('schema') == 'tcad-work-items-v1' and isinstance(rows, list)
+                          and len(rows) == 1, 'expected one staged task')
+                tasks, errors = engine._parse_tasks(rows)
+                gate.need(not errors and len(tasks) == 1, 'invalid staged task')
+                task = next(iter(tasks.values()))
+                gate.need(task['id'].startswith('raw-dev-') and task['id'] not in seen, 'expected a distinct raw development task')
+                seen.add(task['id'])
+                inputs, _ = engine._inputs(task)
+                engine._scientific_admission(task, inputs)
+                entries.append({'proposal': ref, 'input_digest': scheduler_module('runtime').digest(inputs)})
+            result = {'schema': 'tcad-r06-development-wave-v1', 'entries': entries}
         elif args.command == 'explain' and (args.month_one or args.case is not None):
             if 'scientific_gate' not in policy:
                 raise Refused('Month-one view requires the frozen r0.6 scientific gate')

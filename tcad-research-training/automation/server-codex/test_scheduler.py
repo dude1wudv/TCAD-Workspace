@@ -118,6 +118,88 @@ class SchedulerTests(unittest.TestCase):
         self.assertTrue(any(event['type']=='collected' for event in observation['events']))
         self.assertFalse(any(command=='status' for _,command,_ in self.h.calls))
 
+    def test_thirteen_mixed_slots_refill_while_old_archive_transfer_waits(self):
+        self.h.cfg.update(parallel_capacity=13, cpu_sets=[[cpu] for cpu in range(12)] + [[12, 13, 14, 15]],
+                          requested_threads=[1] * 12 + [4])
+        self.h.save(self.h.profile, self.h.cfg)
+        self.h.ready['connection']['sha256'] = fixtures.runtime.file_digest(self.h.profile)
+        self.h.policy.update(dispatch_mode='slot_workers', max_parallel_jobs=13)
+        for index in range(13):
+            self.h.task(f'single-{index}')
+        for index in range(2):
+            task = self.h.task(f'wide-{index}')
+            path = self.h.workspace / task['project'] / 'project.json'
+            self.h.save(path, dict(fixtures.runtime.read_json(path), native_threads=4, native_cores=4))
+        engine = self.engine()
+        transferring = threading.Event()
+        resume_transfer = threading.Event()
+        original = self.h.fake_runner
+
+        def runner(argv, **kwargs):
+            if argv[4] == 'seal':
+                run_id = argv[5]
+                path = self.h.record_path('tcad', run_id)
+                record = fixtures.runtime.read_json(path)
+                record.update(sealed_snapshot={'sha256': 'a' * 64, 'bytes': 10240,
+                                               'sealed_utc': '2026-11-21T15:00:00+00:00'},
+                              parallel_slot_released=True)
+                fixtures.runtime.write_json(path, record)
+                return subprocess.CompletedProcess(argv, 0, '{}', '')
+            if argv[4] == 'collect':
+                transferring.set()
+                if not resume_transfer.wait(5):
+                    raise AssertionError('Fixture transfer was never released')
+            if argv[4] == 'run':
+                self.assertIn('--staged-launch', argv)
+            return original(argv, **kwargs)
+
+        self.h.mock_runner.side_effect = runner
+        self.addCleanup(resume_transfer.set)
+        self.assertEqual(self.fill(engine, 13)['running_count'], 13)
+        old = self.h.finish('wide-0')
+        engine.tick(allow_submit=False)
+        self.wait_channel(engine)
+        observation = engine.tick()
+        self.assertTrue(transferring.wait(2))
+        self.assertEqual(engine.intents['wide-1']['slot'], old['slot'])
+        self.assertEqual(observation['scheduler']['flow']['collection']['pending'], 1)
+        old_run = next(run for run in observation['runs'] if run['id'] == 'wide-0')
+        self.assertFalse(old_run['occupied'])
+        self.assertFalse(old_run['collected'])
+        resume_transfer.set()
+        self.wait_channel(engine)
+        self.assertEqual(engine.tick(allow_submit=False)['running_count'], 13)
+
+    def test_allocator_busy_retries_only_proven_unlaunched_intent(self):
+        self.h.policy['dispatch_mode'] = 'slot_workers'
+        self.h.task('one-task')
+        engine = self.engine()
+        original = self.h.fake_runner
+        attempted = []
+
+        def runner(argv, **kwargs):
+            attempted.append(argv[argv.index('--run-id') + 1])
+            if len(attempted) == 1:
+                receipt = dict(status='ORIGINAL_ALLOCATOR_BUSY', error_code='lock_busy',
+                               reservation_acquired=False, solver_launched=False)
+                return subprocess.CompletedProcess(argv, 74, json.dumps(receipt), '')
+            return original(argv, **kwargs)
+
+        self.h.mock_runner.side_effect = runner
+        engine.tick()
+        self.wait_channel(engine)
+        engine.tick(allow_submit=False)
+        intent = engine.intents['one-task']
+        self.assertTrue(intent['scheduler']['reservation_retry'])
+        intent['next_probe_at'] = 0
+        engine.tick(allow_submit=False)
+        self.assertEqual(len(attempted), 1)
+        engine.tick()
+        self.wait_channel(engine)
+        self.assertEqual(attempted, [intent['run_id'], intent['run_id']])
+        self.assertEqual(engine.tick(allow_submit=False)['running_count'], 1)
+        self.assertNotIn('reservation_retry', intent['scheduler'])
+
     def test_new_archive_verification_never_blocks_live_scheduler_tick(self):
         self.h.task('one');engine=self.engine();self.fill(engine,1);self.h.finish('one')
         entered=threading.Event();release=threading.Event();self.addCleanup(release.set)

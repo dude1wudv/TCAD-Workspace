@@ -1342,7 +1342,7 @@ def project_snapshot(source, now=None):
         'slot_count': cores, 'reserved_cpus': reserved, 'compute_cpu_count': compute_count,
         'active_slots': None if stale else len(active_cpus),
         'active_groups': None if stale else running_groups,
-        'active_solvers': None if stale else integer(guest.get('solver_count')) if 'solver_count' in guest else running_groups,
+        'active_solvers': None if stale else integer(guest.get('solver_count')),
         'started_at': started, 'elapsed_seconds': primary.get('elapsed_seconds'), 'tasks': tasks, 'slots': slots,
         'recent_runs': [recent_summary(task) for task in recent[:20]],
         'active_batch': dict(batch_counts, kind=kind if batch_label else None, label=batch_label or None,

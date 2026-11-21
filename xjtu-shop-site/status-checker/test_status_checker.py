@@ -11,7 +11,8 @@ from unittest.mock import patch
 
 from status_checker import (
     build_activity_feed, build_freshness_health, build_service_health, build_simulation_health,
-    build_status, main, overall_state, research_site_state, simulation_status, write_json_atomic,
+    build_live, build_status, check_public_payload, main, overall_state, project_dispatch_flow,
+    research_site_state, simulation_status, write_json_atomic,
 )
 
 
@@ -27,6 +28,60 @@ def fake_runner(*args, **kwargs):
 
 
 class StatusCheckerTests(unittest.TestCase):
+    def test_dispatch_flow_is_whitelisted_in_both_public_payloads(self):
+        observation, runtime, runs, source = self.make_inputs()
+        source["utc"] = dt.datetime.now(UTC).isoformat()
+        source["scheduler"] = {"private": "/srv/private-scheduler", "flow": {
+            "schema": "tcad-dispatch-flow-v1",
+            "slots": [
+                {"slot": 0, "threads": 4, "state": "running", "reason": None, "run_id": "private-run", "pid": 420},
+                {"slot": 1, "threads": 2, "state": "free", "reason": "resource_wait", "path": "/srv/private-slot"},
+                {"slot": 2, "threads": 2, "state": "/srv/private-state", "reason": ["private-reason"]},
+            ],
+            "collection": {"pending": 3, "oldest_wait_seconds": 123.5, "path": "/srv/private-collection"},
+            "detail": "/srv/private-flow",
+        }}
+        observation.write_text(json.dumps(source), encoding="utf-8")
+        with patch("status_checker.system_metrics", return_value={}):
+            status = build_status(runner=fake_runner, observation_path=observation, runtime_path=runtime,
+                                  runs_root=runs, scheduler_path=observation.parent / "missing-scheduler.json",
+                                  mode="live")
+        flow = status["simulation"]["dispatch_flow"]
+        self.assertEqual(flow, {
+            "schema": "tcad-dispatch-flow-v1", "state": "fresh", "fresh_max_age_seconds": 180,
+            "observed_at": source["utc"].replace("+00:00", "Z"),
+            "slots": [
+                {"slot": 0, "threads": 4, "state": "running", "reason": None},
+                {"slot": 1, "threads": 2, "state": "free", "reason": "resource_wait"},
+                {"slot": 2, "threads": 2, "state": "unknown", "reason": "unknown"},
+            ],
+            "collection": {"pending": 3, "oldest_wait_seconds": 123.5},
+        })
+        self.assertEqual(status["schema_version"], 2)
+        live = build_live(status, {})
+        self.assertEqual(live["simulation"]["dispatch_flow"], flow)
+        for payload in (status, live):
+            check_public_payload(payload)
+            self.assertNotIn("private-", json.dumps(payload))
+
+    def test_dispatch_flow_missing_expired_and_invalid(self):
+        self.assertIsNone(project_dispatch_flow({}, SNAPSHOT))
+        self.assertIsNone(project_dispatch_flow({"scheduler": {"slots": []}}, SNAPSHOT))
+        source = {"utc": SNAPSHOT.isoformat(), "fresh_max_age_seconds": 30, "scheduler": {"flow": {
+            "schema": "tcad-dispatch-flow-v1", "slots": [{"slot": 0, "threads": 4, "state": "free"}],
+            "collection": {"pending": True, "oldest_wait_seconds": float("inf")},
+        }}}
+        fresh = project_dispatch_flow(source, SNAPSHOT + dt.timedelta(seconds=30))
+        self.assertEqual(fresh["collection"], {"pending": None, "oldest_wait_seconds": None})
+        for offset in (30.5, -61):
+            with self.subTest(offset=offset):
+                stale = project_dispatch_flow(source, SNAPSHOT + dt.timedelta(seconds=offset))
+                self.assertEqual(stale["state"], "stale")
+                self.assertNotIn("slots", stale)
+                self.assertNotIn("collection", stale)
+        source["scheduler"]["flow"]["slots"] *= 2
+        self.assertEqual(project_dispatch_flow(source, SNAPSHOT)["state"], "unknown")
+
     def test_occupied_reconciliation_pending_does_not_claim_native_running(self):
         observation, runtime, runs, source = self.make_inputs()
         for status in ("reconciliation_pending", "pending", "unknown", None):
@@ -332,6 +387,7 @@ class StatusCheckerTests(unittest.TestCase):
         self.assertEqual(payload["overall"], "degraded")
         self.assertEqual(payload["services"][1]["state"], "operational")
         self.assertEqual(payload["services"][2]["state"], "offline")
+        self.assertNotIn("dispatch_flow", payload["simulation"])
         serialized = json.dumps(payload)
         for forbidden in ("127.0.0.1", "/srv/", "run_id", "ssh", "lm_license_file"):
             self.assertNotIn(forbidden, serialized.lower())

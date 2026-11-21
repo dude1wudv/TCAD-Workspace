@@ -13,6 +13,7 @@ const state = {
   activeSection: 'overview', navDrawerOpen: false,
   live: null, full: null, fullHash: null, lastFullRequest: -Infinity,
   liveMode: 'loading', fullFailed: false, refreshing: false,
+  dispatchFlowState: null,
   taskMetrics: new Map(),
 };
 try { if (localStorage.getItem('xjtu-lang') === 'en') state.lang = 'en'; } catch {}
@@ -116,6 +117,15 @@ function schedulerFor(simulation, threshold) {
   return { ...source, vm, observedAt, hasObservation, stale, tasks, slots, count, reserved_cpus };
 }
 
+function dispatchFlowFor(source) {
+  if (source?.schema !== 'tcad-dispatch-flow-v1') return null;
+  if (source.state === 'stale' ||
+      (source.state === 'fresh' && !validSample(source.observed_at, source.fresh_max_age_seconds))) {
+    return { state: 'stale' };
+  }
+  return source.state === 'fresh' && Array.isArray(source.slots) ? source : { state: 'unknown' };
+}
+
 function progressReading(progress) {
   return {
     current: progress?.current ?? progress?.simulation_time_ns,
@@ -124,9 +134,10 @@ function progressReading(progress) {
   };
 }
 
-function topology(scheduler) {
-  const widths = scheduler.layout_widths;
-  if (!scheduler.stale && widths?.length) {
+function topology(scheduler, flow) {
+  const widths = flow?.state === 'fresh' ? flow.slots.map((slot) => slot.threads) :
+    scheduler.stale ? null : scheduler.layout_widths;
+  if (widths?.length) {
     const groups = new Map();
     for (const width of widths) groups.set(width, (groups.get(width) || 0) + 1);
     return [...groups].sort(([a], [c]) => a - c).map(([width, count]) => `${count}×${width}`).join('+');
@@ -231,11 +242,14 @@ function resourceRow(title, resource, alert = false, hint = '') {
   </div>`;
 }
 
-function renderKpis(payload, scheduler, batch, research, services) {
+function renderKpis(payload, scheduler, flow, batch, research, services) {
   const vm = scheduler.vm;
   const system = payload.system || {};
   const totals = research?.totals;
-  const runningGroups = scheduler.stale ? null : scheduler.active_groups ?? scheduler.tasks.filter((task) => task.state === 'running').length;
+  const dispatchSlots = flow?.state === 'fresh' ? flow.slots : null;
+  const runningGroups = dispatchSlots ?
+    (dispatchSlots.some((slot) => slot.state === 'unknown') ? null : dispatchSlots.filter((slot) => slot.state === 'running').length) :
+    scheduler.stale ? null : scheduler.active_groups ?? scheduler.tasks.filter((task) => task.state === 'running').length;
   const bound = scheduler.stale ? null : scheduler.active_slots;
   const root = system.storage?.server_root;
   const swap = vm.swap || {};
@@ -244,15 +258,16 @@ function renderKpis(payload, scheduler, batch, research, services) {
     root.available_bytes < (root.warning_below_bytes ?? 20 * 1024 ** 3));
   const plan = (key) => number(totals?.[key]);
   const independentTip = b('各层资源独立采样，余量不可相加', 'Each layer is sampled independently and cannot be summed');
-  return `<md-elevated-card class="m3-card"><article class="panel kpi">
-    <div class="kpi-head"><h2>${b('活动求解器', 'Active solvers')}</h2><span class="topology-badge">${esc(topology(scheduler))}</span></div>
-    <div class="kpi-lead"><strong>${number(runningGroups)}</strong><span>${b('项运行中', 'running')}</span></div>
+  return `<md-elevated-card class="m3-card"><article class="panel kpi jobs-kpi">
+    <div class="kpi-head"><h2>${b('仿真任务', 'Simulation jobs')}</h2><span class="topology-badge">${esc(topology(scheduler, flow))}</span></div>
+    <div class="kpi-lead"><strong>${number(runningGroups)}${dispatchSlots ? `<small> / ${number(dispatchSlots.length)}</small>` : ''}</strong>
+      <span>${dispatchSlots ? b('运行中 / 槽位容量', 'Running / slot capacity') : b('项运行中', 'running')}</span></div>
     <div class="kpi-meta">
       <span>${b('占用核心', 'Cores')} <b>${number(bound)} / ${number(scheduler.count || null)}</b></span>
       <span>${b('服务器 CPU / Load 1m', 'Server CPU / Load 1m')} <b>${unit(system.cpu?.usage_percent, '%', 1)} / ${number(system.cpu?.load_1m, 2)}</b></span>
       <span>${b('虚拟机 CPU', 'VM CPU')} <b>${unit(vm.cpu?.usage_percent, '%', 1)}</b></span>
       <span>${b('虚拟机 Load 1m / 5m / 15m', 'VM Load 1m / 5m / 15m')} <b>${['load_1m', 'load_5m', 'load_15m'].map((key) => number(vm.cpu?.[key], 2)).join(' / ')}</b></span>
-      <span>${b('求解进程', 'Solvers')} <b>${number(scheduler.stale ? null : scheduler.active_solvers)}</b></span>
+      <span>${b('原生求解进程', 'Native solver processes')} <b>${number(scheduler.stale ? null : scheduler.active_solvers)}</b></span>
     </div>
     <div class="license-line">${services.filter(licenseService).map((service) => pill(service.state, serviceName(service))).join('')}</div>
   </article></md-elevated-card>
@@ -284,7 +299,43 @@ function renderKpis(payload, scheduler, batch, research, services) {
   </article></md-elevated-card>`;
 }
 
-function renderSlots(scheduler) {
+function renderDispatchFlow(flow) {
+  if (!flow) return '';
+  const title = b('调度槽位', 'Dispatch slots');
+  if (flow.state !== 'fresh') return `<div class="dispatch-flow batch-bar"><strong>${title}</strong>${pill(flow.state)}</div>`;
+  const freeReasons = {
+    no_ready_task: b('暂无就绪任务', 'No ready task'), resource_wait: b('等待资源', 'Waiting for resources'),
+    backend_switch: b('后端切换', 'Switching backend'), paused: b('已暂停', 'Paused'),
+    dispatch_pending: b('等待派发', 'Dispatch pending'), unknown: b('原因未知', 'Unknown reason'),
+  };
+  const groups = new Map();
+  for (const slot of flow.slots) {
+    if (!groups.has(slot.threads)) groups.set(slot.threads, []);
+    groups.get(slot.threads).push(slot);
+  }
+  const widths = [...groups].sort(([left], [right]) => left - right).map(([threads, slots]) => {
+    const free = slots.filter((slot) => slot.state === 'free');
+    const reasons = Object.entries(freeReasons).flatMap(([reason, caption]) => {
+      const count = free.filter((slot) => (slot.reason ?? 'unknown') === reason).length;
+      return count ? [`${caption} ${count}`] : [];
+    });
+    const waiting = [
+      ['launching', b('启动中', 'Launching')], ['sealing', b('待封存', 'Awaiting seal')],
+      ['quarantined', b('隔离中', 'Quarantined')], ['unknown', label('unknown')],
+    ].flatMap(([state, caption]) => {
+      const count = slots.filter((slot) => slot.state === state).length;
+      return count ? [`<span>${caption} <b>${count}</b></span>`] : [];
+    });
+    return `<li><strong>${b(`${threads} 线程槽位`, `${threads}-thread slots`)}</strong>
+      <span>${b('空闲', 'Free')} <b>${free.length}</b>${reasons.length ? ` · ${reasons.join(' · ')}` : ''}</span>${waiting.join('')}</li>`;
+  });
+  const { pending, oldest_wait_seconds: oldest } = flow.collection ?? {};
+  return `<div class="dispatch-flow"><div class="batch-bar"><strong>${title}</strong>
+    <span>${b('待收集', 'Collection backlog')} <b>${number(pending)}</b> · ${b('最久等待', 'Oldest wait')} <b>${duration(oldest)}</b></span></div>
+    ${widths.length ? `<ul class="dispatch-widths">${widths.join('')}</ul>` : ''}</div>`;
+}
+
+function renderSlots(scheduler, flow) {
   const byId = new Map(scheduler.tasks.map((task) => [task.id, task]));
   const reserved = new Set(scheduler.reserved_cpus || []);
   const background = scheduler.slots.filter((slot) => reserved.has(slot.cpu));
@@ -328,8 +379,10 @@ function renderSlots(scheduler) {
       if (group.length === 1) return cell(group[0]);
       const width = group.length;
       const health = byId.get(group[0].owners[0])?.health || group[0].state;
+      const groupLabel = flow?.state === 'fresh' && group[0].owners.length === 1 ?
+        `<p class="cpu-cluster-label">${b(`${width} 核 · 同一任务`, `${width} cores · one job`)}</p>` : '';
       return `<div class="cpu-cluster ${tone[health] || 'neutral'}" data-key="cluster-${group[0].cpu}"
-        style="--wide-span:${Math.min(width, 10)};--narrow-span:${Math.min(width, 5)}">${group.map(cell).join('')}</div>`;
+        style="--wide-span:${Math.min(width, 10)};--narrow-span:${Math.min(width, 5)}">${groupLabel}${group.map(cell).join('')}</div>`;
     }).join('')}</div></div>` : ''}
     ${background.length ? `<div class="background-core"><p class="matrix-caption" title="${range(background)}">${b('后台余量', 'Reserve')}</p><div class="reserve-cores">${background.map(cell).join('')}</div></div>` : ''}
   </div>`;
@@ -624,6 +677,8 @@ function render() {
   const payload = newestPayload() || {};
   const simulation = payload.simulation || {};
   const scheduler = schedulerFor(simulation, sampleThreshold(payload));
+  const flow = dispatchFlowFor(simulation.dispatch_flow);
+  state.dispatchFlowState = flow?.state;
   const batch = simulation.active_batch || {};
   const research = currentResearch();
   const history = state.live?.history;
@@ -634,11 +689,11 @@ function render() {
       state.fullFailed ? b('状态数据暂时不可用', 'Status data unavailable') : b('正在读取状态数据…', 'Loading status…'));
   update('overview', `<md-elevated-card class="m3-card overview-shell"><div class="overview-frame"><div class="overview"><div><h1>${b('仿真状态看板', 'Simulation status')}</h1>
     <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}</div></md-elevated-card>`);
-  update('kpis', renderKpis(payload, scheduler, batch, research, services));
+  update('kpis', renderKpis(payload, scheduler, flow, batch, research, services));
   const sample = scheduler.hasObservation ? `${scheduler.stale ? b('观测快照', 'Snapshot') : b('采样', 'Sampled')} · ${date(scheduler.observedAt)}` : '';
   const matrixHint = state.selectedTask ? b('点击空白处或 Esc 取消选中', 'Click outside or press Esc to clear') : sample;
   update('schedule', heading(b('虚拟机调度矩阵', 'VM scheduling matrix'), matrixHint, '01', b('调度矩阵', 'Matrix'))
-    + `<md-elevated-card class="m3-card"><div class="panel matrix">${renderSlots(scheduler)}</div></md-elevated-card>`);
+    + `<md-elevated-card class="m3-card"><div class="panel matrix">${renderDispatchFlow(flow)}${renderSlots(scheduler, flow)}</div></md-elevated-card>`);
   const tasks = scheduler.tasks.filter((task) => ['running', 'collecting', 'uncollected', 'unknown'].includes(task.state));
   const taskTitle = scheduler.stale && scheduler.hasObservation ? b('活动任务 · 快照', 'Active tasks · snapshot') : b('活动任务遥测', 'Active task telemetry');
   update('tasks', heading(taskTitle, '', '02', b('活动任务', 'Tasks')) + `<div class="task-grid">${tasks.map((task) => taskCard(task, scheduler, history)).join('') ||
@@ -668,6 +723,10 @@ function writeText(element, value) {
 function tick() {
   if (document.hidden) return;
   const payload = newestPayload();
+  if (state.dispatchFlowState === 'fresh' && dispatchFlowFor(payload?.simulation?.dispatch_flow)?.state !== 'fresh') {
+    render();
+    return;
+  }
   const threshold = sampleThreshold(payload);
   const scheduler = payload?.simulation?.scheduler || payload?.simulation?.benchmark;
   const sample = scheduler?.observed_at || scheduler?.virtual_machine?.observed_at || payload?.generated_at;

@@ -34,14 +34,17 @@ class ResourceAdmissionController:
         host = number("host_disk_free_gib")
         remote = number("remote_disk_free_gib")
         output = self.cfg.get("output_reserve_gib", 0.5)
-        transfer = self.cfg.get("collection_reserve_gib", 1.0) if action == "collect" else output
+        transfer = self.cfg.get("collection_reserve_gib", 1.0) if action in ("collect", "seal", "transfer") else output
+        sealed_bytes = task.get("sealed_bytes") if action == "transfer" else None
+        if type(sealed_bytes) is int and sealed_bytes > 0:
+            transfer = max(transfer, sealed_bytes / 1073741824)
         in_flight = len(reservations) * output
-        if host is None or host - transfer - in_flight < self.cfg.get("min_host_disk_free_gib", 20):
+        if action != "seal" and (host is None or host - transfer - in_flight < self.cfg.get("min_host_disk_free_gib", 20)):
             return verdict(False, "server_disk", "Server free disk below floor including pending output/transfer reserve")
-        if remote is None or remote - transfer - in_flight < self.cfg.get("min_remote_disk_free_gib", 10):
+        if action != "transfer" and (remote is None or remote - transfer - in_flight < self.cfg.get("min_remote_disk_free_gib", 10)):
             return verdict(False, "remote_disk", "VM free disk below floor including pending output/snapshot reserve")
         backing = number("backing_disk_free_gib")
-        if self.cfg.get("require_backing_disk", False):
+        if action != "transfer" and self.cfg.get("require_backing_disk", False):
             if backing is None or backing - transfer - in_flight < self.cfg.get("min_backing_disk_free_gib", 20):
                 return verdict(False, "backing_disk", "Server VM disk-file growth allowance unknown or below floor")
         if action in ("submit","post_drain") and task["backend"] == "tcad":

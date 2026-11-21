@@ -12,13 +12,30 @@ import subprocess
 import sys
 import tarfile
 from datetime import datetime, timezone
+import time
 import uuid
 
 PREFLIGHT_EXIT_CODE = 75
+RESERVATION_BUSY_EXIT_CODE = 74
+ALLOCATION_WAIT_SECONDS = 8
 
 
 class PreflightRejected(RuntimeError):
     """Remote slot reservation was rejected before creating any remote run dir or process."""
+
+
+class ReservationBusy(RuntimeError):
+    def __init__(self, lock):
+        super().__init__('lock_busy: ' + lock)
+        self.lock = lock
+        self.diagnostic = None
+
+    def payload(self):
+        result = dict(status='ORIGINAL_ALLOCATOR_BUSY', error_code='lock_busy', retryable=True,
+                      lock=self.lock, reservation_acquired=False, solver_launched=False)
+        if self.diagnostic is not None:
+            result['diagnostic'] = str(self.diagnostic)
+        return result
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / 'local_runtime/connection.json'
@@ -724,7 +741,7 @@ def capture_archive_exit_codes(archive_path, names):
 
 
 import importlib.util
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 from pathlib import PurePosixPath
 
 
@@ -744,7 +761,7 @@ def geometry_module():
 
 
 @contextmanager
-def original_ownership():
+def original_ownership(*, shared=False):
     """Use the existing byte lock; never call the historical queue/budget paths."""
     directory = ROOT/'experiments/dram-see-v4/nuclear-closure-r1'
     previous = sys.modules.get('common')
@@ -756,8 +773,46 @@ def original_ownership():
             sys.modules.pop('common', None)
         else:
             sys.modules['common'] = previous
-    with supervisor.ownership():
+    if not shared:
+        with supervisor.ownership():
+            yield
+        return
+    import fcntl
+    path = supervisor.OWNER_LOCK
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('a+b') as stream:
+        try:
+            fcntl.flock(stream.fileno(), fcntl.LOCK_SH | fcntl.LOCK_NB)
+        except BlockingIOError as exc:
+            raise RuntimeError('Another scheduler owns the shared local lock') from exc
+        if not os.path.samestat(os.fstat(stream.fileno()), path.stat()):
+            raise RuntimeError('Original local scheduling lock inode changed')
         yield
+
+
+def enter_launch_owner(owner, staged_launch):
+    deadline = time.monotonic() + ALLOCATION_WAIT_SECONDS
+    while True:
+        try:
+            ownership = original_ownership(shared=True) if staged_launch and sys.platform.startswith('linux') else original_ownership()
+            owner.enter_context(ownership)
+            return
+        except RuntimeError as exc:
+            if not staged_launch or str(exc) != 'Another scheduler owns the shared local lock':
+                raise
+            if time.monotonic() >= deadline:
+                raise ReservationBusy('local-owner') from exc
+            time.sleep(0.1)
+
+
+def retain_busy_attempt(folder, work_id, failure):
+    diagnostics = folder.parent / '.allocator-busy'
+    diagnostics.mkdir(exist_ok=True)
+    failure.diagnostic = diagnostics / (work_id + '-' + uuid.uuid4().hex)
+    save_json_record(folder/'allocator-busy.json', failure.payload(), durable=True)
+    folder.rename(failure.diagnostic)
+    sync_directory(diagnostics)
+    sync_directory(folder.parent)
 
 
 def validate_run_id(run_id):
@@ -770,11 +825,75 @@ def run_folder(run_id):
     return state_root()/'runs'/validate_run_id(run_id)
 
 
-def save_manifest(folder, evidence):
+@contextmanager
+def record_writer(folder):
+    lock_dir = folder.parent / '.writers'
+    lock_dir.mkdir(parents=True, exist_ok=True)
+    with (lock_dir / (folder.name + '.lock')).open('a+b') as stream:
+        windows = sys.platform == 'win32'
+        if windows:
+            import msvcrt
+            if stream.tell() == 0:
+                stream.write(b'0')
+                stream.flush()
+            stream.seek(0)
+        else:
+            import fcntl
+        try:
+            if windows:
+                msvcrt.locking(stream.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                fcntl.flock(stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
+            raise RuntimeError('Another runner is writing original work ' + folder.name) from exc
+        yield
+
+
+@contextmanager
+def staged_project_writer(project):
+    canonical = os.path.normcase(str(project.resolve()))
+    lock_name = hashlib.sha256(os.fsencode(canonical)).hexdigest()
+    with ExitStack() as writers:
+        try:
+            writers.enter_context(record_writer(ROOT/'local_runtime'/'staged-projects'/lock_name))
+        except RuntimeError as exc:
+            raise ReservationBusy('local-project') from exc
+        yield
+
+
+@contextmanager
+def collection_owner(folder, filename):
+    with record_writer(folder), ExitStack() as owner:
+        path = folder / filename
+        if not path.is_file() or 'sealed_snapshot' not in json.loads(path.read_text(encoding='utf-8')):
+            owner.enter_context(original_ownership())
+        yield
+
+
+def sync_directory(path):
+    if sys.platform != 'win32':
+        descriptor = os.open(path, os.O_RDONLY | os.O_DIRECTORY)
+        try:
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+
+
+def save_json_record(path, record, *, durable=False):
+    pending = path.with_name(path.stem + '.' + uuid.uuid4().hex + '.tmp')
+    with pending.open('x', encoding='utf-8') as stream:
+        stream.write(json.dumps(record, indent=2) + '\n')
+        if durable:
+            stream.flush()
+            os.fsync(stream.fileno())
+    os.replace(pending, path)
+    if durable:
+        sync_directory(path.parent)
+
+
+def save_manifest(folder, evidence, *, durable=False):
     evidence['updated_utc'] = utc()
-    pending = folder/('manifest.' + uuid.uuid4().hex + '.tmp')
-    pending.write_text(json.dumps(evidence, indent=2) + '\n', encoding='utf-8')
-    os.replace(pending, folder/'manifest.json')
+    save_json_record(folder/'manifest.json', evidence, durable=durable)
 
 
 DATA_ROOT_LAYOUT = 'tcad-data-root-layout-r1'
@@ -888,6 +1007,8 @@ def termination_module():
 
 def cancel_run(cfg, ssh, run_id, reason, grace_seconds=15, requested_by='operator'):
     folder, record = read_manifest(cfg, run_id)
+    if 'sealed_snapshot' in record:
+        raise ValueError('Original run is already sealed')
     return termination_module().cancel(sys.modules[__name__] if __name__ in sys.modules else _termination_adapter(),
         cfg, ssh, folder, record, reason, grace_seconds, requested_by)
 
@@ -1069,13 +1190,37 @@ def checked_parallel_identity(record, identity, require_pinned=False):
 
 # This is the shared remote protocol for BOTH existing public runners. No daemon,
 # TTL reaper, alternate launcher or manual lock override is introduced.
-PARALLEL_CODE = termination_module().TERMINATION_CHECK_CODE + MULTICORE_AUDIT_CODE + '\npool_slots=range({})\n'.format(PARALLEL_MAX_CAPACITY) + r'''
-import fcntl,hashlib,json,os,re,stat,sys
+REMOTE_DURABILITY_CODE = r'''
+import os
+def sync_path(path):
+    with path.open('rb') as stream:os.fsync(stream.fileno())
+def sync_dir(path):
+    fd=os.open(str(path),os.O_RDONLY|os.O_DIRECTORY)
+    try:os.fsync(fd)
+    finally:os.close(fd)
+'''
+
+
+PARALLEL_CODE = termination_module().TERMINATION_CHECK_CODE + REMOTE_DURABILITY_CODE + MULTICORE_AUDIT_CODE + '\npool_slots=range({})\nallocation_wait={}\n'.format(PARALLEL_MAX_CAPACITY, ALLOCATION_WAIT_SECONDS) + r'''
+import fcntl,hashlib,json,os,re,stat,sys,time
 from pathlib import Path
 request=json.loads(sys.argv[1]);policy=request['policy'];action=request['action']
 root=Path(policy['pool_root']);store=root/'.solver-slots';proc=Path('/proc')
 def need(ok,message):
     if not ok:raise ValueError(message)
+def acquire(fd,mode,label):
+    bounded=request.get('staged_launch') is True or action in ('seal','release-sealed')
+    deadline=time.monotonic()+allocation_wait if bounded else None
+    while True:
+        try:
+            fcntl.flock(fd,mode|fcntl.LOCK_NB)
+            return
+        except BlockingIOError:
+            if deadline is None:raise
+            if time.monotonic()>=deadline:
+                print('TCAD_ALLOCATION_LOCK_BUSY: '+json.dumps(dict(lock=label,request=request),sort_keys=True),file=sys.stderr)
+                raise SystemExit(74)
+            time.sleep(0.1)
 def policy_capacity(value):
     if mc_is_multicore(value):
         mc_policy(value)
@@ -1102,11 +1247,14 @@ def read(path):
     with os.fdopen(fd) as stream:
         item=os.fstat(stream.fileno());need(stat.S_ISREG(item.st_mode) and item.st_nlink==1,'Unsafe lease inode')
         return json.load(stream)
-def save(path,value):
-    safe_path(path);temporary=path.with_name(path.name+'.'+str(os.getpid())+'.tmp')
+def save(path,value,durable=False):
+    safe_path(path);temporary=path.with_name(path.name+'.'+__import__('uuid').uuid4().hex+'.tmp')
     fd=os.open(str(temporary),os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
-    with os.fdopen(fd,'w') as stream:json.dump(value,stream,sort_keys=True)
+    with os.fdopen(fd,'w') as stream:
+        json.dump(value,stream,sort_keys=True)
+        if durable:stream.flush();os.fsync(stream.fileno())
     os.replace(str(temporary),str(path))
+    if durable:sync_dir(path.parent)
 def digest(path):
     h=hashlib.sha256()
     with path.open('rb') as stream:
@@ -1495,13 +1643,68 @@ if action in ('prove-unlaunched','prove-unlaunched-intent'):
     print(json.dumps(prove_unlaunched(),sort_keys=True))
     raise SystemExit(0)
 lease_path=store/('slot-%s.json'%policy['slot']);slot_path=store/('slot-%s.lock'%policy['slot'])
+def release_sealed(lease):
+    directory=Path(policy['remote_directory']);collection=directory/'.collection'
+    receipt=read(collection/'receipt.json')
+    snapshot=request['sealed_snapshot']
+    archive=(collection/'results.tar').lstat()
+    need(receipt.get('schema')=='tcad-original-snapshot-r1'
+         and receipt['sha256']==snapshot['sha256'] and receipt['bytes']==snapshot['bytes']
+         and stat.S_ISREG(archive.st_mode) and archive.st_nlink==1 and archive.st_size==snapshot['bytes'],
+         'Collection receipt differs from sealed snapshot')
+    identity=request['process_identity']
+    proof=dict(schema='tcad-sealed-slot-release-r1',policy=policy,
+               script_sha256=request['script_sha256'],identity=identity,
+               archive_sha256=snapshot['sha256'],archive_bytes=snapshot['bytes'])
+    path=collection/'slot-release.json'
+    proved=path.is_file()
+    if proved:need(read(path)==proof,'Original sealed slot release proof differs')
+    if lease is None or lease['policy']!=policy:
+        need(proved and lease is not None and lease['policy']['remote_directory']!=str(directory),
+             'Original slot lease identity differs without sealed release proof')
+    else:
+        need(lease['script_sha256']==request['script_sha256'],'Slot script SHA differs')
+        original_identity(lease)
+        if lease['state']=='COLLECTED':
+            need(proved and lease.get('archive_sha256')==snapshot['sha256'],
+                 'Original closed lease differs from sealed release proof')
+        else:
+            slot=opened(slot_path);fcntl.flock(slot,fcntl.LOCK_EX|fcntl.LOCK_NB)
+            need(not identity_alive(identity),'Original wrapper is still alive during sealed release')
+            exit_path=directory/'exit-code.txt'
+            if exit_path.is_file():
+                raw=exit_path.read_text().strip()
+                need(not receipt.get('interrupted_context_sha256'),'Interrupted receipt conflicts with original exit')
+                need(raw.isdigit() and 0<=int(raw)<=255,'Invalid original exit code')
+            elif receipt.get('interrupted_context_sha256'):
+                context_sha=receipt['interrupted_context_sha256'];proof_sha=receipt['interruption_proof_sha256']
+                need((context_sha,proof_sha)==tuple(request.get('interruption',())),
+                     'Interrupted seal proof differs from receipt')
+                need(re.fullmatch(r'[a-f0-9]{64}',proof_sha) is not None,'Invalid interrupted seal proof hash')
+                proof_path=collection/('interrupted-proof-'+proof_sha+'.json');proof=read(proof_path)
+                need(digest(proof_path)==proof_sha and proof.get('context_sha256')==context_sha
+                     and proof.get('context',{}).get('process_identity')==identity,
+                     'Original interrupted seal proof differs')
+            else:
+                need(checked_termination(directory,original_identity(lease)) is not None,'No original exit')
+            if lease['state']=='RESERVED':
+                need(exit_path.is_file() and int(raw)!=0 and not (directory/'parallel-slot-evidence.json').exists(),
+                     'Unactivated reservation cannot be sealed as successful execution')
+            if not proved:save(path,proof,durable=True)
+            else:sync_path(path);sync_dir(collection)
+            lease.update(state='COLLECTED',archive_sha256=snapshot['sha256'])
+            save(lease_path,lease,durable=True)
+        sync_dir(store)
+    return dict(proof,state='COLLECTED')
+
 gate_held=False;allocator_held=False
 try:
     store.mkdir(mode=0o700,exist_ok=True);safe_path(store)
-    gate=opened(root/'.solver.lock');fcntl.flock(gate,fcntl.LOCK_SH|fcntl.LOCK_NB);gate_held=True
-    allocator=opened(store/'allocation.lock');fcntl.flock(allocator,fcntl.LOCK_EX|fcntl.LOCK_NB);allocator_held=True
+    gate=opened(root/'.solver.lock');acquire(gate,fcntl.LOCK_SH,'solver-gate');gate_held=True
+    allocator=opened(store/'allocation.lock');acquire(allocator,fcntl.LOCK_EX,'allocator');allocator_held=True
     lease=checked_lease(policy['slot'])
-    all_leases=pool_leases();check_pool_capacity(all_leases)
+    if action not in ('seal','release-sealed'):
+        all_leases=pool_leases();check_pool_capacity(all_leases)
     if action=='reserve':
         available_cpu()
         admission([peer for peer in all_leases if peer['state']!='COLLECTED'])
@@ -1525,6 +1728,9 @@ except (OSError, ValueError) as exc:
         print('Preflight non-launch proof unavailable: '+str(proof_error),file=sys.stderr)
     raise SystemExit(75)
 resource_audit=None
+if action=='release-sealed':
+    print(json.dumps(release_sealed(lease),sort_keys=True))
+    raise SystemExit(0)
 if mc_is_multicore(policy) and action in ('verify','collect','release'):
     resource_audit=dict(schema='tcad-live-resource-audit-r1',policy=policy,
         snapshots=admission([peer for peer in all_leases if peer['state']!='COLLECTED']))
@@ -1535,16 +1741,16 @@ if action=='reserve':
     safe_path(directory);need(not directory.exists(),'Original work directory already exists')
     save(store/'capacity.json',pool_configuration())
     lease=dict(policy=policy,state='RESERVED',script_sha256=request['script_sha256'])
-    save(lease_path,lease)
+    save(lease_path,lease,durable=request.get('staged_launch') is True)
 else:
     need(lease is not None and lease['policy']==policy,'Original slot lease identity differs')
     if request.get('script_sha256') is not None:
         need(lease['script_sha256']==request['script_sha256'],'Slot script SHA differs')
     identity=None
     if action!='activate' and (lease['state']=='ACTIVE' or lease.get('identity') is not None
-            or request.get('process_identity') is not None or action in ('collect','release')):
+            or request.get('process_identity') is not None or action in ('collect','seal','release')):
         identity=original_identity(lease)
-    if action in ('activate','collect'):
+    if action in ('activate','collect','seal'):
         held(9,root/'.solver.lock',fcntl.LOCK_SH);held(7,slot_path,fcntl.LOCK_EX)
         need(lease['state'] in ('RESERVED','ACTIVE'),'Collected slot cannot execute/collect again')
         need(digest(Path(policy['remote_directory'])/'run.sh')==lease['script_sha256'],'Original parallel wrapper changed')
@@ -1574,6 +1780,12 @@ else:
         else:
             evidence=dict(policy=policy,script_sha256=lease['script_sha256'],lease_state=lease['state'],identity=identity,
                           gate_mode='SHARED',slot_mode='EXCLUSIVE',status='COLLECTION_LOCKS_ACQUIRED')
+            if action=='seal':
+                need(not identity_alive(identity),'Original wrapper is still alive during sealing')
+                if lease['state']=='RESERVED':
+                    directory=Path(policy['remote_directory']);raw=(directory/'exit-code.txt').read_text().strip()
+                    need(raw.isdigit() and 1<=int(raw)<=255 and not (directory/'parallel-slot-evidence.json').exists(),
+                         'Unactivated reservation cannot be sealed as successful execution')
             if mc_is_multicore(policy):
                 need(not identity_alive(identity),'Original wrapper is still alive during collection')
                 proof=Path(policy['remote_directory'])/'parallel-slot-evidence.json'
@@ -1585,6 +1797,7 @@ else:
                         1,identity['pid'],identity['start_ticks'],identity['cwd'],exact=True)
             path=Path(policy['remote_directory'])/'parallel-slot-collection-evidence.json'
             if path.exists():need(read(path)==evidence,'Original slot collection proof changed')
+            elif action=='seal':save(path,evidence,durable=True)
             else:save(path,evidence)
     elif action=='release':
         slot=opened(slot_path);fcntl.flock(slot,fcntl.LOCK_EX|fcntl.LOCK_NB)
@@ -1616,6 +1829,8 @@ def parallel_query(cfg, ssh, record, action, *, proof_subject_sha256=None, proof
     if policy is None:
         return None
     request = dict(policy=policy, action=action, script_sha256=record.get('script_sha256'))
+    if action == 'reserve' and record.get('staged_launch') is True:
+        request['staged_launch'] = True
     if proof_action:
         if not isinstance(proof_subject_sha256, str) or re.fullmatch(r'[a-f0-9]{64}', proof_subject_sha256) is None:
             raise ValueError('Unlaunched proof requires the frozen local subject SHA')
@@ -1627,24 +1842,55 @@ def parallel_query(cfg, ssh, record, action, *, proof_subject_sha256=None, proof
         request['process_identity'] = checked_parallel_identity(record, identity)
     if action == 'release':
         request['archive_sha256'] = record.get('results_sha256', record.get('archive_sha256'))
+    if action == 'release-sealed':
+        request['sealed_snapshot'] = sealed_snapshot(record)
+        request['process_identity'] = checked_parallel_identity(record, identity, require_pinned=True)
+        if record.get('interrupted_collection_snapshot'):
+            interruption = record['interrupted_collection_snapshot']
+            request['interruption'] = [interruption['interrupted_context_sha256'], interruption['interruption_proof_sha256']]
     query_ssh = proof_ssh if proof_action and proof_ssh is not None else ssh
-    value = remote_python(query_ssh, PARALLEL_CODE, [json.dumps(request, sort_keys=True)])
+    try:
+        value = remote_python(query_ssh, PARALLEL_CODE, [json.dumps(request, sort_keys=True)])
+    except subprocess.CalledProcessError as exc:
+        if request.get('staged_launch') and exc.returncode == RESERVATION_BUSY_EXIT_CODE:
+            prefix = 'TCAD_ALLOCATION_LOCK_BUSY: '
+            messages = [line[len(prefix):] for line in (exc.stderr or '').splitlines() if line.startswith(prefix)]
+            if len(messages) == 1:
+                busy = json.loads(messages[0])
+                if busy.get('request') == request and busy.get('lock') in ('solver-gate', 'allocator'):
+                    raise ReservationBusy(busy['lock']) from exc
+        raise
     if not isinstance(value, dict) or value.get('policy') != policy:
         raise ValueError('Remote slot returned a different original identity')
     if action == 'reserve' and (value.get('state') != 'RESERVED'
                                 or value.get('script_sha256') != request['script_sha256']):
         raise ValueError('Missing original reservation receipt')
+    if action == 'release-sealed' and (
+        value.get('schema') != 'tcad-sealed-slot-release-r1' or value.get('state') != 'COLLECTED'
+        or value.get('script_sha256') != request['script_sha256']
+        or value.get('identity') != request['process_identity']
+        or value.get('archive_sha256') != request['sealed_snapshot']['sha256']
+        or value.get('archive_bytes') != request['sealed_snapshot']['bytes']
+    ):
+        raise ValueError('Missing original sealed slot release receipt')
     if value.get('identity') is not None:
         checked_parallel_identity(record, value['identity'])
     return value
 
 
-def parallel_shell_lines(policy, action):
+def parallel_shell_lines(policy, action, record=None, *, staged_launch=False):
     root = policy['pool_root']
-    request = json.dumps(dict(policy=policy, action=action), sort_keys=True)
+    request = dict(policy=policy, action=action)
+    if staged_launch:
+        request['staged_launch'] = True
+    if record is not None:
+        request.update(script_sha256=record['script_sha256'], process_identity=checked_parallel_identity(
+            record, record.get('process_identity'), require_pinned=True))
+    request = json.dumps(request, sort_keys=True)
     # Append-open avoids truncating an existing lock before the Python FD/inode
     # check. The reservation protocol created and checked these regular files.
-    return ['exec 9>>' + shlex.quote(root + '/.solver.lock'), 'flock -s -n 9 || exit 75',
+    gate = 'flock -s -w %d 9 || exit 75' % ALLOCATION_WAIT_SECONDS if staged_launch else 'flock -s -n 9 || exit 75'
+    return ['exec 9>>' + shlex.quote(root + '/.solver.lock'), gate,
             'exec 7>>' + shlex.quote(root + '/.solver-slots/slot-%s.lock' % policy['slot']),
             'flock -n 7 || exit 75',
             # Query mode keeps its one JSON stdout. In a composed shell the
@@ -1726,13 +1972,15 @@ def parallel_assert_local(cfg):
             raise RuntimeError('Reconcile legacy outstanding work before parallel launch: ' + str(path))
 
 
-def status_run(cfg, ssh, run_id):
+def status_run(cfg, ssh, run_id, *, for_seal=False):
     folder, evidence = read_manifest(cfg, run_id)
     if evidence.get('schema') != 'tcad-native-run-r2':
         raise ValueError('Historical run retains its original semantics; use its original recovery path')
+    if 'sealed_snapshot' in evidence:
+        return dict(evidence['last_observation'], local_state=evidence['state'])
     parallel_record_policy(cfg, evidence)
     resource_audit = None
-    if evidence.get('parallel_policy') and not evidence.get('parallel_slot_released'):
+    if not for_seal and evidence.get('parallel_policy') and not evidence.get('parallel_slot_released'):
         lease = parallel_query(cfg, ssh, evidence, 'verify')
         if is_multicore(evidence['parallel_policy']):
             resource_audit = lease.get('resource_audit')
@@ -1769,6 +2017,11 @@ def status_run(cfg, ssh, run_id):
 
 
 def assert_no_active_run(cfg, ssh):
+    for path in (state_root()/'dram-see-v4/transport-probe/operations').glob('*/operation.json'):
+        operation = json.loads(path.read_text(encoding='utf-8'))
+        if (operation.get('staged_launch') is True and operation.get('parallel_slot_released') is not True
+                and operation.get('connection_identity') == connection_identity(cfg)):
+            raise RuntimeError('Reconcile the original outstanding staged operation before a serial launch: '+path.parent.name)
     for path in (state_root()/'runs').glob('*/manifest.json'):
         if path.parent.name.startswith('.'):
             continue
@@ -1778,8 +2031,11 @@ def assert_no_active_run(cfg, ssh):
         if data.get('state') == 'INTERRUPTED_COLLECTED':
             verify_interrupted_terminal(path.parent, data)
             continue
-        observed = status_run(cfg, ssh, data['run_id'])
-        raise RuntimeError('Reconcile the original outstanding run before a new launch: ' + data['run_id'] + ' ' + observed['status'])
+        if sealed_and_released(data):
+            continue
+        with record_writer(path.parent):
+            observed = status_run(cfg, ssh, data['run_id'])
+            raise RuntimeError('Reconcile the original outstanding run before a new launch: ' + data['run_id'] + ' ' + observed['status'])
     code = r'''
 import json,os
 from pathlib import Path
@@ -1867,11 +2123,12 @@ def interrupted_observation(context):
 '''
 
 
-SNAPSHOT_CODE = termination_module().TERMINATION_CHECK_CODE + r'''
+SNAPSHOT_CODE = termination_module().TERMINATION_CHECK_CODE + REMOTE_DURABILITY_CODE + r'''
 import hashlib,io,json,os,tarfile
 from pathlib import Path
 root=Path.cwd();store=root/'.collection';store.mkdir(exist_ok=True)
 target=store/'results.tar';receipt=store/'receipt.json'
+part=store/'results.tar.tmp';pending=store/'receipt.pending.json'
 interrupted=globals().get('interrupted_context')
 context_sha=hashlib.sha256(json.dumps(interrupted,sort_keys=True,separators=(',',':')).encode()).hexdigest() if interrupted else None
 before=interrupted_observation(interrupted) if interrupted else None
@@ -1881,6 +2138,7 @@ def digest(path):
         for block in iter(lambda:f.read(1024*1024),b''):h.update(block)
     return h.hexdigest()
 context=globals().get('snapshot_context');termination=None
+sealing=globals().get('sealed_exit') is not None
 if context:
     for name,expected in dict(context['input_sha256'],**{'run.sh':context['script_sha256']}).items():
         path=root/name
@@ -1891,20 +2149,51 @@ if context:
             if not (root/name).is_file() or (root/name).stat().st_size<=0:raise ValueError('Successful run missing required output: '+name)
         for name in context.get('raw_exit_files',[]):
             if not (root/name).is_file() or (root/name).read_text().strip()!='0':raise ValueError('Success marker conflicts with raw native exits: '+name)
+if sealing:
+    exit_path=root/'exit-code.txt'
+    raw=exit_path.read_text().strip() if exit_path.is_file() else None
+    if (raw is not None and (not raw.isdigit() or not 0<=int(raw)<=255)
+        or (int(raw) if raw is not None else None)!=sealed_exit['code']
+        or (raw is None and not (termination or interrupted))):
+        raise ValueError('Observed original terminal exit changed before sealing')
 termination_sha=digest(root/'termination-record.json') if termination else None
+def publish_pending():
+    if not target.exists():os.replace(str(part),str(target))
+    sync_dir(store)
+    os.replace(str(pending),str(receipt))
+    sync_dir(store)
+    sync_dir(root)
+recovered=False
+if pending.exists():
+    old=json.loads(pending.read_text())
+    frozen=target if target.exists() else part
+    if (receipt.exists() or old.get('schema')!='tcad-original-snapshot-r1'
+        or old.get('termination_record_sha256')!=termination_sha
+        or old.get('interrupted_context_sha256')!=context_sha
+        or frozen.stat().st_size!=old['bytes'] or digest(frozen)!=old['sha256']):
+        raise ValueError('Pending immutable original snapshot differs')
+    if interrupted:
+        proof=store/('interrupted-proof-'+old['interruption_proof_sha256']+'.json')
+        if digest(proof)!=old['interruption_proof_sha256']:raise ValueError('Original interruption proof changed')
+        sync_path(proof)
+    sync_path(frozen);sync_path(pending);sync_dir(store)
+    publish_pending();recovered=True
 if target.is_file() and receipt.is_file():
     old=json.loads(receipt.read_text())
     if old.get('termination_record_sha256')!=termination_sha:raise ValueError('Existing original snapshot has a different termination context')
-    if digest(target)!=old['sha256']:raise ValueError('Immutable remote snapshot changed')
+    if not recovered and (digest(target)!=old['sha256'] or (sealing and target.stat().st_size!=old['bytes'])):
+        raise ValueError('Immutable remote snapshot changed')
     if bool(old.get('interrupted_context_sha256'))!=bool(interrupted):
         raise ValueError('Existing original snapshot has a different collection mode')
     if interrupted:
         if old['interrupted_context_sha256']!=context_sha:raise ValueError('Original interruption context changed')
         proof=store/('interrupted-proof-'+old['interruption_proof_sha256']+'.json')
         if digest(proof)!=old['interruption_proof_sha256']:raise ValueError('Original interruption proof changed')
+    if sealing and not recovered:
+        sync_path(target);sync_path(receipt);sync_dir(store);sync_dir(root)
     print(json.dumps(old))
 else:
-    if interrupted and (target.exists() or receipt.exists()):raise ValueError('Incomplete existing interrupted snapshot metadata; preserve original archive')
+    if (interrupted or sealing) and (target.exists() or receipt.exists()):raise ValueError('Incomplete existing snapshot metadata; preserve original archive')
     if not interrupted and not termination and not (root/'exit-code.txt').is_file():raise ValueError('No original exit')
     if interrupted and (root/'_interrupted-collection-proof.json').exists():raise ValueError('Original file collides with derived interruption proof')
     files=[]
@@ -1913,7 +2202,6 @@ else:
         if p.is_symlink():raise ValueError('Unexpected link in original output')
         if p.is_file():files.append(p)
     index={p.relative_to(root).as_posix():dict(size=p.stat().st_size,sha256=digest(p)) for p in sorted(files)}
-    part=store/'results.tar.tmp'
     with tarfile.open(str(part),'w') as archive:
         for p in sorted(files):archive.add(str(p),arcname=p.relative_to(root).as_posix(),recursive=False)
         if interrupted:
@@ -1928,15 +2216,28 @@ else:
             if proof_path.exists():
                 if proof_path.read_bytes()!=proof_raw:raise ValueError('Immutable interruption proof differs')
             else:
-                with proof_path.open('xb') as output:output.write(proof_raw)
+                if sealing:
+                    proof_part=store/'interrupted-proof.tmp'
+                    proof_part.write_bytes(proof_raw);sync_path(proof_part)
+                    os.replace(str(proof_part),str(proof_path));sync_dir(store)
+                else:
+                    with proof_path.open('xb') as output:output.write(proof_raw)
             name='_interrupted-collection-proof.json';index[name]=dict(size=len(proof_raw),sha256=proof_sha)
             member=tarfile.TarInfo(name);member.size=len(proof_raw);archive.addfile(member,io.BytesIO(proof_raw))
         raw=json.dumps(index,sort_keys=True).encode();member=tarfile.TarInfo('_collection-members.json');member.size=len(raw);archive.addfile(member,io.BytesIO(raw))
-    os.replace(str(part),str(target))
-    value=dict(schema='tcad-original-snapshot-r1',sha256=digest(target),bytes=target.stat().st_size,members=len(index))
+    value=dict(schema='tcad-original-snapshot-r1',sha256=digest(part),bytes=part.stat().st_size,members=len(index))
     if termination_sha:value['termination_record_sha256']=termination_sha
     if interrupted:value.update(interrupted_context_sha256=context_sha,interruption_proof_sha256=proof_sha)
-    receipt.write_text(json.dumps(value,sort_keys=True));print(json.dumps(value))
+    if sealing:
+        sync_path(part)
+        temporary=store/'receipt.pending.tmp'
+        temporary.write_text(json.dumps(value,sort_keys=True));sync_path(temporary)
+        os.replace(str(temporary),str(pending));sync_dir(store)
+        publish_pending()
+    else:
+        os.replace(str(part),str(target))
+        receipt.write_text(json.dumps(value,sort_keys=True))
+    print(json.dumps(value))
 '''
 
 
@@ -2068,13 +2369,15 @@ def canonical_sha256(value):
     return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 
-def interrupted_context(cfg, folder, evidence):
-    if (evidence.get('schema')!='tcad-native-run-r2' or evidence.get('origin')!='native_pipeline'
+def interrupted_context(cfg, folder, evidence, *, record_name='manifest.json', save=save_manifest, sealing=False):
+    schema = 'tcad-native-run-r2' if record_name == 'manifest.json' else 'dram-see-v4-transport-operation-v2'
+    run_id = evidence.get('run_id', evidence.get('label'))
+    if (evidence.get('schema')!=schema or evidence.get('origin')!='native_pipeline'
             or evidence.get('synthetic') is not False or evidence.get('remote_exit_code') is not None):
         raise ValueError('Interrupted collection requires the original native run with unknown wrapper exit')
     identity=evidence.get('process_identity') or evidence.get('last_observation',{}).get('identity')
     if (not isinstance(identity,dict) or identity.get('schema')!='tcad-process-identity-r1'
-            or identity.get('run_id')!=evidence['run_id'] or identity.get('cwd')!=evidence['remote_directory']
+            or identity.get('run_id')!=run_id or identity.get('cwd')!=evidence['remote_directory']
             or identity.get('script_sha256')!=evidence['script_sha256']
             or any(type(identity.get(k)) is not int or identity[k]<=0 for k in ('pid','start_ticks'))
             or re.fullmatch(r'[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',identity.get('boot_id','')) is None):
@@ -2082,19 +2385,25 @@ def interrupted_context(cfg, folder, evidence):
     if file_hash(folder/'run.sh')!=evidence['script_sha256']:
         raise ValueError('Local original wrapper fingerprint differs')
     native=[]
-    for key,item in sorted(evidence['tool_evidence'].items()):
+    for key,item in sorted(evidence.get('tool_evidence',{}).items()):
         name=item.get('process_observation_file')
         if not isinstance(name,str) or re.fullmatch(r'[A-Za-z0-9_.-]+',name) is None:
             raise ValueError('Expected original native observation filename')
         native.append(dict(step=key,tool=item['tool'],file=name))
-    backup=folder/'manifest.before-interrupted-collection.json'
-    current=(folder/'manifest.json').read_bytes()
+    if evidence.get('capture_svisual_requested'):
+        native.append(dict(step='svisual',tool='svisual',file='svisual-process-observation.json'))
+    backup=folder/(Path(record_name).stem+'.before-interrupted-collection.json')
+    current=(folder/record_name).read_bytes()
     if not backup.exists():
-        with backup.open('xb') as stream:stream.write(current)
+        with backup.open('xb') as stream:
+            stream.write(current)
+            if sealing:
+                stream.flush()
+                os.fsync(stream.fileno())
     saved=json.loads(backup.read_text(encoding='utf-8'))
-    for key in ('run_id','remote_directory','script_sha256','runner_sha256','input_sha256','ssh_exit_code','remote_exit_code'):
+    for key in ('run_id','label','remote_directory','script_sha256','runner_sha256','input_sha256','ssh_exit_code','remote_exit_code'):
         if saved.get(key)!=evidence.get(key):raise ValueError('Original pre-collection manifest differs: '+key)
-    context=dict(schema='tcad-interrupted-collection-context-r1',run_id=evidence['run_id'],
+    context=dict(schema='tcad-interrupted-collection-context-r1',run_id=run_id,
         remote_directory=evidence['remote_directory'],process_identity=identity,script_sha256=evidence['script_sha256'],
         source_runner_sha256=evidence['runner_sha256'],source_manifest_sha256=file_hash(backup),
         input_sha256_map_sha256=canonical_sha256(evidence['input_sha256']),native_evidence=native,
@@ -2105,7 +2414,11 @@ def interrupted_context(cfg, folder, evidence):
         raise ValueError('Original interrupted collection context or implementation changed')
     evidence['interrupted_collection_context']=context
     evidence['collection_implementation_sha256']=context['collection_implementation_sha256']
-    save_manifest(folder,evidence)
+    if sealing:
+        evidence['interrupted_seal_requested'] = True
+        save(folder,evidence,durable=True)
+    else:
+        save(folder,evidence)
     return context
 
 
@@ -2165,51 +2478,163 @@ def verify_interrupted_terminal(folder, evidence):
         raise ValueError('Previously collected immutable archive changed')
 
 
+def sealed_snapshot(record):
+    if 'sealed_snapshot' not in record:
+        return None
+    snapshot = record['sealed_snapshot']
+    if (not isinstance(snapshot, dict) or not isinstance(snapshot.get('sha256'), str)
+            or re.fullmatch(r'[0-9a-f]{64}', snapshot['sha256']) is None
+            or type(snapshot.get('bytes')) is not int or snapshot['bytes'] <= 0
+            or not isinstance(snapshot.get('sealed_utc'), str)):
+        raise ValueError('Invalid original sealed snapshot')
+    stamp = datetime.fromisoformat(snapshot['sealed_utc'])
+    if stamp.tzinfo is None or stamp.utcoffset() != timezone.utc.utcoffset(stamp):
+        raise ValueError('Original seal timestamp must be UTC')
+    return snapshot
+
+
+def sealed_and_released(record):
+    return record.get('parallel_slot_released') is True and sealed_snapshot(record) is not None
+
+
+def snapshot_command(cfg, record, snapshot_context, *, interrupted=None, sealing=False):
+    directory = shlex.quote(record['remote_directory'])
+    lock = shlex.quote(cfg['remote_root'].rstrip('/')+'/.solver.lock')
+    snapshot_code = 'snapshot_context='+repr(snapshot_context)+'\n'+SNAPSHOT_CODE
+    if sealing:
+        snapshot_code = 'sealed_exit='+repr({'code': record['remote_exit_code']})+'\n'+snapshot_code
+    if interrupted is not None:
+        snapshot_code = INTERRUPTED_CHECK_CODE+'\ninterrupted_context='+repr(interrupted)+'\n'+snapshot_code
+    if record.get('parallel_policy'):
+        lines = (parallel_shell_lines(record['parallel_policy'], 'seal', record) if sealing
+                 else parallel_shell_lines(record['parallel_policy'], 'collect'))
+        return '\n'.join(['set -e', 'cd ' + directory] + lines + [
+            'mkdir -p .collection; exec 8>.collection/snapshot.lock; flock -n 8 || exit 75',
+            "/usr/bin/python3 - <<'TCAD_SNAPSHOT'", snapshot_code, 'TCAD_SNAPSHOT', ''])
+    return ('set -e; cd '+directory+'; exec 9>'+lock+'; flock -n 9 || exit 75; mkdir -p .collection; '
+            "exec 8>.collection/snapshot.lock; flock -n 8 || exit 75; /usr/bin/python3 - <<'TCAD_SNAPSHOT'\n"
+            + snapshot_code+'\nTCAD_SNAPSHOT\n')
+
+
+def prepare_seal(cfg, ssh, record, observed, snapshot_context, *, interrupted=None):
+    expected_status = 'LOST_WITHOUT_EXIT' if interrupted is not None else 'FINISHED'
+    if observed['status'] != expected_status or observed['alive'] is not False:
+        raise RuntimeError('Only the completed original work can be sealed: ' + observed['status'])
+    identity = checked_parallel_identity(record, observed.get('identity'))
+    record.update(process_identity=identity, remote_exit_code=observed['remote_exit_code'])
+    snapshot_context['identity'] = identity
+    command = snapshot_command(cfg, record, snapshot_context, sealing=True, interrupted=interrupted)
+    response = remote(ssh, command, capture_output=True, text=True, timeout=300)
+    receipt = json.loads(response.stdout)
+    context_sha = canonical_sha256(interrupted) if interrupted is not None else None
+    if receipt.get('schema') != 'tcad-original-snapshot-r1' or receipt.get('interrupted_context_sha256') != context_sha:
+        raise ValueError('Invalid original snapshot receipt for seal')
+    record['sealed_snapshot'] = dict(sha256=receipt['sha256'], bytes=receipt['bytes'], sealed_utc=utc())
+    sealed_snapshot(record)
+    record['collection_verified'] = False
+    if interrupted is not None:
+        proof_sha = receipt.get('interruption_proof_sha256')
+        if not isinstance(proof_sha, str) or re.fullmatch(r'[0-9a-f]{64}', proof_sha) is None:
+            raise ValueError('Invalid original interrupted seal proof')
+        record['interrupted_collection_snapshot'] = receipt
+    return receipt
+
+
+def seal_observed(cfg, ssh, folder, record, observed, snapshot_context, save, record_name):
+    if observed['status'] != 'LOST_WITHOUT_EXIT':
+        if record.get('interrupted_seal_requested'):
+            raise ValueError('Original terminal exit changed during interrupted seal recovery')
+        return prepare_seal(cfg, ssh, record, observed, snapshot_context)
+    try:
+        context = interrupted_context(cfg, folder, record, record_name=record_name, save=save, sealing=True)
+        receipt = prepare_seal(cfg, ssh, record, observed, snapshot_context, interrupted=context)
+    except (OSError, ValueError, RuntimeError, subprocess.SubprocessError) as exc:
+        record.pop('sealed_snapshot', None)
+        record['seal_reconciliation_error'] = getattr(exc, 'stderr', None) or str(exc)
+        save(folder, record, durable=True)
+        raise RuntimeError('LOST_WITHOUT_EXIT: original reboot seal proof unavailable; retain original slot: '
+                           + record['seal_reconciliation_error']) from exc
+    record.pop('seal_reconciliation_error', None)
+    return receipt
+
+
+def finish_seal(cfg, ssh, folder, record, save):
+    snapshot = sealed_snapshot(record)
+    if record.get('parallel_slot_released') is not True:
+        save(folder, record, durable=True)
+        if record.get('parallel_policy'):
+            parallel_query(cfg, ssh, record, 'release-sealed')
+        record['parallel_slot_released'] = True
+        save(folder, record, durable=True)
+    return dict(status='SEALED', sealed_snapshot=snapshot, parallel_slot_released=True,
+                collection_verified=record.get('collection_verified') is True,
+                remote_exit_code=record['remote_exit_code'])
+
+
+def run_snapshot_context(evidence):
+    return dict(input_sha256=evidence['input_sha256'],script_sha256=evidence['script_sha256'],
+        identity=evidence.get('process_identity'),required_outputs=[name for step in evidence['steps'] for name in step['outputs']],
+        raw_exit_files=['metadata-sdevice-version-exit-code.txt']+[value['raw_exit_file'] for value in evidence['tool_evidence'].values()])
+
+
+def seal_run(cfg, ssh, run_id):
+    with record_writer(run_folder(run_id)):
+        folder, evidence = read_manifest(cfg, run_id)
+        if sealed_snapshot(evidence) is None:
+            if (evidence.get('collection_verified')
+                    or (evidence.get('interrupted_collection_context') and not evidence.get('interrupted_seal_requested'))
+                    or evidence.get('state') in ('COLLECTED', 'FAILED_COLLECTED', 'INTERRUPTED_COLLECTED')):
+                raise ValueError('Use collect to finish the existing original collection')
+            observed = status_run(cfg, ssh, run_id, for_seal=True)
+            folder, evidence = read_manifest(cfg, run_id)
+            seal_observed(cfg, ssh, folder, evidence, observed, run_snapshot_context(evidence), save_manifest, 'manifest.json')
+        return dict(finish_seal(cfg, ssh, folder, evidence, save_manifest), run_id=run_id)
+
+
 def collect_run(cfg, ssh, run_id, interrupted=False):
     folder,evidence = read_manifest(cfg,run_id)
     policy = parallel_record_policy(cfg, evidence)
+    sealed = sealed_snapshot(evidence)
+    if sealed is not None and interrupted:
+        raise ValueError('Use normal collect for this original sealed snapshot')
     # Parallel recovery uses the original pool gate and slot lease through the
     # verified collect protocol below. It never clears a lease without proving
     # a different boot, quiescent native processes, immutable input identity,
     # and a verified archive before release.
     if evidence.get('state')=='INTERRUPTED_COLLECTED':
         verify_interrupted_terminal(folder,evidence)
-        if policy:
+        if policy and sealed is None:
             parallel_release(cfg, ssh, evidence)
             save_manifest(folder, evidence)
         return dict(run_id=run_id,status=evidence['state'],remote_exit_code=evidence['remote_exit_code'],archive=str(folder/'results.tar'))
     if evidence.get('state') in ('COLLECTED','FAILED_COLLECTED'):
         if file_hash(folder/'results.tar') != evidence['results_sha256']:
             raise ValueError('Previously collected immutable archive changed')
-        parallel_release(cfg, ssh, evidence)
-        save_manifest(folder, evidence) if policy else None
+        if sealed is None:
+            parallel_release(cfg, ssh, evidence)
+            if policy:
+                save_manifest(folder, evidence)
         return dict(run_id=run_id,status=evidence['state'],remote_exit_code=evidence['remote_exit_code'],archive=str(folder/'results.tar'))
     context=None
+    interrupted_snapshot = evidence.get('interrupted_collection_snapshot') if sealed is not None else None
     if interrupted:
         context=interrupted_context(cfg,folder,evidence)
-    else:
+    elif interrupted_snapshot is not None:
+        context=evidence['interrupted_collection_context']
+    elif sealed is None:
         observed = status_run(cfg,ssh,run_id)
         if observed['status']!='FINISHED' or observed['alive']:
             raise RuntimeError('Only the completed original job can be collected: '+observed['status'])
         folder,evidence=read_manifest(cfg,run_id)
     qdir=shlex.quote(evidence['remote_directory'])
-    qlock=shlex.quote(cfg['remote_root'].rstrip('/')+'/.solver.lock')
-    snapshot_context=dict(input_sha256=evidence['input_sha256'],script_sha256=evidence['script_sha256'],
-        identity=evidence.get('process_identity'),required_outputs=[name for step in evidence['steps'] for name in step['outputs']],
-        raw_exit_files=['metadata-sdevice-version-exit-code.txt']+[value['raw_exit_file'] for value in evidence['tool_evidence'].values()])
-    snapshot_code='snapshot_context='+repr(snapshot_context)+'\n'+SNAPSHOT_CODE
-    if context is not None:
-        snapshot_code=INTERRUPTED_CHECK_CODE+'\ninterrupted_context='+repr(context)+'\n'+snapshot_code
-    script='set -e; cd '+qdir+'; exec 9>'+qlock+'; flock -n 9 || exit 75; mkdir -p .collection; exec 8>.collection/snapshot.lock; flock -n 8 || exit 75; /usr/bin/python3 - <<\'TCAD_SNAPSHOT\'\n'+snapshot_code+'\nTCAD_SNAPSHOT\n'
-    if policy:
-        script = '\n'.join(['set -e', 'cd ' + qdir] + parallel_shell_lines(policy, 'collect') + [
-            'mkdir -p .collection; exec 8>.collection/snapshot.lock; flock -n 8 || exit 75',
-            "/usr/bin/python3 - <<'TCAD_SNAPSHOT'", snapshot_code, 'TCAD_SNAPSHOT', ''])
     partial=folder/('results.'+uuid.uuid4().hex+'.part.tar')
     transfer_started=False
     try:
-        result=remote(ssh,script,capture_output=True,text=True,timeout=300)
-        snapshot=json.loads(result.stdout)
+        snapshot=sealed
+        if snapshot is None:
+            script=snapshot_command(cfg,evidence,run_snapshot_context(evidence),interrupted=context)
+            result=remote(ssh,script,capture_output=True,text=True,timeout=300)
+            snapshot=json.loads(result.stdout)
         with partial.open('xb') as stream:
             transfer_started=True
             transfer=remote(ssh,'cat '+qdir+'/.collection/results.tar',stdout=stream,timeout=300)
@@ -2219,12 +2644,14 @@ def collect_run(cfg, ssh, run_id, interrupted=False):
         if transfer.returncode!=0:
             raise ValueError('Original archive transfer did not exit zero')
         index=verify_archive(partial,evidence)
-        if interrupted:
-            proof=verify_interrupted_archive(partial,evidence,index,snapshot,context)
+        if context is not None:
+            verify_interrupted_archive(partial,evidence,index,interrupted_snapshot or snapshot,context)
         raw_names=['exit-code.txt','metadata-sdevice-version-exit-code.txt']+[v['raw_exit_file'] for v in evidence['tool_evidence'].values()]
-        if interrupted:
+        if context is not None:
             raw_names += [v['raw_process_admission_exit_file'] for v in evidence['tool_evidence'].values() if v.get('raw_process_admission_exit_file')]
         exits,errors=capture_archive_exit_codes(partial,raw_names)
+        if sealed is not None and exits['exit-code.txt'] != evidence['remote_exit_code']:
+            raise ValueError('Sealed and archived original exits differ')
         evidence['remote_exit_code']=exits['exit-code.txt']
         evidence['version_probe_exit_code']=exits['metadata-sdevice-version-exit-code.txt']
         for key,value in evidence['tool_evidence'].items():evidence['tool_exit_codes'][key]=exits[value['raw_exit_file']]
@@ -2243,17 +2670,18 @@ def collect_run(cfg, ssh, run_id, interrupted=False):
         if target.exists():
             if file_hash(target)!=snapshot['sha256']:raise ValueError('Refusing to replace a different existing archive')
         else:os.replace(partial,target)
-        if interrupted:
+        if context is not None:
+            receipt = interrupted_snapshot or snapshot
             evidence.update(state='INTERRUPTED_COLLECTED',execution_outcome='INTERRUPTED_UNKNOWN_EXIT',
-                interruption_reason='ORIGINAL_BOOT_REPLACED',interruption_proof_sha256=snapshot['interruption_proof_sha256'],
-                interrupted_collection_snapshot=snapshot,interrupted_raw_exit_codes=exits,
+                interruption_reason='ORIGINAL_BOOT_REPLACED',interruption_proof_sha256=receipt['interruption_proof_sha256'],
+                interrupted_collection_snapshot=receipt,interrupted_raw_exit_codes=exits,
                 process_identity=context['process_identity'])
         else:
             evidence['state']='COLLECTED' if evidence['remote_exit_code']==0 else 'FAILED_COLLECTED'
         evidence['collection_verified']=True
         evidence.pop('collection_error',None)
         save_manifest(folder,evidence)
-        if policy:
+        if policy and sealed is None:
             parallel_release(cfg, ssh, evidence)
             save_manifest(folder, evidence)
     except BaseException as exc:
@@ -2264,19 +2692,32 @@ def collect_run(cfg, ssh, run_id, interrupted=False):
     return dict(run_id=run_id,status=evidence['state'],remote_exit_code=evidence['remote_exit_code'],ssh_exit_code=evidence['ssh_exit_code'],archive=str(folder/'results.tar'),bytes=snapshot['bytes'])
 
 
-def run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, parallel_slot=None):
+def run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, parallel_slot=None, *, staged_launch=False):
     if data_root is not None:data_root=normalize_data_root(data_root)
-    with original_ownership():
+    if staged_launch and (not detach or parallel_slot is None):
+        raise ValueError('--staged-launch requires --detach and --parallel-slot')
+    with ExitStack() as launch_owner, ExitStack() as writers:
+        project = Path(project)
+        enter_launch_owner(launch_owner, staged_launch)
         if run_id and run_folder(run_id).exists():
+            writers.enter_context(record_writer(run_folder(run_id)))
             bound = read_manifest(cfg,run_id,data_root=data_root)
             if parallel_slot is not None and (bound[1].get('parallel_policy') or {}).get('slot') != parallel_slot:
                 raise ValueError('Repeated run ID cannot change original execution slot')
             return status_run(cfg,ssh,run_id)
-        return _run_project(cfg,ssh,Path(project),run_id=run_id,detach=detach,data_root=data_root,
+        if staged_launch:
+            writers.enter_context(staged_project_writer(project))
+        return _run_project(cfg,ssh,project,run_id=run_id,detach=detach,data_root=data_root,
+                            writers=writers, release_launch_owner=launch_owner.close if staged_launch else None,
                             **({'parallel_slot': parallel_slot} if parallel_slot is not None else {}))
 
 
-def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, parallel_slot=None):
+def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, parallel_slot=None,
+                 *, writers=None, release_launch_owner=None):
+    if writers is None:
+        with ExitStack() as local_writers:
+            return _run_project(cfg, ssh, project, run_id, detach, data_root, parallel_slot, writers=local_writers,
+                                release_launch_owner=release_launch_owner)
     if data_root is not None:data_root=normalize_data_root(data_root)
     project = project.resolve()
     if not project.is_dir():
@@ -2322,6 +2763,7 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
     if connection_identity(cfg) is not None and (ROOT/'local_runtime/runs'/run_id).exists():
         raise ValueError('Historical VM run ID cannot be resubmitted through a cloud profile')
     local = run_folder(run_id)
+    writers.enter_context(record_writer(local))
     remote_dir = (data_root if data_root is not None else cfg['remote_root'].rstrip('/')) + '/runs/' + run_id
     policy = parallel_policy(cfg, parallel_slot, run_id, remote_dir) if parallel_slot is not None else None
     if is_multicore(policy):
@@ -2384,6 +2826,8 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
                             geometry_selector_sha256=geometry_cfg['geometry_selector_sha256'],
                             geometry_report_file=geometry_cfg['geometry_report_file'],
                             geometry_observation_backend='native_hdf5_v16_export')
+        if release_launch_owner is not None:
+            evidence['staged_launch'] = True
         if policy:
             evidence['parallel_policy'] = policy
             if is_multicore(policy):
@@ -2418,10 +2862,10 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
             runner = runner[:start] + process_identity_lines(run_id)
             if is_multicore(policy):
                 runner += ['cpu=' + ','.join(str(cpu) for cpu in policy['cpu_set']), 'taskset -pc "$cpu" $$']
-                runner += parallel_shell_lines(policy, 'activate')
+                runner += parallel_shell_lines(policy, 'activate', staged_launch=release_launch_owner is not None)
                 runner += ['date -u; hostname']
             else:
-                runner += parallel_shell_lines(policy, 'activate')
+                runner += parallel_shell_lines(policy, 'activate', staged_launch=release_launch_owner is not None)
                 runner += ['cpu=' + str(policy['cpu']), 'taskset -pc "$cpu" $$', 'date -u; hostname']
         else:
             runner += process_identity_lines(run_id)
@@ -2481,6 +2925,12 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
         evidence['script_sha256'] = file_hash(staging / 'run.sh')
         evidence['inputs_archive_sha256'] = file_hash(archive)
         save()
+        if release_launch_owner is not None:
+            staging.rename(local)
+            active_dir = local
+            archive = local / 'inputs.tar'
+            save_manifest(local, evidence, durable=True)
+            sync_directory(local.parent)
         if policy:
             reserve_attempted = True
             try:
@@ -2509,15 +2959,31 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
                             connection_identity=connection_identity(cfg),input_sha256=inputs,runner_sha256=evidence['runner_sha256'])
                         diag_path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
                         failure.receipt=dict(path=str(diag_path),sha256=file_hash(diag_path))
-                    shutil.rmtree(staging)
+                    if active_dir == staging:
+                        shutil.rmtree(staging)
+                    elif hasattr(failure, 'receipt'):
+                        evidence.update(state='FAILED_BEFORE_LAUNCH', preflight_receipt=failure.receipt)
+                        save()
                     raise failure from exc
                 raise
-        staging.rename(local)
-        active_dir = local
-        archive = local / 'inputs.tar'
+        if active_dir == staging:
+            staging.rename(local)
+            active_dir = local
+            archive = local / 'inputs.tar'
+        if release_launch_owner is not None:
+            release_launch_owner()
+    except ReservationBusy as exc:
+        retain_busy_attempt(active_dir, run_id, exc)
+        raise
     except PreflightRejected:
         raise
     except BaseException as exc:
+        if active_dir == local:
+            evidence['state'] = 'TRANSFER_OR_CONNECTION_FAILED'
+            evidence['transport_error'] = repr(exc)
+            if getattr(exc, 'returncode', None) is not None:
+                evidence['ssh_exit_code'] = exc.returncode
+            save()
         if staging.exists() and not local.exists():
             if reserve_attempted and evidence is not None:
                 # A missing or invalid receipt can follow a successful reserve.
@@ -2585,6 +3051,8 @@ def main():
     run.add_argument('project',type=Path)
     run.add_argument('--run-id')
     run.add_argument('--detach',action='store_true')
+    run.add_argument('--staged-launch',action='store_true',
+                     help='Release local scheduling ownership after a detached parallel reservation')
     run.add_argument('--data-root',help='Optional canonical remote data directory for new runs; control root and shared lock stay unchanged')
     run.add_argument('--parallel-slot', type=int, choices=range(PARALLEL_MAX_CAPACITY),
                      help='Explicit NEW cloud execution slot; default remains original serial runner')
@@ -2594,7 +3062,7 @@ def main():
     cancel.add_argument('--grace-seconds',type=int,default=15)
     cancel.add_argument('--requested-by',default='operator')
     cancel.add_argument('--json',action='store_true')
-    for name in ('status','collect'):
+    for name in ('status','collect','seal'):
         item=sub.add_parser(name)
         item.add_argument('run_id')
         item.add_argument('--json',action='store_true')
@@ -2620,21 +3088,31 @@ def main():
         else:
             execute(ssh[:-1]+['-t',ssh[-1]])
     elif args.command=='run':
-        result=run_project(cfg,ssh,args.project,args.run_id,args.detach,data_root=args.data_root,
-                           **({'parallel_slot': args.parallel_slot} if args.parallel_slot is not None else {}))
+        try:
+            result=run_project(cfg,ssh,args.project,args.run_id,args.detach,data_root=args.data_root,
+                               staged_launch=args.staged_launch,
+                               **({'parallel_slot': args.parallel_slot} if args.parallel_slot is not None else {}))
+        except ReservationBusy as exc:
+            print(json.dumps(exc.payload()), flush=True)
+            return RESERVATION_BUSY_EXIT_CODE
+        print(json.dumps(result,indent=2))
+    elif args.command=='seal':
+        print(json.dumps(seal_run(cfg,ssh,args.run_id),indent=2))
+    elif args.command=='collect':
+        with collection_owner(run_folder(args.run_id), 'manifest.json'):
+            result=collect_run(cfg,ssh,args.run_id,interrupted=args.interrupted)
         print(json.dumps(result,indent=2))
     else:
-        with original_ownership():
+        with original_ownership(), record_writer(run_folder(args.run_id)):
             if args.command=='cancel':
                 result=cancel_run(cfg,ssh,args.run_id,args.reason,args.grace_seconds,args.requested_by)
             else:
-                result=(status_run(cfg,ssh,args.run_id) if args.command=='status'
-                        else collect_run(cfg,ssh,args.run_id,interrupted=args.interrupted))
+                result=status_run(cfg,ssh,args.run_id)
         print(json.dumps(result,indent=2))
 
 
 if __name__=='__main__':
-    try:main()
+    try:sys.exit(main())
     except PreflightRejected as exc:
         print('PREFLIGHT_REJECTED:',exc,file=sys.stderr)
         if getattr(exc,'receipt',None):print(json.dumps(dict(status='ORIGINAL_PREFLIGHT_REJECTED',receipt=exc.receipt)),flush=True)

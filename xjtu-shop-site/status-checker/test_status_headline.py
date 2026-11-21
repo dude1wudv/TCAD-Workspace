@@ -368,6 +368,54 @@ assert.ok(css.includes('.cpu-cluster'));
 assert.ok(css.includes('@media (min-width: 600px)'));
 """)
 
+    def test_dispatch_flow_counts_jobs_by_slot_and_expires_without_a_refresh(self):
+        self.render_headline({}, language="en", checks=r"""
+const scheduler = useScheduler();
+scheduler.active_slots = 4;
+scheduler.active_solvers = 3;
+scheduler.tasks[0].cpu_set = [0, 1, 2, 3];
+scheduler.slots.slice(4).forEach(slot => Object.assign(slot, {state:'idle',task_id:null,cluster:null}));
+const flow = {
+  schema:'tcad-dispatch-flow-v1', state:'fresh', observed_at:new Date().toISOString(), fresh_max_age_seconds:30,
+  slots:[
+    {slot:0,threads:4,state:'running',reason:null}, {slot:1,threads:4,state:'sealing',reason:null},
+    {slot:2,threads:2,state:'free',reason:'resource_wait'}, {slot:3,threads:2,state:'free',reason:'resource_wait'},
+    {slot:4,threads:4,state:'free',reason:'no_ready_task'},
+  ], collection:{pending:3,oldest_wait_seconds:123},
+};
+state.live.simulation.dispatch_flow = flow;
+render();
+const schedule = document.getElementById('schedule');
+const kpi = document.getElementById('kpis').querySelector('.kpi');
+assert.equal(kpi.querySelector('.kpi-lead').querySelector('strong').textContent,'1 / 5');
+assert.match(kpi.textContent,/Native solver processes 3/);
+assert.match(kpi.textContent,/Cores 4 \/ 11/);
+const widths = schedule.querySelector('.dispatch-widths').querySelectorAll('li');
+assert.equal(widths.length,2);
+assert.match(widths[0].textContent,/2-thread slots\s+Free 2 · Waiting for resources 2/);
+assert.match(widths[1].textContent,/4-thread slots\s+Free 1 · No ready task 1/);
+assert.match(widths[1].textContent,/Awaiting seal 1/);
+assert.match(schedule.textContent,/Collection backlog 3 · Oldest wait 0h 2m 3s/);
+assert.equal(schedule.querySelector('.cpu-cluster-label').textContent,'4 cores · one job');
+assert.equal(schedule.querySelector('.cpu-cluster').querySelectorAll('.cpu-cell').length,4);
+state.lang = 'zh';
+render();
+assert.match(schedule.textContent,/4 线程槽位/);
+assert.match(schedule.textContent,/待封存 1/);
+flow.observed_at = new Date(Date.now()-31000).toISOString();
+tick();
+assert.match(schedule.querySelector('.dispatch-flow').textContent,/过期/);
+assert.equal(schedule.querySelector('.dispatch-widths'),null);
+assert.equal(schedule.querySelectorAll('.cpu-cell').length,11);
+assert.equal(kpi.querySelector('.kpi-lead').querySelector('strong').textContent,'1');
+state.live.simulation.dispatch_flow = {...flow,state:'unknown'};
+render();
+assert.match(schedule.querySelector('.dispatch-flow').textContent,/待观测/);
+delete state.live.simulation.dispatch_flow;
+render();
+assert.equal(schedule.querySelector('.dispatch-flow'),null);
+""")
+
     def test_missing_and_stale_observations_are_gray_and_collecting_is_pending(self):
         self.render_headline({}, checks=r"""
 state.live.simulation = {running_groups:10,requested_threads:10};

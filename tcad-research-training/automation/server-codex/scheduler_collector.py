@@ -1,4 +1,4 @@
-"""One background original-runner channel, with one outstanding operation per ID."""
+"""Bounded runner channels, with one outstanding operation per run."""
 from concurrent.futures import ThreadPoolExecutor
 import json
 import subprocess
@@ -50,20 +50,29 @@ def invoke(argv, workspace, environment, timeout, authorize=None, verify=None):
 
 
 class AsyncCollectorPool:
-    def __init__(self, concurrency=1):
+    def __init__(self, concurrency=1, slot_workers=False):
         if concurrency != 1:
-            raise ValueError("collect_concurrency must remain 1 until original owner-lock isolation is verified")
-        self.executor = ThreadPoolExecutor(max_workers=1, thread_name_prefix="original-runner")
+            raise ValueError("collect_concurrency must remain 1")
+        self.limits = {"run": 4, "seal": 2, "collect": concurrency, "cancel": 1} if slot_workers else {"original": 1}
+        self.executors = {lane: ThreadPoolExecutor(max_workers=limit, thread_name_prefix=f"runner-{lane}")
+                          for lane, limit in self.limits.items()}
         self.operations = {}
         self.wakeup = threading.Event()
         self.closed = False
 
+    def lane(self, command):
+        return "original" if "original" in self.limits else command
+
+    def available(self, command, run_id=None):
+        lane = self.lane(command)
+        return (not self.closed and run_id not in self.operations
+                and sum(self.lane(active) == lane for active, _ in self.operations.values()) < self.limits[lane])
+
     def submit(self, run_id, command, argv, workspace, environment, timeout, authorize=None, verify=None):
-        if self.closed:
+        if not self.available(command, run_id):
             return False
-        if self.operations:
-            return False
-        future = self.executor.submit(invoke, list(argv), workspace, dict(environment), timeout, authorize, verify)
+        future = self.executors[self.lane(command)].submit(
+            invoke, list(argv), workspace, dict(environment), timeout, authorize, verify)
         self.operations[run_id] = (command, future)
         future.add_done_callback(lambda _: self.wakeup.set())
         return True
@@ -81,5 +90,5 @@ class AsyncCollectorPool:
 
     def close(self):
         self.closed = True
-        # Keep the unique lifecycle lock until the last original CLI has exited.
-        self.executor.shutdown(wait=True, cancel_futures=True)
+        for executor in self.executors.values():
+            executor.shutdown(wait=True, cancel_futures=True)

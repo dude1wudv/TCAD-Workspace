@@ -23,6 +23,7 @@
   "max_parallel_jobs": 9,
   "readiness": null,
   "planner_mode": "on_demand_async",
+  "dispatch_mode": "legacy",
   "probe_timeout_seconds": 15,
   "collect_concurrency": 1,
   "pool_switching": {
