@@ -1,6 +1,7 @@
 """Offline advisor contracts; all model and runner boundaries are fixtures."""
 import json
 import subprocess
+import threading
 import tomllib
 import unittest
 from datetime import datetime, timezone
@@ -156,71 +157,79 @@ class AdvisorSchedulingTests(unittest.TestCase):
         self.i.setUp()
         self.addCleanup(self.i.doCleanups)
 
+    def _actual_async_components(self):
+        import test_scheduler as scheduler_fixtures
+        fixture=scheduler_fixtures.SchedulerTests('runTest')
+        fixture.h=self.i.runner;fixture.engines=[]
+        def factory(policy,ready):
+            engine=c.scheduler_module('scheduler_engine').SchedulerEngine(policy,ready)
+            fixture.engines.append(engine);engine.probe.probe=fixture.sample
+            return engine
+        c.create_runtime.side_effect=factory
+        planner_module=c.scheduler_module('scheduler_planner')
+        planner=planner_module.AsyncPlanner();self.addCleanup(planner.close)
+        self.i.harness.policy['maximum_cycles_per_start']=1
+        self.i.harness.save_policy()
+        return fixture,planner_module,planner
+
     def test_slow_model_collects_and_refills_original_nine_slots_without_new_scheduler(self):
-        i, h, r = self.i, self.i.harness, self.i.runner
-        for n in range(10):
-            r.task("advisor-wait-" + str(n))
-        original_model = i._model
-        captured = {}
-
-        def slow_model(argv, **kwargs):
-            child = original_model(argv, **kwargs)
-            original_communicate = child.communicate
-            waiting = [False]
-
-            def communicate(data, timeout):
-                if not waiting[0]:
-                    waiting[0] = True
-                    self.assertEqual(len(r.runs()), 9)
-                    captured["original_ids"] = {k: v["run_id"] for k, v in i.intents().items()}
-                    r.finish("advisor-wait-0")
-                    raise subprocess.TimeoutExpired("sol-and-astra", timeout)
-                self.assertEqual(len(r.runs()), 10)
-                self.assertEqual(i.observation()["active_count"], 9)
-                return original_communicate(b"fixture already sent", timeout)
-
-            child.communicate = communicate
-            return child
-
-        i.model_mock.side_effect = slow_model
-        i.serve_once(1000)
-        self.assertEqual(i.model_mock.call_count, 1)
-        intents = i.intents()
-        for key, original_id in captured["original_ids"].items():
-            self.assertEqual(intents[key]["run_id"], original_id)
-        self.assertEqual(intents["advisor-wait-9"]["slot"], intents["advisor-wait-0"]["slot"])
-        checkpoint = c.read_json(h.state / "checkpoint.json")
-        self.assertTrue(c.should_wake(h.policy, checkpoint, i.observation(),
-                                     c.watch_key(h.policy, checkpoint, i.observation()),
-                                     now=1061))
+        i,h,r=self.i,self.i.harness,self.i.runner
+        for n in range(10):r.task('advisor-wait-'+str(n))
+        fixture,planner_module,planner=self._actual_async_components()
+        nine=threading.Event();finished=threading.Event();refilled=threading.Event();captured={}
+        original_model=i._model
+        def slow_model(argv,**kwargs):
+            child=original_model(argv,**kwargs);communicate=child.communicate
+            def wait_for_research(data,timeout):
+                self.assertTrue(nine.wait(5),'Scheduler failed to fill pool while planner was waiting')
+                self.assertEqual(len(r.runs()),9)
+                captured['original_ids']={key:value['run_id'] for key,value in i.intents().items()}
+                r.finish('advisor-wait-0');finished.set()
+                self.assertTrue(refilled.wait(5),'Scheduler failed to collect/refill during planner wait')
+                self.assertEqual(len(r.runs()),10)
+                return communicate(data,timeout)
+            child.communicate=wait_for_research;return child
+        def poll(*args,**kwargs):
+            for engine in fixture.engines:
+                for command,future in list(engine.channel.operations.values()):future.result(timeout=3)
+            if len(r.runs())==9:
+                nine.set();self.assertTrue(finished.wait(3))
+            if len(r.runs())==10:
+                refilled.set();planner.pending[1].result(timeout=3)
+        i.model_mock.side_effect=slow_model
+        with mock.patch.object(planner_module,'AsyncPlanner',return_value=planner),mock.patch.object(c,'sleep_poll',side_effect=poll),mock.patch.object(c.time,'time',return_value=1000):
+            c.serve(h.policy_path)
+        self.assertEqual(i.model_mock.call_count,1)
+        intents=i.intents()
+        for key,original_id in captured['original_ids'].items():self.assertEqual(intents[key]['run_id'],original_id)
+        self.assertEqual(intents['advisor-wait-9']['slot'],intents['advisor-wait-0']['slot'])
+        self.assertEqual(i.observation()['active_count'],9)
+        self.assertFalse((h.state/'runtime-error.json').exists())
+        checkpoint=c.read_json(h.state/'checkpoint.json')
+        self.assertTrue(c.should_wake(h.policy,checkpoint,i.observation(),c.watch_key(h.policy,checkpoint,i.observation()),now=1061))
 
     def test_disarm_during_model_wait_prevents_any_further_submission(self):
-        i, h, r = self.i, self.i.harness, self.i.runner
-        for n in range(10):
-            r.task("advisor-stop-" + str(n))
-        original_model = i._model
-
-        def slow_model(argv, **kwargs):
-            child = original_model(argv, **kwargs)
-            waiting = [False]
-            original_communicate = child.communicate
-
-            def communicate(data, timeout):
-                if not waiting[0]:
-                    waiting[0] = True
-                    r.finish("advisor-stop-0")
-                    h.policy["enabled"] = False
-                    h.save_policy()
-                    raise subprocess.TimeoutExpired("fixture", timeout)
-                return original_communicate(b"fixture already sent", timeout)
-
-            child.communicate = communicate
-            return child
-
-        i.model_mock.side_effect = slow_model
-        i.serve_once(1000)
-        self.assertEqual(len(r.runs()), 9)
-        self.assertNotIn("advisor-stop-9", i.intents())
+        i,h,r=self.i,self.i.harness,self.i.runner
+        for n in range(10):r.task('advisor-stop-'+str(n))
+        fixture,planner_module,planner=self._actual_async_components()
+        nine=threading.Event();disarmed=threading.Event();release=threading.Event();self.addCleanup(release.set)
+        original_model=i._model
+        def slow_model(argv,**kwargs):
+            child=original_model(argv,**kwargs);communicate=child.communicate
+            def wait_and_disarm(data,timeout):
+                self.assertTrue(nine.wait(5));r.finish('advisor-stop-0')
+                h.policy['enabled']=False;h.save_policy();disarmed.set()
+                self.assertTrue(release.wait(3));return communicate(data,timeout)
+            child.communicate=wait_and_disarm;return child
+        def poll(*args,**kwargs):
+            for engine in fixture.engines:
+                for command,future in list(engine.channel.operations.values()):future.result(timeout=3)
+            if len(r.runs())==9:
+                nine.set();self.assertTrue(disarmed.wait(3));release.set()
+        i.model_mock.side_effect=slow_model
+        with mock.patch.object(planner_module,'AsyncPlanner',return_value=planner),mock.patch.object(c,'sleep_poll',side_effect=poll),mock.patch.object(c.time,'time',return_value=1000):
+            c.serve(h.policy_path)
+        self.assertEqual(len(r.runs()),9);self.assertNotIn('advisor-stop-9',i.intents())
 
 
 if __name__ == "__main__":

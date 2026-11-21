@@ -882,18 +882,34 @@ def read_manifest(cfg, run_id, data_root=None):
     return folder, evidence
 
 
+def termination_module():
+    return load_module(Path(__file__).with_name('runner_termination.py'), '_tcad_runner_termination')
+
+
+def cancel_run(cfg, ssh, run_id, reason, grace_seconds=15, requested_by='operator'):
+    folder, record = read_manifest(cfg, run_id)
+    return termination_module().cancel(sys.modules[__name__] if __name__ in sys.modules else _termination_adapter(),
+        cfg, ssh, folder, record, reason, grace_seconds, requested_by)
+
+
+def _termination_adapter():
+    # importlib-based adapters do not necessarily register the loaded module.
+    import types
+    return types.SimpleNamespace(parallel_query=parallel_query, remote_python=remote_python)
+
+
 def process_identity_lines(run_id):
     return ["/usr/bin/python3 - \"$$\" " + shlex.quote(run_id) + " <<'TCAD_IDENTITY'",
             'import hashlib,json,os,sys',
             'from pathlib import Path',
             'pid=int(sys.argv[1]); base=Path("/proc")/str(pid)',
             'ticks=int((base/"stat").read_text().rsplit(")",1)[1].split()[19])',
-            'value=dict(schema="tcad-process-identity-r1",run_id=sys.argv[2],pid=pid,start_ticks=ticks,boot_id=Path("/proc/sys/kernel/random/boot_id").read_text().strip(),cwd=os.getcwd(),script_sha256=hashlib.sha256(Path("run.sh").read_bytes()).hexdigest())',
+            'value=dict(schema="tcad-process-identity-r1",run_id=sys.argv[2],pid=pid,start_ticks=ticks,boot_id=Path("/proc/sys/kernel/random/boot_id").read_text().strip(),cwd=os.getcwd(),script_sha256=hashlib.sha256(Path("run.sh").read_bytes()).hexdigest(),process_group=os.getpgrp(),session_id=os.getsid(0))',
             'Path("process-identity.json").write_text(json.dumps(value,sort_keys=True))',
             'TCAD_IDENTITY']
 
 
-STATUS_CODE = r'''
+STATUS_CODE = termination_module().TERMINATION_CHECK_CODE + r'''
 import hashlib,json,os,sys
 from pathlib import Path
 folder=Path(sys.argv[1]); expected_script=sys.argv[2]
@@ -923,6 +939,12 @@ if folder.is_dir():
     if value['alive']:value['status']='RUNNING'
     elif value['remote_exit_code'] is not None:value['status']='FINISHED'
     elif identity_file.is_file():value['status']='LOST_WITHOUT_EXIT'
+    if identity_file.is_file() and not value['alive']:
+        termination=checked_termination(folder,identity)
+        if termination:
+            value['termination_record']=termination
+            value['derived_exit_code']=termination.get('derived_exit_code')
+            value['status']='FINISHED'
     log=folder/'execution.log'
     if log.is_file():
         value['log_bytes']=log.stat().st_size
@@ -1047,7 +1069,7 @@ def checked_parallel_identity(record, identity, require_pinned=False):
 
 # This is the shared remote protocol for BOTH existing public runners. No daemon,
 # TTL reaper, alternate launcher or manual lock override is introduced.
-PARALLEL_CODE = MULTICORE_AUDIT_CODE + '\npool_slots=range({})\n'.format(PARALLEL_MAX_CAPACITY) + r'''
+PARALLEL_CODE = termination_module().TERMINATION_CHECK_CODE + MULTICORE_AUDIT_CODE + '\npool_slots=range({})\n'.format(PARALLEL_MAX_CAPACITY) + r'''
 import fcntl,hashlib,json,os,re,stat,sys
 from pathlib import Path
 request=json.loads(sys.argv[1]);policy=request['policy'];action=request['action']
@@ -1258,7 +1280,8 @@ def admission(leases):
                 # The collection audit below still scans every native process
                 # before creating the immutable interruption archive.
                 continue
-            need((directory/'exit-code.txt').is_file() and (directory/'finished-utc.txt').is_file(),
+            need(((directory/'exit-code.txt').is_file() and (directory/'finished-utc.txt').is_file())
+                 or checked_termination(directory,identity) is not None,
                  'Unknown outstanding parallel work; reconcile original first')
             if mc_is_multicore(other):
                 proof=read(directory/'parallel-slot-evidence.json')
@@ -1471,10 +1494,11 @@ if action in ('prove-unlaunched','prove-unlaunched-intent'):
     print(json.dumps(prove_unlaunched(),sort_keys=True))
     raise SystemExit(0)
 lease_path=store/('slot-%s.json'%policy['slot']);slot_path=store/('slot-%s.lock'%policy['slot'])
+gate_held=False;allocator_held=False
 try:
     store.mkdir(mode=0o700,exist_ok=True);safe_path(store)
-    gate=opened(root/'.solver.lock');fcntl.flock(gate,fcntl.LOCK_SH|fcntl.LOCK_NB)
-    allocator=opened(store/'allocation.lock');fcntl.flock(allocator,fcntl.LOCK_EX|fcntl.LOCK_NB)
+    gate=opened(root/'.solver.lock');fcntl.flock(gate,fcntl.LOCK_SH|fcntl.LOCK_NB);gate_held=True
+    allocator=opened(store/'allocation.lock');fcntl.flock(allocator,fcntl.LOCK_EX|fcntl.LOCK_NB);allocator_held=True
     lease=checked_lease(policy['slot'])
     all_leases=pool_leases();check_pool_capacity(all_leases)
     if action=='reserve':
@@ -1486,6 +1510,18 @@ except (OSError, ValueError) as exc:
     if action!='reserve':
         raise
     print('TCAD_RESERVE_REJECTED: '+str(exc),file=sys.stderr)
+    try:
+        if gate_held and allocator_held and 'all_leases' in locals():
+            directory=Path(policy['remote_directory']);safe_path(directory)
+            absent=not any(peer['policy'].get('work_id')==policy['work_id'] or peer['policy'].get('remote_directory')==str(directory) for peer in all_leases)
+            if absent and not directory.exists():
+                proof=dict(schema='tcad-original-preflight-rejection-r1',request=request,
+                    reservation_acquired=False,solver_launched=False,target_lease_absent=True,
+                    target_directory_absent=True,gate_held=True,allocator_held=True,
+                    boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip())
+                print('TCAD_PREFLIGHT_NOT_LAUNCHED: '+json.dumps(proof,sort_keys=True),file=sys.stderr)
+    except (OSError,ValueError,KeyError) as proof_error:
+        print('Preflight non-launch proof unavailable: '+str(proof_error),file=sys.stderr)
     raise SystemExit(75)
 resource_audit=None
 if mc_is_multicore(policy) and action in ('verify','collect','release'):
@@ -1556,7 +1592,7 @@ else:
         exit_path = Path(policy['remote_directory'])/'exit-code.txt'
         if not exit_path.is_file():
             current_boot = Path('/proc/sys/kernel/random/boot_id').read_text().strip()
-            need(identity['boot_id'] != current_boot,
+            need(identity['boot_id'] != current_boot or checked_termination(Path(policy['remote_directory']),identity) is not None,
                  'No original terminal exit and no proven boot change')
         if lease['state']=='RESERVED':
             raw=(Path(policy['remote_directory'])/'exit-code.txt').read_text().strip()
@@ -1830,7 +1866,7 @@ def interrupted_observation(context):
 '''
 
 
-SNAPSHOT_CODE = r'''
+SNAPSHOT_CODE = termination_module().TERMINATION_CHECK_CODE + r'''
 import hashlib,io,json,os,tarfile
 from pathlib import Path
 root=Path.cwd();store=root/'.collection';store.mkdir(exist_ok=True)
@@ -1843,8 +1879,21 @@ def digest(path):
     with path.open('rb') as f:
         for block in iter(lambda:f.read(1024*1024),b''):h.update(block)
     return h.hexdigest()
+context=globals().get('snapshot_context');termination=None
+if context:
+    for name,expected in dict(context['input_sha256'],**{'run.sh':context['script_sha256']}).items():
+        path=root/name
+        if path.is_symlink() or not path.is_file() or digest(path)!=expected:raise ValueError('Original input/output provenance differs: '+name)
+    if context.get('identity'):termination=checked_termination(root,context['identity'])
+    if (root/'exit-code.txt').is_file() and (root/'exit-code.txt').read_text().strip()=='0':
+        for name in context.get('required_outputs',[]):
+            if not (root/name).is_file() or (root/name).stat().st_size<=0:raise ValueError('Successful run missing required output: '+name)
+        for name in context.get('raw_exit_files',[]):
+            if not (root/name).is_file() or (root/name).read_text().strip()!='0':raise ValueError('Success marker conflicts with raw native exits: '+name)
+termination_sha=digest(root/'termination-record.json') if termination else None
 if target.is_file() and receipt.is_file():
     old=json.loads(receipt.read_text())
+    if old.get('termination_record_sha256')!=termination_sha:raise ValueError('Existing original snapshot has a different termination context')
     if digest(target)!=old['sha256']:raise ValueError('Immutable remote snapshot changed')
     if bool(old.get('interrupted_context_sha256'))!=bool(interrupted):
         raise ValueError('Existing original snapshot has a different collection mode')
@@ -1855,7 +1904,7 @@ if target.is_file() and receipt.is_file():
     print(json.dumps(old))
 else:
     if interrupted and (target.exists() or receipt.exists()):raise ValueError('Incomplete existing interrupted snapshot metadata; preserve original archive')
-    if not interrupted and not (root/'exit-code.txt').is_file():raise ValueError('No original exit')
+    if not interrupted and not termination and not (root/'exit-code.txt').is_file():raise ValueError('No original exit')
     if interrupted and (root/'_interrupted-collection-proof.json').exists():raise ValueError('Original file collides with derived interruption proof')
     files=[]
     for p in root.rglob('*'):
@@ -1884,6 +1933,7 @@ else:
         raw=json.dumps(index,sort_keys=True).encode();member=tarfile.TarInfo('_collection-members.json');member.size=len(raw);archive.addfile(member,io.BytesIO(raw))
     os.replace(str(part),str(target))
     value=dict(schema='tcad-original-snapshot-r1',sha256=digest(target),bytes=target.stat().st_size,members=len(index))
+    if termination_sha:value['termination_record_sha256']=termination_sha
     if interrupted:value.update(interrupted_context_sha256=context_sha,interruption_proof_sha256=proof_sha)
     receipt.write_text(json.dumps(value,sort_keys=True));print(json.dumps(value))
 '''
@@ -2143,7 +2193,10 @@ def collect_run(cfg, ssh, run_id, interrupted=False):
         folder,evidence=read_manifest(cfg,run_id)
     qdir=shlex.quote(evidence['remote_directory'])
     qlock=shlex.quote(cfg['remote_root'].rstrip('/')+'/.solver.lock')
-    snapshot_code=SNAPSHOT_CODE
+    snapshot_context=dict(input_sha256=evidence['input_sha256'],script_sha256=evidence['script_sha256'],
+        identity=evidence.get('process_identity'),required_outputs=[name for step in evidence['steps'] for name in step['outputs']],
+        raw_exit_files=['metadata-sdevice-version-exit-code.txt']+[value['raw_exit_file'] for value in evidence['tool_evidence'].values()])
+    snapshot_code='snapshot_context='+repr(snapshot_context)+'\n'+SNAPSHOT_CODE
     if context is not None:
         snapshot_code=INTERRUPTED_CHECK_CODE+'\ninterrupted_context='+repr(context)+'\n'+snapshot_code
     script='set -e; cd '+qdir+'; exec 9>'+qlock+'; flock -n 9 || exit 75; mkdir -p .collection; exec 8>.collection/snapshot.lock; flock -n 8 || exit 75; /usr/bin/python3 - <<\'TCAD_SNAPSHOT\'\n'+snapshot_code+'\nTCAD_SNAPSHOT\n'
@@ -2175,6 +2228,11 @@ def collect_run(cfg, ssh, run_id, interrupted=False):
         evidence['version_probe_exit_code']=exits['metadata-sdevice-version-exit-code.txt']
         for key,value in evidence['tool_evidence'].items():evidence['tool_exit_codes'][key]=exits[value['raw_exit_file']]
         evidence['capture_exit_errors']=errors
+        with tarfile.open(partial) as stream:termination=termination_module().verify_archive(stream,evidence)
+        if termination:
+            evidence['termination_record']=termination
+            if termination['execution_outcome']=='TERMINATED_BY_OPERATOR':
+                evidence.update(execution_outcome='TERMINATED_BY_OPERATOR',derived_exit_code=termination.get('derived_exit_code'))
         evidence['results_sha256']=snapshot['sha256']
         evidence['collected_bytes']=snapshot['bytes']
         evidence['collected_utc']=utc()
@@ -2340,6 +2398,8 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
         runner = ['#!/bin/bash', 'set -euo pipefail', 'umask 077',
                   'cd ' + qdir,
                   'trap \'rc=$?; printf "%s\\n" "$rc" > exit-code.txt; date -u +%Y-%m-%dT%H:%M:%SZ > finished-utc.txt\' EXIT',
+                  'trap \'trap "" TERM INT; wait || :; exit 143\' TERM',
+                  'trap \'trap "" TERM INT; wait || :; exit 130\' INT',
                   'exec > execution.log 2>&1',
                   'export PATH=' + shlex.quote(cfg['tool_bin']) + ':"$PATH"',
                   'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1',
@@ -2439,8 +2499,17 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
                         'returncode': getattr(exc, 'returncode', None),
                         'stderr': getattr(exc, 'stderr', None),
                     }, indent=2) + '\n', encoding='utf-8')
+                    failure=PreflightRejected(exc.stderr.strip())
+                    proofs=[line.split(': ',1)[1] for line in (exc.stderr or '').splitlines() if line.startswith('TCAD_PREFLIGHT_NOT_LAUNCHED: ')]
+                    if len(proofs)==1:
+                        proof=json.loads(proofs[0])
+                        value=json.loads(diag_path.read_text())
+                        value.update(schema='tcad-original-preflight-receipt-r1',remote_proof=proof,
+                            connection_identity=connection_identity(cfg),input_sha256=inputs,runner_sha256=evidence['runner_sha256'])
+                        diag_path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8')
+                        failure.receipt=dict(path=str(diag_path),sha256=file_hash(diag_path))
                     shutil.rmtree(staging)
-                    raise PreflightRejected(exc.stderr.strip()) from exc
+                    raise failure from exc
                 raise
         staging.rename(local)
         active_dir = local
@@ -2476,9 +2545,9 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
         evidence['state'] = 'LAUNCH_REQUESTED'
         save()
         if detach:
-            command = claim + 'nohup bash ./run.sh </dev/null >launch.log 2>&1 &'
+            command = claim + 'nohup setsid bash ./run.sh </dev/null >launch.log 2>&1 &'
             # A subshell prevents the shell grammar from backgrounding mkdir itself.
-            command = 'cd ' + qdir + '; mkdir .launch-claim || exit 76; (nohup bash ./run.sh </dev/null >launch.log 2>&1 & echo $! > launch-pid.txt)'
+            command = 'cd ' + qdir + '; mkdir .launch-claim || exit 76; (nohup setsid bash ./run.sh </dev/null >launch.log 2>&1 & echo $! > launch-pid.txt)'
             result = subprocess.run(remote_argv(ssh, command), capture_output=True, timeout=30)
             (local/'launch.stdout').write_bytes(result.stdout)
             (local/'launch.stderr').write_bytes(result.stderr)
@@ -2486,7 +2555,7 @@ def _run_project(cfg, ssh, project, run_id=None, detach=False, data_root=None, p
             evidence['state'] = 'RUNNING' if result.returncode == 0 else 'LAUNCH_UNCERTAIN'
         else:
             with (local/'console.log').open('wb') as console:
-                result = subprocess.run(remote_argv(ssh, claim + 'exec bash ./run.sh'), stdout=console, stderr=subprocess.STDOUT)
+                result = subprocess.run(remote_argv(ssh, claim + 'exec setsid bash ./run.sh'), stdout=console, stderr=subprocess.STDOUT)
             evidence['ssh_exit_code'] = result.returncode
             evidence['state'] = 'EXECUTED' if result.returncode == 0 else 'FAILED_OR_DISCONNECTED'
         save()
@@ -2518,6 +2587,12 @@ def main():
     run.add_argument('--data-root',help='Optional canonical remote data directory for new runs; control root and shared lock stay unchanged')
     run.add_argument('--parallel-slot', type=int, choices=range(PARALLEL_MAX_CAPACITY),
                      help='Explicit NEW cloud execution slot; default remains original serial runner')
+    cancel=sub.add_parser('cancel')
+    cancel.add_argument('run_id')
+    cancel.add_argument('--reason',required=True)
+    cancel.add_argument('--grace-seconds',type=int,default=15)
+    cancel.add_argument('--requested-by',default='operator')
+    cancel.add_argument('--json',action='store_true')
     for name in ('status','collect'):
         item=sub.add_parser(name)
         item.add_argument('run_id')
@@ -2549,8 +2624,11 @@ def main():
         print(json.dumps(result,indent=2))
     else:
         with original_ownership():
-            result=(status_run(cfg,ssh,args.run_id) if args.command=='status'
-                    else collect_run(cfg,ssh,args.run_id,interrupted=args.interrupted))
+            if args.command=='cancel':
+                result=cancel_run(cfg,ssh,args.run_id,args.reason,args.grace_seconds,args.requested_by)
+            else:
+                result=(status_run(cfg,ssh,args.run_id) if args.command=='status'
+                        else collect_run(cfg,ssh,args.run_id,interrupted=args.interrupted))
         print(json.dumps(result,indent=2))
 
 
@@ -2558,6 +2636,7 @@ if __name__=='__main__':
     try:main()
     except PreflightRejected as exc:
         print('PREFLIGHT_REJECTED:',exc,file=sys.stderr)
+        if getattr(exc,'receipt',None):print(json.dumps(dict(status='ORIGINAL_PREFLIGHT_REJECTED',receipt=exc.receipt)),flush=True)
         if getattr(exc,'stderr',None):print(exc.stderr,file=sys.stderr)
         sys.exit(PREFLIGHT_EXIT_CODE)
     except (OSError,ValueError,RuntimeError,subprocess.CalledProcessError,subprocess.TimeoutExpired) as exc:
