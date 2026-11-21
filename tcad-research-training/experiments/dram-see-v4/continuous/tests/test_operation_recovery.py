@@ -252,7 +252,7 @@ class OperationRecoveryTests(unittest.TestCase):
             op._run_operation(tcad, CFG, ['MOCK_SSH'], 'new-launch', inputs, None, True)
         launch.assert_called_once()
         self.assertIn('mkdir .launch-claim', launch.call_args.args[0][-1])
-        self.assertIn('nohup bash ./run.sh', launch.call_args.args[0][-1])
+        self.assertIn('nohup setsid bash ./run.sh', launch.call_args.args[0][-1])
         record = json.loads((op.operation_folder('new-launch') / 'operation.json').read_text())
         self.assertEqual(record['ssh_exit_code'], 255)
         self.assertTrue(record['capture_svisual_requested'])

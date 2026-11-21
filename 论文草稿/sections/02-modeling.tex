@@ -1,0 +1,104 @@
+% 第2章 Geant4/TCAD 联合建模与数据链路
+% 证据：tcad-research-training/experiments/plan.md（v3 冻结设计与授权记录）；
+%       tcad-research-training/reports/final/sections/paper/02-model-transfer.tex、03-workflow-metrics.tex（可复用段落/参数表/公式，已按新题名改写）；
+%       tcad-research-training/shared/metrics-and-labels.md（指标/标签口径）；
+%       tcad-research-training/experiments/dram-see-v4/device-basis.md、README.md（器件依据与 v4 阶段成果）；
+%       tcad-research-training/experiments/dram-see-v3/r50-main/final-delivery-r4.md（64事件/128响应冻结交付）；
+%       output/server-benchmark-20261115/REPORT.md（云端平台与基准）；
+%       tcad-research-training/plans/dram-se-ddr5-lpddr5/P0-CLOSEOUT-AND-D0-D3-FIRST-WAVE-PREP-r06-20261120.md（r0.6 当前排批）
+\section{Geant4/TCAD 联合建模与数据链路}
+
+\subsection{器件模型与参数来源}
+
+本文采用 1T1C（一管一容）DRAM 存储单元作为代表模型：二维平面 NMOS 访问晶体管加存储电容 $C_s$ 与位线电容 $C_b$。存储节点记为 SN，位线为 BL；字线驱动访问晶体管，使 SN 与 BL 发生电荷共享。中性参考采用相同几何、网格、物理模型、电容和时序，仅 SN 初始目标为 $0.5\V$ 且不施加粒子源。该结构保留了读出驱动对器件和电容的共同作用，但中性状态与信号状态不同，匹配参考并不能消除所有状态相关响应。
+
+历史探索在二维 0.18/0.25/0.35/0.45\um 等效单元上完成（v3 冻结设计），四种"特征尺寸"专指访问晶体管栅长 $L$；扫描时名义氧化层、掺杂和集总电容保持不变，因此它们不是四代商业工艺节点。v4 阶段转向以 BCAT（埋沟道阵列晶体管）为代表的三维结构，并登记 g70/g80/g90 埋栅顶深等几何变量。表\ref{tab:parameters} 给出 v3 主模型的主要设定；这些数值是继承并冻结的探索设定，尚未由器件电学曲线、版图寄生或实际 DRAM 数据校准。
+
+\begin{table}[htbp]
+\centering\small
+\caption{v3 主模型（R50）的主要参数；取值为项目冻结设定，未作工艺校准}
+\label{tab:parameters}
+\begin{tabularx}{\textwidth}{@{}p{3.6cm}X@{}}
+\toprule
+参数 & 取值或定义\\
+\midrule
+栅长 $L$、名义栅氧厚度 & $0.18/0.25/0.35/0.45\um$；$5\,\text{nm}$\\
+体区、源漏掺杂 & 硼 $10^{17}\,\text{cm}^{-3}$；砷高斯峰值 $10^{20}\,\text{cm}^{-3}$\\
+源漏深度参数 & $0.12\um$ 处指定 $10^{17}\,\text{cm}^{-3}$，横向因子 0.4；不等于净掺杂结深\\
+栅功函数、温度 & $4.6\,\text{eV}$；$300\,\text{K}$\\
+存储、位线电容 & $C_s=10\,\text{fC}$ 级（10 fF）；$C_b=100\,\text{fF}$\\
+信号、中性初态 & 信号 $0.1/0.9\V$ 对应存储 0/1；中性 $0.5\V$\\
+预充与字线 & BL 目标 $0.5\V$；预充通路 $50\,\Omega$；WL 终值 $1.8\V$\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+器件求解耦合泊松方程、电子与空穴连续性方程及外部电路，采用 Fermi 统计、OldSlotboom 带隙变窄、掺杂相关迁移率、高场饱和、法向电场迁移率修正，以及 SRH 和 Auger 复合；瞬态采用后向欧拉离散。时序为：理想钳位在 $0.6\ns$ 释放、$0.95\ns$ 核验初态；粒子在 $1\ns$ 入射，$2.8\ns$ 提取保持阶段指标；BL 在 $2.8$--$2.9\ns$ 预充、$3\ns$ 将预充电阻切至 $10^{20}\,\Omega$；WL 在 $3.05$--$3.10\ns$ 上升，$4\ns$ 采样。受控初态使尺寸和位值的比较有共同起点，但不构成真实写入过程的验证。
+
+器件参数来源分两类：一是公开文献，如 Shin 等给出的 90\,nm DRAM 栅长约 95\,nm、栅堆叠 poly-Si 80\,nm / WSi$_x$ 100\,nm / Si$_3$N$_4$ 180\,nm 等结构信息\cite{shin2003}；二是导师提供的 LPDDR5 规格资料（JESD209-5 与 Micron LPDDR5 datasheet），用于命令、刷新与电气边界，但不能由外部封装规格反推内部掺杂或栅长\cite{jesd209-5,micronlpddr5}。当前模型**未作真实器件 I--V/保持/读出校准**，有效沟道宽度、结深、掺杂剖面、$C_{store}$ 等仍列在待校准清单中；仅调到一条曲线吻合不能反推真实工艺参数。因此本文所有器件级结论均限于"未校准代表模型"的适用范围。
+
+\subsection{Geant4 粒子输运模型}
+
+v3 冻结设计采用 Geant4 10.7.3、option4 电磁构造器与步长限制\cite{g4em}，粒子为 $5\,\text{MeV}$ 的 alpha 或 proton，方向角 $0^\circ/30^\circ$，材料仅含硅与外部真空。硅横截面宽 $L+0.6\um$、深 $1.2\um$，出平面按 $1\um$ 有效厚度归一化；入射点为 $(L+0.45,0,0)\um$，方向 $(-\sin\theta,\cos\theta,0)$，$+y$ 指向硅体内部。有限直径迹长度为
+\begin{equation}
+\ell=\begin{cases}
+1.2\um, & \theta=0^\circ,\\
+\min\!\left(\dfrac{1.2}{\cos\theta},\dfrac{L+0.45}{\sin\theta}\right)\um, & \theta=30^\circ.
+\end{cases}
+\label{eq:length}
+\end{equation}
+该直径迹不等于散射后的实际输运路程；固定表面入口意味着比较的是约定入射位置，不能推广到整个单元的空间敏感区分布。
+
+v4 阶段在独立三维厚硅体中完成了 212 个初级质子事件的记录检查（保留 66 条轨迹、1724 个步骤），取得 9 条核非弹性记录作为核机制见证，保留两次零沉积射偏事件的失败记录；三个三维源账本已闭合。r0.6 排批当前以 P0 资格门（数值重复性、PMI 日志链、时序保持窗、源积分）和 D0--D3 四个开发锚点（nominal / short-channel / narrow-fin 等）为第一波正式范围。输运输出的审计包括 event/track/parent 关系、材料、时间、零沉积与核过程记录，以及源积分相对误差硬核验（r0.6 要求有限且 $<10^{-9}$）；同种子的前后复测不增加独立事件数。
+
+\subsection{沉积量到 TCAD 源项的转换与检查}
+
+设第 $j$ 步总沉积和非电离沉积分别为 $E_{\mathrm{dep},j}$ 与 $E_{\mathrm{NIEL},j}$，定义电离沉积与生成电荷
+\begin{align}
+E_{\rm ion}&=\sum_j\max(0,E_{\mathrm{dep},j}-E_{\mathrm{NIEL},j}),\\
+Q_{\rm dep}&=q\,\frac{10^6\,E_{\rm ion}[\mathrm{MeV}]}{W[\mathrm{eV}]},\qquad
+W=3.6\,\mathrm{eV},\quad q=1.602176634\times10^{-19}\,\mathrm{C}.
+\label{eq:qdep}
+\end{align}
+$W$ 是硅中生成一对电子-空穴的平均能量约定\cite{ryder2021}；$Q_{\rm dep}$ 表示一类载流子的生成电荷尺度，不是净电荷，也不是 SN 最终损失的电荷。将总量沿式\eqref{eq:length}的直径迹均匀分配，线电荷密度 $\lambda_{\rm eq}=Q_{\rm dep}/\ell$，横向高斯尺度 $0.03\um$；逐步沉积记录用于溯源，实际激励是总量等效源，未忠实传递三维逐步沉积及其时空分布。
+
+对 TCAD 生成率 $G_{\rm ion}$ 作时空积分并计入二维归一化厚度，要求
+\begin{equation}
+Q_{\rm src}=q\!\!\int\!\!\int_{\Omega}G_{\rm ion}(\mathbf r,t)\,\mathrm dV\,\mathrm dt,
+\qquad \frac{|Q_{\rm src}-Q_{\rm dep}|}{Q_{\rm dep}}\leq 5\%.
+\label{eq:source}
+\end{equation}
+该门槛适用于正沉积事件，合法零沉积单独检查近零源项；v3 容差为 5\%，r0.6 将非零源积分相对误差收紧至 $<10^{-9}$。积分检验的是转换总量；等效分布的物理适用性仍受降维近似限制。
+
+\subsection{单粒子响应指标与判据}
+
+分别用 $e$、$c$、$n$ 表示粒子事件、同条件同存储位无粒子对照和中性参考。在保持阶段 $t_h=2.8\ns$ 定义
+\begin{equation}
+\Delta Q=C_s\big[V_{\mathrm{SN},e}(t_h)-V_{\mathrm{SN},c}(t_h)\big].
+\label{eq:dq}
+\end{equation}
+$\Delta Q$ 以\fC 报告，负值表示存储电容相对对照减少电荷；两种位值对同一方向扰动的敏感性不同，不能把全部 $\Delta Q$ 称为正的电荷损失。
+
+对位值 $b\in\{0,1\}$，在读出时刻 $t_r=4\ns$ 定义
+\begin{align}
+D_e&=V_{\mathrm{BL},e}(t_r)-V_{\mathrm{BL},n}(t_r),\\
+M_e&=(2b-1)D_e,\qquad
+M_c=(2b-1)\big[V_{\mathrm{BL},c}(t_r)-V_{\mathrm{BL},n}(t_r)\big],\\
+\Delta M&=M_c-M_e.
+\label{eq:margin}
+\end{align}
+$D$、$M$、$\Delta M$ 以\mV 报告，$\Delta M>0$ 表示粒子引起裕量下降。中性参考定义读出差分，位匹配对照提取粒子增量，二者不可互换；同一匹配参考在 $\Delta M$ 中相消，但绝对裕量和判据分类仍取决于参考。读窗为 3.8--4\ns，采样分段线性插值，4\ns 单点分类与整个读窗稳定性分开报告。
+
+主判据阈值 $\varepsilon=5\mV$：$M>\varepsilon$ 为正确方向（correct），$M<-\varepsilon$ 为判据误读（criterion\_error），$|M|\leq\varepsilon$ 为临界（critical）；另按 2.5/10\mV 检查阈值敏感性。阈值为项目约定，未标定实际感放失调和噪声。数值证据不足时保留"数值不确定"（numerically\_uncertain），不并入正确或误读；求解失败为 failed。本文的误读是固定采样时刻的模型判据，不等同于已锁存的持久位翻转；持久翻转与 SEFI 需要独立的持续性/功能判据。
+
+\subsection{扫描矩阵设计与独立事件单位}
+
+v3 冻结设计包含 4 种栅长 $\times$ 2 种粒子 $\times$ 2 个角度，每工况 4 个独立事件，共 64 个独立事件；每个事件分别计算存储 0 和 1，共 128 个配对响应。训练采用 $L=0.18/0.35\um$（32 事件、64 响应），$L=0.25\um$ 为尺寸插值留出、$L=0.45\um$ 为尺寸外推（各 16 事件、32 响应）；训练与测试按尺寸分离，配对位值及同事件的氧化层或数值变体均不增加粒子事件分母。该设计检验特定尺寸变化，不构成对任意能量、入射位置或材料体系的泛化验证。
+
+\subsection{数值验证与失败记录}
+
+数值质量控制采用预登记细化：半时间步与 0.7 网格各自使用自己的事件、对照与中性参考，读出差异与 $\Delta Q$ 差异均在 0.5\mV / 0.01\fC 容差内，三阈值分类保持一致；该结论仅支持预登记点。失败案例原样保留：v3 训练中固定种子事件在 3\ns 预充偏差 13.297\uV 超过 10\uV 门槛，工程求解成功但科学审计失败，标记 FAILED 并暂停依赖任务，不替换事件或放宽阈值。匹配中性参考的 8/8 无粒子一致性已通过。这些"通过+失败"并存的记录是本文可复现性论述的核心证据。
+
+\subsection{计算平台与运行控制}
+
+仿真平台为个人笔记本加实验室服务器（12 核/32\,GB Rocky9）上的 CentOS 7.9 虚拟机（分配 9 核/28\,GiB），TCAD 只用共享池中的既有配置，Geant4 沿已验证 profile 轮换；云端基准记录了迁移、Geant4 更新前后检查与同条件性能对比，2 并发$\times$4 核为拟实测配置，短测试不外推整月吞吐。运行控制为唯一串行调度者、输入冻结、锁与收集租约沿用原共享池，每次运行保留 run ID、输入 SHA256、种子、退出码、日志哈希与全程资源采样（详见 \texttt{materials/证据收集清单.md}）。

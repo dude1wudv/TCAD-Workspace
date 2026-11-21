@@ -27,7 +27,8 @@ SCHEMA = "tcad-server-codex-v2"
 DEFAULTS = {
     "poll_interval_seconds": 30, "runner_timeout_seconds": 120,
     "failure_backoff_seconds": 300, "max_failure_backoff_seconds": 3600,
-    "repair_attempt_limit": 2,
+    "repair_attempt_limit": 2, "planner_mode": "on_demand_async",
+    "collect_concurrency": 1,
 }
 REPORT_KEYS = {"status", "summary", "next_step", "next_check_seconds", "evidence"}
 _ADVISOR = None
@@ -115,13 +116,41 @@ def validate_watchdog(cfg):
         raise Refused("Invalid watchdog window: exempt_windows_ns")
 
 
+def validate_scheduler(policy):
+    def positive(value):return type(value) in (int,float) and 0<value<float('inf')
+    if type(policy.get('probe_timeout_seconds',15)) is not int or not 1<=policy.get('probe_timeout_seconds',15)<=30:
+        raise Refused('probe_timeout_seconds must be an integer from 1 through 30')
+    cfg=policy.get('resources',{})
+    allowed={'min_available_memory_gib','min_host_disk_free_gib','min_remote_disk_free_gib','min_backing_disk_free_gib','require_backing_disk','backing_disk_path','output_reserve_gib','collection_reserve_gib','telemetry_max_age_seconds','task_memory_gib_by_width'}
+    if not isinstance(cfg,dict) or set(cfg)-allowed:raise Refused('Invalid or unknown scheduler resources configuration')
+    for key in allowed-{'require_backing_disk','backing_disk_path','task_memory_gib_by_width'}:
+        if key in cfg and not positive(cfg[key]):raise Refused('Invalid positive resource limit: '+key)
+    if cfg.get('telemetry_max_age_seconds',30)>30:raise Refused('Resource telemetry may not be older than 30 seconds')
+    if 'require_backing_disk' in cfg and type(cfg['require_backing_disk']) is not bool:raise Refused('require_backing_disk must be boolean')
+    if 'backing_disk_path' in cfg and (not isinstance(cfg['backing_disk_path'],str) or not Path(cfg['backing_disk_path']).is_absolute()):raise Refused('backing_disk_path must be absolute')
+    if cfg.get('require_backing_disk') and not cfg.get('backing_disk_path'):raise Refused('Required backing disk needs its independently observed path')
+    estimates=cfg.get('task_memory_gib_by_width',{})
+    if not isinstance(estimates,dict) or set(estimates)-{'tcad','geant4'}:raise Refused('Unknown memory estimate backend')
+    for backend,widths in estimates.items():
+        if not isinstance(widths,dict) or any(not re.fullmatch(r'[1-9][0-9]*',key) or not positive(value) for key,value in widths.items()):raise Refused('Invalid task memory estimates')
+    switching=policy.get('pool_switching',{})
+    if not isinstance(switching,dict) or set(switching)-{'min_profile_dwell_seconds','max_profile_ready_wait_seconds'}:raise Refused('Invalid pool switching configuration')
+    for key,value in switching.items():
+        if type(value) not in (int,float) or not 0<=value<=604800:raise Refused('Invalid pool switching time: '+key)
+
+
 def policy_at(path):
     policy = read_json(path)
     if policy.get("schema") != SCHEMA:
         raise Refused("Unsupported policy schema; use migrate for a disabled v2 policy")
     policy = dict(DEFAULTS, **policy)
-    for name in ("workspace", "state_dir", "source_codex_config", "codex_binary",
-                 "runner_python", "task_file", "plan_file", "queue_file"):
+    if policy["planner_mode"] not in ("disabled", "on_demand_async"):
+        raise Refused("planner_mode must be disabled or on_demand_async")
+    if type(policy["collect_concurrency"]) is not int or policy["collect_concurrency"] != 1:
+        raise Refused("Original owner-lock protocol requires collect_concurrency=1")
+    paths = ("workspace", "state_dir", "runner_python", "task_file", "plan_file", "queue_file")
+    if policy["planner_mode"] != "disabled":paths += ("source_codex_config", "codex_binary")
+    for name in paths:
         if not isinstance(policy.get(name), str) or not Path(policy[name]).is_absolute():
             raise Refused("Policy requires an absolute path: " + name)
     if type(policy.get("enabled")) is not bool:
@@ -136,6 +165,8 @@ def policy_at(path):
         ("failure_backoff_seconds", 1, 86400), ("max_failure_backoff_seconds", 1, 86400),
         ("repair_attempt_limit", 0, 10),
     ):
+        if policy["planner_mode"] == "disabled" and key in ("cycle_timeout_seconds", "minimum_interval_seconds", "maximum_cycles_per_start"):
+            continue
         value = policy.get(key)
         if type(value) is not int or not low <= value <= high:
             raise Refused("Invalid policy limit: " + key)
@@ -149,6 +180,7 @@ def policy_at(path):
         raise Refused("Maximum backoff must not be shorter than initial backoff")
     if "watchdog" in policy:
         validate_watchdog(policy["watchdog"])
+    validate_scheduler(policy)
     return policy
 
 
@@ -304,10 +336,11 @@ def readiness_at(policy):
 def inspect(policy):
     errors = []
     route = {}
-    try:
-        route = {k: v for k, v in route_at(policy).items() if k != "secret"}
-    except (Refused, OSError, ValueError) as exc:
-        errors.append(str(exc))
+    if policy.get("planner_mode") != "disabled":
+        try:
+            route = {k: v for k, v in route_at(policy).items() if k != "secret"}
+        except (Refused, OSError, ValueError) as exc:
+            errors.append(str(exc))
     for relative in (
         "AGENTS.md", "scripts/tcad.py",
         "experiments/dram-see-v4/transport-probe/operation.py",
@@ -315,7 +348,9 @@ def inspect(policy):
     ):
         if not (Path(policy["workspace"]) / relative).is_file():
             errors.append("Workspace source missing: " + relative)
-    for name in ("task_file", "codex_binary", "runner_python", "plan_file"):
+    required = ("task_file", "runner_python", "plan_file")
+    if policy.get("planner_mode") != "disabled":required += ("codex_binary",)
+    for name in required:
         if not Path(policy[name]).is_file():
             errors.append("Required file missing: " + name)
     try:
@@ -590,8 +625,18 @@ def runtime_module():
     return module
 
 
+def scheduler_module(name):
+    key = 'tcad_autonomy_' + name
+    if key not in sys.modules:
+        spec = importlib.util.spec_from_file_location(key, HERE / (name + '.py'))
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[key] = module
+        spec.loader.exec_module(module)
+    return sys.modules[key]
+
+
 def create_runtime(policy, ready):
-    return runtime_module().Runtime(policy, ready)
+    return scheduler_module('scheduler_engine').SchedulerEngine(policy, ready)
 
 
 def watch_key(policy, previous, observation):
@@ -615,10 +660,13 @@ def watch_key(policy, previous, observation):
         except OSError:
             observed.append([str(path), "unavailable"])
     return hashlib.sha256(json.dumps(
-        [observation["fingerprint"], observed], sort_keys=True).encode()).hexdigest()
+        [observation['fingerprint'],observed,{
+            'schema':observation.get('scheduler',{}).get('schema'),
+            'attention':sorted(key for key,value in observation.get('scheduler',{}).get('tasks',{}).items() if value.get('manual_attention'))}],sort_keys=True).encode()).hexdigest()
 
 
 def should_wake(policy, checkpoint, observation, event_key, now=None):
+    if policy.get("planner_mode") == "disabled":return False
     now = time.time() if now is None else now
     if checkpoint is None:
         return True
@@ -646,12 +694,21 @@ def new_artifact_created(policy, prior, checkpoint, started_ns):
     return False
 
 
-def sleep_poll(seconds, stop, state):
+def sleep_poll(seconds, stop, state, wakeup=None, paths=()):
+    def signatures():
+        values = []
+        for path in paths:
+            try:
+                meta = Path(path).stat();values.append((meta.st_mtime_ns, meta.st_size))
+            except OSError:values.append(None)
+        return values
+    prior = signatures()
     until = time.monotonic() + seconds
     while time.monotonic() < until and not stop["requested"]:
-        if (state / "pause.json").exists():
-            break
-        time.sleep(min(1, max(0, until - time.monotonic())))
+        if (state / "pause.json").exists() or signatures() != prior:break
+        if wakeup is not None and wakeup.is_set():
+            wakeup.clear();break
+        time.sleep(min(.5, max(0, until - time.monotonic())))
 
 
 def binding(policy):
@@ -670,6 +727,12 @@ def binding(policy):
         "transport_connection_file": policy.get("transport_connection_file"),
         "transport_max_parallel_jobs": policy.get("transport_max_parallel_jobs"),
         "scientific_gate": policy.get("scientific_gate"),
+        "planner_mode": policy.get("planner_mode", "on_demand_async"),
+        "collect_concurrency": policy.get("collect_concurrency", 1),
+        "resources": policy.get("resources"),
+        "probe_timeout_seconds": policy.get("probe_timeout_seconds",15),
+        "pool_switching": policy.get("pool_switching"),
+        "watchdog": policy.get("watchdog"),
     }
 
 
@@ -727,6 +790,7 @@ def serve(policy_file, once=False):
         ready = readiness_at(initial)
         stamp = identity_stamp(initial, ready)
         runtime = create_runtime(initial, ready)
+        planner = scheduler_module('scheduler_planner').AsyncPlanner() if initial.get('planner_mode') != 'disabled' else None
         previous = read_json(state / "checkpoint.json") if (state / "checkpoint.json").exists() else None
         if previous and previous.get("state") in ("running", "uncertain") and previous.get("cycle"):
             try:
@@ -797,69 +861,46 @@ def serve(policy_file, once=False):
                         or not policy_at(policy_file)["enabled"]):
                     break
                 event_key = watch_key(policy, previous, observation)
-                if should_wake(policy, previous, observation, event_key):
-                    prior, started_ns = previous, time.time_ns()
-                    during_observation = observation
-
-                    def supervise_while_model_runs():
-                        nonlocal recovering, runtime_errors, runtime_retry_after, during_observation
-                        if time.time() < runtime_retry_after:
-                            return
-                        try:
-                            # The same Runtime, same intent ledger and same
-                            # can_submit checks as the outer loop. No new owner.
-                            during_observation = runtime.tick(allow_submit=False)
-                            recovering = False
-                            if (runtime.can_submit()
-                                    and not during_observation.get("discovery_uncertain", False)):
-                                during_observation = runtime.tick(allow_submit=True)
-                            runtime_errors = 0
-                            write_json(state / "observation.json", {"utc": utc(), **during_observation})
-                        except Exception as exc:
-                            recovering = True
-                            runtime_errors += 1
-                            delay = min(policy["max_failure_backoff_seconds"],
-                                        policy["failure_backoff_seconds"]
-                                        * 2 ** min(runtime_errors - 1, 16))
-                            runtime_retry_after = time.time() + delay
-                            write_json(state / "runtime-error.json", {
-                                "utc": utc(), "error_type": type(exc).__name__,
-                                "retry_after": runtime_retry_after, "failure_count": runtime_errors})
-
-                    previous = run_cycle(policy, ready, previous, stop, observation,
-                                         supervise=supervise_while_model_runs)
+                if planner and planner.pending is None and should_wake(policy, previous, observation, event_key):
+                    context = {"prior": previous, "baseline": observation, "event_key": event_key,
+                               "started_ns": time.time_ns()}
+                    planner.start(run_cycle, context, policy, ready, previous, stop, observation,
+                                  supervise=lambda: None)
+                completed = planner.take(wait=once) if planner else None
+                if completed:
+                    context, previous = completed
                     cycles += 1
-                    # Keep the observation Sol actually saw as its event
-                    # baseline. A completion during consultation wakes the next
-                    # cycle instead of being silently marked as consumed.
-                    previous["event_key"] = watch_key(policy, previous, observation)
+                    baseline, prior = context["baseline"], context["prior"]
+                    # The planner consumes its starting snapshot; arrivals while it
+                    # thinks remain visible to the next event-driven consultation.
+                    previous["event_key"] = watch_key(policy, previous, baseline)
                     previous["continue_pending"] = (
-                        previous["state"] == "reported"
-                        and previous["report"]["status"] == "progress"
-                        and (watch_key(policy, prior, observation) != event_key
-                             or new_artifact_created(policy, prior, previous, started_ns)))
+                        previous["state"] == "reported" and previous["report"]["status"] == "progress"
+                        and (watch_key(policy, prior, baseline) != context["event_key"]
+                             or new_artifact_created(policy, prior, previous, context["started_ns"])))
                     previous["next_model_after"] = time.time() + policy["minimum_interval_seconds"]
                     if previous["state"] == "reported":
                         previous["research_complete_reported"] = (
-                            previous["report"]["status"] == "complete"
-                            and not recovering
-                            and during_observation.get("queue_complete", False)
-                            and during_observation.get("active_count", 0) == 0
-                            and during_observation.get("pending_count", 0) == 0
-                            and not during_observation.get("repair_requests")
-                            and not during_observation.get("blocked_tasks"))
-                        if previous["research_complete_reported"]:
-                            previous["state"] = "idle"
-                    else:
-                        recovering = True
+                            previous["report"]["status"] == "complete" and not recovering
+                            and observation.get("queue_complete", False)
+                            and observation.get("active_count", 0) == 0
+                            and observation.get("pending_count", 0) == 0
+                            and not observation.get("repair_requests")
+                            and not observation.get("blocked_tasks")
+                            and watch_key(policy, prior, observation) == context["event_key"])
+                        if previous["research_complete_reported"]:previous["state"] = "idle"
                     write_json(state / "checkpoint.json", previous)
-                    if (policy["maximum_cycles_per_start"]
-                            and cycles >= policy["maximum_cycles_per_start"]):
-                        break
+                    if policy["maximum_cycles_per_start"] and cycles >= policy["maximum_cycles_per_start"]:break
                 if once:
                     break
-                sleep_poll(policy["poll_interval_seconds"], stop, state)
+                channel = getattr(runtime, 'channel', None)
+                sleep_poll(policy["poll_interval_seconds"], stop, state,
+                           wakeup=channel.wakeup if channel else None,
+                           paths=(policy["queue_file"], state / 'commands'))
         finally:
+            stop["requested"] = True
+            if planner:planner.close()
+            if hasattr(runtime, 'close'):runtime.close()
             for sig, old in old_handlers.items():
                 signal.signal(sig, old)
     return {"stopped": True, "codex_started_only_if_enabled_and_accepted": True}
@@ -881,6 +922,18 @@ def main(argv=None):
     clear.add_argument("--reconciled", action="store_true")
     start = commands.add_parser("serve")
     start.add_argument("--once", action="store_true")
+    cancel = commands.add_parser("cancel")
+    cancel.add_argument("target")
+    cancel.add_argument("--reason", required=True)
+    cancel.add_argument("--grace-seconds", type=int, default=15)
+    drain = commands.add_parser("drain")
+    selection = drain.add_mutually_exclusive_group(required=True)
+    selection.add_argument("--to", choices=("tcad", "geant4"))
+    selection.add_argument("--cancel", action="store_true")
+    drain.add_argument("--reason", default="Operator requested drain")
+    commands.add_parser("explain")
+    reconcile = commands.add_parser("reconcile")
+    reconcile.add_argument("--read-only", action="store_true", required=True)
     args = parser.parse_args(argv)
     os.umask(0o077)
     try:
@@ -889,12 +942,35 @@ def main(argv=None):
             print(json.dumps(result, ensure_ascii=False, indent=2))
             return 0
         policy = policy_at(args.policy)
-        if args.command == "init":
+        if args.command in ("cancel", "drain"):
+            if args.command == "cancel":
+                if not 0 <= args.grace_seconds <= 300 or not args.reason.strip():
+                    raise Refused("Cancellation needs a reason and grace-seconds in 0..300")
+                command = {"action": "cancel", "target": args.target, "reason": args.reason,
+                           "by": "operator", "grace_seconds": args.grace_seconds}
+            else:
+                command = {"action": "cancel_drain"} if args.cancel else {
+                    "action": "drain", "target": args.to, "reason": args.reason}
+            request_id = uuid.uuid4().hex
+            command.update(request_id=request_id, requested_utc=utc())
+            request = Path(policy["state_dir"]) / "commands" / (request_id + ".json")
+            write_json(request, command)
+            result = {"status": "requested", "request_id": request_id,
+                      "execution": "Unique running controller will verify the original task and execute"}
+        elif args.command == "explain":
+            path = Path(policy["state_dir"]) / "observation.json"
+            result = read_json(path).get("scheduler", {}) if path.exists() else {"status": "no_observation"}
+        elif args.command == "reconcile":
+            ready = readiness_at(policy)
+            engine = scheduler_module('scheduler_engine').SchedulerEngine(policy, ready, read_only=True)
+            result = engine.tick(allow_submit=False)
+        elif args.command == "init":
             result = initialize(policy)
         elif args.command in ("status", "check", "plan"):
             result = inspect(policy)
             if args.command == "plan":
-                result["command_preview"] = invocation(policy, Path(policy["state_dir"]) / "cycles/PREVIEW")
+                result["command_preview"] = (invocation(policy, Path(policy["state_dir"]) / "cycles/PREVIEW")
+                                             if policy.get("planner_mode") != "disabled" else None)
                 result["codex_started"] = False
         elif args.command == "pause":
             pause(policy, args.reason)

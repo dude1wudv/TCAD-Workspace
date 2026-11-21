@@ -12,7 +12,7 @@
   "cycle_timeout_seconds": 1200,
   "minimum_interval_seconds": 300,
   "maximum_cycles_per_start": 0,
-  "poll_interval_seconds": 30,
+  "poll_interval_seconds": 5,
   "runner_timeout_seconds": 120,
   "failure_backoff_seconds": 300,
   "max_failure_backoff_seconds": 3600,
@@ -21,5 +21,30 @@
   "result_gdrive_offload_enabled": false,
   "result_gdrive_delete_local_raw": false,
   "max_parallel_jobs": 9,
-  "readiness": null
+  "readiness": null,
+  "planner_mode": "on_demand_async",
+  "probe_timeout_seconds": 15,
+  "collect_concurrency": 1,
+  "pool_switching": {
+    "min_profile_dwell_seconds": 1800,
+    "max_profile_ready_wait_seconds": 7200
+  },
+  "resources": {
+    "min_available_memory_gib": 3.5,
+    "min_host_disk_free_gib": 20,
+    "min_remote_disk_free_gib": 10,
+    "require_backing_disk": false,
+    "output_reserve_gib": 0.5,
+    "collection_reserve_gib": 1,
+    "telemetry_max_age_seconds": 30,
+    "task_memory_gib_by_width": {
+      "tcad": {
+        "1": 1.5,
+        "4": 4
+      },
+      "geant4": {
+        "1": 1.5
+      }
+    }
+  }
 }
