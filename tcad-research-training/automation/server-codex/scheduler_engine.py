@@ -149,7 +149,9 @@ class SchedulerEngine(runtime.Runtime):
                            "rss_kib": self.snapshot.get("runs", {}).get(key, {}).get("rss_kib")})
         return values
 
-    def _ready(self, task):
+    def _ready(self, task, eligible):
+        width = len(self.profiles[task['backend']]['resources']['cpu_sets'][eligible[0]])
+        self._ready_widths[task['id']] = (task['backend'], width)
         self._ready_now.add(task['id'])
         self.state.setdefault('scheduler_metrics',{}).setdefault('ready_since',{}).setdefault(task['id'],time.time())
 
@@ -377,6 +379,7 @@ class SchedulerEngine(runtime.Runtime):
             self._commands()
             self._cancellations()
         self._ready_now=set()
+        self._ready_widths={}
         observation = super().tick(allow_submit=allow_submit and not self.read_only)
         if invalid:observation["discovery_uncertain"] = True
         pool = self.state.get("pool_state", {})
@@ -407,6 +410,9 @@ class SchedulerEngine(runtime.Runtime):
                                      "probe": {k: v for k, v in self.snapshot.items() if k in ("ok", "observed_at", "error")},
                                      "invalid_records": invalid, "metrics": {"slot_utilization": observation["active_count"] / self.slots,
                                      "running_slot_ratio": observation["running_count"] / self.slots}}
+        supply = collections.Counter(pair for key, pair in self._ready_widths.items() if key not in self.intents)
+        observation['scheduler']['candidate_supply_by_width'] = [
+            {'backend': backend, 'threads': width, 'count': count} for (backend, width), count in sorted(supply.items())]
         stats=self.state.setdefault('scheduler_metrics',{});now=time.time()
         stats['ready_since']={key:value for key,value in stats.get('ready_since',{}).items() if key in self._ready_now and key not in self.intents}
         intervals=[entry for entry in stats.get('idle_intervals',[]) if entry[0]>now-3600]

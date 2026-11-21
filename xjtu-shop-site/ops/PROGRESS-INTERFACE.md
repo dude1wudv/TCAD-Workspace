@@ -2,6 +2,8 @@
 
 此 SQLite 库只保存公开展示注释。任务运行、收集、求解结果与科学验收仍来自原账本及证据。注释通过 `case_id` 关联正式清单或基准测试，不能改变这些事实或统计分母。
 
+首月私有 case 索引及波次诊断见[操作手册](../../tcad-research-training/automation/server-codex/MONTH-ONE.md)；不复制其原始字段到公开页面。
+
 ## 生产命令
 
 运行环境为 Python 3.9 及以上，仅使用标准库。默认库为 `<STATUS_STATE_DIR>/progress.sqlite3`。初始化创建目录 `0750`、库 `0640`；生产应由有权更新进展的 Codex 身份持有该目录，状态投影进程通过同组权限读取。该目录必须独立于网站静态根目录。

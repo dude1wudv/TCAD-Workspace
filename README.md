@@ -19,6 +19,8 @@
 
 ## 快速开始
 
+首月仿真从[首月流水线操作手册](tcad-research-training/automation/server-codex/MONTH-ONE.md)进入：区分准备缺口、槽宽、已收集和可用读出。
+
 ### 仿真与脚本
 
 ```powershell

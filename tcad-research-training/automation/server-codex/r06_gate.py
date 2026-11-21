@@ -11,6 +11,8 @@ import json
 import math
 from pathlib import Path, PurePosixPath
 import re
+import subprocess
+import sys
 
 
 PLAN = "dram-se-ddr5-lpddr5"
@@ -115,6 +117,9 @@ def matching_admission(workspace, contract, task, kind):
     admission["_verified_binding"] = {
         "path": path.relative_to(Path(workspace).resolve()).as_posix(),
         "sha256": hashlib.sha256(raw).hexdigest()}
+    if 'wave_admission_sha256' in task:
+        need(admission['_verified_binding']['sha256'] == task['wave_admission_sha256'],
+             'admission changed since wave preparation')
     return admission
 
 
@@ -293,7 +298,41 @@ def case_draw_binding(workspace, contract, manifest, admission, case, selection)
     return reference
 
 
-def verify_production(workspace, contract, manifest, task, inputs):
+def replay_selection(source, verifier_sha, frame, selection, interpreters):
+    """Use the exact frozen verifier and interpreter; never normalize the design."""
+    version = (selection.get('design') or {}).get('python_version')
+    if version == sys.version.split()[0]:
+        spec = importlib.util.spec_from_file_location('_r06_frozen_sampler', source)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        module.validate_selection(frame, selection)
+        return
+    # Only administrator-installed policy, never a proposal, supplies an executable.
+    binary = interpreters.get(version) if isinstance(interpreters, dict) else None
+    need(isinstance(binary, str) and Path(binary).is_absolute(),
+         'frozen sampling interpreter not configured: ' + str(version))
+    program = '''import hashlib,json,sys
+from pathlib import Path
+version, expected, file = sys.argv[1:]
+if sys.version.split()[0] != version: sys.exit('frozen sampling interpreter version differs')
+raw = Path(file).read_bytes()
+if hashlib.sha256(raw).hexdigest() != expected: sys.exit('frozen sampling verifier changed')
+ns = {'__name__':'_r06_frozen_sampler','__file__':file}
+exec(compile(raw,file,'exec'),ns)
+f,s = json.load(sys.stdin)
+ns['validate_selection'](f,s)
+'''
+    try:
+        checked = subprocess.run([binary, '-I', '-B', '-c', program, version, verifier_sha, str(source)],
+                                 input=json.dumps([frame, selection], allow_nan=False).encode(),
+                                 stdout=subprocess.DEVNULL, stderr=subprocess.PIPE, timeout=90, check=False)
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise Pending('frozen sampling interpreter unavailable: ' + str(version)) from exc
+    need(checked.returncode == 0, 'frozen selection replay failed: ' +
+         checked.stderr.decode('utf-8', errors='replace').strip().split('\n')[-1][:200])
+
+
+def verify_production(workspace, contract, manifest, task, inputs, interpreters=None):
     admission = matching_admission(workspace, contract, task, "production")
     need(admission.get("input_sha256") == inputs, "production input snapshot differs")
     need(admission.get("manifest_sha256") == contract["manifest"]["sha256"],
@@ -395,10 +434,7 @@ def verify_production(workspace, contract, manifest, task, inputs):
         source = path_at(workspace, contract["sampling_verifier"]["path"])
         need(sha(source) == contract["sampling_verifier"]["sha256"],
              "sampling verifier changed")
-        spec = importlib.util.spec_from_file_location("_r06_frozen_sampler", source)
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        module.validate_selection(frame, selection)
+        replay_selection(source, contract['sampling_verifier']['sha256'], frame, selection, interpreters)
         need(selection["condition"]["profile_id"] == case["profile_id"]
              and selection["condition"]["radiation_id"] == case["radiation_id"],
              "sampling condition differs")
@@ -444,7 +480,7 @@ def verify(workspace, policy, task, inputs=None, intents=None):
     if task["id"].startswith("r06-p0-"):
         result = verify_p0(workspace, contract, manifest, task, actual, intents)
     else:
-        result = verify_production(workspace, contract, manifest, task, actual)
+        result = verify_production(workspace, contract, manifest, task, actual, settings.get('sampling_interpreters'))
     ancestors = set()
     parent = task.get("repair_of")
     while parent is not None:
@@ -459,6 +495,8 @@ def verify(workspace, policy, task, inputs=None, intents=None):
              "repair must retain the parent's exact scientific object")
     for task_id, intent in intents.items():
         previous = intent.get("scientific_admission", {})
+        if 'wave_admission_sha256' in task and result.get('scope') == 'transport_pool' and previous.get('scientific_object') == result['scientific_object']:
+            need(task_id in ancestors, 'exact transport request already has an intent; reuse or explicit repair required')
         if result.get("case_id") is not None and previous.get("case_id") == result["case_id"]:
             need(task_id in ancestors, "formal case already has a submission intent")
         if (result.get("cell_key") is not None

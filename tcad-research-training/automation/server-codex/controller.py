@@ -181,6 +181,8 @@ def policy_at(path):
     if "watchdog" in policy:
         validate_watchdog(policy["watchdog"])
     validate_scheduler(policy)
+    if 'month_one_wave' in policy and (policy['planner_mode'] != 'disabled' or 'scientific_gate' not in policy):
+        raise Refused('Month-one wave requires exclusive queue handoff and scientific gate')
     return policy
 
 
@@ -727,6 +729,7 @@ def binding(policy):
         "transport_connection_file": policy.get("transport_connection_file"),
         "transport_max_parallel_jobs": policy.get("transport_max_parallel_jobs"),
         "scientific_gate": policy.get("scientific_gate"),
+        "month_one_wave": policy.get("month_one_wave"),
         "planner_mode": policy.get("planner_mode", "on_demand_async"),
         "collect_concurrency": policy.get("collect_concurrency", 1),
         "resources": policy.get("resources"),
@@ -837,7 +840,16 @@ def serve(policy_file, once=False):
                         recovering = False
                     if (runtime.can_submit()
                             and not observation.get("discovery_uncertain", False)):
-                        observation = runtime.tick(allow_submit=True)
+                        wave = None
+                        if 'month_one_wave' in policy and ready.get('new_jobs_authorized') is True:
+                            try:
+                                wave = scheduler_module('month_one_wave').publish(
+                                    policy, runtime, scheduler_module('r06_gate'), write_json)
+                            except (OSError, ValueError, KeyError, TypeError, AttributeError) as exc:
+                                wave = {'publication_held': str(exc)[:200]}
+                        observation = runtime.tick(allow_submit=runtime.can_submit())
+                        if wave is not None:
+                            observation.setdefault('scheduler', {})['month_one_wave'] = wave
                     else:
                         recovering = True
                     runtime_errors = 0
@@ -931,7 +943,12 @@ def main(argv=None):
     selection.add_argument("--to", choices=("tcad", "geant4"))
     selection.add_argument("--cancel", action="store_true")
     drain.add_argument("--reason", default="Operator requested drain")
-    commands.add_parser("explain")
+    prepare = commands.add_parser('prepare-wave', help='Print pinned wave JSON for explicitly staged proposals; no queue writes')
+    prepare.add_argument('proposals', nargs='+', help='Workspace-relative staged proposal files')
+    explain = commands.add_parser("explain")
+    target = explain.add_mutually_exclusive_group()
+    target.add_argument('--month-one', action='store_true', help='Private read-only frozen case index')
+    target.add_argument('--case', help='Explain one frozen r0.6 case ID')
     reconcile = commands.add_parser("reconcile")
     reconcile.add_argument("--read-only", action="store_true", required=True)
     args = parser.parse_args(argv)
@@ -957,6 +974,14 @@ def main(argv=None):
             write_json(request, command)
             result = {"status": "requested", "request_id": request_id,
                       "execution": "Unique running controller will verify the original task and execute"}
+        elif args.command == 'prepare-wave':
+            if 'scientific_gate' not in policy:
+                raise Refused('Wave preparation requires the frozen scientific gate')
+            result = scheduler_module('month_one_wave').prepare(policy, scheduler_module('r06_gate'), args.proposals)
+        elif args.command == 'explain' and (args.month_one or args.case is not None):
+            if 'scientific_gate' not in policy:
+                raise Refused('Month-one view requires the frozen r0.6 scientific gate')
+            result = scheduler_module('month_one').project(policy, scheduler_module('r06_gate'), args.case)
         elif args.command == "explain":
             path = Path(policy["state_dir"]) / "observation.json"
             result = read_json(path).get("scheduler", {}) if path.exists() else {"status": "no_observation"}

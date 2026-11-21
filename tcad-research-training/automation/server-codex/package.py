@@ -31,7 +31,7 @@ RUNTIME = ("controller.py", "task.md", "report.schema.json", "policy.example.jso
            "retention.py", "result_maintenance.py", "gdrive_offload.py",
            "test_retention.py", "test_result_maintenance.py", "test_gdrive_offload.py",
            "r06_gate.py", "intent_reconciliation.py",
-           "scheduler_pool.py", "scheduler_probe.py", "scheduler_collector.py",
+           "month_one.py", "month_one_wave.py", "test_month_one.py", "scheduler_pool.py", "scheduler_probe.py", "scheduler_collector.py",
            "scheduler_admission.py", "scheduler_engine.py", "scheduler_planner.py",
            "test_scheduler.py", "test_scheduler_pool.py")
 

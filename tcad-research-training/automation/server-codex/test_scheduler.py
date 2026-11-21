@@ -86,6 +86,8 @@ class SchedulerTests(unittest.TestCase):
         engine=self.engine();full=self.fill(engine,9)
         self.assertEqual(full['running_count'],9)
         self.assertEqual(len(self.h.runs()),9)
+        self.assertEqual(full['scheduler']['candidate_supply_by_width'],
+                         [{'backend':'tcad','threads':1,'count':1}])
         first=next(iter(engine.intents));old=self.h.finish(first)
         engine.tick(allow_submit=False);self.wait_channel(engine)
         observation=engine.tick();self.wait_channel(engine)

@@ -8,6 +8,8 @@ description: 通过项目现有运行器检查、运行、恢复和收集 Sentau
 
 ## 按任务处理
 
+首月在线工作由唯一服务提交；先用[首月流水线手册](../../automation/server-codex/MONTH-ONE.md)查缺口/阻塞。不要并开 batch runner 填槽。
+
 - 实际运行时读取项目 `AGENTS.md`、`docs/server-workflow.md`、目标计划和最新交接或状态；只做计划或文档修改时读取必要文件即可。
 - TCAD 远端使用 `仿真入口`、`管理入口` 等既有 TCAD 别名，不能把 业务服务器当仿真服务器。服务器本地执行时直接使用现有入口，不重复 SSH 自己。
 - 复用 `scripts/tcad.py`、`transport-probe/operation.py`、现有 profile、账本、owner、gate、锁和收集流程，不另建 runner 或求解池。
