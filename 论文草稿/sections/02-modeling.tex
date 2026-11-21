@@ -1,0 +1,45 @@
+% 第2章 Geant4/TCAD 联合建模与数据链路
+% 证据：tcad-research-training/experiments/plan.md（v3 冻结设计与授权记录）；
+%       tcad-research-training/shared/metrics-and-labels.md（指标/标签口径，v3 已冻结实现）；
+%       tcad-research-training/experiments/dram-see-v4/device-basis.md（器件参数来源与待校准项）；
+%       tcad-research-training/experiments/dram-see-v4/README.md（v4 阶段成果：212 初级事件、9 核非弹性见证、三维源账本）；
+%       tcad-research-training/experiments/dram-see-v3/r50-main/final-delivery-r4.md（64 事件/128 响应冻结交付）；
+%       output/server-benchmark-20261115/REPORT.md（云端平台与基准）；
+%       tcad-research-training/plans/dram-se-ddr5-lpddr5/P0-CLOSEOUT-AND-D0-D3-FIRST-WAVE-PREP-r06-20261120.md（r0.6 当前排批）
+\section{Geant4/TCAD 联合建模与数据链路}
+
+\subsection{器件模型与参数来源}
+
+本文采用 1T1C（一管一容）DRAM 存储单元作为代表模型：访问晶体管加存储电容，保留电荷共享与器件输运的基本物理，暂不模拟完整阵列、真实感放与恢复电路。历史探索在二维 0.18/0.25/0.35/0.45\um 等效单元上完成（v3 冻结设计），v4 阶段转向以 BCAT 为代表的三维结构，并登记了 g70/g80/g90 埋栅顶深等几何变量（注意：这些数值指埋栅顶深，不是商业工艺节点）。
+
+器件参数来源分两类：一是公开文献，如 Shin 等给出的 90 nm DRAM 栅长约 95 nm、栅堆叠 poly-Si 80 nm / WSi$_x$ 100 nm / Si$_3$N$_4$ 180 nm 等结构信息\cite{shin2003}；二是导师提供的 LPDDR5 规格资料（JESD209-5 与 Micron LPDDR5 datasheet），用于命令、刷新与电气边界，但不能由外部封装规格反推内部掺杂或栅长\cite{jesd209-5,micronlpddr5}。当前模型**未作真实器件 I--V/保持/读出校准**，有效沟道宽度、结深、掺杂剖面、Cstore 等参数仍列在待校准清单中；仅调到一条曲线吻合不能反推真实工艺参数。因此本文所有器件级结论均限于"未校准代表模型"的适用范围。
+
+\subsection{Geant4 粒子输运模型}
+
+输运端记录粒子种类、能量、入射位置与方向、事件数、随机种子与物理列表版本。v3 冻结设计采用固定 5 MeV、两种入射角度与固定入射位置的 64 个独立事件；v4 阶段在独立三维厚硅体中完成了 212 个初级质子事件的记录检查（保留 66 条轨迹、1724 个步骤），并取得 9 条核非弹性记录作为核机制见证，同时保留了两次零沉积射偏事件的失败记录；三个三维源账本已闭合。r0.6 排批当前以 P0 资格门（数值重复性、PMI 日志链、时序保持窗、源积分）和 D0--D3 四个开发锚点（nominal / short-channel / narrow-fin / …）为第一波正式范围。
+
+输运输出的审计包括：事件/轨迹/parent 关系、材料、时间、零沉积与核过程记录，以及源积分的相对误差硬核验（要求有限且 $<10^{-9}$）。同种子的前后复测不增加独立事件数。
+
+\subsection{Geant4 到 TCAD 的参数传递}
+
+传递链路为"粒子输运 → 能量沉积 → 电子-空穴对 → 等效径迹源 → TCAD 激励"。字段定义包括单位换算、坐标变换、区域筛选、沉积量到源项的离散化与时间分配，二维采用等效源近似，三维保留空间投影。接口合同要求每条源记录绑定几何、物理列表/数据版本、种子与输入身份；完全匹配的 A0 对照或输运可复用，模型/时序/网格不同则不能直接借用。v4 阶段 A0/A1/A4 三个 TCAD 接口算例已通过，细网格 A0/A1 的全部 205 帧源测量与匹配对照网格比较通过，粗网格空间失败保留未隐瞒。
+
+\subsection{单粒子响应指标与判据}
+
+令 $b\in\{0,1\}$ 为存储位值，signal 为粒子响应，control 为同初态无粒子对照，neutral 为独立中性参考。v3 冻结的连续量定义为：
+\begin{itemize}
+  \item $\Delta Q_{\fC} = C_{store} \times [V_{sn}^{signal}(2.8\ns) - V_{sn}^{control}(2.8\ns)] \times 10^{15}$（有符号，不取绝对值代替）；
+  \item $D_{\mV} = [V_{BL}^{signal}(4\ns) - V_{BL}^{neutral}(4\ns)] \times 10^{3}$；
+  \item $M_{\mV} = (2b-1) \times D_{\mV}$；$\Delta M_{\mV} = M_{control} - M_{signal}$，正值为裕量损失；
+  \item 读窗 3.8--4\ns，采样分段线性插值；4\ns 单点分类与整个读窗稳定性分开报告。
+\end{itemize}
+
+分类标签：$M>\varepsilon$ 为 correct，$M<-\varepsilon$ 为判据误读（criterion\_error，不直接等同已证持久位翻转），$-\varepsilon\le M\le \varepsilon$ 为 critical，数值证据不足为 numerically\_uncertain，求解失败为 failed。v3 主阈值 $\varepsilon=5\mV$，敏感性阈值 2.5/10\mV。每物理条件每 bit 的计划独立事件 $N=4$；同事件的 bit0/1 配对、验证角色、重试均不增加独立事件。持久翻转与 SEFI 需要独立的持续性/功能判据，现有裕量指标不能单独证明。
+
+\subsection{数值验证与失败记录}
+
+数值质量控制采用预登记细化：半时间步与 0.7 网格各自使用自己的事件、对照与中性参考，读出差异与 $\Delta Q$ 差异均在 0.5\mV / 0.01\fC 容差内，三阈值分类保持一致；该结论仅支持预登记点，不代替后续边界检查。失败案例原样保留：例如 v3 训练中固定种子事件在 3\ns 预充偏差 13.297\uV 超过 10\uV 门槛，工程求解成功但科学审计失败，标记 FAILED 并暂停依赖任务，不替换事件或放宽阈值。匹配中性参考的 8/8 无粒子一致性已通过。这些"通过+失败"并存的记录是本文可复现性论述的核心证据。
+
+\subsection{计算平台与运行控制}
+
+仿真平台为个人笔记本加实验室服务器（12 核/32\,GB Rocky9）上的 CentOS 7.9 虚拟机（分配 9 核/28\,GiB），TCAD 只用共享池中的既有配置，Geant4 沿已验证 profile 轮换；云端基准记录了迁移、Geant4 更新前后检查与同条件性能对比，2 并发×4 核为拟实测配置，短测试不外推整月吞吐。运行控制为唯一串行调度者、输入冻结、锁与收集租约沿用原共享池，每次运行保留 run ID、输入 SHA256、种子、退出码、日志哈希与全程资源采样（详见 \texttt{materials/证据收集清单.md}）。

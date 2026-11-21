@@ -123,3 +123,6 @@ coverage/
 *.pptx
 *.xls
 *.xlsx
+
+# Thesis draft build output
+/论文草稿/build/
