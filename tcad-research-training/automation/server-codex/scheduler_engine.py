@@ -71,6 +71,17 @@ class SchedulerEngine(runtime.Runtime):
             metadata["manual_attention"] = True
         self._save()
 
+    def _receipt(self, intent, record, manifest_path=None):
+        if self.channel and self.channel.command(intent['run_id'])=='collect':
+            return False
+        return super()._receipt(intent,record,manifest_path)
+
+    def _verify_collection(self, intent, payload):
+        worker=runtime.Runtime(self.policy,self.ready);worker._profile()
+        record=worker._record(intent)
+        if record is None or not worker._receipt(intent,record):
+            raise ValueError('Original archive verification failed')
+
     def _invoke(self, intent, command):
         if self.read_only:
             raise RuntimeError("Read-only reconciliation cannot invoke an original runner")
@@ -82,7 +93,8 @@ class SchedulerEngine(runtime.Runtime):
             return {"ok": False, "kind": "endpoint_unavailable"}
         if self.channel.submit(intent["run_id"], command, self._argv(intent, command), self.workspace,
                                self._runner_environment(), self.timeout,
-                               self.can_submit if command == "run" else None):
+                               self.can_submit if command == "run" else None,
+                                (lambda payload:self._verify_collection(intent,payload)) if command=="collect" else None):
             meta=intent.setdefault('scheduler',{});meta['operation']=command
             stats=self.state.setdefault('scheduler_metrics',{})
             if command=='run':
@@ -157,7 +169,7 @@ class SchedulerEngine(runtime.Runtime):
                 "action": "An explicit operator cancel request is required"}
 
     def _observe(self, task_id, intent, events, probe=True):
-        meta = intent.setdefault("scheduler", {})
+        meta = intent.get("scheduler", {})
         if self.channel:
             completed = self.channel.completed(intent["run_id"])
             if completed:
