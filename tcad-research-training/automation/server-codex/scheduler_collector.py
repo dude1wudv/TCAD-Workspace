@@ -21,7 +21,7 @@ def classify_collection_error(outcome):
     return "UNKNOWN"
 
 
-def invoke(argv, workspace, environment, timeout, authorize=None):
+def invoke(argv, workspace, environment, timeout, authorize=None, verify=None):
     started = time.monotonic()
     if authorize is not None and not authorize():
         return {"ok": False, "kind": "submission_paused_before_invocation", "not_invoked": True}
@@ -41,6 +41,10 @@ def invoke(argv, workspace, environment, timeout, authorize=None):
     if result.returncode != 0 or not isinstance(payload, dict):
         return {"ok": False, "kind": (payload or {}).get("error_code", "runner_error") if isinstance(payload, dict) else "runner_error",
                 "returncode": result.returncode, "payload": payload, "detail": (result.stderr or result.stdout or "")[-2000:]}
+    if verify is not None:
+        try:verify(payload)
+        except (OSError,ValueError,KeyError,TypeError) as exc:
+            return {"ok":False,"kind":"archive_verification_failed","detail":str(exc)[:1000],"payload":payload}
     return {"ok": True, "payload": payload, "runner_returncode": result.returncode,
             "duration_seconds": time.monotonic() - started}
 
@@ -54,12 +58,12 @@ class AsyncCollectorPool:
         self.wakeup = threading.Event()
         self.closed = False
 
-    def submit(self, run_id, command, argv, workspace, environment, timeout, authorize=None):
+    def submit(self, run_id, command, argv, workspace, environment, timeout, authorize=None, verify=None):
         if self.closed:
             return False
         if self.operations:
             return False
-        future = self.executor.submit(invoke, list(argv), workspace, dict(environment), timeout, authorize)
+        future = self.executor.submit(invoke, list(argv), workspace, dict(environment), timeout, authorize, verify)
         self.operations[run_id] = (command, future)
         future.add_done_callback(lambda _: self.wakeup.set())
         return True

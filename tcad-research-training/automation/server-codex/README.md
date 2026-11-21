@@ -125,3 +125,5 @@ python3 controller.py --policy <POLICY> drain --cancel
 发布必须同时交付新增 `scheduler_*.py` 与 `scripts/runner_termination.py`，并与两套原运行器版本绑定。先核验空闲池、全量原租约、内核锁和未登记求解器；使用原 SHA 清单和安装器暂存版本，备份原配置及受影响源码，再切换版本。验证只用 `check` 与 `reconcile --read-only`，`serve --once` 仍可能提交任务。回滚保留期间新增的原账本和失败证据，不恢复旧状态文件。
 
 只读对账显式禁用旧存储维护与云盘侧车。已完整校验的原归档在私有 `verified-archives.json` 中保存有界缓存；复用必须同时匹配原 SHA、路径、设备/inode、大小、mtime 与 ctime。缺失或变化仍须完整复核，首次核验由独立维护步骤完成；只读路径本身不写缓存，也不以收集状态代替校验。
+
+新增归档的完整校验与缓存写入也在唯一后台收集通道内完成；校验期间不在主循环重复散列。观察既有 intent 时不新增空诊断字段，保留原未启动回执的不可变身份校验。

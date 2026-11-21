@@ -1130,7 +1130,8 @@ def original_identity(lease):
     if lease['state']=='ACTIVE' or lease.get('identity') is not None:
         need(identity==lease.get('identity'),'Current process identity differs from original ACTIVE lease')
     if request.get('process_identity') is not None:
-        need(identity==request['process_identity'],'Current process identity differs from pinned original')
+        pinned={key:identity.get(key) for key in ('schema','run_id','pid','start_ticks','boot_id','cwd','script_sha256')}
+        need(pinned==request['process_identity'],'Current process identity differs from pinned original')
     return identity
 def held(fd,path,mode):
     safe_path(path);a=os.fstat(fd);b=os.stat(str(path))

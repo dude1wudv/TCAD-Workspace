@@ -97,6 +97,24 @@ class SchedulerTests(unittest.TestCase):
         self.assertTrue(any(event['type']=='collected' for event in observation['events']))
         self.assertFalse(any(command=='status' for _,command,_ in self.h.calls))
 
+    def test_new_archive_verification_never_blocks_live_scheduler_tick(self):
+        self.h.task('one');engine=self.engine();self.fill(engine,1);self.h.finish('one')
+        entered=threading.Event();release=threading.Event();self.addCleanup(release.set)
+        verify=engine._verify_collection;original_digest=module.runtime.file_digest
+        def blocked(intent,payload):
+            entered.set();release.wait(3);return verify(intent,payload)
+        def no_archive_on_main(path):
+            if Path(path).name=='results.tar':raise AssertionError('Main loop tried to hash a new archive')
+            return original_digest(path)
+        with mock.patch.object(engine,'_verify_collection',side_effect=blocked):
+            engine.tick(allow_submit=False);self.assertTrue(entered.wait(1))
+            with mock.patch.object(module.runtime,'file_digest',side_effect=no_archive_on_main):
+                started=time.monotonic();observation=engine.tick(allow_submit=False)
+            self.assertLess(time.monotonic()-started,.5)
+            self.assertEqual(observation['scheduler']['tasks']['one']['task_state'],'COLLECTING')
+            release.set();self.wait_channel(engine)
+        self.assertTrue(engine.tick(allow_submit=False)['runs'][0]['collected'])
+
     def test_new_diagnostics_stay_under_scheduler(self):
         self.h.task('one');engine=self.engine();observation=self.fill(engine,1)
         self.assertIn('one',observation['scheduler']['tasks'])
@@ -105,6 +123,14 @@ class SchedulerTests(unittest.TestCase):
             self.assertFalse({'task_state','remote_observation_fresh','remote_observed_at'} & run.keys())
         self.assertNotIn('read_only',observation)
         self.assertNotIn('fresh_max_age_seconds',observation)
+
+    def test_observing_legacy_intent_does_not_add_identity_keys(self):
+        self.h.task('one');engine=self.engine();self.fill(engine,1)
+        engine.intents['one'].pop('scheduler',None);engine._save()
+        original=json.loads(json.dumps(engine.intents['one']))
+        reader=self.engine(read_only=True);reader.tick(allow_submit=False)
+        self.assertEqual(reader.intents['one'],original)
+        self.assertNotIn('scheduler',reader.intents['one'])
 
     def test_read_only_preserves_file_set_bytes_and_mtimes(self):
         self.h.task('one');engine=self.engine();self.fill(engine,1)
