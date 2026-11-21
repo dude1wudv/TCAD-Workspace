@@ -40,6 +40,26 @@ class RunnerSchedulerV2Tests(unittest.TestCase):
             "local_state_root": str(self.state_root),
         }
 
+    def test_session_metadata_keeps_pinned_core_and_full_active_lease_strict(self):
+        import ast,re
+        identity=dict(schema='tcad-process-identity-r1',run_id='job',pid=123,start_ticks=456,
+                      boot_id='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa',cwd=str(self.tmp/'job'),
+                      script_sha256='a'*64,process_group=123,session_id=123)
+        request={'process_identity':{key:identity[key] for key in self.tcad.PROCESS_IDENTITY_KEYS}}
+        policy={'work_id':'job','remote_directory':identity['cwd']}
+        lease={'state':'ACTIVE','identity':dict(identity),'script_sha256':'a'*64}
+        def need(ok,message):
+            if not ok:raise ValueError(message)
+        source=ast.parse(self.tcad.PARALLEL_CODE)
+        function=next(node for node in source.body if isinstance(node,ast.FunctionDef) and node.name=='original_identity')
+        namespace=dict(read=lambda path:dict(identity),need=need,policy=policy,request=request,Path=Path,re=re)
+        exec(compile(ast.Module(body=[function],type_ignores=[]),'<original identity>','exec'),namespace)
+        self.assertEqual(namespace['original_identity'](lease),identity)
+        request['process_identity']['start_ticks']+=1
+        with self.assertRaisesRegex(ValueError,'pinned original'):namespace['original_identity'](lease)
+        request['process_identity']['start_ticks']-=1;lease['identity']['session_id']+=1
+        with self.assertRaisesRegex(ValueError,'original ACTIVE lease'):namespace['original_identity'](lease)
+
     def test_data_driven_v2_and_legacy_r1_to_r9_policies(self):
         # Legacy r4..r9 keep exact legacy schemas for backward compatibility.
         r4 = dict(self.base_cfg, parallel_capacity=4,

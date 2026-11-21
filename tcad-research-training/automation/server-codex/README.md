@@ -100,3 +100,30 @@ python -B automation/server-codex/package.py --output <新的源代码包路径>
 包记录逐文件SHA，包含实现、空提案示例、新研究计划和YAML；不包含实际work-items提案、.git、local_runtime、VM、许可、密钥、原始数据和结果。它不是完整研究状态迁移。安装器拒绝覆盖未归属工作区或已改源码，保留既有配置和状态；v1会先备份再迁成禁用v2。新快照建立有明确来源标记的本地Git元数据供原runner读取；既有repo只验证HEAD，不改其index和提交。安装器校验/刷新unit并init，绝不enable/start。
 
 完整安装仍用 `install.py --bundle <包> --sha256 <包SHA> --release <UTC版本>`；已有独立CPython3.11+保留，缺少时使用prepare_python.py的固定版本/SHA流程，不替换系统Python。源码、离线编排验证、真实服务沙箱/API联通、真实9并发及科研验证是不同验收层。当前范围与未做项以VALIDATION记录为准。
+
+
+## 共享池异步调度（兼容 v2 策略）
+
+`SchedulerEngine` 继续使用原 `Runtime` 的科学准入、输入校验、repair 谱系和原提交意图。每轮只做一次有界只读 SSH 采样；原提交、取消和收集共用一个后台串行通道，保留全局 owner、gate、槽锁和原租约。原运行器验证归档并确认释放后才能补槽。未确认启动的原 ID 继续保留预约；只有原运行器出具、校验通过的未启动证明才可解除预约。
+
+新策略示例见 `policy.example.json`。默认心跳 5 秒；内存估算只预留未被实测 RSS 覆盖的部分。服务器剩余空间、虚拟机剩余空间与服务器上虚拟机磁盘文件可增长空间分别准入，不能相加。实际配置要求磁盘文件增长核验时，设置独立的 `resources.backing_disk_path` 和 `require_backing_disk=true`。许可守护进程只影响 TCAD，席位数未知时保留原运行器验证。首版 `collect_concurrency` 必须为 1。
+
+`planner_mode=disabled` 不启动模型，不要求模型二进制或配置；`on_demand_async` 保留原按需 Sol/Astra 规划，在后台去重运行，不持有原运行器所有者锁。自动排空受最短驻留和最长就绪等待控制；人工排空持久化到重启后，直至完成目标预约或明确撤销。隔离槽保留原证据与租约，并允许其它合格旧剖面空槽继续补位。看门狗始终只告警，兼容读取旧 `auto_stop` 也不会自动发信号。
+
+```bash
+python3 controller.py --policy <POLICY> reconcile --read-only
+python3 controller.py --policy <POLICY> explain
+python3 controller.py --policy <POLICY> cancel <ORIGINAL_TASK_OR_RUN_ID> --reason '<operator reason>'
+python3 controller.py --policy <POLICY> drain --to geant4 --reason '<operator reason>'
+python3 controller.py --policy <POLICY> drain --cancel
+```
+
+人工命令交给唯一服务消费；不会另起求解调度者。取消由原运行器验证 PID、boot、脚本及原身份，记录真实信号和最终静止证据；缺失的原始退出码仍为 null，派生退出码单列。旧 wrapper 只能沿独立验证过的原生进程取消，不能猜测作业组。
+
+诊断仅扩展 `observation.json.scheduler`：池状态、资源阻塞、任务状态、单轮原因及真实累计指标；没有样本的平均耗时为 null。`metrics.jsonl` 有界轮转。公开状态检查器继续读取原字段，不能转发私有 scheduler 诊断。
+
+发布必须同时交付新增 `scheduler_*.py` 与 `scripts/runner_termination.py`，并与两套原运行器版本绑定。先核验空闲池、全量原租约、内核锁和未登记求解器；使用原 SHA 清单和安装器暂存版本，备份原配置及受影响源码，再切换版本。验证只用 `check` 与 `reconcile --read-only`，`serve --once` 仍可能提交任务。回滚保留期间新增的原账本和失败证据，不恢复旧状态文件。
+
+只读对账显式禁用旧存储维护与云盘侧车。已完整校验的原归档在私有 `verified-archives.json` 中保存有界缓存；复用必须同时匹配原 SHA、路径、设备/inode、大小、mtime 与 ctime。缺失或变化仍须完整复核，首次核验由独立维护步骤完成；只读路径本身不写缓存，也不以收集状态代替校验。
+
+新增归档的完整校验与缓存写入也在唯一后台收集通道内完成；校验期间不在主循环重复散列。观察既有 intent 时不新增空诊断字段，保留原未启动回执的不可变身份校验。

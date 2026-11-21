@@ -266,6 +266,7 @@ class RuntimeTests(unittest.TestCase):
         return path
 
     def test_backend_phases_drain_alternate_restart_and_keep_global_four_limit(self):
+        self.policy['pool_switching'] = {'min_profile_dwell_seconds': 0, 'max_profile_ready_wait_seconds': 0}
         self.multicore_profile()
         transport = self.enable_transport()
         for i in range(5):
