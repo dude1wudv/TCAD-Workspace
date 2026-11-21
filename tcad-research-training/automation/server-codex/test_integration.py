@@ -123,9 +123,12 @@ class ControllerRuntimeIntegrationTests(unittest.TestCase):
         first = copy.deepcopy(self.intents()["mc"])
         r.task("g", backend="geant4")
         r.task("mc-next")
+        c._enqueue_control_command(h.state, {"action": "drain", "target_profile": "geant4", "reason": "test_switch"})
         self.serve_once(1061)
         self.assertEqual(len(r.runs()), 1)
         self.assertTrue(self.observation()["pool_phase"]["draining"])
+        self.assertEqual(self.observation()["scheduler"]["pool"]["state"], "DRAINING")
+        self.assertEqual(self.observation()["scheduler"]["pool"]["target_profile"], "geant4")
         self.assertTrue(any(v["reason"] == "pool_profile_waiting_for_idle"
                             for v in self.observation()["pending_tasks"]))
         r.finish("mc")

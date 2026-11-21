@@ -30,7 +30,10 @@ RUNTIME = ("controller.py", "task.md", "report.schema.json", "policy.example.jso
            "advisor.py", "astra_advisor.toml", "test_advisor.py", "verify_advisor.py", "ADVISOR.md",
            "retention.py", "result_maintenance.py", "gdrive_offload.py",
            "test_retention.py", "test_result_maintenance.py", "test_gdrive_offload.py",
-           "r06_gate.py", "intent_reconciliation.py")
+           "r06_gate.py", "intent_reconciliation.py",
+           "scheduler_models.py", "scheduler_pool.py", "scheduler_admission.py",
+           "scheduler_probe.py", "scheduler_collector.py", "scheduler_planner.py",
+           "scheduler_engine.py", "test_scheduler_v3.py")
 
 
 def package(destination, runtime_only=False):
