@@ -123,3 +123,5 @@ python3 controller.py --policy <POLICY> drain --cancel
 诊断仅扩展 `observation.json.scheduler`：池状态、资源阻塞、任务状态、单轮原因及真实累计指标；没有样本的平均耗时为 null。`metrics.jsonl` 有界轮转。公开状态检查器继续读取原字段，不能转发私有 scheduler 诊断。
 
 发布必须同时交付新增 `scheduler_*.py` 与 `scripts/runner_termination.py`，并与两套原运行器版本绑定。先核验空闲池、全量原租约、内核锁和未登记求解器；使用原 SHA 清单和安装器暂存版本，备份原配置及受影响源码，再切换版本。验证只用 `check` 与 `reconcile --read-only`，`serve --once` 仍可能提交任务。回滚保留期间新增的原账本和失败证据，不恢复旧状态文件。
+
+只读对账显式禁用旧存储维护与云盘侧车。已完整校验的原归档在私有 `verified-archives.json` 中保存有界缓存；复用必须同时匹配原 SHA、路径、设备/inode、大小、mtime 与 ctime。缺失或变化仍须完整复核，首次核验由独立维护步骤完成；只读路径本身不写缓存，也不以收集状态代替校验。

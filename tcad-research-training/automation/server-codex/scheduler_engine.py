@@ -28,6 +28,8 @@ class SchedulerEngine(runtime.Runtime):
     def __init__(self, policy, ready, read_only=False):
         super().__init__(policy, ready)
         self.read_only = read_only
+        if read_only:
+            self.can_submit = lambda: False
         self.channel = None if read_only else collector.AsyncCollectorPool(policy.get("collect_concurrency", 1))
         self.probe = probe_module.BatchRemoteProbe(policy, read_only=read_only)
         self.admission = admission_module.ResourceAdmissionController(policy)

@@ -52,6 +52,14 @@ class SchedulerTests(unittest.TestCase):
                 return engine.tick(allow_submit=False)
         self.fail('Original channel did not dispatch expected jobs')
 
+    def test_read_only_disables_inherited_storage_and_offload_workers(self):
+        engine=self.engine(read_only=True)
+        engine.policy.update(result_retention_enabled=True,result_gdrive_offload_enabled=True)
+        self.assertFalse(engine.can_submit())
+        views={'fixture':dict(backend='tcad',collected=True,success=True)}
+        with mock.patch.object(module.runtime.subprocess,'Popen',side_effect=AssertionError('Read-only started storage worker')):
+            engine._maintain_results(views);engine._offload_results(views)
+
     def test_blocked_runner_does_not_block_tick_or_queue_edits(self):
         for i in range(10):self.h.task('job-'+str(i))
         engine=self.engine();started=threading.Event();release=threading.Event()
@@ -222,3 +230,33 @@ class ReadOnlyProbeTests(unittest.TestCase):
     def test_stale_sample_does_not_refresh_remote_facts(self):
         result,argv=self.probe(time.time()-600)
         self.assertFalse(result['ok']);self.assertIsNone(result['observed_at']);self.assertEqual(result['runs'],{})
+
+
+class DurableArchiveVerificationTests(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        import hashlib
+        self.folder=tempfile.TemporaryDirectory();self.addCleanup(self.folder.cleanup)
+        self.root=Path(self.folder.name);(self.root/'state').mkdir()
+        self.archive=self.root/'results.tar';self.archive.write_bytes(b'original-archive')
+        self.record=dict(state='COLLECTED_PENDING_AUDIT',collection_verified=True,results_sha256=hashlib.sha256(self.archive.read_bytes()).hexdigest())
+        self.intent=dict(backend='tcad',run_id='fixture')
+
+    def runtime(self,read_only=False):
+        engine=module.runtime.Runtime.__new__(module.runtime.Runtime)
+        engine.state_dir=self.root/'state';engine._archive_cache={};engine.read_only=read_only
+        return engine
+
+    def receipt(self,engine):return engine._receipt(self.intent,self.record,self.root/'manifest.json')
+
+    def test_restart_reuses_exact_verified_stat_without_rehash_or_readonly_write(self):
+        self.assertTrue(self.receipt(self.runtime()))
+        memo=self.root/'state/verified-archives.json';before=(memo.read_bytes(),memo.stat().st_mtime_ns)
+        with mock.patch.object(module.runtime,'file_digest',side_effect=AssertionError('Verified archive was rehashed')):
+            self.assertTrue(self.receipt(self.runtime(read_only=True)))
+        self.assertEqual(before,(memo.read_bytes(),memo.stat().st_mtime_ns))
+
+    def test_changed_archive_never_inherits_previous_verification(self):
+        self.assertTrue(self.receipt(self.runtime()))
+        self.archive.write_bytes(b'tampered-archive')
+        self.assertFalse(self.receipt(self.runtime(read_only=True)))

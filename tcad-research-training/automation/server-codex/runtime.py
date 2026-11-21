@@ -486,7 +486,22 @@ class Runtime:
         stat = path.stat()
         key = (str(path), stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns, expected)
         if key not in self._archive_cache:
-            self._archive_cache[key] = file_digest(path) == expected
+            stamp=(str(path),stat.st_dev,stat.st_ino,stat.st_size,stat.st_mtime_ns,stat.st_ctime_ns,expected)
+            token=digest(stamp);memo_path=self.state_dir/'verified-archives.json'
+            try:memo=read_json(memo_path) if memo_path.is_file() and not memo_path.is_symlink() else {}
+            except (OSError,ValueError):memo={}
+            entries=memo.get('verified',{}) if isinstance(memo,dict) and memo.get('schema')=='tcad-verified-archives-v1' else {}
+            if not isinstance(entries,dict):entries={}
+            if entries.get(token)==expected:
+                self._archive_cache[key]=True
+            else:
+                verified=file_digest(path)==expected
+                after=path.stat()
+                verified=verified and stamp[1:6]==(after.st_dev,after.st_ino,after.st_size,after.st_mtime_ns,after.st_ctime_ns)
+                self._archive_cache[key]=verified
+                if verified and not getattr(self,'read_only',False):
+                    entries[token]=expected
+                    write_json(memo_path,{'schema':'tcad-verified-archives-v1','verified':dict(list(entries.items())[-4096:])})
         return self._archive_cache[key]
 
     def _unlaunched(self, backend, record, path, cfg):

@@ -6,7 +6,7 @@
 
 | 范围 | 实际结果 | 证据边界 |
 |---|---|---|
-| 控制器及调度器完整回归 | 238 项，OK，1 项按环境跳过 | 包含真实异步 SchedulerEngine/AsyncPlanner，原 CLI 与 SSH 在离线测试边界替换 |
+| 控制器及调度器完整回归 | 241 项，OK，1 项按环境跳过 | 包含真实异步 SchedulerEngine/AsyncPlanner，原 CLI 与 SSH 在离线测试边界替换 |
 | 原 Geant4 operation 回归 | 30 项，OK | 保留缺失结束标记的失败语义，验证 setsid 启动契约 |
 | Linux 人工取消 | 6 项，OK | 仅使用 harmless sleep 及模拟原生进程；验证 TERM、KILL、旧 wrapper 精确身份、PID 不符拒绝、自然结束竞态和缺失原退出码 |
 | 公开状态检查器 | 38 项，OK，1 项按环境跳过 | 原公开投影契约继续有效；scheduler 私有诊断不作为科学标签 |
