@@ -14,6 +14,7 @@
 | [共享研究资料](shared/README.md) | 同一套模型、实验、文献、数据与图表 |
 | [新增文献拆解](shared/literature/README.md) | 两项资料、阅读矩阵与本课题使用边界 |
 | [报告复用](shared/report-map.md) | 同源素材与三种交付的差异 |
+| [首月流水线](automation/server-codex/MONTH-ONE.md) | 核对 case 缺口、备料、原池补槽和数据资格 |
 | [云端工作流程](docs/server-workflow.md) | 新服务器入口、原运行器和任务保护 |
 | [精简技能](docs/skills.md) | 不超过 50 行的相关技能清单 |
 

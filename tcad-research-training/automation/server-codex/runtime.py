@@ -347,6 +347,11 @@ class Runtime:
                 task.update(depends_on=deps, requires=requires, repair_of=parent,
                             repair_reason=reason, adopt_run_id=adopted)
                 task["project"] = project.relative_to(self.workspace).as_posix()
+                if 'wave_admission_sha256' in proposal:
+                    value = proposal['wave_admission_sha256']
+                    if not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{64}', value) or 'scientific_gate' not in self.policy:
+                        raise ValueError('Wave task requires a pinned scientific admission')
+                    task['wave_admission_sha256'] = value
                 if "priority" in proposal:
                     if type(proposal["priority"]) is not int:
                         raise ValueError("priority must be an integer; smaller values run first")
@@ -1104,7 +1109,7 @@ class Runtime:
         events.append({"type": "adopted_original_run", "id": task["id"], "run_id": run_id})
         return intent
 
-    def _ready(self, task):
+    def _ready(self, task, eligible):
         pass
 
     def _admission(self, task, slot):
@@ -1187,7 +1192,7 @@ class Runtime:
                         pending.append({"id": task_id, "reason": "repair_lineage_active"})
                         continue
                 # Invalid frozen inputs must not start a global profile drain.
-                self._eligible_slots(task)
+                eligible = self._eligible_slots(task)
                 schema=self.profiles[task['backend']]['resources']['schema']
                 if (not live and schema not in idle_validated) or (phase and schema!=phase):
                     self._inputs(task);idle_validated.add(schema)
@@ -1195,7 +1200,7 @@ class Runtime:
                     if not self._switch_ready(task,live):
                         pending.append({"id":task_id,"reason":"drain_target_resources_unavailable"})
                         continue
-                self._ready(task)
+                self._ready(task, eligible)
                 candidates.append(task)
             except (OSError, ValueError, TypeError, KeyError) as exc:
                 blocked.append({"id": task_id, "reason": "task_requires_revision", "detail": str(exc)})

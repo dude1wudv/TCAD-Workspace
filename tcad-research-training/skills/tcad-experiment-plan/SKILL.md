@@ -6,6 +6,7 @@ description: 将导师题目和用户决定整理为可维护的 Geant4/TCAD 研
 
 用于起草、修订和交接研究计划。写计划不会自动启动仿真，实际运行交给 `sentaurus-vm-runner` 和项目原账本。
 
+- 首月备料按[首月流水线手册](../../automation/server-codex/MONTH-ONE.md)区分冻结计划、可发布 proposal、科学验收和数据资格；不要按空槽生成科学任务。
 - 先读取项目 `AGENTS.md`、导师任务和已有计划，优先沿用当前版本。新计划没有约定时放在 `plans/<plan-id>/`。
 - `draft` 使用 [PLAN模板](assets/PLAN.template.md)，`revise` 保留版本、失败和数据身份，`handoff` 使用 [交接模板](assets/HANDOFF.template.md)。机器可读参数和任务使用 [matrix模板](assets/matrix.template.yaml)。
 - 计划按研究问题、建模与取数、标签和指标、训练与验证、交付组织。缺少资料或决定时标为待补，不用占位值把计划伪装成已定稿。
