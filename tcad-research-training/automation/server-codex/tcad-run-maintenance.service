@@ -1,0 +1,23 @@
+[Unit]
+Description=Snapshot the original run backlog (no solver or cloud access)
+
+[Service]
+Type=oneshot
+User=tcad
+Group=tcad
+EnvironmentFile=/etc/tcad-run-maintenance.env
+StateDirectory=tcad-run-maintenance
+StateDirectoryMode=0700
+UMask=0077
+ExecStart=/usr/bin/python3.12 -E -s -B /opt/tcad-run-maintenance/maintenance_tick.py --observation ${OBSERVATION} --ledger ${LEDGER} --runs ${RUNS} --state /var/lib/tcad-run-maintenance
+WorkingDirectory=/
+Nice=10
+IOSchedulingClass=idle
+PrivateNetwork=yes
+PrivateTmp=yes
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=read-only
+CapabilityBoundingSet=
+RestrictAddressFamilies=AF_UNIX
+TimeoutStartSec=45

@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh read-only run maintenance backlog
+
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=30s
+AccuracySec=2s
+Unit=tcad-run-maintenance.service
+
+[Install]
+WantedBy=timers.target

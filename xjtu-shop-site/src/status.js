@@ -441,6 +441,13 @@ function renderServices(services) {
   }).join('');
 }
 
+function renderMaintenance(m) {
+  const title = b('科研归档维护', 'Research archive maintenance');
+  if (m?.state !== 'fresh' || !m.counts) return `<aside class="batch-bar"><strong>${title}</strong><span>${m?.state === 'stale' ? b('观测过期', 'Stale observation') : b('暂无有效观测', 'No valid observation')}${m?.observed_at ? ` · ${date(m.observed_at)}` : ''}</span></aside>`;
+  const c = m.counts;
+  return `<aside class="batch-bar" aria-label="${title}"><strong>${title}</strong><span>${b('待查找或提取读出', 'Locate or extract readout')} <b>${number(c.find_or_extract_readout)}</b> · ${b('待核验备份收据', 'Backup receipts to inspect')} <b>${number(c.inspect_backup_receipt)}</b> · ${b('诊断或对账', 'Diagnose or reconcile')} <b>${number(c.diagnose_or_reconcile)}</b></span><span>${b('待读出归档', 'Archives awaiting readout')} ${number(m.selected_archive_bytes / 2 ** 30, 2)} GiB (${b('非可删除量', 'not reclaimable bytes')}) · ${b('已释放', 'Reclaimed')}: ${b('尚无实释计量', 'not measured')} · ${date(m.observed_at)}</span></aside>`;
+}
+
 function renderRuns(simulation, batch) {
   const title = localized(batch.label, batch.label_en) || b('等待批次观测', 'Awaiting batch samples');
   const totals = [['collected', b('已收集', 'Collected')], ...['running', 'collecting', 'failed', 'pending', 'unknown'].map((key) => [key, label(key)])];
@@ -640,7 +647,7 @@ function render() {
     ${['2h', '24h'].map((window) => `<button type="button" class="filter-chip" data-window="${window}" aria-pressed="${window === state.window}"><md-ripple></md-ripple>${window}</button>`).join('')}
     </div></div><div class="trend-grid">${renderTrends(history, state.window, state.lang)}</div>`);
   update('services', heading(b('服务健康', 'Service health'), '', '04', b('服务健康', 'Services')) + `<div class="service-grid">${renderServices(services)}</div>`);
-  update('runs', heading(b('近期执行流水', 'Recent runs'), '', '05', b('执行流水', 'Runs')) + `<md-elevated-card class="m3-card"><div class="panel runs-panel">${renderRuns(simulation, batch)}</div></md-elevated-card>`);
+  update('runs', heading(b('近期执行流水', 'Recent runs'), '', '05', b('执行流水', 'Runs')) + `<md-elevated-card class="m3-card"><div class="panel runs-panel">${renderMaintenance(payload.maintenance_summary)}${renderRuns(simulation, batch)}</div></md-elevated-card>`);
   updateResearch(payload, scheduler, research);
   update('footer', `<div class="scope"><details class="scope-details"><summary>${b('公开范围与数据口径', 'Public scope & definitions')}</summary>
     <p>${b('公开服务健康、资源摘要和已脱敏的仿真进度。服务器与虚拟机内存及三层存储空间独立采样、余量不相加；工程完成以原任务核验收集为准，科学验收另需逐例证据。',
