@@ -2,8 +2,8 @@
 from collections import Counter
 import numpy as np
 
-from .data import LeakageError, head_valid
-from .r_training import response_samples
+from .data import LeakageError
+from .r_training import random_calibration_samples
 
 
 def random_oof_records(artifact, validation):
@@ -15,9 +15,7 @@ def random_oof_records(artifact, validation):
         raise LeakageError("Probability calibration predictions must exclude target sources")
     if "upset" not in artifact.metadata["trained_heads"]:
         return []
-    samples = [s for s in response_samples(validation)
-               if s["primary"]["sampling"] == "random" and head_valid(s["response"], "upset")
-               and (s["response"].get("labels") or {}).get("upset") is not None]
+    samples = random_calibration_samples(validation)
     return [{
         "response_id": s["response"]["response_id"], "condition_id": s["condition"]["condition_id"],
         "source_primary_id": s["primary"]["source_primary_id"], "state": s["state"],

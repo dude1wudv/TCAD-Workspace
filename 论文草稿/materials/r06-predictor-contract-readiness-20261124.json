@@ -1,0 +1,36 @@
+{
+  "schema": "tcad-r06-predictor-contract-readiness-v1",
+  "order_id": "q-predictor-r06-contract-01",
+  "date": "2026-11-24",
+  "revision": "r0.6",
+  "scope": "offline_software_contract",
+  "source_evidence": [
+    "tcad-research-training/plans/dram-se-ddr5-lpddr5/R06-HANDOFF-AND-PREDICTOR-CONTRACT.md",
+    "tcad-research-training/plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json",
+    "tcad-research-training/predictor/SCHEMA.md",
+    "tcad-research-training/predictor/tests/test_r06_snapshot.py",
+    "tcad-research-training/predictor/tests/test_r06_features.py",
+    "tcad-research-training/predictor/tests/test_aggregation.py",
+    "tcad-research-training/predictor/tests/test_calibration.py",
+    "tcad-research-training/predictor/tests/test_r_training.py"
+  ],
+  "software_status": {
+    "snapshot": "支持标准化五表接入、冻结时序、原始输入哈希、留出分区及逐初态监督统计。",
+    "R": "支持 b1-only、缩放和主动学习响应。注入电荷应用一次实际倍率，温度标定筛选简单随机样本，缺少两类监督的初态不发布翻转概率。",
+    "A": "支持同一冻结抽样单元内按状态和纳入概率估计截面，以及基于完整映射事件池的逐状态折外代理。原样保留缺失结果和不可估方差。",
+    "F": "沿用仿真前特征及逐状态监督掩码。直接抽样估计单独报告，F 使用原生计数或折外模型代理。"
+  },
+  "verification": {
+    "environment": "Windows predictor/.venv, CPU PyTorch",
+    "compileall_exit_code": 0,
+    "unittest_exit_code": 0,
+    "unittest_passed": 200
+  },
+  "evidence_boundary": {
+    "verification_data": "synthetic_fixture",
+    "native_r06_snapshot_imported_this_order": false,
+    "formal_training_run_this_order": false,
+    "scientific_validation_completed_this_order": false,
+    "pending": "从已验收证据显式导出真实开发五表及冻结抽样回执，核对实际源映射、统计资格、独立分组和状态覆盖后，再安排正式拟合与独立评价。"
+  }
+}

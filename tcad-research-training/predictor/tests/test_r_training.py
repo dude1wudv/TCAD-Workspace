@@ -14,7 +14,7 @@ import torch
 from dram_predictor.config import Config
 from dram_predictor.data import DataError, LeakageError, Snapshot
 from dram_predictor.r_training import (
-    RArtifact, fit_r, fit_r_core, primary_batches, response_samples, targets,
+    RArtifact, fit_r, fit_r_core, primary_batches, response_samples, sample_record, targets,
 )
 from dram_predictor.splits import grouped_folds, stopping_split
 from fixtures import make_fixture
@@ -192,6 +192,129 @@ class ResponseTrainingTests(unittest.TestCase):
                 self.assertTrue(all(r["upset_logit"] is None and r["probability"] is None
                                     for r in predictions))
                 self.assertTrue(all(r["delta_voltage_V"] is not None for r in predictions))
+
+    def r06_snapshot(self):
+        snapshot = copy.deepcopy(self.snapshot)
+        snapshot.manifest.update(simulation_revision="0.6", source_time_ns=22.,
+                                 deck_timing_version="r06-hold-window-v1")
+        return snapshot
+
+    def test_r06_response_scale_reaches_network_mechanism_and_regularizer_once(self):
+        snapshot = self.r06_snapshot()
+        view = snapshot.view(self.core.condition_ids)
+        primary = next(p for p in view.primaries if not p["source_off"])
+        source = copy.deepcopy(primary["source_features"])
+        for row in view.responses:
+            row.update(scale_factor=3. if row["state"] == 0 else 10., source_time_ns=22.,
+                       deck_timing_version="r06-hold-window-v1", selection_mechanism="threshold_scaled")
+        samples = response_samples(view)
+        artifact = fit_r_core(view, self.config, epochs=1)
+        reference = fit_r_core(self.core, self.config, epochs=1)
+        gains = {r["id"]: r["fitted_gain"] for r in artifact.mechanism.calibration_records
+                 if "fitted_gain" in r}
+        reference_gains = {r["id"]: r["fitted_gain"] for r in reference.mechanism.calibration_records
+                           if "fitted_gain" in r}
+        inputs = artifact._inputs(samples)
+        self.assertNotIn("source_time_ns", artifact.encoder.numeric)
+        self.assertEqual(artifact.metadata["sample_times_ns"], snapshot.times)
+        for i, sample in enumerate(samples):
+            if sample["primary"] is not primary:
+                continue
+            row = sample_record(sample)
+            response = sample["response"]
+            scale, identity = response["scale_factor"], response["response_id"]
+            self.assertEqual(row["generated_charge_fC"], source["generated_charge_fC"] * scale)
+            self.assertAlmostEqual(float(inputs["generated_charge_fC"][i]), row["generated_charge_fC"])
+            self.assertAlmostEqual(float(inputs["source_duration_ns"][i]), source["source_duration_ns"])
+            self.assertEqual(row["deposited_energy_MeV"], source["deposited_energy_MeV"])
+            self.assertEqual(row["source_time_ns"], 22.)
+            self.assertEqual(row["deck_timing_version"], "r06-hold-window-v1")
+            self.assertAlmostEqual(gains[identity], reference_gains[identity] / scale)
+        charges = [sample_record(s)["generated_charge_fC"] for s in samples if not s["primary"]["source_off"]]
+        self.assertEqual(artifact.metadata["charge_regularizer_scale_fC"], float(np.median(charges)))
+        self.assertEqual(primary["source_features"], source)
+
+    def test_r06_predict_r_checks_explicit_timing_against_artifact(self):
+        snapshot = self.r06_snapshot()
+        artifact = fit_r_core(snapshot.view(self.core.condition_ids), self.config, epochs=1)
+        self.assertEqual(artifact.metadata["simulation_revision"], "0.6")
+        self.assertEqual(artifact.metadata["source_time_ns"], 22.)
+        self.assertEqual(artifact.metadata["deck_timing_version"], "r06-hold-window-v1")
+        sample = next(s for s in response_samples(snapshot.view(self.outer.validation.condition_ids))
+                      if not s["primary"]["source_off"])
+        sample = {key: sample[key] for key in ("condition", "primary", "state", "bit")}
+        expected = artifact.predict_samples([sample])
+        primary = {**sample["primary"], "source_time_ns": 22., "deck_timing_version": "r06-hold-window-v1"}
+        self.assertEqual(artifact.predict_samples([{**sample, "primary": primary}]), expected)
+        scaled = {**sample, "primary": {**primary, "scale_factor": 3.}}
+        overridden = {**scaled, "response": {"scale_factor": 10., "deck_timing_version": "r06-hold-window-v1"}}
+        charge = sample["primary"]["source_features"]["generated_charge_fC"]
+        torch.testing.assert_close(artifact._inputs([scaled, overridden])["generated_charge_fC"],
+                                   torch.tensor([charge * 3., charge * 10.]))
+        for field, wrong_value in (("source_time_ns", 15.), ("deck_timing_version", "other-deck")):
+            for source in ("primary", "response"):
+                with self.subTest(field=field, source=source), self.assertRaisesRegex(DataError, field):
+                    supplied = {**sample, "primary": primary}
+                    supplied[source] = {**supplied.get(source, {}), field: wrong_value}
+                    artifact.predict_samples([supplied])
+
+    def test_r04_sample_and_artifact_ignore_incidental_r06_metadata(self):
+        sample = next(s for s in response_samples(self.outer.validation) if not s["primary"]["source_off"])
+        extras = {"source_time_ns": 22., "deck_timing_version": "r06-hold-window-v1", "scale_factor": 10.}
+        annotated = {**sample, "primary": {**sample["primary"], **extras},
+                     "response": {**sample["response"], **extras}}
+        self.assertEqual(sample_record(annotated), sample_record(sample))
+        artifact = fit_r_core(self.core, self.config, epochs=1)
+        self.assertNotIn("simulation_revision", artifact.metadata)
+        self.assertNotIn("source_time_ns", artifact.metadata)
+        self.assertEqual(artifact.predict_samples([annotated]), artifact.predict_samples([sample]))
+
+    def test_r06_sparse_supervision_and_artifact_state_support(self):
+        snapshot = self.r06_snapshot()
+        fit_ids = {r["response_id"] for r in self.core.responses}
+        incomplete_id = self.core.primaries[0]["primary_id"]
+        snapshot.responses = [r for r in snapshot.responses if r["response_id"] not in fit_ids
+                              or r["state"] == 1 or r["primary_id"] == incomplete_id]
+        pending = [r for r in snapshot.responses if r["primary_id"] == incomplete_id]
+        snapshot.primaries[incomplete_id].update(source_features=None, source_off=None)
+        for row in pending:
+            row["labels"] = {"delta_voltage_V": [None] * len(snapshot.times), "upset": 0}
+            row["masks"]["upset"] = False
+        view = snapshot.view(self.core.condition_ids)
+        samples = response_samples(view)
+        self.assertEqual({s["state"] for s in samples}, {1})
+        self.assertEqual(len(samples), len(view.responses) - len(pending))
+        self.assertEqual(len(view.footprint()["response_ids"]), len(view.responses))
+        artifact = fit_r_core(view, self.config, epochs=1)
+        self.assertEqual(artifact.metadata["upset_states"], [1])
+        held = snapshot.view(self.outer.validation.condition_ids)
+        samples = response_samples(held)
+        predictions = artifact.predict_samples(samples)
+        for row in predictions:
+            self.assertEqual(row["upset_logit"] is not None, row["state"] == 1)
+            self.assertEqual(row["probability"] is not None, row["state"] == 1)
+        self.assertEqual(artifact.evaluate(held)["heads"]["upset"]["n"],
+                         sum(s["state"] == 1 for s in samples))
+        with tempfile.TemporaryDirectory(dir=self.root) as directory:
+            artifact.save(directory)
+            restored = RArtifact.load(directory)
+            self.assertEqual(restored.metadata["upset_states"], [1])
+            self.assertEqual(restored.metadata["source_time_ns"], 22.)
+            self.assertEqual(restored.metadata["deck_timing_version"], "r06-hold-window-v1")
+            self.assertEqual(restored.predict_samples(samples), predictions)
+
+    def test_r06_pooled_classes_do_not_qualify_either_state(self):
+        snapshot = self.r06_snapshot()
+        view = snapshot.view(self.core.condition_ids)
+        for row in view.responses:
+            row["labels"]["upset"] = row["state"]
+        artifact = fit_r_core(view, self.config, epochs=1)
+        self.assertEqual(artifact.metadata["upset_states"], [])
+        self.assertNotIn("upset", artifact.metadata["trained_heads"])
+        snapshot.manifest["simulation_revision"] = "0.4"
+        legacy = fit_r_core(view, self.config, epochs=1)
+        self.assertNotIn("upset_states", legacy.metadata)
+        self.assertIn("upset", legacy.metadata["trained_heads"])
 
     def test_mechanism_only_never_constructs_optimizer_or_auxiliary_predictions(self):
         with patch("dram_predictor.r_training.torch.optim.AdamW",

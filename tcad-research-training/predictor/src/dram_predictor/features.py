@@ -8,6 +8,10 @@ from .data import DEVICE_FEATURES, F_FEATURES, SOURCE_FEATURES, DataError, Leaka
 
 LOG_FEATURES = {"acceptor_scale", "donor_scale", "acceptor_cm3", "donor_cm3",
                 "capacitance_fF", "incident_energy_MeV"}
+SOURCE_TIMING_FIELDS = ("source_time_ns", "deck_timing_version")
+R_ONLY_FIELDS = frozenset(SOURCE_FEATURES + SOURCE_TIMING_FIELDS) | {
+    "scale_factor", "selection_mechanism", "inclusion_probability",
+}
 
 
 def record(condition, primary=None, state=None, bit=None):
@@ -35,6 +39,17 @@ def record(condition, primary=None, state=None, bit=None):
     result.update(condition["categories"])
     if primary is not None:
         result.update(primary["source_features"])
+        scale = primary.get("scale_factor")
+        if scale is not None:
+            if (isinstance(scale, bool) or not isinstance(scale, (int, float))
+                    or not math.isfinite(scale) or scale <= 0):
+                raise DataError("scale_factor must be positive and finite")
+            charge = result.get("generated_charge_fC")
+            if charge is not None:
+                result["generated_charge_fC"] = charge * scale
+        for name in SOURCE_TIMING_FIELDS:
+            if primary.get(name) is not None:
+                result[name] = primary[name]
         result["source_off"] = float(primary["source_off"])
         if primary["source_off"]:
             # Irrelevant hit coordinates cannot create a residual for a fully off source.
@@ -49,7 +64,7 @@ def record(condition, primary=None, state=None, bit=None):
 def source_off_record(row):
     result = dict(row)
     for name in SOURCE_FEATURES:
-        if name in result:
+        if name in result and (name != "deposited_energy_MeV" or not row.get("source_off")):
             result[name] = 0.
     result["source_off"] = 1.
     return result
@@ -72,8 +87,8 @@ class Encoder:
         return F_FEATURES + SOURCE_FEATURES + ("state", "source_off", "bit_x_nm", "bit_y_nm", "bit_z_nm")
 
     def _matrix(self, rows):
-        if self.mode == "F" and any(set(row) & set(SOURCE_FEATURES) for row in rows):
-            raise LeakageError("F cannot consume deposited/source quantities")
+        if self.mode == "F" and any(R_ONLY_FIELDS.intersection(row) for row in rows):
+            raise LeakageError("F cannot consume deposited/source quantities or response metadata")
         a = np.empty((len(rows), len(self.numeric)), dtype=np.float64)
         for i, row in enumerate(rows):
             for j, name in enumerate(self.numeric):

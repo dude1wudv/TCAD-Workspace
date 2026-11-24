@@ -1,4 +1,4 @@
-"""Explicit, read-only raw-trace intake for the r0.4 prediction snapshots.
+"""Explicit, read-only raw-trace intake for the predictor snapshots.
 
 The builder never invokes a runner, discovers files with glob, opens sealed
 labels, invents a binary error label, or imports historical experiment code.
@@ -16,6 +16,11 @@ import math
 from pathlib import Path
 import re
 from typing import Any
+
+from .data import (
+    COHORTS, R06_COHORTS, SIMULATION_REVISIONS, DataError, LeakageError, Snapshot,
+    _lineage, validate_r06_partition,
+)
 
 
 class IntakeError(ValueError):
@@ -170,7 +175,7 @@ def _reject_legacy(value: dict[str, Any]) -> None:
     for key in ("generation", "schema", "domain", "model_id"):
         field = value.get(key)
         if isinstance(field, str) and _LEGACY.search(field):
-            raise IntakeError(f"Historical {key} cannot be relabeled as r0.4: {field}")
+            raise IntakeError(f"Historical {key} cannot be relabeled for predictor intake: {field}")
 
 
 def _require_label_free(value: Any) -> None:
@@ -244,6 +249,7 @@ def extract_paired_trace(
     root: str | Path,
     *,
     sources: _Sources | None = None,
+    deck_timing_version: str | None = None,
 ) -> dict[str, Any]:
     """Derive signed voltage perturbation and, when defined, port charge only.
 
@@ -258,19 +264,25 @@ def extract_paired_trace(
     if isinstance(state, bool) or state not in (0, 1):
         raise IntakeError("Response state must be 0 or 1")
     protocol = response.get("protocol_id", condition.get("protocol_id",
-                            condition.get("categories", {}).get("protocol_id")))
+                            condition.get("categories", {}).get("protocol_id", deck_timing_version)))
     matched = response.get("matching_control")
     profile = condition.get("profile_id")
     if (not isinstance(protocol, str) or not protocol or not isinstance(matched, dict)
             or not isinstance(profile, str) or not profile.strip()):
         raise IntakeError("Explicit signal/control profile, state and protocol matching is required")
     expected = {"profile_id": profile, "state": state, "protocol_id": protocol}
+    if deck_timing_version is not None:
+        expected["deck_timing_version"] = deck_timing_version
     if any(matched.get(key) != value for key, value in expected.items()) or isinstance(matched.get("state"), bool):
-        raise IntakeError("Signal/control profile, state or protocol differs")
+        raise IntakeError("Signal/control profile, state, protocol or deck timing differs")
+    origin_key = "source_time_ns" if deck_timing_version is not None else "injection_time_ns"
+    origin = _finite(response.get(origin_key), origin_key)
+    if deck_timing_version is not None and "injection_time_ns" in response:
+        if _finite(response["injection_time_ns"], "injection_time_ns") != origin:
+            raise IntakeError("injection_time_ns disagrees with the r0.6 source_time_ns")
     source_reader = sources or _Sources(Path(root).resolve(), {}, set())
     signal = _read_trace(response.get("trace"), source_reader)
     control = _read_trace(response.get("control_trace"), source_reader)
-    origin = _finite(response.get("injection_time_ns"), "injection_time_ns")
     voltage = [
         _finite(_sample(signal["time_ns"], signal["voltage_V"], origin + time)
                 - _sample(control["time_ns"], control["voltage_V"], origin + time),
@@ -340,9 +352,10 @@ def build_snapshot(intake_manifest_path: str | Path, output_dir: str | Path) -> 
     _reject_legacy(manifest)
     if (type(manifest.get("schema_version")) is not int or manifest["schema_version"] != 1
             or manifest.get("plan_id") != "dram-se-ddr5-lpddr5"
-            or manifest.get("simulation_revision") != "0.4"
+            or manifest.get("simulation_revision") not in SIMULATION_REVISIONS
             or manifest.get("kind") not in ("native_simulation", "synthetic_fixture")):
-        raise IntakeError("Expected the explicit r0.4 snapshot identity and kind")
+        raise IntakeError("Expected an explicit r0.4 or r0.6 snapshot identity and kind")
+    r06 = manifest["simulation_revision"] == "0.6"
     development = manifest.get("development")
     if not isinstance(development, dict):
         raise IntakeError("Missing development tables")
@@ -359,9 +372,15 @@ def build_snapshot(intake_manifest_path: str | Path, output_dir: str | Path) -> 
     for condition in conditions:
         if (not isinstance(condition.get("profile_id"), str)
                 or not condition["profile_id"].strip()
-                or condition.get("cohort") not in
-                ("development", "new_combination", "high_energy", "device_extrapolation")):
+                or condition.get("cohort") not in (R06_COHORTS if r06 else COHORTS)):
             raise IntakeError("Condition requires an explicit profile_id and cohort")
+        if r06:
+            try:
+                validate_r06_partition(condition)
+            except LeakageError as exc:
+                raise LabelIsolationError(str(exc)) from exc
+            except DataError as exc:
+                raise IntakeError(str(exc)) from exc
     for primary in primaries:
         if primary.get("condition_id") not in condition_by_id:
             raise IntakeError("Primary references unknown condition")
@@ -377,8 +396,14 @@ def build_snapshot(intake_manifest_path: str | Path, output_dir: str | Path) -> 
         primary = primary_by_id.get(row.get("primary_id"))
         if primary is None:
             raise IntakeError("Response references unknown primary")
-        if condition_by_id[primary["condition_id"]].get("cohort") != "development":
+        condition = condition_by_id[primary["condition_id"]]
+        if condition.get("cohort") != "development":
             raise LabelIsolationError("Development response references a sealed condition")
+        if r06 and row.get("radiation_id") != condition["radiation_id"]:
+            raise LabelIsolationError("r0.6 response radiation_id differs from the condition")
+        if r06 and (row.get("deck_timing_version") != manifest.get("deck_timing_version")
+                    or row.get("source_time_ns") != manifest.get("source_time_ns")):
+            raise IntakeError("r0.6 response timing differs from the snapshot")
     for row in controls:
         if row.get("cohort") != "development" or row.get("profile_id") not in dev_profiles:
             raise LabelIsolationError("Development control references a sealed/unknown profile")
@@ -393,14 +418,17 @@ def build_snapshot(intake_manifest_path: str | Path, output_dir: str | Path) -> 
     output_responses = []
     for row in responses:
         result = copy.deepcopy(row)
-        if row.get("status") != "valid":
+        if r06 and row.get("status") == "unresolved":
+            omissions.append({"response_id": row["response_id"], "reason": "unresolved_upset"})
+        elif row.get("status") != "valid":
             result["labels"] = {key: None for key in _HEADS}
             result["masks"] = {key: False for key in _HEADS}
             omissions.append({"response_id": row["response_id"], "reason": "nonvalid_response_status"})
         elif "trace" in row or "control_trace" in row:
             condition = condition_by_id[primary_by_id[row["primary_id"]]["condition_id"]]
             try:
-                labels = extract_paired_trace(row, condition, sample_times, root, sources=sources)
+                labels = extract_paired_trace(row, condition, sample_times, root, sources=sources,
+                                              deck_timing_version=manifest.get("deck_timing_version") if r06 else None)
                 for key in ("labels", "masks"):
                     if result.get(key) is None:
                         result[key] = {}
@@ -424,6 +452,8 @@ def build_snapshot(intake_manifest_path: str | Path, output_dir: str | Path) -> 
                 raise
             except (IntakeError, OSError, UnicodeError, OverflowError) as exc:
                 result = _failed(row, str(exc))
+                if r06:
+                    result["statistics_eligible"] = False
                 omissions.append({"response_id": row["response_id"], "reason": str(exc)})
         output_responses.append(result)
     output_controls = []
@@ -483,6 +513,13 @@ def build_snapshot(intake_manifest_path: str | Path, output_dir: str | Path) -> 
     })
     if sample_times is not None:
         output_manifest["sample_times_ns"] = sample_times
+    if r06:
+        try:
+            active, superseded = _lineage(output_responses, r06=True)
+            Snapshot(destination, output_manifest, condition_by_id, primary_by_id,
+                     active, output_controls, counts, superseded, ()).validate()
+        except DataError as exc:
+            raise IntakeError(str(exc)) from exc
     destination.mkdir(parents=True, exist_ok=False)
     for name, raw in payloads.items():
         with (destination / name).open("xb") as stream:

@@ -9,30 +9,54 @@ import numpy as np
 import torch
 
 from .config import Config
-from .data import DataError, View, bits_for, digest, file_hash, head_valid, read_json, write_json
-from .features import Encoder, record, source_off_record
+from .data import DataError, View, bits_for, digest, file_hash, has_supervised_head, head_valid, read_json, write_json
+from .features import Encoder, SOURCE_TIMING_FIELDS, record, source_off_record
 from .losses import masked_bce, masked_huber
 from .mechanism import MechanismCalibrator
 from .models import ResponseNet
 from .splits import stopping_split
 
 HEADS = ("delta_voltage_V", "port_charge_fC", "margin_V", "upset")
+SOURCE_OVERRIDE_FIELDS = ("scale_factor",) + SOURCE_TIMING_FIELDS
 
 
 def response_samples(view: View) -> list[dict]:
+    revision = view.snapshot.simulation_revision
     result = []
     for response in sorted(view.responses, key=lambda r: r["response_id"]):
+        if revision == "0.6" and not any(has_supervised_head(response, head) for head in HEADS):
+            continue
         primary = view.snapshot.primaries[response["primary_id"]]
         condition = view.snapshot.conditions[primary["condition_id"]]
         bit = next(b for b in bits_for(condition)
                    if str(b["bit_id"]) == str(response.get("bit_id", "0")))
         result.append({"condition": condition, "primary": primary, "state": response["state"],
-                       "bit": bit, "response": response})
+                       "bit": bit, "response": response, "simulation_revision": revision})
     return result
 
 
-def sample_record(sample):
-    return record(sample["condition"], sample["primary"], sample["state"], sample["bit"])
+def sample_record(sample, *, simulation_revision=None):
+    revision = simulation_revision or sample.get("simulation_revision")
+    primary = sample["primary"]
+    response = sample.get("response") or {}
+    if revision == "0.4":
+        primary = {key: value for key, value in primary.items() if key not in SOURCE_OVERRIDE_FIELDS}
+    elif revision == "0.6" or (revision is None and response.get("deck_timing_version") is not None):
+        overrides = {key: response[key] for key in SOURCE_OVERRIDE_FIELDS if key in response}
+        primary = {**primary, **overrides}
+    return record(sample["condition"], primary, sample["state"], sample["bit"])
+
+
+def random_calibration_samples(view):
+    r06 = view.snapshot.simulation_revision == "0.6"
+    result = []
+    for sample in response_samples(view):
+        response = sample["response"]
+        random = (response.get("selection_mechanism") == "simple_random" if r06
+                  else sample["primary"].get("sampling") == "random")
+        if random and head_valid(response, "upset") and (response.get("labels") or {}).get("upset") is not None:
+            result.append(sample)
+    return result
 
 
 def targets(samples, times):
@@ -58,7 +82,7 @@ def targets(samples, times):
 
 
 def primary_batches(samples, batch_groups, rng):
-    """All paired states/bits and reused events remain in the same minibatch."""
+    """All observed responses to the same transport event share a minibatch."""
     groups = {}
     for i, sample in enumerate(samples):
         groups.setdefault(sample["primary"]["source_primary_id"], []).append(i)
@@ -69,12 +93,12 @@ def primary_batches(samples, batch_groups, rng):
                            dtype=torch.long)
 
 
-def _masked_calibration(view, samples, device_encoder):
+def _masked_calibration(view, samples, source_records, device_encoder):
     controls = copy.deepcopy(view.controls)
     by_profile = {c["profile_id"]: c for c in view.conditions}
     control_records = [record(by_profile[c["profile_id"]], state=c["state"]) for c in controls]
     rows, features = [], []
-    for sample in samples:
+    for sample, source in zip(samples, source_records):
         r, c, p = sample["response"], sample["condition"], sample["primary"]
         values = (r.get("labels") or {}).get("delta_voltage_V")
         if not head_valid(r, "delta_voltage_V") or values is None:
@@ -83,7 +107,7 @@ def _masked_calibration(view, samples, device_encoder):
         rows[-1].update(profile_id=c["profile_id"], time_ns=view.snapshot.times,
                         delta_voltage_V=values, capacitance_fF=c["features"]["capacitance_fF"],
                         mechanism_validated=r.get("mechanism_validated") is True,
-                        generated_charge_fC=p["source_features"]["generated_charge_fC"],
+                        generated_charge_fC=source["generated_charge_fC"],
                         source_duration_ns=p["source_features"]["source_duration_ns"])
         features.append(record(c, state=r["state"]))
     if not controls or not rows:
@@ -104,11 +128,23 @@ class RArtifact:
     config: Config
     metadata: dict
 
-    def _inputs(self, samples):
+    def _records(self, samples):
+        revision = self.metadata.get("simulation_revision", "0.4")
+        rows = [sample_record(s, simulation_revision=revision) for s in samples]
+        if revision == "0.6":
+            if any(s.get("simulation_revision", revision) != revision for s in samples):
+                raise DataError("R artifact simulation_revision mismatch")
+            for field in SOURCE_TIMING_FIELDS:
+                if any(field in row and row[field] != self.metadata[field] for row in rows):
+                    raise DataError(f"R artifact {field} mismatch")
+        return rows
+
+    def _inputs(self, samples, *, rows=None):
         domains = set(self.metadata.get("training_domains", []))
         if domains and any(s["condition"].get("domain") not in domains for s in samples):
             raise DataError("R artifact does not support this device/model domain")
-        rows = [sample_record(s) for s in samples]
+        if rows is None:
+            rows = self._records(samples)
         device_rows = [record(s["condition"], state=s["state"]) for s in samples]
         # Plain ablation ignores these two API placeholders; they are not fitted physics.
         physics = (self.mechanism.predict(self.device_encoder.transform(device_rows))
@@ -119,8 +155,7 @@ class RArtifact:
             "capacitance_fF": torch.tensor([s["condition"]["features"]["capacitance_fF"] for s in samples]),
             "tau_ns": torch.as_tensor(physics["tau_ns"], dtype=torch.float32),
             "gain": torch.as_tensor(physics["gain"], dtype=torch.float32),
-            "generated_charge_fC": torch.tensor(
-                [s["primary"]["source_features"]["generated_charge_fC"] for s in samples]),
+            "generated_charge_fC": torch.tensor([r["generated_charge_fC"] for r in rows]),
             "source_duration_ns": torch.tensor(
                 [s["primary"]["source_features"]["source_duration_ns"] for s in samples]),
         }
@@ -129,12 +164,14 @@ class RArtifact:
         """Metadata-only inference. Unsupervised auxiliary heads are returned as null."""
         result = []
         self.model.eval()
+        upset_states = self.metadata.get("upset_states")
         for start in range(0, len(samples), batch_size):
             part = samples[start:start + batch_size]
-            inputs = self._inputs(part)
+            rows = self._records(part)
+            inputs = self._inputs(part, rows=rows)
             with torch.no_grad():
                 out = self.model(**inputs, time_ns=torch.tensor(self.metadata["sample_times_ns"]))
-            support = self.encoder.outside_support([sample_record(s) for s in part])
+            support = self.encoder.outside_support(rows)
             trained = self.metadata["trained_heads"]
             for i, sample in enumerate(part):
                 row = {"primary_id": sample["primary"]["primary_id"], "state": sample["state"],
@@ -144,7 +181,9 @@ class RArtifact:
                 for head in HEADS:
                     key = "upset_logit" if head == "upset" else head
                     value = out[key][i].detach().cpu().numpy()
-                    row[key] = value.tolist() if head in trained and np.isfinite(value).all() else None
+                    supported = head in trained and (head != "upset" or upset_states is None
+                                                     or sample["state"] in upset_states)
+                    row[key] = value.tolist() if supported and np.isfinite(value).all() else None
                 if row["upset_logit"] is not None:
                     calibration = self.metadata.get("probability_calibration", {})
                     temperature = calibration.get("temperature", 1.)
@@ -165,12 +204,17 @@ class RArtifact:
             if head not in self.metadata["trained_heads"]:
                 continue
             values = [p[key] for p in predictions]
-            if any(v is None for v in values) or not masks[head].any():
+            mask = masks[head].numpy()
+            if head == "upset" and "upset_states" in self.metadata:
+                mask = mask & np.asarray([v is not None for v in values], dtype=bool)
+            elif any(v is None for v in values):
                 continue
-            y = labels[head][masks[head]].numpy()
-            p = np.asarray(values)[masks[head].numpy()]
+            if not mask.any():
+                continue
+            y = labels[head].numpy()[mask]
+            p = np.asarray(values, dtype=float)[mask]
             if head == "upset":
-                probability = np.asarray([x["probability"] for x in predictions])[masks[head].numpy()]
+                probability = np.asarray([x["probability"] for x in predictions], dtype=float)[mask]
                 metrics["heads"][head] = {
                     "n": len(y), "positive": int(y.sum()),
                     "brier": float(np.mean((probability - y) ** 2)),
@@ -249,14 +293,20 @@ def fit_r_core(view: View, config: Config, *, stop_view=None, epochs=None) -> RA
     encoder = Encoder("R").fit(rows + [source_off_record(r) for r in rows])
     device_rows = [record(c, state=state) for c in view.conditions for state in (0, 1)]
     device_encoder = Encoder("device").fit(device_rows)
-    mechanism = (_masked_calibration(view, samples, device_encoder)
+    mechanism = (_masked_calibration(view, samples, rows, device_encoder)
                  if config.mode != "plain" else None)
     labels, masks = targets(samples, view.snapshot.times)
     trained = [h for h in HEADS if masks[h].any()]
     if config.mode == "mechanism_only":
         trained = [h for h in trained if h == "delta_voltage_V"]
-    # Binary classification cannot learn a usable SEU mapping from one class.
-    if "upset" in trained and len(torch.unique(labels["upset"][masks["upset"]])) < 2:
+    upset_states = None
+    if view.snapshot.simulation_revision == "0.6":
+        states = torch.tensor([sample["state"] for sample in samples])
+        upset_states = [state for state in (0, 1) if "upset" in trained and
+                        torch.unique(labels["upset"][masks["upset"] & (states == state)]).numel() == 2]
+        if "upset" in trained and not upset_states:
+            trained.remove("upset")
+    elif "upset" in trained and torch.unique(labels["upset"][masks["upset"]]).numel() < 2:
         trained.remove("upset")
     if not trained:
         raise DataError("R pending: no supported supervised heads")
@@ -265,7 +315,7 @@ def fit_r_core(view: View, config: Config, *, stop_view=None, epochs=None) -> RA
         if h != "upset":
             value = float(torch.sqrt(torch.mean(labels[h][masks[h]].square())))
             scales[h] = value if value > 1e-12 else 1.
-    charges = [s["primary"]["source_features"]["generated_charge_fC"] for s in samples]
+    charges = [r["generated_charge_fC"] for r in rows]
     positive_charges = [q for q in charges if q > 0]
     metadata = {
         "training_fingerprint": view.fingerprint(), "training_footprint": view.footprint(),
@@ -277,13 +327,17 @@ def fit_r_core(view: View, config: Config, *, stop_view=None, epochs=None) -> RA
         "batch_unit": "global source_primary_id with all paired states and bits",
         "capacitor_charge_status": "derived_constant_C_relation_not_independent_validation",
     }
+    if upset_states is not None:
+        metadata.update(simulation_revision=view.snapshot.simulation_revision, upset_states=upset_states,
+                        batch_unit="global source_primary_id with all observed responses",
+                        **{field: view.snapshot.manifest[field] for field in SOURCE_TIMING_FIELDS})
     model = ResponseNet(encoder.width, config.r_hidden, config.residual_bins,
                         config.mode, window_ns=max(view.snapshot.times))
     artifact = RArtifact(model, encoder, device_encoder, mechanism, config, metadata)
     if config.mode == "mechanism_only":
         metadata.update(selected_epochs=0, stopping={"status": "no_optimizer_for_mechanism_only"})
         return artifact
-    inputs = artifact._inputs(samples)
+    inputs = artifact._inputs(samples, rows=rows)
     stop = None
     if stop_view is not None and stop_view.responses:
         ss = response_samples(stop_view)
@@ -330,12 +384,10 @@ def fit_r_core(view: View, config: Config, *, stop_view=None, epochs=None) -> RA
 
 
 def _temperature_from_stop(model, view):
-    samples = response_samples(view)
+    samples = random_calibration_samples(view)
     predictions = model.predict_samples(samples)
     rows = [(s, p) for s, p in zip(samples, predictions)
-            if s["primary"]["sampling"] == "random" and head_valid(s["response"], "upset")
-            and (s["response"].get("labels") or {}).get("upset") is not None
-            and p["upset_logit"] is not None]
+            if p["upset_logit"] is not None]
     y = np.asarray([s["response"]["labels"]["upset"] for s, p in rows], dtype=float)
     independent = {s["primary"]["source_primary_id"] for s, p in rows}
     # This is a declared software floor, not proof of adequate rare-event statistics.

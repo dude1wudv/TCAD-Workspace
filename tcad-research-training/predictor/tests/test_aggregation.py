@@ -1,11 +1,19 @@
-"""Synthetic probability tables only; no solver or fitted native model is used."""
+"""Synthetic probability tables and r0.6 sampling receipts."""
 from __future__ import annotations
 
 import copy
+import importlib.util
 import math
 import unittest
+from pathlib import Path
 
-from dram_predictor.aggregation import aggregate_condition, mix_cross_sections, rate_from_flux
+from dram_predictor.aggregation import (
+    aggregate_condition,
+    estimate_r06_cross_section,
+    mix_cross_sections,
+    rate_from_flux,
+)
+from dram_predictor.data import digest
 
 
 def fixture():
@@ -77,6 +85,24 @@ class AggregationTests(unittest.TestCase):
             self.assertEqual(result["status"], "pending")
             self.assertNotIn("sigma_cm2_per_bit", result)
             self.assertIn("missing is not a zero", result["reason"])
+
+    def test_explicit_proxy_state_subset_keeps_fixed_state_positions(self):
+        c, primaries, probabilities = fixture()
+        full = aggregate_condition(c, primaries, probabilities, probability_status="calibrated")
+        for state in (0, 1):
+            with self.subTest(state=state):
+                rows = [row for row in probabilities if row["state"] == state]
+                result = aggregate_condition(c, primaries, rows, states=(state,), probability_status="calibrated")
+                self.assertEqual(result["status"], "ready")
+                for key in ("sigma_cm2_per_bit", "weights", "transport_mc_standard_error_cm2_per_bit"):
+                    self.assertEqual(result[key][state], full[key][state])
+                    self.assertIsNone(result[key][1 - state])
+                self.assertEqual(aggregate_condition(c, primaries, rows[1:], states=(state,))["status"], "pending")
+        for states in ((), (0, 0), (True,), (1.0,), (2,)):
+            with self.subTest(states=states):
+                result = aggregate_condition(c, primaries, probabilities, states=states)
+                self.assertEqual(result["status"], "pending")
+                self.assertNotIn("sigma_cm2_per_bit", result)
 
     def test_area_unverified_nonuniform_or_missing_positions_remain_pending(self):
         for patch in (
@@ -192,6 +218,187 @@ class RateTests(unittest.TestCase):
         for sigma, weights, flux in cases:
             with self.assertRaises(ValueError):
                 rate_from_flux(sigma, weights, flux)
+
+
+class R06DesignEstimationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        script = Path(__file__).resolve().parents[2] / "scripts" / "r06_sampling.py"
+        spec = importlib.util.spec_from_file_location("r06_sampling", script)
+        cls.sampling = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(cls.sampling)
+
+    def receipt(self, *, block="S", q=2, b0_count=0, one_stratum=False):
+        frame = {
+            "schema": "r06-primary-frame-v1", "frame_id": "test-frame",
+            "transport_run_id": "test-transport", "transport_input_sha256": "a" * 64,
+            "response_context_sha256": "b" * 64, "complete_primary_ledger_verified": True,
+            "frame_evidence_sha256": "c" * 64, "condition": {"profile_id": "D0", "radiation_id": "G0"},
+            "N_primary": 8, "source_area_cm2": 2.0,
+            "events": [{"event_id": str(i), "deposition_energy_eV": i} for i in range(8)],
+        }
+        if not one_stratum:
+            for event in frame["events"]:
+                event["coarse_stratum"] = "low" if event["deposition_energy_eV"] < 2 else "high"
+        selection = self.sampling.select(
+            frame, q, 12, expected_frame_sha256=self.sampling.digest(frame),
+            method="simple_random" if block == "R" else "stratified", b0_count=b0_count,
+        )
+        binding = {
+            "schema": "tcad-r06-cell-case-binding-v1",
+            **selection["condition"], "block": block, "manifest_sha256": "d" * 64,
+            "selection_sha256": selection["selection_sha256"],
+            "case_draws": [
+                {"event_id": row["event_id"], "stored_bit": row["stored_bit"], "case_id": f"{block}-{i}"}
+                for i, row in enumerate(selection["draws"])
+            ],
+        }
+        return selection, binding
+
+    def labels(self, selection, binding, bit=1):
+        return [
+            {
+                **case, "selection_sha256": selection["selection_sha256"], "y": 1,
+                "status": "accepted", "accepted": True, "scientific_acceptance": "accepted",
+                "acceptance_evidence_sha256": "e" * 64, "statistics_eligible": True,
+                "selection_mechanism": "simple_random" if binding["block"] == "R" else "stratified_pi",
+                "scale_factor": 1.0, "stratum_id": draw["stratum_id"],
+                "inclusion_probability": draw["inclusion_probability"],
+            }
+            for draw, case in zip(selection["draws"], binding["case_draws"]) if draw["stored_bit"] == bit
+        ]
+
+    def estimate(self, selection, binding, labels, bit=1, **kwargs):
+        options = {"expected_selection_sha256": selection["selection_sha256"],
+                   "area_normalization_validated": True, **kwargs}
+        return estimate_r06_cross_section(selection, binding, labels, stored_bit=bit, **options)
+
+    def test_srs_uses_n_over_n_primary_and_finite_population_variance(self):
+        selection, binding = self.receipt(block="R")
+        labels = self.labels(selection, binding)
+        labels[0]["y"] = 0
+        result = self.estimate(selection, binding, labels)
+        self.assertEqual(result["cross_section_cm2_per_observed_bit"], 1.0)
+        self.assertEqual(result["design_variance_cm4_per_observed_bit_squared"], 0.75)
+        self.assertIsNone(result["variance_unavailable_reason"])
+        self.assertEqual(result["block"], "R")
+        self.assertEqual(result["stored_bit"], 1)
+        self.assertEqual(result["N_primary"], 8)
+        self.assertEqual(result["selected_primary_count"], 2)
+        self.assertEqual(result["selection_sha256"], selection["selection_sha256"])
+        self.assertEqual(result["response_context_sha256"], selection["response_context_sha256"])
+        self.assertEqual([row["inclusion_probability"] for row in result["selected_draws"]], [0.25, 0.25])
+
+    def test_stratified_blocks_use_unequal_weights_and_report_singleton_variance(self):
+        for block in ("S", "HR", "HP"):
+            with self.subTest(block=block):
+                selection, binding = self.receipt(block=block)
+                labels = self.labels(selection, binding)
+                for row in labels:
+                    row["y"] = int(row["inclusion_probability"] < 0.5)
+                result = self.estimate(selection, binding, labels[::-1])
+                self.assertEqual(result["cross_section_cm2_per_observed_bit"], 1.5)
+                self.assertEqual(result["block"], block)
+                self.assertIsNone(result["design_variance_cm4_per_observed_bit_squared"])
+                self.assertIn("fewer than two", result["variance_unavailable_reason"])
+
+    def test_b0_uses_unconditional_product_even_if_subset_misses_a_stratum(self):
+        selection, binding = self.receipt(q=2, b0_count=1)
+        labels = self.labels(selection, binding, bit=0)
+        draw = next(row for row in selection["draws"] if row["stored_bit"] == 0)
+        result = self.estimate(selection, binding, labels, bit=0)
+        layer = next(h for h in selection["design"]["strata"] if h["stratum_id"] == draw["stratum_id"])
+        self.assertEqual(result["cross_section_cm2_per_observed_bit"], 2.0 * layer["N_h"] / 4)
+        self.assertEqual(result["conditional_b0_probability"], 0.5)
+        self.assertEqual(result["selected_draws"][0]["inclusion_probability"], 0.5 / layer["N_h"])
+        self.assertIsNone(result["design_variance_cm4_per_observed_bit_squared"])
+        self.assertIn("joint inclusion", result["variance_unavailable_reason"])
+        with self.assertRaisesRegex(ValueError, "missing selected outcomes"):
+            self.estimate(selection, binding, [], bit=0)
+        labels[0]["statistics_eligible"] = False
+        with self.assertRaisesRegex(ValueError, "statistical eligibility"):
+            self.estimate(selection, binding, labels, bit=0)
+
+    def test_b0_one_stratum_is_marginally_simple_random(self):
+        selection, binding = self.receipt(q=4, b0_count=2, one_stratum=True)
+        labels = self.labels(selection, binding, bit=0)
+        labels[0]["y"] = 0
+        result = self.estimate(selection, binding, labels, bit=0)
+        self.assertEqual(result["cross_section_cm2_per_observed_bit"], 1.0)
+        self.assertEqual(result["design_variance_cm4_per_observed_bit_squared"], 0.75)
+
+    def test_absent_state_and_missing_zero_deposition_outcome_raise(self):
+        selection, binding = self.receipt(q=8)
+        with self.assertRaisesRegex(ValueError, "no allocated sample"):
+            self.estimate(selection, binding, [], bit=0)
+        labels = self.labels(selection, binding)
+        with self.assertRaisesRegex(ValueError, "missing selected outcomes"):
+            self.estimate(selection, binding, [row for row in labels if row["event_id"] != "0"])
+        for row in labels:
+            row["y"] = 0
+        result = self.estimate(selection, binding, labels)
+        self.assertEqual(result["cross_section_cm2_per_observed_bit"], 0)
+        self.assertEqual(result["design_variance_cm4_per_observed_bit_squared"], 0)
+
+    def test_requires_verified_area_and_supported_block(self):
+        selection, binding = self.receipt()
+        labels = self.labels(selection, binding)
+        with self.assertRaisesRegex(ValueError, "source-area normalization"):
+            self.estimate(selection, binding, labels, area_normalization_validated=False)
+        for block in ("AL", "T", "Z"):
+            with self.subTest(block=block), self.assertRaisesRegex(ValueError, "requires block"):
+                self.estimate(selection, {**binding, "block": block}, labels)
+        with self.assertRaisesRegex(ValueError, "sampling method"):
+            self.estimate(selection, {**binding, "block": "R"}, labels)
+
+    def test_rejects_adaptive_threshold_control_and_invalid_labels(self):
+        selection, binding = self.receipt(block="HP")
+        labels = self.labels(selection, binding)
+        for changes in (
+            {"selection_mechanism": "active_learning"}, {"selection_mechanism": "threshold_scaled"},
+            {"selection_mechanism": "no_particle_control"}, {"scale_factor": 3.0},
+            {"status": "pending"}, {"accepted": False}, {"scientific_acceptance": "pending"},
+            {"acceptance_evidence_sha256": None}, {"statistics_eligible": False},
+            {"y": True}, {"y": 1.0}, {"y": None}, {"y": 2},
+            {"event_id": "other"}, {"selection_sha256": "f" * 64},
+            {"stored_bit": 0}, {"case_id": "foreign"}, {"stratum_id": "other"}, {"inclusion_probability": 1.0},
+        ):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                self.estimate(selection, binding, [{**labels[0], **changes}, *labels[1:]])
+        with self.assertRaisesRegex(ValueError, "duplicate"):
+            self.estimate(selection, binding, [*labels, labels[0]])
+
+    def test_rejects_changed_selection_even_if_rehashed(self):
+        selection, binding = self.receipt()
+        labels = self.labels(selection, binding)
+        pin = selection["selection_sha256"]
+        selection["draws"][0]["event_id"] = "swapped"
+        with self.assertRaisesRegex(ValueError, "contents differ"):
+            self.estimate(selection, binding, labels)
+        selection.pop("selection_sha256")
+        selection["selection_sha256"] = binding["selection_sha256"] = digest(selection)
+        with self.assertRaisesRegex(ValueError, "SHA differs"):
+            self.estimate(selection, binding, labels, expected_selection_sha256=pin)
+
+    def test_rejects_incomplete_or_inconsistent_frozen_design(self):
+        for change, reason in (
+            (lambda s: s.update(N_primary=9), "complete denominator"),
+            (lambda s: s["design"]["strata"][0].update(q_h=0), "q_h"),
+            (lambda s: s["draws"].pop(), "incomplete stratum draws"),
+            (lambda s: s["draws"][0].update(inclusion_probability=1.0), "differs from the design"),
+            (lambda s: s["draws"][0].update(conditional_b0_probability=1.0), "differs from the design"),
+            (lambda s: s["draws"][0].update(stratum_id="other"), "mis-stratified"),
+        ):
+            with self.subTest(reason=reason), self.assertRaisesRegex(ValueError, reason):
+                selection, binding = self.receipt()
+                change(selection)
+                selection.pop("selection_sha256")
+                selection["selection_sha256"] = binding["selection_sha256"] = digest(selection)
+                self.estimate(selection, binding, [])
+        selection, binding = self.receipt()
+        binding["case_draws"].pop()
+        with self.assertRaisesRegex(ValueError, "incomplete or duplicate case/draw"):
+            self.estimate(selection, binding, [])
 
 
 if __name__ == "__main__":

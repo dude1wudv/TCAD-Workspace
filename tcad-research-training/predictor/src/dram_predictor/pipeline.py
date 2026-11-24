@@ -9,7 +9,10 @@ import numpy as np
 
 from .aggregation import aggregate_condition
 from .config import Config, search_space
-from .data import DataError, LeakageError, Snapshot, View, bits_for, digest, head_valid, read_json, write_json
+from .data import (
+    DataError, LeakageError, Snapshot, View, bits_for, digest, has_mapped_source,
+    has_supervised_head, head_valid, read_json, write_json,
+)
 from .r_training import fit_r
 from .splits import Fold, connected_groups, grouped_folds, split_manifest, stopping_split
 
@@ -43,10 +46,10 @@ def readiness(snapshot: Snapshot) -> dict:
             ],
         }
     view = snapshot.view(snapshot.development_conditions)
-    heads = {h: sum(head_valid(r, h) and (r.get("labels") or {}).get(h) is not None
-                    for r in view.responses)
+    responses = view.responses
+    heads = {h: sum(has_supervised_head(r, h) for r in responses)
              for h in ("delta_voltage_V", "port_charge_fC", "margin_V", "upset")}
-    return {
+    report = {
         **snapshot.summary(), "independent_source_groups": len(connected_groups(view)),
         "supervised_response_rows_by_head": heads,
         "mechanism_controls_marked_applicable": sum(c.get("mechanism_validated") is True for c in view.controls),
@@ -57,6 +60,13 @@ def readiness(snapshot: Snapshot) -> dict:
             "No native/synthetic training, solver call, remote mutation or sealed label read occurs in prepare.",
         ],
     }
+    if snapshot.simulation_revision == "0.6":
+        report["development_response_rows_by_state"] = [
+            sum(row["state"] == state for row in responses) for state in (0, 1)]
+        report["supervised_upset_rows_by_state"] = [
+            sum(row["state"] == state and has_supervised_head(row, "upset") for row in responses)
+            for state in (0, 1)]
+    return report
 
 
 def prepare(snapshot: Snapshot, output_dir) -> dict:
@@ -130,16 +140,28 @@ def aggregate_view(artifact, view: View) -> list[dict]:
     if "upset" not in artifact.metadata["trained_heads"]:
         return [{"condition_id": c["condition_id"], "status": "pending",
                  "reason": "R has no supervised two-class upset head"} for c in view.conditions]
-    for condition in view.conditions:
-        pool = [p for p in view.primaries if p["condition_id"] == condition["condition_id"]]
+    r06 = view.snapshot.simulation_revision == "0.6"
+    states = artifact.metadata.get("upset_states", ()) if r06 else (0, 1)
+    conditions = view.conditions
+    pools = {condition["condition_id"]: [] for condition in conditions}
+    for primary in view.primaries:
+        pools[primary["condition_id"]].append(primary)
+    for condition in conditions:
+        condition_id = condition["condition_id"]
+        pool = pools[condition_id]
+        if r06 and (not states or any(p["pool_member"] and not has_mapped_source(p) for p in pool)):
+            reason = ("R has no state with supervised two-class upset" if not states
+                      else "Complete-pool R prediction requires mapped source features for every pool primary")
+            rows.append({"condition_id": condition_id, "status": "pending", "reason": reason})
+            continue
         samples = [{"condition": condition, "primary": p, "state": state, "bit": bit}
                    for p in pool if p.get("pool_member") is True
-                   for state in (0, 1) for bit in bits_for(condition)]
+                   for state in states for bit in bits_for(condition)]
         probabilities = artifact.predict_samples(samples) if samples else []
         calibration = artifact.metadata["probability_calibration"]
         status = "calibrated" if calibration.get("status") == "calibrated" else "uncalibrated"
         estimate = aggregate_condition(
-            condition, pool, probabilities, probability_status=status,
+            condition, pool, probabilities, probability_status=status, states=states,
             provenance={"R_cache_key": artifact.metadata.get("cache_key"),
                         "R_training_fingerprint": artifact.metadata["training_fingerprint"],
                         "training_footprint": footprint, "probability_calibration": calibration})
