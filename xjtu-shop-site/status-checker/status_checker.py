@@ -22,10 +22,11 @@ import time
 import unicodedata
 from pathlib import Path
 from typing import Callable, Iterable
+import progress_store
 from research_projection import (
     admission, build_research, development_alias, execution, failed_unlaunched, intent_case_id, parameters,
-    load_cached_research, load_stats_snapshot, public_id as safe_public_id, runtime_intents,
-    save_cached_research, sealed_case_id, sealed_intent,
+    load_cached_research, load_stats_snapshot, public_id as safe_public_id, reject_json_constant, runtime_intents,
+    save_cached_research, sealed_case_id, sealed_intent, unique_object,
 )
 from progress_store import load_public_progress
 from input_parameters import read_input_parameters
@@ -42,6 +43,7 @@ WEB_OBSERVATION_PATH = Path(os.environ.get("TCAD_STATUS_WEB_OBSERVATION", "/var/
 PAUSE_PATH = Path(os.environ.get("TCAD_STATUS_PAUSE", "/var/lib/tcad-autonomy/pause.json"))
 PLAN_PATH = Path(os.environ.get("TCAD_STATUS_PLAN", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json"))
 PROGRESS_PATH = Path(os.environ.get("TCAD_STATUS_PROGRESS_DB", "/var/lib/xjtu-shop-status/progress.sqlite3"))
+AUTO_DIRECTOR_PATH = Path(os.environ.get("TCAD_STATUS_AUTO_DIRECTOR", "/var/lib/xjtu-shop-status/auto-director.json"))
 WORK_ITEMS_PATH = Path(os.environ.get("TCAD_STATUS_WORK_ITEMS", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/work-items.json"))
 RESPONSE_SUPPLY_PATH = Path(os.environ.get(
     "TCAD_STATUS_RESPONSE_SUPPLY",
@@ -63,6 +65,29 @@ SERVER_STORAGE_WARNING_BYTES = 20 * 1024**3
 FRESHNESS_LIMIT_SECONDS = 180
 PUBLIC_REDACTION = re.compile(
     r"/(?:home|srv|var)/|(?<![a-z0-9])(?:run_id|pid|ssh|lm_license_file)(?![a-z0-9])", re.I,
+)
+DIRECTOR_ENUMS = {
+    "director_state": {"idle", "monitoring", "gemini_active", "codex_running", "backoff", "offline"},
+    "mode": {"event_driven", "paused", "disabled"},
+    "active_order_category": {"sim_ops", "sim_repair", "data_extract", "predictor", "thesis_assets", "latex_build", "web_status", "none"},
+    "active_order_state": {"idle", "running", "awaiting_audit", "retrying", "circuit_broken"},
+}
+DIRECTOR_COUNTS = (
+    "daily_wakeups_used", "daily_wakeups_cap", "active_order_attempt",
+    "thesis_chapters_done", "thesis_chapters_total",
+)
+DIRECTOR_FIELDS = set(DIRECTOR_ENUMS) | set(DIRECTOR_COUNTS) | {
+    "updated_at", "thesis_last_sprint_utc", "thesis_build_ok", "recent_public_note",
+}
+DIRECTOR_UTC = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|\+00:00)")
+DIRECTOR_PRIVATE_TEXT = re.compile(
+    r"[_@%&=;|`$#~{}\[\]]|[a-z0-9]+-[a-z0-9]+|[a-z0-9]+\.[a-z]{2,}|(?<![a-z0-9])--?[a-z]"
+    r"|\b(?:hr|hp)[0-9]*\b|\b[0-9a-f]{12,}\b"
+    r"|\b(?:tcad|hk|sub[0-9]+|localhost|tailscale|hostname|holdout|run[ -]?ids?"
+    r"|password|passwd|token|secret|credential|authorization|bearer|license|api[ -]?key"
+    r"|rsync|sftp|cmd|python[0-9]*|npm|docker|git|chmod|chown|mkdir|rm|cat|grep|cd|ls|whoami)\b"
+    r"|密码|密钥|令牌|凭据|许可证|连接地址|内部编号|封存留出",
+    re.IGNORECASE | re.ASCII,
 )
 
 
@@ -168,6 +193,45 @@ def parse_time(value: object) -> dt.datetime | None:
 def public_time(value: object) -> str | None:
     parsed = parse_time(value)
     return parsed.isoformat().replace("+00:00", "Z") if parsed else None
+
+
+def director_utc(value: object) -> str | None:
+    return public_time(value) if isinstance(value, str) and DIRECTOR_UTC.fullmatch(value) else None
+
+
+def load_auto_director(path: Path = AUTO_DIRECTOR_PATH, now: dt.datetime | None = None) -> dict | None:
+    try:
+        if not path.is_file():
+            return None
+        snapshot = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object,
+                              parse_constant=reject_json_constant)
+    except (OSError, ValueError, RecursionError):
+        return None
+    if not isinstance(snapshot, dict) or snapshot.keys() - {"schema_version"} != DIRECTOR_FIELDS:
+        return None
+    version = snapshot.get("schema_version", 1)
+    if type(version) is not int or version != 1:
+        return None
+    if any(not isinstance(snapshot[key], str) or snapshot[key] not in choices for key, choices in DIRECTOR_ENUMS.items()):
+        return None
+    if any(type(snapshot[key]) is not int or snapshot[key] < 0 for key in DIRECTOR_COUNTS):
+        return None
+    updated_at = director_utc(snapshot["updated_at"])
+    sprint = snapshot["thesis_last_sprint_utc"]
+    last_sprint = director_utc(sprint)
+    build_ok = snapshot["thesis_build_ok"]
+    if not updated_at or (sprint is not None and not last_sprint) or (build_ok is not None and type(build_ok) is not bool):
+        return None
+    try:
+        note = progress_store._text(snapshot["recent_public_note"], "recent_public_note", limit=160)
+        check_public_payload(note)
+        if DIRECTOR_PRIVATE_TEXT.search(unicodedata.normalize("NFKC", note)):
+            note = None
+    except ValueError:
+        note = None
+    age = age_seconds(updated_at, now if now is not None else dt.datetime.now(UTC))
+    return dict(snapshot, updated_at=updated_at, thesis_last_sprint_utc=last_sprint,
+                recent_public_note=note or None, age_seconds=age, stale=age > 900)
 
 
 def project_response_supply(report, observation, queue, runtime, now):
@@ -767,6 +831,7 @@ def build_status(
     research: dict | None = None,
     research_state: str | None = None,
     research_cache_path: Path = RESEARCH_CACHE_PATH,
+    auto_director_path: Path = AUTO_DIRECTOR_PATH,
 ) -> dict:
     runs_root = Path(runs_root or discover_runs_root())
     checked_at = now_iso()
@@ -848,6 +913,8 @@ def build_status(
             "profiles": [], "progress": [], "projection_state": "unavailable",
         }
         projection_state = "unavailable"
+    research = dict(research)
+    research.pop("paper_progress", None)
     research["projection_state"] = projection_state or ("fresh" if research.get("available") else "unavailable")
     if (not research.get("projected_at") and research.get("available")
             and mode in {"full", "both"} and projection_state == "fresh"):
@@ -857,6 +924,19 @@ def build_status(
         "freshness": build_freshness_health(scheduler, research, current),
         "simulation": build_simulation_health(scheduler, simulation),
     }
+    director = load_auto_director(auto_director_path, current)
+    if director is not None:
+        health["director"] = {key: director[key] for key in (
+            "director_state", "mode", "updated_at", "stale", "daily_wakeups_used", "daily_wakeups_cap",
+            "active_order_category", "active_order_state", "active_order_attempt", "recent_public_note",
+        )}
+        research["paper_progress"] = {
+            "chapters_done": director["thesis_chapters_done"],
+            "chapters_total": director["thesis_chapters_total"],
+            "last_sprint_utc": director["thesis_last_sprint_utc"],
+            "build_ok": director["thesis_build_ok"],
+            "updated_at": director["updated_at"],
+        }
     return {
         "schema_version": 2,
         "generated_at": checked_at,
@@ -924,7 +1004,7 @@ def build_live(status, history):
     summary = {key: research[key] for key in (
         "schema_version", "available", "revision", "updated_at", "observed_at", "observation_stale",
         "projected_at", "projection_state", "totals", "counts", "blocks", "budget", "diagnostics",
-        "statistics_snapshot_status",
+        "statistics_snapshot_status", "paper_progress",
     ) if key in research}
     return {
         **{key: value for key, value in status.items() if key != "research"},

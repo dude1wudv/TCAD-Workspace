@@ -1,31 +1,39 @@
 param(
-    [string]$XeLaTeX = 'xelatex',
-    [string]$BibTeX = 'bibtex'
+    [switch]$Clean
 )
-$ErrorActionPreference = 'Stop'
-$thesisDirectory = $PSScriptRoot
-$buildDirectory = Join-Path $thesisDirectory 'build'
-New-Item -ItemType Directory -Force -Path $buildDirectory | Out-Null
-$savedTexInputs = $env:TEXINPUTS
-$savedBibInputs = $env:BIBINPUTS
-Push-Location -LiteralPath $thesisDirectory
+
+$ErrorActionPreference = "Stop"
+$root = Split-Path -Parent $MyInvocation.MyCommand.Path
+$outDir = Join-Path $root "build"
+
+if ($Clean -and (Test-Path $outDir)) {
+    Remove-Item -Recurse -Force $outDir
+}
+New-Item -ItemType Directory -Force -Path $outDir | Out-Null
+
+Push-Location $root
 try {
-    $localInputs = ($thesisDirectory -replace '\\\\','/') + '//;'
-    $env:TEXINPUTS = $localInputs + $savedTexInputs
-    $env:BIBINPUTS = ($thesisDirectory -replace '\\\\','/') + ';' + $savedBibInputs
-    for ($pass = 1; $pass -le 3; $pass++) {
-        $consoleLog = Join-Path $buildDirectory "main-pass-$pass.log"
-        & $XeLaTeX --disable-installer -no-shell-escape -interaction=nonstopmode -halt-on-error "-output-directory=$buildDirectory" 'main.tex' *> $consoleLog
-        if ($LASTEXITCODE -ne 0) { throw "XeLaTeX failed: $consoleLog" }
-        if ($pass -eq 1) {
-            $bibliographyLog = Join-Path $buildDirectory 'main-bibtex.log'
-            & $BibTeX (Join-Path $buildDirectory 'main') *> $bibliographyLog
-            if ($LASTEXITCODE -ne 0) { throw "BibTeX failed: $bibliographyLog" }
+    & xelatex -interaction=nonstopmode -halt-on-error -output-directory="$outDir" main.tex
+    if ($LASTEXITCODE -ne 0) { throw "First xelatex pass failed ($LASTEXITCODE)" }
+
+    if (Test-Path (Join-Path $outDir "main.aux")) {
+        $auxText = Get-Content -Raw (Join-Path $outDir "main.aux")
+        if ($auxText -match "\\citation\{") {
+            & bibtex (Join-Path $outDir "main")
+            if ($LASTEXITCODE -ne 0) { throw "bibtex failed ($LASTEXITCODE)" }
         }
     }
-    Write-Output (Join-Path $buildDirectory 'main.pdf')
-} finally {
-    $env:TEXINPUTS = $savedTexInputs
-    $env:BIBINPUTS = $savedBibInputs
+
+    & xelatex -interaction=nonstopmode -halt-on-error -output-directory="$outDir" main.tex
+    if ($LASTEXITCODE -ne 0) { throw "Second xelatex pass failed ($LASTEXITCODE)" }
+
+    & xelatex -interaction=nonstopmode -halt-on-error -output-directory="$outDir" main.tex
+    if ($LASTEXITCODE -ne 0) { throw "Third xelatex pass failed ($LASTEXITCODE)" }
+
+    $pdf = Join-Path $outDir "main.pdf"
+    if (-not (Test-Path $pdf)) { throw "PDF was not generated: $pdf" }
+    Write-Output "BUILD_OK: $pdf ($((Get-Item $pdf).Length) bytes)"
+}
+finally {
     Pop-Location
 }

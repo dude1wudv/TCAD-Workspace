@@ -1,33 +1,23 @@
-\documentclass[UTF8,a4paper,zihao=-4,fontset=fandol]{ctexart}
-\input{preamble.tex}
-\hypersetup{pdftitle={AI辅助下的DRAM存储器单粒子效应评估研究}}
-\title{\heiti\Large AI辅助下的DRAM存储器单粒子效应评估研究\\[0.5em]\large 毕业设计论文（初稿）}
-\author{}
-\date{\EvidenceDate}
+\documentclass[UTF8,12pt,a4paper]{ctexart}
+\input{preamble}
+
+\title{AI辅助下的DRAM存储器单粒子效应评估研究（v2 渐进稿）}
+\author{DRAM SEE 课题组}
+\date{\today}
 
 \begin{document}
 \maketitle
-\begin{abstract}
-随着 DRAM 特征尺寸持续微缩，存储节点电容减小、单粒子效应（SEE）敏感度上升，传统依赖束流辐照实验的评估方法成本高、周期长。本文围绕空间高能质子、重离子及大气中子引发的 DRAM 单粒子效应，采用 Geant4 粒子输运与 TCAD 器件仿真联合建模，构建从粒子沉积到读出裕量的可审计数据链路；在此基础上建立数据驱动的单粒子翻转截面与错误率预测模型，开展超参数优化、分组交叉验证与独立性评估，并与仿真/实验结果对比分析关键影响因素。
-
-已有阶段工作表明：在冻结的二维代表模型上，64 个独立粒子事件的 128 条 bit0/1 配对响应可按匹配对照严格分类（5\mV 主阈值下 96 正确、20 判据误读、8 临界、4 数值不确定），基于沉积电荷等特征的岭回归基线在原划分下域内读出裕量退化 MAE 约 0.53--0.55\mV。v4 阶段在厚硅输运与三维源接口上取得阶段性资格证据（212 个初级事件、9 条核非弹性记录见证），r0.6 排批正在推进 P0 资格门与 D0--D3 第一波开发锚点。
-
-本文的贡献边界：模型未作真实器件工艺校准，结果限于原冻结设计与代表模型；截面/错误率需要注量、有效被测比特数等统计分母，目前仅能作条件响应与仿真内验证；导师课题组 DDR5 实验原始数据尚待交接，外部泛化对比为待补章节。全文所有定量结论均可回溯到 run ID、输入/输出哈希与证据索引。
-\end{abstract}
-\noindent\textbf{关键词：}DRAM；单粒子效应；Geant4；TCAD；数据驱动预测；交叉验证
-
 \tableofcontents
-\newpage
+\clearpage
 
-\input{sections/01-background.tex}
-\input{sections/02-modeling.tex}
-\input{sections/03-dataset.tex}
-\input{sections/04-ai-model.tex}
-\input{sections/05-results.tex}
-\input{sections/06-discussion.tex}
-\input{sections/07-conclusion.tex}
+\input{sections/01-introduction}
+\input{sections/02-physical-modeling}
+\input{sections/03-dataset-and-qualification}
+\input{sections/04-surrogate-model}
+\input{sections/05-results-and-validation}
+\input{sections/06-discussion-and-conclusion}
 
-\FloatBarrier
+\clearpage
 \bibliographystyle{unsrt}
 \bibliography{refs/references}
 

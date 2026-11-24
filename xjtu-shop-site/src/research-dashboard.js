@@ -1,6 +1,8 @@
 const view = { cohort: null, query: '', filter: 'all', limit: 12, budgetTab: null };
 const words = {
   zh: {
+    paperProgress: '论文 v2 渐进进度', paperChapters: '已完成章节', paperBuild: '最近编译', paperSprint: '最近冲刺',
+    paperBuildOk: '成功', paperBuildFailed: '失败', paperBuildUnknown: '未知',
     title: '科研计划', core: '核心计划', reserve: '备用计划', control: '无粒子对照',
     blocks: '研究区块', zeroCases: '无粒子基线', locked: '封存', loadingCases: '等待公开逐例清单',
     publicCases: '条公开案例', search: '搜索案例', searchHint: '搜索案例 ID、器件、辐照条件或 B0/B1',
@@ -47,6 +49,8 @@ const words = {
     requested_threads: '数值线程', numerical_threads: '数值线程', grid_points: '网格点', research_samples: '新增科研样本', stored_bit: '存储位',
   },
   en: {
+    paperProgress: 'Thesis v2 progress', paperChapters: 'Chapters completed', paperBuild: 'Latest build', paperSprint: 'Latest sprint',
+    paperBuildOk: 'Passed', paperBuildFailed: 'Failed', paperBuildUnknown: 'Unknown',
     title: 'Research plan', core: 'Core plan', reserve: 'Reserve', control: 'Particle-free',
     blocks: 'Research blocks', zeroCases: 'Z baselines', locked: 'Sealed', loadingCases: 'Awaiting public case manifest',
     publicCases: 'public cases', search: 'Search cases', searchHint: 'Search case ID, device, radiation or B0/B1',
@@ -176,9 +180,27 @@ function renderCases(research, lang, cohort, updates, sealed) {
   </details>`;
 }
 
+function renderPaperProgress(paper, lang) {
+  if (!paper) return '';
+  const label = (key) => esc(text(lang, key));
+  const { chapters_done: done, chapters_total: total, build_ok: built, last_sprint_utc: sprint } = paper;
+  const validDone = Number.isInteger(done) && done >= 0;
+  const validTotal = Number.isInteger(total) && total >= 0;
+  const build = built === true ? 'paperBuildOk' : built === false ? 'paperBuildFailed' : 'paperBuildUnknown';
+  return `<md-outlined-card class="m3-card" data-key="paper-progress"><div class="card-body">
+    <div class="batch-bar"><strong>${label('paperProgress')}</strong>
+      <span>${label('paperChapters')} <b>${validDone ? done : '—'} / ${validTotal ? total : '—'}</b></span>
+      <span>${label('paperBuild')} · <span class="badge ${built === true ? 'good' : built === false ? 'bad' : 'neutral'}">${label(build)}</span></span>
+      <span>${label('paperSprint')} · ${esc(date(lang, sprint))}</span>
+    </div>
+    ${validDone && validTotal && total > 0 && done <= total ? `<progress value="${done}" max="${total}" aria-label="${label('paperChapters')}"></progress>` : ''}
+  </div></md-outlined-card>`;
+}
+
 export function renderResearch(research, lang, activity) {
   const label = (key) => esc(text(lang, key));
   const heading = `<div class="section-heading"><h2>${research?.available ? esc(research.revision || '') + ' ' : ''}${label('title')}</h2></div>`;
+  const paper = renderPaperProgress(research?.paper_progress, lang);
   const warning = research?.projection_state === 'cached_stale' ? `<p class="health-alert plan-warning">${label('projectionStale')}</p>` : '';
   const blocks = research?.blocks ?? Object.entries(research?.counts || {}).map(([id, counts]) => ({ id, counts }));
   const selected = blocks.find((block) => block.id === view.cohort);
@@ -188,7 +210,7 @@ export function renderResearch(research, lang, activity) {
   const progress = (research?.progress || []).filter((entry) => !entry.sealed && !sealedId(entry.case_id) && !sealed.has(entry.block || entry.cohort));
   const activityMarkup = renderActivity(activity, lang, sealed);
   const maintenance = renderUpdates(progress, lang);
-  if (!research?.available) return heading + warning + `<p class="empty">${label('waiting')}</p>` + activityMarkup + maintenance;
+  if (!research?.available) return heading + paper + warning + `<p class="empty">${label('waiting')}</p>` + activityMarkup + maintenance;
   const counts = selected ? blockCounts(selected) : research.totals;
   const updates = new Map(progress.map((entry) => [entry.case_id, entry]));
   const budget = research.budget || {};
@@ -229,7 +251,7 @@ export function renderResearch(research, lang, activity) {
     ['radiation_count', 'radiation'], ['statistics_intent_cases', 'statisticsIntent']].filter(([key]) => budget[key] != null);
   const snapshotStatus = { connected: 'statisticsSnapshotConnected', not_connected: 'statisticsSnapshotPending' }[research.statistics_snapshot_status] || 'statisticsSnapshotUnknown';
   const diagnostics = Object.entries(research.diagnostics || {});
-  return `${heading}${warning}<md-elevated-card class="m3-card research-panel"><div class="card-body">
+  return `${heading}${paper}${warning}<md-elevated-card class="m3-card research-panel" data-key="research-panel"><div class="card-body">
     ${budgetKeys.length ? `<div class="budget-chips">${budgetKeys.map(([key, caption]) => {
       const action = budgetAction(key);
       if (!action) return `<span class="budget-chip">${label(caption)} <strong>${count(budget, key)}</strong></span>`;

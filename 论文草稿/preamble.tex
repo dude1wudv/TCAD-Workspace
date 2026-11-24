@@ -1,29 +1,30 @@
-% 论文导言区：仿照 tcad-research-training/reports/final/shared-preamble.tex 精简
-\usepackage[margin=2.2cm,headheight=14pt]{geometry}
-\usepackage{amsmath,amssymb,bm,booktabs,tabularx,longtable,array}
-\usepackage{graphicx,xcolor,tikz}
-\usetikzlibrary{arrows.meta,positioning,calc}
-\usepackage{caption,float,placeins}
-\usepackage[hidelinks,unicode]{hyperref}
-\usepackage{url}
-\definecolor{signalblue}{HTML}{205A87}
-\definecolor{referenceorange}{HTML}{A95822}
-\definecolor{softgray}{HTML}{F0F3F5}
-\captionsetup{font=small,labelfont=bf,labelsep=quad}
-\renewcommand{\arraystretch}{1.2}
-\setlength{\tabcolsep}{4.5pt}
-\setlength{\parskip}{0.14em}
-\setlength{\emergencystretch}{3em}
-\linespread{1.22}
-\pagestyle{plain}
-\setcounter{tocdepth}{2}
-\newcommand{\um}{\,\ensuremath{\mu}\text{m}}
-\newcommand{\ns}{\,\text{ns}}
-\newcommand{\mV}{\,\text{mV}}
-\newcommand{\fC}{\,\text{fC}}
-\newcommand{\uV}{\,\ensuremath{\mu}\text{V}}
-\newcommand{\V}{\,\text{V}}
-\newcommand{\sourcepath}[1]{{\footnotesize\nolinkurl{#1}}}
+% Preamble for Thesis v2 (XeLaTeX + ctexart, minimal clean baseline)
+\usepackage{geometry}
+\geometry{a4paper, left=2.6cm, right=2.6cm, top=2.8cm, bottom=2.8cm}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{booktabs, longtable, array, tabularx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cite}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black,
+  pdftitle={AI辅助下的DRAM存储器单粒子效应评估研究}
+}
+
 \graphicspath{{figures/}}
-\newcommand{\EvidenceDate}{2026-11-21}
-\hypersetup{pdfauthor={},pdfsubject={AI辅助下的DRAM存储器单粒子效应评估研究；毕业设计论文初稿}}
+
+% 显式数据待补标记：严禁把未完成实验或外部缺失数据写成已完成结论
+\newcommand{\pendingdata}[1]{%
+  \noindent\fcolorbox{orange!70!black}{orange!8}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+      \small\textbf{【待补充实测/证据】}\ #1%
+    }%
+  }\par\vspace{0.4em}%
+}

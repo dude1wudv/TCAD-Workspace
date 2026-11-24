@@ -1,0 +1,58 @@
+{
+  "schema_version": 2,
+  "title": "AI辅助下的DRAM存储器单粒子效应评估研究",
+  "stage": "BOOTSTRAP",
+  "last_sprint_utc": null,
+  "last_build_ok": null,
+  "last_build_utc": null,
+  "chapters": [
+    {
+      "id": "ch01",
+      "file": "sections/01-introduction.tex",
+      "title": "绪论",
+      "status": "SKELETON",
+      "required_assets": [],
+      "notes": "待第1次 Daily Thesis Sprint 结合真实研究背景与文献综述从零定稿"
+    },
+    {
+      "id": "ch02",
+      "file": "sections/02-physical-modeling.tex",
+      "title": "DRAM单粒子效应物理建模与多尺度仿真方法",
+      "status": "SKELETON",
+      "required_assets": [],
+      "notes": "按真实 r0.6/v3-v4 器件与输运-TCAD 耦合工况编写"
+    },
+    {
+      "id": "ch03",
+      "file": "sections/03-dataset-and-qualification.tex",
+      "title": "仿真矩阵设计、数值准入与数据集构建",
+      "status": "SKELETON",
+      "required_assets": [],
+      "notes": "如实记录准入判据、诊断结果及任何已登记判据修订"
+    },
+    {
+      "id": "ch04",
+      "file": "sections/04-surrogate-model.tex",
+      "title": "物理约束的 R→A→F 代理预测模型",
+      "status": "SKELETON",
+      "required_assets": [],
+      "notes": "随 predictor 训练与交叉验证推进逐步填充"
+    },
+    {
+      "id": "ch05",
+      "file": "sections/05-results-and-validation.tex",
+      "title": "仿真结果、模型评估与实验对比分析",
+      "status": "SKELETON",
+      "required_assets": [],
+      "notes": "严格绑定 asset-registry.jsonl 真实提取数据"
+    },
+    {
+      "id": "ch06",
+      "file": "sections/06-discussion-and-conclusion.tex",
+      "title": "误差分析、适用边界与总结展望",
+      "status": "SKELETON",
+      "required_assets": [],
+      "notes": "如实讨论数值/物理局限、外部验证缺口与后续工作"
+    }
+  ]
+}

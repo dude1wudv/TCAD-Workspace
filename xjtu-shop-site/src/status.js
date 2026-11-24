@@ -40,6 +40,18 @@ const labels = {
   run: ['运行', 'Running'], complete: ['完成', 'Complete'],
   sealed: ['封存留出任务', 'Sealed holdout'], unmatched: ['未关联任务', 'Unmatched task'],
 };
+const directorLabels = {
+  idle: labels.idle, offline: labels.offline, running: labels.running,
+  monitoring: ['监测中', 'Monitoring'], gemini_active: ['Gemini 运行中', 'Gemini active'],
+  codex_running: ['Codex 执行中', 'Codex running'], backoff: ['退避等待', 'Backoff'],
+  event_driven: ['事件驱动', 'Event-driven'], paused: ['已暂停', 'Paused'], disabled: ['已停用', 'Disabled'],
+  sim_ops: ['仿真运维', 'Simulation operations'], sim_repair: ['仿真修复', 'Simulation repair'],
+  data_extract: ['数据提取', 'Data extraction'], predictor: ['预测模型', 'Predictor'],
+  thesis_assets: ['论文素材', 'Thesis assets'], latex_build: ['LaTeX 编译', 'LaTeX build'],
+  web_status: ['网页状态', 'Web status'], none: ['无工单', 'No order'],
+  awaiting_audit: ['待审核', 'Awaiting audit'], retrying: ['重试中', 'Retrying'],
+  circuit_broken: ['已熔断', 'Circuit breaker tripped'],
+};
 const tone = {
   healthy: 'good', running: 'good', operational: 'good', completed: 'good', ready: 'good', fresh: 'good', progressing: 'good', active: 'good',
   collecting: 'warn', fine_step: 'warn', maintenance: 'warn', degraded: 'warn', pending: 'warn',
@@ -175,6 +187,17 @@ function serviceDetail(service) {
   return detail || (finite(service.elapsed_seconds) ? `${licenseService(service) ? b('许可进程', 'License') : b('运行时长', 'Uptime')} · ${duration(service.elapsed_seconds)}` : '');
 }
 
+function renderDirector(director) {
+  if (!director) return '';
+  const directorLabel = (key) => b(...(Object.hasOwn(directorLabels, key) ? directorLabels[key] : labels.unknown));
+  return `<div class="overview-health" data-key="auto-director"><div class="batch-bar">
+    <span><strong>${b('自治调度', 'Auto-Director')}</strong> · ${esc(directorLabel(director.director_state))} · ${esc(directorLabel(director.mode))}${director.stale === true ? ` ${pill('stale')}` : ''}</span>
+    <span>${b('今日唤醒', 'Wakeups today')} <b>${number(director.daily_wakeups_used)} / ${number(director.daily_wakeups_cap)}</b></span>
+    <span>${b('Codex 工单', 'Codex order')} · ${esc(directorLabel(director.active_order_category))} · ${esc(directorLabel(director.active_order_state))}</span>
+    ${director.recent_public_note ? `<span>${esc(director.recent_public_note)}</span>` : ''}
+  </div></div>`;
+}
+
 function renderHealth(payload, scheduler, batch, research, services) {
   const health = payload.health || {};
   const freshness = health.freshness || {};
@@ -219,7 +242,7 @@ function renderHealth(payload, scheduler, batch, research, services) {
   return `<div class="overview-health"><div class="health-chips">${findings.map(([name, key, details], i) => `<details class="health-chip" data-key="health-${i}">
     <summary title="${esc(details.join(' · '))}">${pill(key, `${name} · ${label(key)}`)}</summary>
     <ul>${details.filter(Boolean).map((detail) => `<li>${esc(detail)}</li>`).join('')}</ul>
-  </details>`).join('')}</div>${warnings.length ? `<p class="health-alert">${warnings.map(esc).join(' · ')}</p>` : ''}</div>`;
+  </details>`).join('')}</div>${warnings.length ? `<p class="health-alert">${warnings.map(esc).join(' · ')}</p>` : ''}</div>${renderDirector(health.director)}`;
 }
 
 function renderResponseSupply(supply) {
@@ -616,8 +639,9 @@ const newestPayload = () => !state.live || Date.parse(state.full?.generated_at) 
 const currentResearch = () => {
   const summary = state.live?.research_summary;
   const full = state.full?.research;
-  if (!summary || Date.parse(state.full?.generated_at) > Date.parse(state.live.generated_at)) return full ?? summary;
-  return { ...(full?.revision === summary.revision ? full : {}), ...summary };
+  const liveLatest = state.live && newestPayload() === state.live;
+  const research = liveLatest && summary ? { ...(full?.revision === summary.revision ? full : {}), ...summary } : full ?? summary;
+  return research && { ...research, paper_progress: liveLatest ? summary?.paper_progress : full?.paper_progress };
 };
 
 function researchActivity(payload, scheduler) {
