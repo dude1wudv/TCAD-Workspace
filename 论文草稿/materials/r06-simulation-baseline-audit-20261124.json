@@ -1,0 +1,147 @@
+{
+  "schema": "tcad-r06-simulation-baseline-audit-v1",
+  "order_id": "q-sim-baseline-audit-01",
+  "revision": "r0.6",
+  "scope": "operational_diagnostics",
+  "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6",
+  "sources": {
+    "scheduler_observation_utc": "2026-11-24T15:57:49.012029Z",
+    "slot_detail_observation_utc": "2026-11-24T15:53:22.233063Z",
+    "month_one_observation_utc": "2026-11-24T15:53:42.058919Z",
+    "month_one_observation_fresh": true,
+    "lhs_supply_observation_utc": "2026-11-24T15:53:55.792465Z",
+    "case_waits_observation_utc": "2026-11-24T15:54:23.132114Z",
+    "readback": [
+      "原控制器 explain --month-one",
+      "原调度器 observation.json",
+      "活动供料配方引用的 P2、P0 与导航记录",
+      "现有 response-status.json、case-waits.json、零源数值复核及隔离留出几何复核"
+    ]
+  },
+  "scheduler": {
+    "service_active": true,
+    "capacity": 16,
+    "running_tcad": 16,
+    "pending": 8,
+    "pending_reason": "all_slots_occupied",
+    "pending_by_scope": {"p0": 4, "formal_response": 4},
+    "occupied_slots": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
+    "collecting_slots": 0,
+    "quarantined_slots": 0,
+    "external_runs": 0,
+    "discovery_uncertain": false,
+    "observed_run_states": {"succeeded": 206, "failed": 25, "failed_unlaunched": 5, "running": 16, "paused": 8},
+    "replenishment": {"ready_formal": 4, "staged": 0, "missing_material": 48, "awaiting_acceptance": 47},
+    "last_verified_refill": {
+      "slot": 6,
+      "next_start_utc": "2026-11-24T15:40:46.118502Z",
+      "delay_lower_bound_s": 6.078,
+      "delay_upper_bound_s": 12.915
+    },
+    "resource_gib": {
+      "server_available_memory": 2.518,
+      "server_free_disk": 28.652,
+      "vm_visible_total_memory": 27.322,
+      "vm_available_memory": 6.485,
+      "vm_free_disk": 32.375,
+      "vm_backing_disk_free": 17.081
+    },
+    "license_daemons_alive": true,
+    "license_feature_available": null
+  },
+  "month_one": {
+    "planned_cases": 396,
+    "explain_states": {
+      "evidence_record_to_verify": 67,
+      "not_bound": 121,
+      "holdout_not_claimed": 64,
+      "proposed": 4,
+      "claimed": 8,
+      "zero_source_reuse_verified": 50,
+      "await_acquisition": 82
+    },
+    "explain_states_by_block": {
+      "Z": {"evidence_record_to_verify": 10, "not_bound": 10, "holdout_not_claimed": 6},
+      "T": {"evidence_record_to_verify": 20, "not_bound": 36, "proposed": 4, "claimed": 8},
+      "S": {"evidence_record_to_verify": 37, "not_bound": 75, "zero_source_reuse_verified": 38},
+      "R": {"zero_source_reuse_verified": 12},
+      "HR": {"holdout_not_claimed": 28},
+      "HP": {"holdout_not_claimed": 30},
+      "AL": {"await_acquisition": 82}
+    },
+    "case_waits_states": {
+      "zero_baseline_reused": 10,
+      "waiting": 126,
+      "acceptance_recorded": 47,
+      "decision_pending": 1,
+      "queued": 4,
+      "run_bound": 8,
+      "zero_source_reused": 60,
+      "sealed": 58,
+      "await_acquisition": 82
+    },
+    "case_waits_warnings": 0,
+    "interpretation": "两套投影使用各自时间与状态字典，分别覆盖同一冻结清单。归档、审批记录、复用、统计资格和训练资格按各自证据判定。此次未复核完整统计资格快照。"
+  },
+  "p0_lhs": {
+    "p2_authorized": true,
+    "p2_decision": "accepted_p1_censoring",
+    "p2_threshold_bracket_observed": false,
+    "navigation": {"prepared_pools": 48, "passed": 48, "primaries_per_navigation_check": 0},
+    "transport": {"succeeded": 8, "not_submitted": 40},
+    "dual_state_qualified": ["LHS02"],
+    "dual_state_waiting": ["LHS01", "LHS03", "LHS04", "LHS05", "LHS06"],
+    "formal_cases_waiting_on_lhs_dual_state_qualification": {"Z": 10, "T": 30, "S": 75},
+    "refinement_run_states": {
+      "LHS01": {"h_over_4": {"b0": "succeeded", "b1": "succeeded"}, "h_over_8": {"b0": "succeeded", "b1": "running"}},
+      "LHS03": {"h_over_4": {"b0": "succeeded", "b1": "succeeded"}, "h_over_8": {"b0": "running", "b1": "running"}},
+      "LHS04": {"h_over_4": {"b0": "succeeded", "b1": "succeeded"}, "h_over_8": {"b0": "running", "b1": "running"}},
+      "LHS05": {"h_over_4": {"b0": "succeeded", "b1": "succeeded"}, "h_over_8": {"b0": "running", "b1": "running"}},
+      "LHS06": {"h_over_4": {"b0": "succeeded"}, "h_over_8": {"b0": "running"}}
+    },
+    "lhs06_numerics": {
+      "sample_ns": 31.9,
+      "comparison_bound_v": 0.00010156,
+      "b0_h_h2_delta_v": 0.000201942617345,
+      "b0_h2_h4_delta_v": 0.000248050086587,
+      "b1_h_h2_delta_v": 0.000090225455412,
+      "b0_latest_review": "failed",
+      "b1_h_h2_review": "passed"
+    },
+    "lhs02_case_waits": {
+      "natural_response_acceptance_recorded": 5,
+      "natural_response_zero_source_reused": 10,
+      "threshold_acceptance_recorded": 2,
+      "threshold_running": 2,
+      "threshold_waiting_for_paired_feedback": 2
+    },
+    "isolated_holdout_zero": {
+      "H0": "双态零源已收集，b0 待功能和数值复核，b1 待隔离数值资格签署",
+      "H1": {"bounds_checked": 204, "bounds_failed": 127, "max_as_is_delta_um": 4.0976e-7},
+      "H2": {"bounds_checked": 204, "bounds_failed": 127, "max_as_is_delta_um": 4.6597e-7},
+      "h1_h2_max_rounded_residual_um": 2.7755575615628914e-17
+    }
+  },
+  "repair_intake": {
+    "requests": 5,
+    "legacy_requests": 3,
+    "r06_requests": 2,
+    "r06_scope": "D0 保持窗 b0 和 b1 历史诊断",
+    "r06_original_states": {"b0": "INTERRUPTED_COLLECTED", "b1": "FAILED_COLLECTED"},
+    "r06_b1_exit_code": 143,
+    "r06_direct_repair_children_found": 0,
+    "d0_formal_zero_baselines_validated": 2,
+    "active_policy_planner_mode": "disabled",
+    "pinned_repair_package_entries_matching_current_requests": 0
+  },
+  "preparation": {
+    "immediate_review": [
+      {"profile": "D1", "radiation": "G0", "stored_bit": 1, "planned_scale": 3, "dependency": "待复核的零源已收集，已登记的 ×10 读出无错误，待配对复核及独立倍率决定"},
+      {"profile": "D1", "radiation": "G0", "stored_bit": 0, "planned_scale": 10, "dependency": "已收集零源，待同 deck 复用验签"},
+      {"profile": "D1", "radiation": "C1", "stored_bit": 0, "planned_scale": 30, "dependency": "已收集零源，待同 deck 复用验签"},
+      {"profile": "D3", "radiation": "G0", "stored_bit": 0, "planned_scale": 10, "dependency": "已收集零源，待同 deck 复用验签"}
+    ],
+    "engineering_proposal": "tcad-research-training/plans/dram-se-ddr5-lpddr5/R06-P0-REPAIR-AND-SUPPLY-PROPOSAL-20261124.md",
+    "publication": "read_only_audit_local_proposal"
+  }
+}
