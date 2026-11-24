@@ -124,6 +124,8 @@ def _path_error(root: Path, name: str, patterns: list[str], *, must_exist: bool 
         data = handle.read(MAX_FILE_BYTES + 1)
     if len(data) > MAX_FILE_BYTES:
         return "file exceeds 5 MB"
+    if data.startswith((b"\x89PNG\r\n\x1a\n", b"\xff\xd8\xff", b"%PDF-")):
+        return None
     encoding = "utf-16" if data.startswith((b"\xff\xfe", b"\xfe\xff")) else "utf-8-sig"
     content = data.decode(encoding, errors="replace")
     reasons = [reason for reason in find_sensitive(content) if reason not in {"internal_identifier", "ssh_detail"}]
