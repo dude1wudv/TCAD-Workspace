@@ -3,8 +3,8 @@
   "title": "AI辅助下的DRAM存储器单粒子效应评估研究",
   "stage": "DRAFTING",
   "last_sprint_utc": "2026-11-24T16:50:00+00:00",
-  "last_build_ok": null,
-  "last_build_utc": null,
+  "last_build_ok": true,
+  "last_build_utc": "2026-11-24T16:54:04+00:00",
   "chapters": [
     {
       "id": "ch01",
