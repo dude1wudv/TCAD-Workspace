@@ -1,0 +1,87 @@
+{
+  "v3": {
+    "source_evidence": [
+      "tcad-research-training/shared/evidence-index.csv",
+      "tcad-research-training/shared/reuse-evidence.md"
+    ],
+    "audit_date_utc": "2026-11-16",
+    "frozen_snapshot_hashes_verified": 64,
+    "historical_report_hashes_verified": 211,
+    "independent_events": 64,
+    "paired_responses": 128,
+    "read_threshold_mv": 5,
+    "response_counts": {
+      "correct_read": 96,
+      "criterion_misread": 20,
+      "borderline": 8,
+      "numerically_uncertain": 4
+    },
+    "prediction_score_groups_verified": 16,
+    "scope": "固定 5 MeV、固定入射位置与两种方向的未校准二维代表模型。5 mV 读窗标签按响应计数，配对状态共用原事件。"
+  },
+  "v4": {
+    "source_evidence": [
+      "tcad-research-training/shared/evidence-index.csv",
+      "tcad-research-training/shared/reuse-evidence.md",
+      "tcad-research-training/experiments/dram-see-v4/README.md",
+      "tcad-research-training/experiments/dram-see-v4/stage2/report.md"
+    ],
+    "stage_review_date_utc": "2026-10-13",
+    "thick_silicon_primaries": 212,
+    "proton_inelastic_witness_events": 9,
+    "offline_3d_source_ledgers_closed": 3,
+    "fine_mesh_a1_source_frames_audited": 205,
+    "a1_center_share_absolute_error": {
+      "coarse_mesh_five_frame_sample": 0.0594972526,
+      "fine_mesh_full_window": 0.013989156,
+      "tolerance": 0.05
+    },
+    "scope": "厚硅样本用于核反应记录见证，三维源账本为离线闭合。二维细网格结果限于本阶段的源场与匹配对照；粗网格空间失败保留。"
+  },
+  "r0.4": {
+    "source_evidence": [
+      "tcad-research-training/predictor/reports/r04-20261116.md"
+    ],
+    "data_cutoff_utc": "2026-11-16T14:11:22Z",
+    "representative_profile_count": 1,
+    "particle": "proton",
+    "stage": "transport_only",
+    "conditions": [
+      {"energy_mev": 1, "theta_deg": 0, "phi_deg": 0, "primaries": 10000, "positive_si_ionization": 736, "zero_si_ionization": 9264},
+      {"energy_mev": 5, "theta_deg": 30, "phi_deg": 0, "primaries": 10000, "positive_si_ionization": 742, "zero_si_ionization": 9258},
+      {"energy_mev": 20, "theta_deg": 60, "phi_deg": 90, "primaries": 10000, "positive_si_ionization": 1730, "zero_si_ionization": 8270},
+      {"energy_mev": 58, "theta_deg": 0, "phi_deg": 0, "primaries": 10000, "positive_si_ionization": 703, "zero_si_ionization": 9297},
+      {"energy_mev": 98, "theta_deg": 30, "phi_deg": 90, "primaries": 10000, "positive_si_ionization": 1385, "zero_si_ionization": 8615},
+      {"energy_mev": 120, "theta_deg": 60, "phi_deg": 0, "primaries": 10000, "positive_si_ionization": 667, "zero_si_ionization": 9333}
+    ],
+    "totals": {"primaries": 60000, "positive_si_ionization": 5963, "zero_si_ionization": 54037},
+    "supervision_ready": {"R": false, "F": false},
+    "scope": "分母保留零沉积事件。能量和方向联合变化，快照仅包含输运证据。"
+  },
+  "r0.6": {
+    "source_evidence": [
+      "https://tcad.xjtu.shop/live.json",
+      "tcad-research-training/plans/dram-se-ddr5-lpddr5/BUDGET-REVISION-r06-20261117.md",
+      "xjtu-shop-site/status-checker/research_projection.py"
+    ],
+    "public_payload_generated_at_utc": "2026-11-24T16:08:12Z",
+    "formal_progress_observed_at_utc": "2026-11-24T16:07:29.700830Z",
+    "formal_progress_projected_at_utc": "2026-11-24T16:07:42Z",
+    "formal_progress_fresh_at_read": true,
+    "formal_blocks": {
+      "Z":  {"planned": 26,  "archived": 8,  "accepted": 8,  "running": 0, "failed": 0, "unaccepted": 18},
+      "T":  {"planned": 68,  "archived": 20, "accepted": 20, "running": 8, "failed": 0, "unaccepted": 48},
+      "S":  {"planned": 150, "archived": 27, "accepted": 37, "running": 0, "failed": 0, "unaccepted": 113},
+      "R":  {"planned": 12,  "archived": 0,  "accepted": 0,  "running": 0, "failed": 0, "unaccepted": 12},
+      "HR": {"planned": 28,  "archived": 0,  "accepted": 0,  "running": 0, "failed": 0, "unaccepted": 28},
+      "HP": {"planned": 30,  "archived": 0,  "accepted": 0,  "running": 0, "failed": 0, "unaccepted": 30},
+      "AL": {"planned": 82,  "archived": 0,  "accepted": 0,  "running": 0, "failed": 0, "unaccepted": 82}
+    },
+    "formal_totals": {"planned": 396, "archived": 55, "accepted": 65, "running": 8, "failed": 0, "unaccepted": 331},
+    "s_block_accepted_by_zero_source_reuse": 10,
+    "p0_diagnostics_outside_formal_plan": {"registered": 105, "archived": 90, "solved": 85, "running": 8, "failed": 6},
+    "scheduler": {"observed_at_utc": "2026-11-24T16:08:08.917123Z", "active_slots": 16, "slot_capacity": 16},
+    "statistics": {"intent_slots": 214, "manifest_eligible": 0, "public_display_eligible": 0, "public_snapshot_status": "not_connected"},
+    "scope": "正式进度来自公开只读投影。归档和验收按不同口径计数，未验收项包含在途工况。统计快照尚未连接，合格数 0 为公开投影显示值；统计与训练仍须依据冻结的资格证据。"
+  }
+}
