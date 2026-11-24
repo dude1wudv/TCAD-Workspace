@@ -175,9 +175,14 @@ def new_conversation(cfg, reason, prompt):
         data = json.loads(text)
     except json.JSONDecodeError:
         data = None
-    conversation = (data.get("conversation_id") or data.get("conversationId") or data.get("id")) if isinstance(data, dict) else None
+    conversation = None
+    if isinstance(data, dict):
+        nested = (data.get("response") or {}).get("newConversation") if isinstance(data.get("response"), dict) else None
+        for source in (data, nested):
+            if isinstance(source, dict) and not conversation:
+                conversation = source.get("conversation_id") or source.get("conversationId") or source.get("id")
     if not conversation:
-        match = re.search(r"\bconversation(?:[ _-]?id)?(?:\s*[:=]\s*|\s+)[\"']?([\w-]{8,100})", text, re.I)
+        match = re.search(r'"?conversation(?:[ _-]?id)?"?\s*[:=]\s*["\']?([\w-]{8,100})', text, re.I)
         if match is None:
             match = re.fullmatch(r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}", text)
             conversation = match[0] if match else None
