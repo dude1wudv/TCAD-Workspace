@@ -1,0 +1,160 @@
+[
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\course-report.tex"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:08.683673+00:00",
+    "finished_utc": "2026-10-12T02:41:15.187222+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/course-report-pass-1.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\bibtex.exe",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4\\course-report"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:15.188229+00:00",
+    "finished_utc": "2026-10-12T02:41:15.552309+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/course-report-pass-2.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\course-report.tex"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:15.552309+00:00",
+    "finished_utc": "2026-10-12T02:41:22.499817+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/course-report-pass-3.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\course-report.tex"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:22.500320+00:00",
+    "finished_utc": "2026-10-12T02:41:29.176762+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/course-report-pass-4.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\research-paper.tex"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:29.176762+00:00",
+    "finished_utc": "2026-10-12T02:41:34.814213+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/research-paper-pass-1.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\bibtex.exe",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4\\research-paper"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:34.815288+00:00",
+    "finished_utc": "2026-10-12T02:41:35.266555+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/research-paper-pass-2.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\research-paper.tex"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:35.267594+00:00",
+    "finished_utc": "2026-10-12T02:41:41.328735+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/research-paper-pass-3.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\research-paper.tex"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:41.329735+00:00",
+    "finished_utc": "2026-10-12T02:41:46.790938+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/research-paper-pass-4.log"
+  },
+  {
+    "argv": [
+      "C:\\Users\\sun\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\poppler\\Library\\bin\\pdftoppm.exe",
+      "-png",
+      "-r",
+      "144",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\course-report.pdf",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4\\course-report\\page"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:46.793942+00:00",
+    "finished_utc": "2026-10-12T02:41:50.134010+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/course-report-render.log"
+  },
+  {
+    "argv": [
+      "C:\\Users\\sun\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\poppler\\Library\\bin\\pdftoppm.exe",
+      "-png",
+      "-r",
+      "144",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\research-paper.pdf",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\qa\\r4\\research-paper\\page"
+    ],
+    "cwd": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents",
+    "TEXINPUTS": "E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;",
+    "started_utc": "2026-10-12T02:41:50.159879+00:00",
+    "finished_utc": "2026-10-12T02:41:52.492853+00:00",
+    "actual_exit_code": 0,
+    "log": "qa/r4/research-paper-render.log"
+  }
+]

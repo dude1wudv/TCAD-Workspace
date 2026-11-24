@@ -1,0 +1,17 @@
+[
+  {
+    "argv": [
+      "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r1",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\project-brief.tex"
+    ],
+    "started_utc": "2026-10-12T01:45:05.819907+00:00",
+    "finished_utc": "2026-10-12T01:45:07.726750+00:00",
+    "actual_exit_code": 1,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r1\\pass-1.log"
+  }
+]

@@ -1,0 +1,624 @@
+{
+  "schema": "dram-final-writing-evidence-v1",
+  "git_commit_context": "eb49585b6d1c7c833fa5c17bc83393612232c379",
+  "snapshot": {
+    "schema": "dram-final-writing-ledger-snapshot-v1",
+    "read_started_utc": "2026-10-11T13:02:41.887688+00:00",
+    "captured_utc": "2026-10-11T13:02:41.895085+00:00",
+    "captured_user_utc_minus_8": "2026-10-11T05:02:41.895085-08:00",
+    "source_path": "local_runtime/dram-see-v3/ledger.json",
+    "ledger_sha256": "73f15fa6be8fe53a988caaf16ba87e616232bafdc35affc4ffc5862784ebef98",
+    "bytes": 1731956,
+    "scope": "One local ledger byte snapshot for manuscript status; not a live-process or remote-job check",
+    "remote_or_process_check_performed": false,
+    "evidence_type": "live_observation",
+    "verification_target": "Saved ledger-snapshot.json only; the live ledger may continue changing",
+    "snapshot_is_complete_experiment": false
+  },
+  "progress": {
+    "planned_independent_events": 64,
+    "planned_paired_responses": 128,
+    "logical_counts": {
+      "train": {
+        "planned": 64,
+        "VERIFIED": 64,
+        "RUNNING": 0,
+        "UNSUBMITTED": 0,
+        "FAILED": 0
+      },
+      "holdout": {
+        "planned": 32,
+        "VERIFIED": 19,
+        "RUNNING": 1,
+        "UNSUBMITTED": 12,
+        "FAILED": 0
+      },
+      "extrapolation": {
+        "planned": 32,
+        "VERIFIED": 0,
+        "RUNNING": 0,
+        "UNSUBMITTED": 32,
+        "FAILED": 0
+      }
+    },
+    "retry_aliases": [
+      {
+        "canonical_response_id": "v3-r50-main-l035-alpha-a30-s202610394-b1",
+        "retry_alias": "v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1",
+        "preserved_original_state": "FAILED",
+        "retry_state_at_snapshot": "VERIFIED",
+        "retry_run_id": "20261011T044502Z-v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1-15d9f5f5",
+        "additional_independent_events": 0
+      },
+      {
+        "canonical_response_id": "v3-r50-main-l025-alpha-a30-s202610353-b0",
+        "retry_alias": "v3-r50-main-retry-r3-l025-alpha-a30-s202610353-b0",
+        "preserved_original_state": "FAILED",
+        "retry_state_at_snapshot": "VERIFIED",
+        "retry_run_id": "20261011T123005Z-v3-r50-main-retry-r3-l025-alpha-a30-s202610353-b0-57b7ecf7",
+        "additional_independent_events": 0
+      },
+      {
+        "canonical_response_id": "v3-r50-main-l025-proton-a0-s202610361-b0",
+        "retry_alias": "v3-r50-main-retry-r3-l025-proton-a0-s202610361-b0",
+        "preserved_original_state": "FAILED",
+        "retry_state_at_snapshot": "VERIFIED",
+        "retry_run_id": "20261011T123812Z-v3-r50-main-retry-r3-l025-proton-a0-s202610361-b0-c1af3e45",
+        "additional_independent_events": 0
+      }
+    ],
+    "settled_solver_seconds_all_versions": 71484.71,
+    "running_ledger_tags": [
+      "v3-r50-main-l025-proton-a0-s202610362-b1"
+    ],
+    "running_is_index_state_only": true,
+    "test_or_extrapolation_scores_in_this_package": false
+  },
+  "freeze": {
+    "schema": "dram-see-v3-r50-main-prediction-freeze",
+    "physical_revision": "r50-main-r1",
+    "frozen_utc": "2026-10-11T09:21:50.188044+00:00",
+    "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+    "followup_plan_sha256": "31a1429197043eb23ef80876fe940e59c97094b1372731cf1bb05e49a6e77177",
+    "training_independent_events": 32,
+    "training_responses": 64,
+    "test_independent_events": 32,
+    "test_paired_predictions": 64,
+    "models_per_bit_target": 4,
+    "test_responses_seen": 0
+  },
+  "freeze_integrity": {
+    "freeze_sha256": "f0384066be6d42bb71dad6fd8e4e1a2f474e6f9f45d918da759ca0274a4cff9e",
+    "freeze_checksum_matches": true,
+    "bound_core_files": [
+      {
+        "path": "experiments/dram-see-v3/r50-main/data/predictions/models.json",
+        "expected_sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+        "actual_sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+        "matched": true
+      },
+      {
+        "path": "experiments/dram-see-v3/r50-main/data/predictions/training-data.json",
+        "expected_sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+        "actual_sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca",
+        "matched": true
+      },
+      {
+        "path": "experiments/dram-see-v3/r50-main/data/predictions/test-inputs.json",
+        "expected_sha256": "ecfbee43ea9255a0e0378d078f9ec9e5b8f796e08ba1c6423a40442a212b30f1",
+        "actual_sha256": "ecfbee43ea9255a0e0378d078f9ec9e5b8f796e08ba1c6423a40442a212b30f1",
+        "matched": true
+      },
+      {
+        "path": "experiments/dram-see-v3/r50-main/data/predictions/predictions.json",
+        "expected_sha256": "82a8839a5cd259bd29766e7a2b668dede1b3bae311e403ecaed591902bc8db5e",
+        "actual_sha256": "82a8839a5cd259bd29766e7a2b668dede1b3bae311e403ecaed591902bc8db5e",
+        "matched": true
+      },
+      {
+        "path": "experiments/dram-see-v3/r50-main/data/predictions/ledger-snapshot.json",
+        "expected_sha256": "fbb5d34d5249c2eb363565c9684d689aec9f5a0d2d6a9b206b27bccd43cb8486",
+        "actual_sha256": "fbb5d34d5249c2eb363565c9684d689aec9f5a0d2d6a9b206b27bccd43cb8486",
+        "matched": true
+      },
+      {
+        "path": "experiments/dram-see-v3/r50-main/data/predictions/provenance.json",
+        "expected_sha256": "7a97cbe5d649bb1fe85d71ccae592f3642202286b0432a2ddc02a551f90e7e25",
+        "actual_sha256": "7a97cbe5d649bb1fe85d71ccae592f3642202286b0432a2ddc02a551f90e7e25",
+        "matched": true
+      }
+    ],
+    "all_six_core_files_match": true,
+    "other_bound_files_rechecked": false
+  },
+  "model": {
+    "physical_revision": "r50-main-r1",
+    "scope": "Uncalibrated 2D 1T1C; conditional simulation response, not commercial DRAM reliability or radiation cross section",
+    "metrics": {
+      "deltaQ_fC": "1e15*Cstore*(SN_event(2.8ns)-SN_matched_control(2.8ns)); signed",
+      "D_mV": "1000*(BL_signal-BL_matched_neutral)",
+      "M_mV": "(2*stored_bit-1)*D(4ns)",
+      "deltaM_mV": "M_matched_control-M_event; positive is margin loss",
+      "read_window_ns": [
+        3.8,
+        4.0
+      ],
+      "read_window_report": [
+        "M_min",
+        "M_max",
+        "M_end_minus_start"
+      ],
+      "classification": "M>epsilon correct; M<-epsilon criterion_error; closed interval critical"
+    },
+    "source": {
+      "energy_MeV": 5.0,
+      "track_radius_um": 0.03,
+      "charge_conversion_eV_per_pair": 3.6,
+      "let": "Qdep_pC/track_length_um; normalization factor 1",
+      "track_length": "angle0:1.2; angle30:min(1.2/cos(theta),(L+0.45)/sin(theta))",
+      "gaussian_truncation": "report geometry-based estimate separately; actual integral compared to original total Qdep, never retarget Qdep*F",
+      "zero_deposition": "legal, retain event and paired responses; no replacement"
+    },
+    "gates": {
+      "initial_error_mV": 1.0,
+      "precharge_error_uV": 10.0,
+      "end_time_ns": 4.0,
+      "source_relative_error_max": 0.05,
+      "reference_source_charge_max_fC": 1e-12,
+      "kcl": "1e-12 A + 0.001*local absolute current scale",
+      "be": "max(0.001 fC, 0.001*absolute capacitor charge change)",
+      "four_terminal": "max(0.002 fC, 0.001*absolute charge change)",
+      "physical_offline_each_voltage_and_D_mV": 0.1,
+      "physical_offline_classifications_all_thresholds_equal": true,
+      "numerical_readout_change_mV": 0.5,
+      "numerical_deltaQ_change_fC": 0.01
+    },
+    "statistics": {
+      "strata": [
+        "length",
+        "particle",
+        "angle",
+        "stored_bit",
+        "threshold"
+      ],
+      "planned_n_each": 4,
+      "counts": [
+        "valid",
+        "correct",
+        "criterion_error",
+        "critical",
+        "numerically_uncertain",
+        "failed",
+        "missing"
+      ],
+      "point_bounds": "[k_error/N,(k_error+k_critical+k_uncertain+k_failed+k_missing)/N]",
+      "interval": "Wilson 95% two-sided with z=1.959963984540054; envelope over best/worst unresolved assignments using planned N",
+      "interval_endpoints_clamped": [
+        0,
+        1
+      ],
+      "zero_event_upper": "1-0.05**(1/N) only if all planned responses determinate and k_error=0",
+      "paired_any_bit": "optional; collapse by event first, never double N",
+      "no_multiple_testing_claim": "descriptive intervals, not simultaneous coverage or significance claims"
+    },
+    "prediction": {
+      "train_lengths_um": [
+        0.18,
+        0.35
+      ],
+      "holdout_lengths_um": [
+        0.25
+      ],
+      "extrapolation_lengths_um": [
+        0.45
+      ],
+      "models": [
+        "training_mean",
+        "ridge"
+      ],
+      "targets": [
+        "deltaQ_fC",
+        "deltaM_mV"
+      ],
+      "separate_model_per_bit_and_target": true,
+      "features": [
+        "Qdep_fC",
+        "Qdep_fC/L_um",
+        "Qdep_fC*sin(theta)"
+      ],
+      "ridge_candidates": [
+        0.0,
+        0.01,
+        0.1,
+        1.0,
+        10.0
+      ],
+      "cv": "leave-one-physical-condition-out over 8 training (L,particle,angle) groups; all four repeats and both bits stay grouped",
+      "selection_score": "arithmetic mean of per-fold RMSE for each bit/target independently",
+      "tie_break": "lowest alpha among scores within 1e-12 target units of minimum",
+      "standardization": "training fold population mean/std only; zero std replaced with1; final fit uses all training data",
+      "ridge_objective": "sum_squared_error + alpha*sum(coef**2); intercept unpenalized; alpha0 via least-squares",
+      "required_training": "all 64 training bit responses audited; unresolved outcome blocks prediction freeze",
+      "freeze_before_test": "model coefficients/scalers/config, all test input Geant4 events and matched baselines, per-event predictions and SHA256 before any holdout/extrapolation TCAD response",
+      "metrics": [
+        "MAE",
+        "RMSE",
+        "max_absolute_error",
+        "stratified_residuals"
+      ],
+      "scope": "predict TCAD response given actual Geant4 deposition and known unirradiated baselines; oxide extension excluded from length prediction scores"
+    },
+    "oxide_extension": {
+      "length_um": 0.25,
+      "oxide_nm": [
+        4.0,
+        5.0,
+        6.0
+      ],
+      "baseline_nm": 5.0,
+      "angle_deg": 0,
+      "particles": [
+        "alpha",
+        "proton"
+      ],
+      "replicate": 1,
+      "paired_bits": [
+        0,
+        1
+      ],
+      "new_thicknesses_require": [
+        "rebuilt_geometry_mesh",
+        "bit0_control",
+        "bit1_control",
+        "neutral_reference"
+      ],
+      "additional_independent_events": 0,
+      "source": "controlled assumption ±20% about existing uncalibrated5nm model",
+      "transport_scope": "fixed silicon-entry events; Geant4 material stack remains silicon/vacuum"
+    }
+  },
+  "training": {
+    "independent_events": 32,
+    "paired_responses": 64,
+    "continuous_valid": 64,
+    "classification_by_threshold_mV": {
+      "2.5": {
+        "raw": {
+          "correct": 48,
+          "criterion_logic_flip": 14,
+          "critical": 2
+        },
+        "effective": {
+          "correct": 48,
+          "criterion_logic_flip": 13,
+          "critical": 2,
+          "numerically_uncertain": 1
+        }
+      },
+      "5.0": {
+        "raw": {
+          "correct": 48,
+          "criterion_logic_flip": 10,
+          "critical": 6
+        },
+        "effective": {
+          "correct": 48,
+          "criterion_logic_flip": 10,
+          "numerically_uncertain": 2,
+          "critical": 4
+        }
+      },
+      "10.0": {
+        "raw": {
+          "correct": 48,
+          "critical": 13,
+          "criterion_logic_flip": 3
+        },
+        "effective": {
+          "correct": 48,
+          "critical": 13,
+          "criterion_logic_flip": 3
+        }
+      }
+    },
+    "cv": [
+      {
+        "model": "bit0:deltaQ_fC",
+        "stored_bit": 0,
+        "target": "deltaQ_fC",
+        "unit": "fC",
+        "selected_alpha": 0.1,
+        "ridge_cv_rmse": 0.10288832374145279,
+        "baseline_cv_rmse": 2.279966994767208,
+        "training_responses_per_model": 32,
+        "folds": 8,
+        "scope": "Mean of training LOCO fold RMSE; not independent holdout or extrapolation test"
+      },
+      {
+        "model": "bit0:deltaM_mV",
+        "stored_bit": 0,
+        "target": "deltaM_mV",
+        "unit": "mV",
+        "selected_alpha": 0.1,
+        "ridge_cv_rmse": 0.9551599971775688,
+        "baseline_cv_rmse": 21.458869934530888,
+        "training_responses_per_model": 32,
+        "folds": 8,
+        "scope": "Mean of training LOCO fold RMSE; not independent holdout or extrapolation test"
+      },
+      {
+        "model": "bit1:deltaQ_fC",
+        "stored_bit": 1,
+        "target": "deltaQ_fC",
+        "unit": "fC",
+        "selected_alpha": 0.1,
+        "ridge_cv_rmse": 0.11290254660220565,
+        "baseline_cv_rmse": 2.5157103067863718,
+        "training_responses_per_model": 32,
+        "folds": 8,
+        "scope": "Mean of training LOCO fold RMSE; not independent holdout or extrapolation test"
+      },
+      {
+        "model": "bit1:deltaM_mV",
+        "stored_bit": 1,
+        "target": "deltaM_mV",
+        "unit": "mV",
+        "selected_alpha": 0.1,
+        "ridge_cv_rmse": 1.0124908409986038,
+        "baseline_cv_rmse": 23.383860923895536,
+        "training_responses_per_model": 32,
+        "folds": 8,
+        "scope": "Mean of training LOCO fold RMSE; not independent holdout or extrapolation test"
+      }
+    ],
+    "cv_is_training_only": true,
+    "no_test_based_tuning": "The copied freeze records test_responses_seen=0; this generator does not fit models or inspect test target metrics"
+  },
+  "completed_gate_records": {
+    "references": {
+      "state": "VERIFIED",
+      "cases": 20
+    },
+    "pilot": {
+      "state": "VERIFIED",
+      "cases": 10
+    },
+    "numerical_preregistered": {
+      "state": "VERIFIED",
+      "cases": 6
+    },
+    "train": {
+      "state": "VERIFIED",
+      "cases": 0
+    }
+  },
+  "d1_reference": [
+    {
+      "reference": "Fixed 0.5 V reference",
+      "D_mV": 2.4549605553549902,
+      "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+      "scope": "D1 historical diagnostic"
+    },
+    {
+      "reference": "Offline matched neutral",
+      "D_mV": -9.915036045006985,
+      "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+      "scope": "D1 historical diagnostic"
+    },
+    {
+      "reference": "Physical matched branch",
+      "D_mV": -9.915036045004989,
+      "run_id": "20261010T082741Z-rodiag1-matched-ref-r3-99f3de31",
+      "scope": "D1 historical diagnostic"
+    }
+  ],
+  "r50_probe_precharge": [
+    {
+      "model": "R100",
+      "role": "event",
+      "run_id": "20261010T145140Z-v3-l018-alpha-a0-s202610303-b0-294913e5",
+      "scope": "R100_diagnostic_only",
+      "time_s": "3e-09",
+      "BL_error_uV": "-13.297362170983096",
+      "REF_error_uV": "0.0",
+      "tolerance_uV": "10",
+      "precharge_passed": "False",
+      "complete_raw_audit_state": "FAILED",
+      "signed_error_uV": -13.297362170983096,
+      "absolute_error_uV": 13.297362170983096
+    },
+    {
+      "model": "R50",
+      "role": "event",
+      "run_id": "20261010T171616Z-v3-r50-probe-r1-event-15cbbb61",
+      "scope": "R50_independent_probe_only",
+      "time_s": "3e-09",
+      "BL_error_uV": "-4.731203623986602",
+      "REF_error_uV": "0.0",
+      "tolerance_uV": "10",
+      "precharge_passed": "True",
+      "complete_raw_audit_state": "PASSED",
+      "signed_error_uV": -4.731203623986602,
+      "absolute_error_uV": 4.731203623986602
+    }
+  ],
+  "r50_reference_snapshot": {
+    "generated_utc": "2026-10-10T20:21:57.699792+00:00",
+    "sha256": "cc7b5710cbbe887bfaa464e10cf681cd0ad4a8122194c34e6a67f9c9c8372998",
+    "audited_runs": 20,
+    "baseline_rows": [
+      {
+        "gate_length_um": 0.18,
+        "role": "bit0",
+        "target_SN_V": 0.1,
+        "initial_SN_V": 0.0999999973392696,
+        "initial_error_V": -2.660730399894895e-09,
+        "final_BL_V": 0.472842296588127,
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.18,
+        "role": "neutral",
+        "target_SN_V": 0.5,
+        "initial_SN_V": 0.499999990867681,
+        "initial_error_V": -9.132319012117307e-09,
+        "final_BL_V": 0.51033896266017,
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.18,
+        "role": "bit1",
+        "target_SN_V": 0.9,
+        "initial_SN_V": 0.899999968136639,
+        "initial_error_V": -3.186336106075771e-08,
+        "final_BL_V": 0.547675783057331,
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.25,
+        "role": "bit0",
+        "target_SN_V": 0.1,
+        "initial_SN_V": 0.0999999998526773,
+        "initial_error_V": -1.4732270958717208e-10,
+        "final_BL_V": 0.474984124327055,
+        "run_id": "20261010T174807Z-v3-r50-main-control-l025-b0-ox5-s1-m1-7f3f9f57",
+        "archive_sha256": "432aaa8bd822210d739ef36722d03c813d8af15c9f93a4985eeb64b7eeda11a7",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.25,
+        "role": "neutral",
+        "target_SN_V": 0.5,
+        "initial_SN_V": 0.499999999783824,
+        "initial_error_V": -2.1617602152801396e-10,
+        "final_BL_V": 0.512373411339367,
+        "run_id": "20261010T180116Z-v3-r50-main-neutral-l025-ox5-s1-m1-642cb795",
+        "archive_sha256": "ff16ca6d529584a9f0aa59672e6c2e0d4880a825e1850988fbf233a249a1ef48",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.25,
+        "role": "bit1",
+        "target_SN_V": 0.9,
+        "initial_SN_V": 0.899999999689649,
+        "initial_error_V": -3.10350967147599e-10,
+        "final_BL_V": 0.549607745439144,
+        "run_id": "20261010T175452Z-v3-r50-main-control-l025-b1-ox5-s1-m1-c40fa66d",
+        "archive_sha256": "c9b3c1f3dcb2abfc5d211814bb46835a8187085b2af2a5676d0db271ab9cbb71",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.35,
+        "role": "bit0",
+        "target_SN_V": 0.1,
+        "initial_SN_V": 0.0999999999591581,
+        "initial_error_V": -4.0841899306975904e-11,
+        "final_BL_V": 0.47795645228459,
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.35,
+        "role": "neutral",
+        "target_SN_V": 0.5,
+        "initial_SN_V": 0.499999999952747,
+        "initial_error_V": -4.7252979307188525e-11,
+        "final_BL_V": 0.515112293489502,
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.35,
+        "role": "bit1",
+        "target_SN_V": 0.9,
+        "initial_SN_V": 0.899999999946646,
+        "initial_error_V": -5.335398789441115e-11,
+        "final_BL_V": 0.552117962718532,
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.45,
+        "role": "bit0",
+        "target_SN_V": 0.1,
+        "initial_SN_V": 0.0999999999763622,
+        "initial_error_V": -2.363780005065763e-11,
+        "final_BL_V": 0.480947291491834,
+        "run_id": "20261010T182840Z-v3-r50-main-control-l045-b0-ox5-s1-m1-6a750c5d",
+        "archive_sha256": "e6253753140c17c3d7f3eb28d3e76e08b79148954e0a26db5aad7b4b8ef8f21e",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.45,
+        "role": "neutral",
+        "target_SN_V": 0.5,
+        "initial_SN_V": 0.499999999973619,
+        "initial_error_V": -2.6381008488840507e-11,
+        "final_BL_V": 0.517875627035371,
+        "run_id": "20261010T184202Z-v3-r50-main-neutral-l045-ox5-s1-m1-8a8a93c5",
+        "archive_sha256": "fa8a1059a67843ac632f28a8b5c29b578e5098f9923c745b8fa2f7561825b295",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      },
+      {
+        "gate_length_um": 0.45,
+        "role": "bit1",
+        "target_SN_V": 0.9,
+        "initial_SN_V": 0.899999999971221,
+        "initial_error_V": -2.8778979199728383e-11,
+        "final_BL_V": 0.554656680767403,
+        "run_id": "20261010T183541Z-v3-r50-main-control-l045-b1-ox5-s1-m1-dd36fd52",
+        "archive_sha256": "268bc41ca8428feaedc6c75e59a5d4235f2c5679e0a6a63d002bd62128987cb7",
+        "scope": "R50 unirradiated baseline / neutral reference"
+      }
+    ],
+    "source_snapshot_valid_particle_responses": 0
+  },
+  "preregistered_numerical": [
+    {
+      "step_scale": 0.5,
+      "mesh_scale": 1.0,
+      "M_difference_mV": -0.025791799922014746,
+      "deltaQ_difference_fC": -0.002756373464640305,
+      "readout_tolerance_mV": 0.5,
+      "deltaQ_tolerance_fC": 0.01,
+      "continuous_passed": true,
+      "classification_stable": true
+    },
+    {
+      "step_scale": 1.0,
+      "mesh_scale": 0.7,
+      "M_difference_mV": -3.408395199411274e-05,
+      "deltaQ_difference_fC": -5.793571440371181e-06,
+      "readout_tolerance_mV": 0.5,
+      "deltaQ_tolerance_fC": 0.01,
+      "continuous_passed": true,
+      "classification_stable": true
+    }
+  ],
+  "limitations": [
+    "No solver / SSH / remote or process checks",
+    "No full raw-tar re-audit in this writing pass",
+    "No current test or extrapolation performance claim",
+    "No completed oxide extension / boundary validation claim",
+    "No commercial reliability / calibrated bit flip / cross section claim",
+    "No AI speedup claim",
+    "New PNGs need root visual review",
+    "Actual student roles, teacher review, resource handoff, defense and assessment remain human evidence"
+  ],
+  "plotting_environment": {
+    "font": "Microsoft YaHei",
+    "font_path": "C:\\Windows\\Fonts\\msyhbd.ttc",
+    "matplotlib": "3.11.2",
+    "numpy": "2.5.3"
+  },
+  "generator_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461"
+}

@@ -4,9 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#005cbb" />
-    <meta name="description" content="AI辅助下的DRAM存储器单粒子效应评估研究公开入口。" />
+    <meta name="description" content="AI辅助下的DRAM存储器单粒子效应评估研究公开主页：涵盖服务器Agent自治调度架构、Geant4/TCAD多代次仿真成果与可追溯科学证据。" />
     <link rel="canonical" href="https://tcad.xjtu.shop/" />
-    <title>DRAM 单粒子效应评估研究 · xjtu.shop</title>
+    <title>DRAM 单粒子效应评估研究 · tcad.xjtu.shop</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('xjtu-theme') || localStorage.getItem('xjtu-status-theme');
+          var dark = saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var theme = dark ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', dark ? '#0e1520' : '#005cbb');
+          if (localStorage.getItem('xjtu-lang') === 'en') document.documentElement.lang = 'en';
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="app"></div>

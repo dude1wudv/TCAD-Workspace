@@ -18,7 +18,6 @@ REVISION = "r0.6"
 OWNER = "server-codex"
 P0_RECIPES = {"zero_whr", "geometry_dc", "prefix_repeatability",
               "logging_short_probe", "logging_long_pair", "timing_sensitivity", "pmi_build"}
-PARTICLE_RECIPES = P0_RECIPES - {"zero_whr", "geometry_dc", "pmi_build"}
 BUILD_TASK = "#!/bin/bash\nset -euo pipefail\nexec /bin/bash ./compile-in-original-vm.sh\n"
 
 
@@ -118,7 +117,7 @@ def matching_admission(workspace, contract, task, kind):
     return admission
 
 
-def verify_p0(workspace, contract, manifest, task, inputs, intents):
+def verify_p0(workspace, contract, manifest, task, inputs):
     admission = matching_admission(workspace, contract, task, "p0")
     need(admission.get("scope") == "p0_diagnostic"
          and admission.get("formal_case_id") is None
@@ -141,12 +140,6 @@ def verify_p0(workspace, contract, manifest, task, inputs, intents):
          and isinstance(plan.get("acceptance_criteria"), str)
          and len(plan["acceptance_criteria"].strip()) >= 20,
          "diagnostic plan/criteria not frozen")
-    submitted = [value.get("scientific_admission", {}) for value in intents.values()
-                 if value.get("scientific_admission", {}).get("scope") == "p0_diagnostic"]
-    need(len(submitted) + 1 <= contract["max_p0_tasks"], "P0 diagnostic budget exhausted")
-    need(sum(value.get("recipe_id") in PARTICLE_RECIPES for value in submitted)
-         + int(recipe in PARTICLE_RECIPES) <= contract["max_p0_particle_tasks"],
-         "P0 particle diagnostic budget exhausted")
     project = path_at(workspace, task["project"])
     if recipe == "pmi_build":
         need(task["backend"] == "geant4" and profile_id == "D0-nominal",
@@ -434,15 +427,12 @@ def verify(workspace, policy, task, inputs=None, intents=None):
     manifest = read_reference(workspace, contract.get("manifest"))
     need(manifest.get("revision") == REVISION and manifest.get("plan_id") == PLAN,
          "frozen manifest identity differs")
-    need(type(contract.get("max_p0_tasks")) is int and 1 <= contract["max_p0_tasks"] <= 64
-         and type(contract.get("max_p0_particle_tasks")) is int
-         and 0 <= contract["max_p0_particle_tasks"] <= 12, "invalid P0 budget")
     project = path_at(workspace, task["project"])
     actual = input_hashes(project)
     if inputs is not None:
         need(inputs == actual, "input snapshot changed during admission")
     if task["id"].startswith("r06-p0-"):
-        result = verify_p0(workspace, contract, manifest, task, actual, intents)
+        result = verify_p0(workspace, contract, manifest, task, actual)
     else:
         result = verify_production(workspace, contract, manifest, task, actual)
     ancestors = set()

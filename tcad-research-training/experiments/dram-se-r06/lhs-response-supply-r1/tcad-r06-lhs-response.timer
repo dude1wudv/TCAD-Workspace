@@ -1,0 +1,10 @@
+[Unit]
+Description=Review collected r0.6 LHS inputs for the original scheduler
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=2min
+AccuracySec=15s
+
+[Install]
+WantedBy=timers.target

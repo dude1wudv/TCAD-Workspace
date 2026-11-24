@@ -1,0 +1,278 @@
+[
+  {
+    "source": "reports/final-r4/data/snapshot/responses.csv",
+    "delivered": "06_数据与图表/数据/responses.csv",
+    "sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/statistics.csv",
+    "delivered": "06_数据与图表/数据/statistics.csv",
+    "sha256": "43074a82c61e03f2f875bd07af938b066da68c6c19bb48da134811ae23148bb9",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/prediction-scores.csv",
+    "delivered": "06_数据与图表/数据/prediction-scores.csv",
+    "sha256": "3bac7ba9fb7603112d924b886fdea1ac6338054490b1e338eb281d812680e251",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/prediction-residuals.csv",
+    "delivered": "06_数据与图表/数据/prediction-residuals.csv",
+    "sha256": "dfae2a762a4f7019b503532ca8dfe8ca865157a48ecd668971692437fcac6d93",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/extension-cases.csv",
+    "delivered": "06_数据与图表/数据/extension-cases.csv",
+    "sha256": "c6b40b11dcc9144586b43e5e7f24272a2e4962767be6ebc65b6ad182bb4381f6",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/summary.json",
+    "delivered": "06_数据与图表/数据/summary.json",
+    "sha256": "6fda8113e80160b957634e77d492d38e951961107c1ac4cd25f6257153522c80",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/original-failures.json",
+    "delivered": "06_数据与图表/数据/original-failures.json",
+    "sha256": "6cca5c2e0737dce3478baadc3cf40221992f7462f474d2d56afef627f8580a39",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/response-sources.json",
+    "delivered": "06_数据与图表/数据/response-sources.json",
+    "sha256": "107219b48f7b40c4f11f87edd6cfb25d43220807a95afb79af94b0a6ad2c9aa4",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/raw-submission-index.json",
+    "delivered": "06_数据与图表/数据/raw-submission-index.json",
+    "sha256": "95dae7db22cb3a2d505c4c46936d52ca3840853781559b5f5efcc81cb66a6b56",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/original-r4-prediction-scores.json",
+    "delivered": "06_数据与图表/数据/original-r4-prediction-scores.json",
+    "sha256": "06def52e5412a20434c67e929c6b1ddf83a5e10da9fcf64d4c00d117efaa6ea8",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/final-numerical-prediction-scores.json",
+    "delivered": "06_数据与图表/数据/final-numerical-prediction-scores.json",
+    "sha256": "06def52e5412a20434c67e929c6b1ddf83a5e10da9fcf64d4c00d117efaa6ea8",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/frozen-models.json",
+    "delivered": "06_数据与图表/数据/frozen-models.json",
+    "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/writing-results.json",
+    "delivered": "06_数据与图表/数据/writing-results.json",
+    "sha256": "26e85ef02296ed34553fc089b631d71ca5cc9a66d58a1e580b34731af0d9fa5c",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/d1-reference-comparison.png",
+    "delivered": "06_数据与图表/图表/d1-reference-comparison.png",
+    "sha256": "384e43e034496d875930484c97358fcd1918afd7d4e322452bf850751b0fe523",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/initial-state.png",
+    "delivered": "06_数据与图表/图表/initial-state.png",
+    "sha256": "230e96f54bb9918fe8c743162253cc29e6069d5ec955b6155ae25357cc6d9378",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/native-event-window.png",
+    "delivered": "06_数据与图表/图表/native-event-window.png",
+    "sha256": "b561a9c81fa63fc69b1956bcfaf667f0026c790d8cb5d46aafa910a707f8c846",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/native-physical-window.png",
+    "delivered": "06_数据与图表/图表/native-physical-window.png",
+    "sha256": "3c488a1571a23b36fa456db88639fb8c30d181c7d2c0d465c85176b79a454a98",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/oxide-sensitivity.png",
+    "delivered": "06_数据与图表/图表/oxide-sensitivity.png",
+    "sha256": "04685bff4db663a697ae3be29bb48c00c9d6af281cbe1f8e471f98db7ce842fa",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/prediction-residuals.png",
+    "delivered": "06_数据与图表/图表/prediction-residuals.png",
+    "sha256": "ca4938aad715d2574f6b5238ec16bd2c898d3d8ee27fd43d39c6078d961b1a8e",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/r50-precharge.png",
+    "delivered": "06_数据与图表/图表/r50-precharge.png",
+    "sha256": "71ba3701800c5ea47b0b7eb7aaec29bc6f1635779d3d2e35f2d2b58a0c08a213",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/readout-l018.png",
+    "delivered": "06_数据与图表/图表/readout-l018.png",
+    "sha256": "82ec7398e005e2f67f2f9801f838b9bd1afcd42f13bed7e6574a4bde3f1052c7",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/readout-l025.png",
+    "delivered": "06_数据与图表/图表/readout-l025.png",
+    "sha256": "a9f4ce31a172e0f04362a1aeaea5419557e8503ad527ae87a33d1d6a20eea0bc",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/readout-l035.png",
+    "delivered": "06_数据与图表/图表/readout-l035.png",
+    "sha256": "c4ad8a5b25414550f9d21b4ab82a71e723e978f127c9ac7c05166201a4d3dde2",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/readout-l045.png",
+    "delivered": "06_数据与图表/图表/readout-l045.png",
+    "sha256": "dde9ccc2bd27d568aa2fc12dad94f075a54910cfce5de91386cb3e6b6660611c",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/stratum-counts.png",
+    "delivered": "06_数据与图表/图表/stratum-counts.png",
+    "sha256": "82f4fc314f5d8b9818c9f6186f28f8a699ef0670144dad2111c5ab700ed83fe9",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/stratum-intervals.png",
+    "delivered": "06_数据与图表/图表/stratum-intervals.png",
+    "sha256": "69e1bdc39cd929c29ca5aedeec1504b0bc6b1f68f0a0377d4baeb990377af1fa",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/threshold-window-l018.png",
+    "delivered": "06_数据与图表/图表/threshold-window-l018.png",
+    "sha256": "47c3ef2a1b8c376b8084b6b559360acc87f0fe5e28714c46a64bc99869d042ea",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/threshold-window-l025.png",
+    "delivered": "06_数据与图表/图表/threshold-window-l025.png",
+    "sha256": "b8c495d5c65cf1332d81b4e03c422f04f1c378540961cd69f4d81ddcae8a03b4",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/threshold-window-l035.png",
+    "delivered": "06_数据与图表/图表/threshold-window-l035.png",
+    "sha256": "56d23e60baa7961cafa31822b2c85d8210eba5883b1a3ff91ae5b5b6d32b7c7e",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/threshold-window-l045.png",
+    "delivered": "06_数据与图表/图表/threshold-window-l045.png",
+    "sha256": "be372eca7923f532dff3e00021b5136399b06d054c9b82c26bb93130eafe5ce5",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/d1-reference-comparison.sources.json",
+    "delivered": "06_数据与图表/图表/d1-reference-comparison.sources.json",
+    "sha256": "9b12ac5a296bb37a33b39b26d9f9f1d077bff571667d6a098ecdd5cc6c1f419a",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/figures/r50-precharge.sources.json",
+    "delivered": "06_数据与图表/图表/r50-precharge.sources.json",
+    "sha256": "e14590e458ad40771f56d5dda418949751b2f1d3dc1590427ccb7911b47532ba",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/initial-state.sources.json",
+    "delivered": "06_数据与图表/图表/initial-state.sources.json",
+    "sha256": "1c9df5b0f7e60e20a174572e66108e14855a9c05a2b2a193f56e95a89978e26f",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/oxide-sensitivity.sources.json",
+    "delivered": "06_数据与图表/图表/oxide-sensitivity.sources.json",
+    "sha256": "8661f3346032850a9e6a60403416d0729cb0fe6cc1dc0d1ede63a20ad388ebc3",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/prediction-residuals.sources.json",
+    "delivered": "06_数据与图表/图表/prediction-residuals.sources.json",
+    "sha256": "de8b3c0d0501bc1c0f7c71b5f73ff31d7bf23b4d119633a1909660bef7235d78",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/readout-l018.sources.json",
+    "delivered": "06_数据与图表/图表/readout-l018.sources.json",
+    "sha256": "0a52af8802d9bf79773795408c35bf5780261e168430d54cf1833feb6553d6b3",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/readout-l025.sources.json",
+    "delivered": "06_数据与图表/图表/readout-l025.sources.json",
+    "sha256": "e753eba5b7e8d9c720618ef28e81f64960bc9b8409a9ad81b1b9228a402b6329",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/readout-l035.sources.json",
+    "delivered": "06_数据与图表/图表/readout-l035.sources.json",
+    "sha256": "160f4cca1dbddb55c37bd81101721f4a0b468c7ab93b386d2a423f72968c2eb0",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/readout-l045.sources.json",
+    "delivered": "06_数据与图表/图表/readout-l045.sources.json",
+    "sha256": "984defcb3b3c5aafb8d4e53e2d99a435e5ae3e600e425e8f3edfa00929d5ec3c",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/stratum-counts.sources.json",
+    "delivered": "06_数据与图表/图表/stratum-counts.sources.json",
+    "sha256": "7f58ba33b4fc7e4b9da409e84991204f3cf3b2b9d857dabb111f22a8936e3c1b",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/stratum-intervals.sources.json",
+    "delivered": "06_数据与图表/图表/stratum-intervals.sources.json",
+    "sha256": "63f511f0aa657132ad15e3dfefc1fe520409c86fa06c724a7d7a699bdf759569",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/threshold-window-l018.sources.json",
+    "delivered": "06_数据与图表/图表/threshold-window-l018.sources.json",
+    "sha256": "b2a7db1c710cfd24be24a568947f59acb387e80fe80b4f14cc4388db52405f56",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/threshold-window-l025.sources.json",
+    "delivered": "06_数据与图表/图表/threshold-window-l025.sources.json",
+    "sha256": "6531856e40b7800da1cb9cf7e41e96f6b51ebb0700a4ced8ae68c668d83fa056",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/threshold-window-l035.sources.json",
+    "delivered": "06_数据与图表/图表/threshold-window-l035.sources.json",
+    "sha256": "927a6f24ca065a18a8ef8523dfe45ba6689e6dfed9650159e33e144732f920fd",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/data/snapshot/figures/threshold-window-l045.sources.json",
+    "delivered": "06_数据与图表/图表/threshold-window-l045.sources.json",
+    "sha256": "605eaaef00444e1aa5a29dbbb77abfc1fff0d5f7da19513d8f33352c7d48b248",
+    "copy_matches": true
+  },
+  {
+    "source": "reports/final-r4/evidence-index.csv",
+    "delivered": "06_数据与图表/数据/evidence-index.csv",
+    "sha256": "3e9b4a3cb218e712d7da0265065673f133ce0877bbba7e550f5133cd6631d074",
+    "copy_matches": true
+  }
+]

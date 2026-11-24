@@ -1,0 +1,15 @@
+{
+  "schema": "dram-final-reference-verification-v1",
+  "verified_date": "2026-10-11",
+  "records": [
+    {"key": "chen2011", "method": "Crossref JSON and BibTeX; publisher page for Chinese title and complete page range", "url": "https://cjss.ac.cn/cn/article/doi/10.11728/cjss2011.04.498", "correction": "Crossref pages field is 498; publisher gives 498-502. Publisher Chinese title and author names used."},
+    {"key": "xu2021", "method": "Crossref JSON and BibTeX; author preprint abstract", "doi": "10.1109/TED.2021.3113884", "url": "https://arxiv.org/abs/2105.10723", "scope": "TCAD-trained SET regression for circuit simulation; not a DRAM calibration source"},
+    {"key": "ryder2021", "method": "Crossref JSON and BibTeX; retained public manuscript verification", "doi": "10.1109/TNS.2021.3060339", "scope": "Charge-generation mechanisms and 3.6 eV/pair; not this DRAM geometry"},
+    {"key": "keeth2001", "method": "Inherited verified publisher excerpt and reports/paper/sources.json", "scope": "1T1C, precharge, charge sharing and sensing; not parameter calibration"},
+    {"key": "g4em", "method": "Inherited verified Geant4 10.7 reference in reports/paper/sources.json; archive URL was not available to the web tool during this planning session", "scope": "Option4 electromagnetic physics definition; no claim of hadronic physics or patch-specific validation"},
+    {"key": "label1996", "method": "Inherited verified NASA report in reports/paper/sources.json", "scope": "SEE generation/collection and circuit-dependent upset"},
+    {"key": "course", "method": "Local course-project-syllabus.md read", "scope": "Course requirements; not proof of instructor approval or assessment"},
+    {"key": "project", "method": "This delivery's source manifest and evidence index", "scope": "Version-specific completed evidence and explicitly pending result fields"}
+  ],
+  "format_changes": "BibTeX keys normalized; Unicode page-range dash converted to LaTeX double hyphen; redundant DOI and publisher fields omitted from displayed bibliography. Full Crossref records retained in reference-metadata.json."
+}

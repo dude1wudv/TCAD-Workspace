@@ -1,0 +1,54 @@
+{
+  "schema": "dram-final-data-figure-v1",
+  "name": "r50-training-cv",
+  "title": "Training LOCO cross-validation",
+  "kind": "scientific_data_plot",
+  "not_native_visual_export": true,
+  "not_gui_screenshot": true,
+  "scope": "Training model-selection evidence only; independent test metrics remain unreported",
+  "source_files": [
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/models.json",
+      "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383"
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/freeze.json",
+      "sha256": "f0384066be6d42bb71dad6fd8e4e1a2f474e6f9f45d918da759ca0274a4cff9e"
+    }
+  ],
+  "data_files": [
+    {
+      "path": "data/r50-training-cv.csv",
+      "sha256": "f32591f0f896ec997335c70be3cfac9bb8a8519b5a358a5ef09d3f16e6b77c37"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "figures/r50-training-cv.png",
+      "sha256": "14c76fd038bbc49344243020a76028864deec4a4154d76c8f36b73336c448758"
+    },
+    {
+      "path": "figures/r50-training-cv.pdf",
+      "sha256": "34f72fea74f7eea69254da327de6ff988429640810317ec172cc1078ea30f1d5"
+    }
+  ],
+  "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+  "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+  "raw_archives_reaudited_this_generation": false,
+  "details": {
+    "folds": 8,
+    "alpha_candidates": [
+      0,
+      0.01,
+      0.1,
+      1,
+      10
+    ],
+    "selected_alphas": [
+      0.1,
+      0.1,
+      0.1,
+      0.1
+    ]
+  }
+}

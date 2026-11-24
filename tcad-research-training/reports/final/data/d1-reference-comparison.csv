@@ -1,0 +1,4 @@
+﻿reference,D_mV,run_id,scope
+Fixed 0.5 V reference,2.4549605553549902,20261010T074533Z-rodiag1-alpha-match-d0af10aa,D1 historical diagnostic
+Offline matched neutral,-9.915036045006985,20261010T074533Z-rodiag1-alpha-match-d0af10aa,D1 historical diagnostic
+Physical matched branch,-9.915036045004989,20261010T082741Z-rodiag1-matched-ref-r3-99f3de31,D1 historical diagnostic

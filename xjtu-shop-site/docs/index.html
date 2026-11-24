@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#005cbb" />
+    <meta name="description" content="DRAM 单粒子效应评估研究全栈技术文档：Geant4 核非弹性输运、Sentaurus TCAD 与 C++ 原子 PMI、R→A→F 物理约束预测网络、server-codex-v2 自治调度与只读遥测架构。" />
+    <link rel="canonical" href="https://tcad.xjtu.shop/docs/" />
+    <title>技术文档 · DRAM 单粒子效应评估研究 · tcad.xjtu.shop</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('xjtu-theme') || localStorage.getItem('xjtu-status-theme');
+          var dark = saved === 'dark' || (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var theme = dark ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', dark ? '#0e1520' : '#005cbb');
+          if (localStorage.getItem('xjtu-lang') === 'en') document.documentElement.lang = 'en';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/docs.js"></script>
+  </body>
+</html>

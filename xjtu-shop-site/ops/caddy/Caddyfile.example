@@ -1,7 +1,7 @@
 (public_cache_headers) {
     @status_json path /status.json /live.json
     header @status_json Cache-Control "no-store, max-age=0"
-    @html_entry path / /index.html /status.html
+    @html_entry path / /index.html /docs /docs/ /docs/index.html /status.html
     header @html_entry Cache-Control "no-cache"
     header /assets/* Cache-Control "public, max-age=31536000, immutable"
 }

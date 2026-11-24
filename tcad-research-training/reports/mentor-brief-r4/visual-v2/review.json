@@ -1,0 +1,83 @@
+{
+  "utc": "2026-10-12T01:50:14.655558+00:00",
+  "state": "CONTENT_DATA_AND_VISUAL_REVIEW_PASSED",
+  "primary_files_sha256": {
+    "project-brief.tex": "94733ab7819777c47969b252949601b332ee96a925868678e94c720dc6f4f4c8",
+    "project-brief.pdf": "3626e7d5cdd4b41c4e46c9b365aca90a44c3cefe9077f6bc8caa600cda597e49"
+  },
+  "pages": 3,
+  "standalone_latex": true,
+  "all_charts_and_coordinates_embedded": true,
+  "desktop_latex_compiler": "success for final source via compile_latex_document",
+  "export_commands": [
+    {
+      "argv": [
+        "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+        "--disable-installer",
+        "-no-shell-escape",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r3",
+        "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\project-brief.tex"
+      ],
+      "started_utc": "2026-10-12T01:47:44.267397+00:00",
+      "finished_utc": "2026-10-12T01:47:49.396845+00:00",
+      "actual_exit_code": 0,
+      "log": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r3\\pass-1.log"
+    },
+    {
+      "argv": [
+        "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+        "--disable-installer",
+        "-no-shell-escape",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r3",
+        "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\project-brief.tex"
+      ],
+      "started_utc": "2026-10-12T01:47:49.398212+00:00",
+      "finished_utc": "2026-10-12T01:47:54.467653+00:00",
+      "actual_exit_code": 0,
+      "log": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r3\\pass-2.log"
+    },
+    {
+      "argv": [
+        "C:/Users/sun/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin/pdftoppm.exe",
+        "-r",
+        "130",
+        "-png",
+        "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r3\\project-brief.pdf",
+        "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v2\\qa\\r3\\page"
+      ],
+      "finished_utc": "2026-10-12T01:47:54.949329+00:00",
+      "actual_exit_code": 0
+    }
+  ],
+  "actual_page_review": {
+    "method": "tools.view_image for each complete final r3 page",
+    "pages": {
+      "1": "Title, project workflow, parameter table and metrics readable; alpha and micrometer symbols visible.",
+      "2": "Both 64-point plots, correct axis units, readout counts and followup text readable; no stray line fragments.",
+      "3": "Both 64-point prediction plots, four error-table rows and training/test workflow readable; alpha/mu repaired, no overlap."
+    },
+    "all_pass": true,
+    "png_sha256": {
+      "page-1.png": "179a2fcad1b977209e345a81ffdac5940b53b188a319ae7259cfc90f2198a0e6",
+      "page-2.png": "ae8e3c1dea48693d9e38d94930139193ac3f857173d7eed7802f561ce05ec18a",
+      "page-3.png": "2d45889de9eaeacae92a617ad1cf56d7128dcf99e2bfa7e3d4ccd5e28f08f2c2"
+    }
+  },
+  "independent_validation_sha256": {
+    "local_runtime/dram-see-v3/mentor-brief-visual-v2-validation/verification.json": "ba4e95ca5b659c918215c7509a02a6c13e3d68fc17e979aaeb9178a140c3b1d5",
+    "local_runtime/dram-see-v3/mentor-brief-visual-v2-validation/attempt-03-command-exit.json": "24f6e38be086aa5a8f7ad3723908a63059f387627b9178dbacce8c86ab4abd51",
+    "local_runtime/dram-see-v3/mentor-brief-visual-v2-validation/final-source-supplement.json": "19bb6561081817ed4ebb7790bffc92f486ed920845033d4f5ec22f827fbfd021",
+    "local_runtime/dram-see-v3/mentor-brief-visual-v2-validation/source-supplement-command-exit.json": "0bafce033d022ac64c8c39b53582cf81ac3e64e1d0931daf3ac81930c10148cc"
+  },
+  "prior_builds_retained": {
+    "r1": "Local TEXINPUTS included documentation color.cfg; export failed before any page. Corrected search path only.",
+    "r2": "Compiled 3 pages; visual/log checks found missing Greek glyphs and paragraph positioning. Repaired in r3."
+  },
+  "science_inputs_unchanged": true,
+  "old_brief_and_final_package_preserved": true,
+  "simulation_or_retraining_performed": false
+}

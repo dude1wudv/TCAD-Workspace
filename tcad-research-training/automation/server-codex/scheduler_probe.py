@@ -190,7 +190,11 @@ class BatchRemoteProbe:
             if sample.get("ok") is not True or not isinstance(sample.get("runs"), dict):raise ValueError("Invalid probe response")
             sample["telemetry"]["host_disk_free_gib"] = shutil.disk_usage(self.policy["state_dir"]).free / 1073741824
             backing = self.policy.get("resources", {}).get("backing_disk_path")
-            sample["telemetry"]["backing_disk_free_gib"] = shutil.disk_usage(backing).free / 1073741824 if backing else None
+            try:
+                backing_free = shutil.disk_usage(backing).free / 1073741824 if backing and os.path.ismount(backing) else None
+            except OSError:
+                backing_free = None
+            sample["telemetry"]["backing_disk_free_gib"] = backing_free
             observed=sample.get('observed_at')
             if type(observed) not in (int,float) or not -5<=time.time()-observed<=30:raise ValueError('Remote probe time is stale or clock differs')
             sample["remote_observed_at"]=observed;sample["observed_at"]=time.time()

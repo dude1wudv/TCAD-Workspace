@@ -1,0 +1,21 @@
+{
+  "schema": "mentor-rewrite-r5-validation-command-record-v1",
+  "commands": [
+    {
+      "command": ".\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe -X utf8 -B reports/mentor-rewrite-r5/qa/validation/validate_r5_material_facts.py",
+      "exit_code": 1,
+      "log": "reports/mentor-rewrite-r5/qa/validation/material-fact-validation-attempt1.log",
+      "result": "reports/mentor-rewrite-r5/qa/validation/material-fact-validation-attempt1.json",
+      "note": "Initial validator assertion incorrectly assumed scientific_input_preserved was a Boolean; source manifest uses a detailed preservation-count object. The failure is retained as evidence; assertion was corrected to the documented source structure."
+    },
+    {
+      "command": ".\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe -X utf8 -B reports/mentor-rewrite-r5/qa/validation/validate_r5_material_facts.py",
+      "exit_code": 0,
+      "log": "reports/mentor-rewrite-r5/qa/validation/material-fact-validation-attempt2.log",
+      "result": "reports/mentor-rewrite-r5/qa/validation/material-fact-validation.json",
+      "note": "33 checks passed; 84 manifest-listed snapshot science data/figure files matched."
+    }
+  ],
+  "status": "PASS",
+  "final_result": "reports/mentor-rewrite-r5/qa/validation/material-fact-validation.json"
+}

@@ -24,6 +24,10 @@ _watchdog_spec.loader.exec_module(watchdog)
 _pool_spec = importlib.util.spec_from_file_location("tcad_scheduler_pool", Path(__file__).with_name("scheduler_pool.py"))
 scheduler_pool = importlib.util.module_from_spec(_pool_spec)
 _pool_spec.loader.exec_module(scheduler_pool)
+_archive_spec = importlib.util.spec_from_file_location(
+    "tcad_geant4_archive", Path(__file__).with_name("geant4_archive.py"))
+geant4_archive = importlib.util.module_from_spec(_archive_spec)
+_archive_spec.loader.exec_module(geant4_archive)
 
 
 QUEUE_SCHEMA = "tcad-work-items-v1"
@@ -477,6 +481,8 @@ class Runtime:
         if not expected or path.is_symlink():
             return False
         if not path.is_file():
+            if intent["backend"] == "geant4" and not path.exists():
+                return geant4_archive.verify_cold(original, record)
             if intent["backend"] != "tcad":
                 return False
             try:

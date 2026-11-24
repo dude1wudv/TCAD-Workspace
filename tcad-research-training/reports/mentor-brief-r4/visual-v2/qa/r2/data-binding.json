@@ -1,0 +1,41 @@
+{
+  "utc": "2026-10-12T01:43:29.366410+00:00",
+  "scope": "Standalone LaTeX visual brief; all plotted numeric coordinates embedded from existing CSVs",
+  "sources_sha256": {
+    "reports/final-r4/data/snapshot/responses.csv": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36",
+    "reports/final-r4/data/snapshot/prediction-residuals.csv": "dfae2a762a4f7019b503532ca8dfe8ca865157a48ecd668971692437fcac6d93",
+    "reports/final-r4/data/snapshot/prediction-scores.csv": "3bac7ba9fb7603112d924b886fdea1ac6338054490b1e338eb281d812680e251",
+    "reports/final-r4/delivery-manifest.json": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e"
+  },
+  "plots": {
+    "readout": {
+      "response_count": 128,
+      "independent_events": 64,
+      "y_column": "M_mV",
+      "x": "four categorical gate-length positions, labelled in micrometers",
+      "stored_bits": [
+        0,
+        1
+      ]
+    },
+    "predictions": {
+      "each_target_points": 64,
+      "targets": [
+        "deltaQ_fC",
+        "deltaM_mV"
+      ],
+      "model": "ridge",
+      "x_column": "observed",
+      "y_column": "prediction",
+      "reference_line": "y=x"
+    }
+  },
+  "main_counts": {
+    "correct": 96,
+    "criterion_error": 20,
+    "numerically_uncertain": 4,
+    "critical": 8
+  },
+  "source_tex_sha256": "cac225b453b3dbffc5981fc98d3b796580d80165469880df10a17225c911e065",
+  "no_simulation_or_retraining": true
+}

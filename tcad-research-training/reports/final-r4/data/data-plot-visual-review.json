@@ -1,0 +1,156 @@
+{
+  "schema": "dram-see-v3-r4-data-plot-visual-review",
+  "reviewer": "root",
+  "utc": "2026-10-12T00:35:57.409793+00:00",
+  "state": "ALL13_DATA_PLOT_PNGS_VISUALLY_REVIEWED",
+  "snapshot": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full",
+  "snapshot_manifest_sha256": "58650c6a934c81b07bf03e7aca5917f73b499307baf5c6c276debd47c8ef7ca3",
+  "summary_sha256": "6fda8113e80160b957634e77d492d38e951961107c1ac4cd25f6257153522c80",
+  "images": [
+    {
+      "name": "initial-state",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/initial-state.png",
+      "sha256": "230e96f54bb9918fe8c743162253cc29e6069d5ec955b6155ae25357cc6d9378",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Four sizes show stored0=0.1V, stored1=0.9V, neutral=0.5V; plotted error is near zero within displayed +/-1mV guide. Both axes and complete legend readable.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "readout-l018",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/readout-l018.png",
+      "sha256": "82ec7398e005e2f67f2f9801f838b9bd1afcd42f13bed7e6574a4bde3f1052c7",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Four panels of actual SN/BL across0..4ns for bothstored bits; all event curves, matched no-particle and neutral references visible. Correct gate-length title, V/ns labels and particle/angle line styles; controlledinitial and3ns readout evident; no clipping or missing panel.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "threshold-window-l018",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/threshold-window-l018.png",
+      "sha256": "47c3ef2a1b8c376b8084b6b559360acc87f0fe5e28714c46a64bc99869d042ea",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Bothstored bits at3.8..4ns show signed matchedmargin in mV, full +/-2.5/5/10mV guides and particle/angle legend. Stable readwindow traces; boundary uncertainty is retained in associated tables, not inferred away from this image.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "readout-l025",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/readout-l025.png",
+      "sha256": "a9f4ce31a172e0f04362a1aeaea5419557e8503ad527ae87a33d1d6a20eea0bc",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Four panels of actual SN/BL across0..4ns for bothstored bits; all event curves, matched no-particle and neutral references visible. Correct gate-length title, V/ns labels and particle/angle line styles; controlledinitial and3ns readout evident; no clipping or missing panel.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "threshold-window-l025",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/threshold-window-l025.png",
+      "sha256": "b8c495d5c65cf1332d81b4e03c422f04f1c378540961cd69f4d81ddcae8a03b4",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Bothstored bits at3.8..4ns show signed matchedmargin in mV, full +/-2.5/5/10mV guides and particle/angle legend. Stable readwindow traces; boundary uncertainty is retained in associated tables, not inferred away from this image.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "readout-l035",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/readout-l035.png",
+      "sha256": "c4ad8a5b25414550f9d21b4ab82a71e723e978f127c9ac7c05166201a4d3dde2",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Four panels of actual SN/BL across0..4ns for bothstored bits; all event curves, matched no-particle and neutral references visible. Correct gate-length title, V/ns labels and particle/angle line styles; controlledinitial and3ns readout evident; no clipping or missing panel.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "threshold-window-l035",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/threshold-window-l035.png",
+      "sha256": "56d23e60baa7961cafa31822b2c85d8210eba5883b1a3ff91ae5b5b6d32b7c7e",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Bothstored bits at3.8..4ns show signed matchedmargin in mV, full +/-2.5/5/10mV guides and particle/angle legend. Stable readwindow traces; boundary uncertainty is retained in associated tables, not inferred away from this image.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "readout-l045",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/readout-l045.png",
+      "sha256": "dde9ccc2bd27d568aa2fc12dad94f075a54910cfce5de91386cb3e6b6660611c",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Four panels of actual SN/BL across0..4ns for bothstored bits; all event curves, matched no-particle and neutral references visible. Correct gate-length title, V/ns labels and particle/angle line styles; controlledinitial and3ns readout evident; no clipping or missing panel.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "threshold-window-l045",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/threshold-window-l045.png",
+      "sha256": "be372eca7923f532dff3e00021b5136399b06d054c9b82c26bb93130eafe5ce5",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Bothstored bits at3.8..4ns show signed matchedmargin in mV, full +/-2.5/5/10mV guides and particle/angle legend. Stable readwindow traces; boundary uncertainty is retained in associated tables, not inferred away from this image.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "stratum-counts",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/stratum-counts.png",
+      "sha256": "82f4fc314f5d8b9818c9f6186f28f8a699ef0670144dad2111c5ab700ed83fe9",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "All32 bit/physical strata use plannedN4; category legend includes critical, uncertainty, failure and missing. Observed purple segments remain in alpha bit1 rows; no clipped labels.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "stratum-intervals",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/stratum-intervals.png",
+      "sha256": "69e1bdc39cd929c29ca5aedeec1504b0bc6b1f68f0a0377d4baeb990377af1fa",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Thirty-two stratum labels and 0..1 fraction axis visible; dark assignment bounds and lightWilson95% envelope distinguished. Broad envelopes reflectN4; point-degenerate dark lines can have zero length.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "prediction-residuals",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/prediction-residuals.png",
+      "sha256": "ca4938aad715d2574f6b5238ec16bd2c898d3d8ee27fd43d39c6078d961b1a8e",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "Four bit/target panels show prediction minus observed; fC and mV labels correct. Frozenridge circles and trainingmean crosses distinct. Holdout/extrap are pooled for this figure; split scores remain in tables.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    },
+    {
+      "name": "oxide-sensitivity",
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/figures/oxide-sensitivity.png",
+      "sha256": "04685bff4db663a697ae3be29bb48c00c9d6af281cbe1f8e471f98db7ce842fa",
+      "method": "actual_image_inspection",
+      "reviewed_utc": "2026-10-12T00:35:57.409793+00:00",
+      "approved": true,
+      "observation": "4/5/6nm observed points for same silicon-entry events; alpha/proton color and bit0 dashed/bit1 solid correct. Small thickness differences are visually subtle at common scale; numerical deltas must be stated from table. No added independentN.",
+      "kind": "DATA PLOT",
+      "privacy_checked": true
+    }
+  ],
+  "unmodified_snapshot": true,
+  "scope": "Visual labels/layout/meaningful scientific encoding accepted. All thirteen PNGs actually displayed; native screenshots are separately reviewed. Does not imply fully calibrated physics or allclassifications certain."
+}

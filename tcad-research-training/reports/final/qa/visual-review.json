@@ -1,0 +1,37 @@
+{
+  "schema": "dram-writing-visual-review-v1",
+  "result": "passed",
+  "reviewer": "primary authoring agent",
+  "render_method": "Poppler pdftoppm, 108 dpi PNG, all pages displayed in two-page contact sheets",
+  "coverage_method": "All 30 initial pages inspected. Final rendering SHA-256 comparison retained 22 byte-identical pages; all 8 changed pages inspected again. All five source data-figure PNGs were also inspected.",
+  "documents": {
+    "course-report": {
+      "page_count": 18,
+      "pdf_sha256": "a8657d55e5ca5544f3d13b30fefcc63dc41fd96265ac6e9da5adc0ade68c61e4",
+      "initial_pages_inspected": [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18],
+      "final_changed_pages_reinspected": [2,3,6,16,17,18],
+      "final_unchanged_pages_verified_by_render_hash": [1,4,5,7,8,9,10,11,12,13,14,15],
+      "checks": ["title and stage scope", "separate abstract and one-page contents", "formulas and units", "data figures and captions", "table width", "bibliography", "appendix table placement", "complete demonstration commands"]
+    },
+    "research-paper": {
+      "page_count": 12,
+      "pdf_sha256": "afbb4e69ab6af64939c910fc0a6c8930711ca26d6a8dcc249d896e71c987d825",
+      "initial_pages_inspected": [1,2,3,4,5,6,7,8,9,10,11,12],
+      "final_changed_pages_reinspected": [4,12],
+      "final_unchanged_pages_verified_by_render_hash": [1,2,3,5,6,7,8,9,10,11],
+      "checks": ["title and stage scope", "charge and margin formulas", "workflow labels", "all data figures and captions", "training-CV and progress tables", "bibliography and evidence appendix"]
+    }
+  },
+  "unresolved_layout_findings": [],
+  "repairs": [
+    "Moved Chinese punctuation outside math font to remove missing glyphs",
+    "Placed course contents on its own page",
+    "Kept course appendix tables in their named appendix",
+    "Rewrapped workflow labels and moved arrow annotation inside nodes",
+    "Separated research appendix paragraphs from its floating table",
+    "Added white background under D1 graph note; reduced R50 reference subplot title size"
+  ],
+  "render_directory": "local_runtime/report-final-20261011/render-final",
+  "render_hashes": "qa/render-comparison.json",
+  "scope": "Document and figure readability; no new physical-model calibration or raw archive audit"
+}

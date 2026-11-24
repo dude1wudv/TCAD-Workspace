@@ -1,0 +1,42 @@
+[
+  {
+    "argv": [
+      "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\qa\\materials-r1",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\materials\\course-materials.tex"
+    ],
+    "start": "2026-10-12T02:29:20.841580+00:00",
+    "end": "2026-10-12T02:29:24.385247+00:00",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\qa\\materials-r1",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\materials\\course-materials.tex"
+    ],
+    "start": "2026-10-12T02:29:24.385247+00:00",
+    "end": "2026-10-12T02:29:27.582237+00:00",
+    "actual_exit_code": 0
+  },
+  {
+    "argv": [
+      "C:\\Users\\sun\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\poppler\\Library\\bin\\pdftoppm.exe",
+      "-r",
+      "110",
+      "-png",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\qa\\materials-r1\\course-materials.pdf",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\qa\\materials-r1\\page"
+    ],
+    "end": "2026-10-12T02:29:28.164364+00:00",
+    "actual_exit_code": 0
+  }
+]

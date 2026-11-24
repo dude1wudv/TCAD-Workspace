@@ -1,0 +1,69 @@
+{
+  "schema": "dram-see-v3-r50-main-visual-review",
+  "physical_revision": "r50-main-r1",
+  "utc": "2026-10-12T00:29:52.363748+00:00",
+  "images": [
+    {
+      "run_id": "20261010T190110Z-v3-r50-main-physical-l018-b1-dc91bf6c",
+      "reviewed_utc": "2026-10-12T00:29:52.363748+00:00",
+      "reviewer": "root agent in thread 01a12b91-0d8c-7303-8837-63079827af41",
+      "method": "actual_image_inspection",
+      "evidence_sha256": "567376dab60fa24549bcbd63b66223e88182ef5384513a7571e9d650f498fa6f",
+      "png_sha256": {
+        "final-field-native.png": "5080136bf9fd295da8dac90633b72701582b34c3ceca83bb4a12d3fb5a983f06",
+        "own-window.png": "3c488a1571a23b36fa456db88639fb8c30d181c7d2c0d465c85176b79a454a98"
+      },
+      "approved": true,
+      "field_verified": true,
+      "units_verified": true,
+      "run_identity_verified": true,
+      "privacy_checked": true,
+      "observed_field": "Abs(ElectricField-V)",
+      "observed_units": "V*cm^-1 on complete actual window colorbar; V/cm in export title; coordinate um in both titles",
+      "observed_time": "Actual 4 ns signal stated in title, archive-backed final TDR",
+      "observed_axes": "SVisual displays vertical X and horizontal Y; preserve orientation; no swap inferred",
+      "observed_colorbar_rounded_limits_V_per_cm": [
+        2.328e-09,
+        1728000.0
+      ],
+      "per_image_review": {
+        "final-field-native.png": "Actual native field bands and numerical colorbar visible; full run/time/V/cm/coordinate um title verified. Rightmost colorbar unit suffix is clipped by original SVisual export. Retained unmodified as provenance evidence; do not use this cropped-legend export as a standalone publication figure.",
+        "own-window.png": "Actual owned SVisual window, selected scalar and complete field/unit colorbar, full run title and task-owned load_script path visible; no unrelated private data. Use this complete screenshot for final documents."
+      },
+      "publication_image": "own-window.png",
+      "scope": "Accept paired export+real-window evidence for source/field/unit verification; this is not approval of cropped standalone export layout or Workbench Run-button evidence"
+    },
+    {
+      "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+      "reviewed_utc": "2026-10-12T00:29:52.363748+00:00",
+      "reviewer": "root agent in thread 01a12b91-0d8c-7303-8837-63079827af41",
+      "method": "actual_image_inspection",
+      "evidence_sha256": "604f5f3bb06bc4749fbee71907aedbd7e3f796fd4a8a6076fb9b70dc87492552",
+      "png_sha256": {
+        "final-field-native.png": "bc30aa628edf2b83066482094d8e0cb7cfbccb3aebdb24f53348d707b617cf7f",
+        "own-window.png": "b561a9c81fa63fc69b1956bcfaf667f0026c790d8cb5d46aafa910a707f8c846"
+      },
+      "approved": true,
+      "field_verified": true,
+      "units_verified": true,
+      "run_identity_verified": true,
+      "privacy_checked": true,
+      "observed_field": "Abs(ElectricField-V)",
+      "observed_units": "V*cm^-1 on complete actual window colorbar; V/cm in export title; coordinate um in both titles",
+      "observed_time": "Actual 4 ns signal stated in title, archive-backed final TDR",
+      "observed_axes": "SVisual displays vertical X and horizontal Y; preserve orientation; no swap inferred",
+      "observed_colorbar_rounded_limits_V_per_cm": [
+        2.195e-09,
+        1820000.0
+      ],
+      "per_image_review": {
+        "final-field-native.png": "Actual native field bands and numerical colorbar visible; full run/time/V/cm/coordinate um title verified. Rightmost colorbar unit suffix is clipped by original SVisual export. Retained unmodified as provenance evidence; do not use this cropped-legend export as a standalone publication figure.",
+        "own-window.png": "Actual owned SVisual window, selected scalar and complete field/unit colorbar, full run title and task-owned load_script path visible; no unrelated private data. Use this complete screenshot for final documents."
+      },
+      "publication_image": "own-window.png",
+      "scope": "Accept paired export+real-window evidence for source/field/unit verification; this is not approval of cropped standalone export layout or Workbench Run-button evidence"
+    }
+  ],
+  "images_actually_viewed": 4,
+  "native_export_layout_limitation": "Original exports have rightmost legend-unit suffix clipped; units remain in title and fully visible real window. Final publication uses unmodified own-window screenshots."
+}

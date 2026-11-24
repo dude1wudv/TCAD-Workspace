@@ -104,6 +104,35 @@ PARAMETERS = {
 }
 ACCEPTANCE_RECORD_MAX_BYTES = 1024 * 1024
 ACCEPTANCE_EVIDENCE_MAX_BYTES = 4 * 1024 * 1024
+R06_HISTORICAL_EVIDENCE_MAX_BYTES = 20 * 1024 * 1024
+R06_HISTORICAL_EVIDENCE_CASES = frozenset({
+    "r06-s-lhs02-development-p00-b0",
+    "r06-s-lhs02-development-p00-b1",
+    "r06-s-lhs02-development-p01-b0",
+    "r06-s-lhs02-development-p01-b1",
+    "r06-s-lhs02-development-p02-b1",
+    "r06-s-lhs02-development-p03-b1",
+    "r06-s-lhs02-development-p04-b1",
+    "r06-s-lhs02-development-p09-b1",
+    "r06-s-lhs02-development-p10-b1",
+    "r06-s-lhs02-development-p11-b1",
+    "r06-s-d0-nominal-p09-b1",
+    "r06-t-d0-nominal-shape-a-x30-b1",
+    "r06-t-d0-nominal-shape-b-x10-b1",
+    "r06-t-d0-nominal-shape-b-x30-b1",
+    "r06-t-d1-short-channel-shape-b-x10-b1",
+    "r06-t-d2-narrow-fin-shape-a-x30-b1",
+    "r06-t-d2-narrow-fin-shape-b-x10-b1",
+    "r06-t-d3-low-acceptor-shape-b-x30-b1",
+    "r06-z-d2-narrow-fin-b0",
+    "r06-z-d2-narrow-fin-b1",
+})
+R06_HISTORICAL_EVIDENCE_PREFIXES = (
+    "local_runtime/cloud-benchmark/centos79-guest-20261116/runs/",
+    "local_runtime/server-codex/",
+    "plans/dram-se-ddr5-lpddr5/",
+    "experiments/dram-se-r06/p0-z-reuse-review-r1/",
+)
 ACCEPTANCE_MAX_EVIDENCE = 16
 RESEARCH_CACHE_MAX_BYTES = 8 * 1024 * 1024
 _PARAMETER_KEY = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,40}\Z")
@@ -263,8 +292,8 @@ def acceptance_verified(case, linked, manifests, plan_path):
                and record[field] == manifest.get(field) for field in ("input_sha256", "results_sha256"))
 
 
-def private_evidence_path(reference, plan_path):
-    """Allow native absolute workspace paths or plan-relative paths, without links."""
+def private_evidence_path(reference, plan_path, *, workspace_relative=False):
+    """Resolve private evidence within the workspace, without links."""
     if not isinstance(reference, str) or not reference or "\x00" in reference or ".." in re.split(r"[/\\]", reference):
         raise ValueError("Invalid private acceptance path")
     plan_directory = plan_path.absolute().parent
@@ -274,7 +303,7 @@ def private_evidence_path(reference, plan_path):
         # A Windows drive is not a relative path on a POSIX deployment.
         if re.match(r"^[A-Za-z]:|^\\\\", reference) and path.anchor == "":
             raise ValueError("Invalid private acceptance path")
-        path = plan_directory / path
+        path = (workspace if workspace_relative else plan_directory) / path
     path = path.absolute()
     try:
         path.relative_to(workspace)
@@ -387,14 +416,66 @@ def gate_acceptance_verified(case, linked, manifests, plan_path, gate_dir):
         or not valid_sha256(digest) or digest != manifest.get("results_sha256")
     ):
         return False
-    return private_evidence_verified(record.get("evidence"), plan_path, "Private acceptance")
+    return private_evidence_verified(record.get("evidence"), plan_path, "Private acceptance", identity)
+
+
+def zero_source_reuse_acceptance_verified(case, plan_path, plan_sha256, gate_dir):
+    """Verify a signed zero-deposition reuse without claiming an event run."""
+    identity = case["case_id"]
+    record_path = private_evidence_path(
+        "{}/case-acceptance/{}.json".format(gate_dir, identity), plan_path,
+    )
+    try:
+        record = read_bounded_json(record_path, ACCEPTANCE_RECORD_MAX_BYTES)
+    except FileNotFoundError:
+        return False
+    except ValueError:
+        raise ValueError("Invalid private acceptance record") from None
+    if (
+        not isinstance(record, dict)
+        or record.get("schema") != "tcad-r06-zero-source-reuse-acceptance-v1"
+        or record.get("status") != "accepted" or record.get("case_id") != identity
+        or record.get("plan_sha256") != plan_sha256
+        or record.get("event_run_id") is not None
+        or record.get("formal_statistics_eligible") is not False
+        or record.get("training_eligible") is not False
+    ):
+        return False
+    evidence = record.get("evidence")
+    if not private_evidence_verified(evidence, plan_path, "Private acceptance", identity):
+        return False
+    receipt_reference = next((item for item in evidence if item.get("kind") == "zero_source_reuse"), None)
+    if receipt_reference is None:
+        return False
+    receipt_path = private_evidence_path(receipt_reference["path"], plan_path, workspace_relative=True)
+    receipt = read_bounded_json(receipt_path, ACCEPTANCE_RECORD_MAX_BYTES)
+    rows = receipt.get("cases") if isinstance(receipt, dict) else None
+    if not isinstance(rows, list) or len(rows) != 1:
+        return False
+    row = rows[0]
+    label = row.get("label", {})
+    return (
+        receipt.get("schema") == "tcad-r06-deferred-zero-reuse-v1"
+        and receipt.get("manifest_sha256") == plan_sha256
+        and receipt.get("block") == case.get("block") == "S"
+        and receipt.get("condition", {}).get("profile_id") == case.get("profile_id") == "LHS02-development"
+        and receipt.get("condition", {}).get("radiation_id") == case.get("radiation_id")
+        and label.get("case_id") == identity and label.get("accepted") is True
+        and type(label.get("y")) is int and label["y"] == 0
+        and label.get("stored_bit") == case.get("stored_bit")
+        and row.get("event_run_id") is None and row.get("training_eligible") is False
+        and receipt.get("formal_statistics_eligible") is False
+        and receipt.get("training_eligible") is False
+        and valid_sha256(receipt.get("zero_result_sha256"))
+        and valid_sha256(receipt.get("transport_archive_sha256"))
+    )
 
 
 def valid_sha256(value):
     return isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value) is not None
 
 
-def private_evidence_verified(evidence, plan_path, label):
+def private_evidence_verified(evidence, plan_path, label, case_id):
     if not isinstance(evidence, list) or not evidence:
         return False
     if len(evidence) > ACCEPTANCE_MAX_EVIDENCE:
@@ -405,10 +486,16 @@ def private_evidence_verified(evidence, plan_path, label):
             or not isinstance(reference.get("path"), str) or not reference["path"]
         ):
             return False
-        path = private_evidence_path(reference["path"], plan_path)
+        raw_path = reference["path"]
+        historical = (
+            case_id in R06_HISTORICAL_EVIDENCE_CASES
+            and raw_path.startswith(R06_HISTORICAL_EVIDENCE_PREFIXES)
+        )
+        path = private_evidence_path(raw_path, plan_path, workspace_relative=historical)
         if not path.exists():
             return False
-        actual = hash_bounded_file(path, ACCEPTANCE_EVIDENCE_MAX_BYTES)
+        limit = R06_HISTORICAL_EVIDENCE_MAX_BYTES if historical else ACCEPTANCE_EVIDENCE_MAX_BYTES
+        actual = hash_bounded_file(path, limit)
         if actual.lower() != reference["sha256"].lower():
             return False
     return True
@@ -488,7 +575,7 @@ def z_baseline_reuse_verified(case, manifests, p0_admissions, plan_path, plan_sh
         or digest != manifest.get("results_sha256")
     ):
         return None
-    if not private_evidence_verified(record.get("evidence"), plan_path, "Private Z reuse"):
+    if not private_evidence_verified(record.get("evidence"), plan_path, "Private Z reuse", identity):
         return None
     return run_id
 

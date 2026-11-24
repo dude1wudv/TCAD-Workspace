@@ -1,0 +1,56 @@
+{
+  "schema": "dram-final-data-figure-v1",
+  "name": "d1-reference-comparison",
+  "title": "D1 reference comparison",
+  "kind": "scientific_data_plot",
+  "not_native_visual_export": true,
+  "not_gui_screenshot": true,
+  "scope": "Historical D1 reference diagnostic; no R50-main sample",
+  "source_files": [
+    {
+      "path": "experiments/dram-readout-offset-d1/data/summary.csv",
+      "sha256": "c954de8ded583ce9a3cc3034a416488f0d5edc3d12fe3fbc690b0f91c70a8956"
+    }
+  ],
+  "data_files": [
+    {
+      "path": "data/d1-reference-comparison.csv",
+      "sha256": "44ca5c8ca92378c88d6ebb5f96f261f0bc8ade2be3b3eddb4b4c4fdbed985e4c"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "figures/d1-reference-comparison.png",
+      "sha256": "384e43e034496d875930484c97358fcd1918afd7d4e322452bf850751b0fe523"
+    },
+    {
+      "path": "figures/d1-reference-comparison.pdf",
+      "sha256": "b46dc336565bb1bc8b9696238a35b00181d557ad328e4d5067ff5a0cbeb45977"
+    }
+  ],
+  "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+  "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+  "raw_archives_reaudited_this_generation": false,
+  "details": {
+    "observations": [
+      {
+        "reference": "Fixed 0.5 V reference",
+        "D_mV": 2.4549605553549902,
+        "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+        "scope": "D1 historical diagnostic"
+      },
+      {
+        "reference": "Offline matched neutral",
+        "D_mV": -9.915036045006985,
+        "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+        "scope": "D1 historical diagnostic"
+      },
+      {
+        "reference": "Physical matched branch",
+        "D_mV": -9.915036045004989,
+        "run_id": "20261010T082741Z-rodiag1-matched-ref-r3-99f3de31",
+        "scope": "D1 historical diagnostic"
+      }
+    ]
+  }
+}

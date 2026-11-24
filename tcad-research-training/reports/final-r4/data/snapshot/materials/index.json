@@ -1,0 +1,26 @@
+{
+  "schema": "dram-see-v3-r50-main-downstream-r4-agent-materials",
+  "state": "AGENT_AUTHORED_MATERIALS_GENERATED",
+  "technical_evidence_state": "SCIENCE_AND_NATIVE_REVIEWED_PENDING_FINAL_DOCUMENT_AND_DATA_PLOT_REVIEW",
+  "course_complete": false,
+  "human_items": {
+    "actual2-3student_roles": "PENDING_HUMAN_EVIDENCE",
+    "teacher_review": "PENDING_HUMAN_EVIDENCE",
+    "lab_resource_handoff": "PENDING_HUMAN_EVIDENCE",
+    "defense": "PENDING_HUMAN_EVIDENCE",
+    "final_assessment": "PENDING_HUMAN_EVIDENCE"
+  },
+  "files": [
+    "feasibility.md",
+    "design-and-steps.md",
+    "methods-and-ai.md",
+    "demonstration.md",
+    "defense-outline.md",
+    "handoff.md"
+  ],
+  "actual_student_demo": false,
+  "actual_teacher_review": false,
+  "actual_defense": false,
+  "data_plot_review": "PENDING_ROOT_ACTUAL_IMAGE_INSPECTION",
+  "final_documents_and_ppt": "PENDING_ROOT_ARTIFACT_CREATION_AND_VISUAL_REVIEW"
+}

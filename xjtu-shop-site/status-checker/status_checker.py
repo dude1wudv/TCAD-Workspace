@@ -43,6 +43,11 @@ PAUSE_PATH = Path(os.environ.get("TCAD_STATUS_PAUSE", "/var/lib/tcad-autonomy/pa
 PLAN_PATH = Path(os.environ.get("TCAD_STATUS_PLAN", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json"))
 PROGRESS_PATH = Path(os.environ.get("TCAD_STATUS_PROGRESS_DB", "/var/lib/xjtu-shop-status/progress.sqlite3"))
 WORK_ITEMS_PATH = Path(os.environ.get("TCAD_STATUS_WORK_ITEMS", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/work-items.json"))
+RESPONSE_SUPPLY_PATH = Path(os.environ.get(
+    "TCAD_STATUS_RESPONSE_SUPPLY",
+    "/home/tcad/course-workspace/local_runtime/server-codex/r06-lhs-response-supply-r1/response-status.json",
+))
+RESPONSE_SUPPLY_MAX_AGE_SECONDS = 360
 POOL_ROOT = Path(os.environ.get("TCAD_STATUS_POOL_ROOT", "/home/tcad/course-workspace/local_runtime/cloud-benchmark"))
 RUNS_ROOT = Path(os.environ.get(
     "TCAD_STATUS_RUNS_ROOT",
@@ -163,6 +168,97 @@ def parse_time(value: object) -> dt.datetime | None:
 def public_time(value: object) -> str | None:
     parsed = parse_time(value)
     return parsed.isoformat().replace("+00:00", "Z") if parsed else None
+
+
+def project_response_supply(report, observation, queue, runtime, now):
+    stamp = parse_time(report.get("observation_utc"))
+    observed = parse_time(observation.get("utc"))
+    unavailable = {"state": "unavailable"}
+    if report.get("schema") != "tcad-r06-lhs-response-supply-v1" or stamp is None or observed is None:
+        return unavailable
+    limit = RESPONSE_SUPPLY_MAX_AGE_SECONDS
+    if (not -60 <= (now - stamp).total_seconds() <= limit
+            or not -60 <= (now - observed).total_seconds() <= OBSERVATION_STALE_SECONDS):
+        return {"state": "stale", "observed_at": public_time(report["observation_utc"])}
+
+    rows, jobs, runs = report.get("cases"), queue.get("tasks"), observation.get("runs")
+    intents = runtime.get("intents")
+    if (queue.get("schema") != "tcad-work-items-v1" or not isinstance(rows, list) or not rows
+            or not isinstance(jobs, list) or not isinstance(runs, list) or not isinstance(intents, dict)):
+        return unavailable
+
+    # The original queue and observation may both contain a task. Bind each
+    # task (including retries and opaque IDs) to its formal response case once.
+    enqueued = set()
+    for job in (*jobs, *runs):
+        task_id = job.get("id") if isinstance(job, dict) else None
+        if not isinstance(task_id, str):
+            return unavailable
+        intent = intents.get(task_id, {})
+        if not isinstance(intent, dict):
+            return unavailable
+        case_id = intent_case_id(intent, task_id.removesuffix("-supply-r1"))
+        if case_id:
+            enqueued.add(case_id)
+
+    conditions = set()
+    stages = {}
+    prerequisites = dict(p0=0, transport=0, threshold=0)
+    for row in rows:
+        if (not isinstance(row, dict) or not isinstance(row.get("profile"), str)
+                or not isinstance(row.get("radiation"), str) or not isinstance(row.get("cases"), dict)):
+            return unavailable
+        conditions.add((row["profile"], row["radiation"]))
+        for case_id, item in row["cases"].items():
+            if not isinstance(item, dict) or not re.fullmatch(r"r06-[st]-lhs[0-9]+-[a-z0-9-]+", case_id):
+                return unavailable
+            status = item.get("status")
+            if case_id in enqueued:
+                stage = "enqueued"
+            elif status == "queued_or_run":
+                return unavailable
+            elif status in ("staged", "approved_waiting_queue"):
+                stage = "ready"
+            elif status == "verified_zero_reuse":
+                stage = "zero_reuse"
+            elif status in ("pending", "blocked"):
+                if not row.get("qualification"):
+                    stage = "p0"
+                elif row.get("pool_status") != "succeeded":
+                    stage = "transport"
+                elif status == "pending" and item.get("block") == "T" and item.get("dependency"):
+                    stage = "threshold"
+                else:
+                    stage = "missing_material"
+            else:
+                return unavailable
+            if stages.setdefault(case_id, stage) != stage:
+                return unavailable
+
+    if not stages:
+        return unavailable
+    counts = dict(missing_material=0, awaiting_prerequisites=0, ready=0, enqueued=0, zero_reuse=0)
+    for stage in stages.values():
+        if stage in prerequisites:
+            prerequisites[stage] += 1
+            counts["awaiting_prerequisites"] += 1
+        else:
+            counts[stage] += 1
+    return {
+        "state": "fresh", "observed_at": public_time(report["observation_utc"]),
+        "fresh_max_age_seconds": limit, "condition_count": len(conditions), "case_count": len(stages),
+        "counts": counts, "prerequisites": prerequisites,
+    }
+
+
+def response_supply_status(observation, runtime_path, now):
+    try:
+        report = read_json(RESPONSE_SUPPLY_PATH)
+        if not report:
+            return {"state": "unavailable"}
+        return project_response_supply(report, observation, read_json(WORK_ITEMS_PATH), read_json(runtime_path), now)
+    except (OSError, ValueError):
+        return {"state": "unavailable"}
 
 
 def epoch_to_iso(value: object) -> str | None:
@@ -690,8 +786,10 @@ def build_status(
                 selected_path, _ = max(candidates, key=lambda pair: public_time(pair[1].get("utc")) or "")
             else:
                 selected_path = observation_path
-    observation = read_json(selected_path)
+    controller_observation = read_json(observation_path)
+    observation = controller_observation if selected_path == observation_path else read_json(selected_path)
     simulation = simulation_status(selected_path, runtime_path, runs_root, now=current)
+    simulation["response_supply"] = response_supply_status(controller_observation, runtime_path, current)
     scheduler = load_scheduler(scheduler_path)
     if scheduler is not None:
         simulation["scheduler"] = scheduler

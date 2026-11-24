@@ -1,358 +1,592 @@
 import '@material/web/button/filled-button.js';
 import '@material/web/button/filled-tonal-button.js';
 import '@material/web/button/outlined-button.js';
+import '@material/web/button/text-button.js';
 import '@material/web/chips/assist-chip.js';
-import '@material/web/iconbutton/icon-button.js';
 import '@material/web/progress/linear-progress.js';
-import '@material/web/tabs/tabs.js';
-import '@material/web/tabs/primary-tab.js';
-import { mountEvidence, icon } from './components/evidence.js';
+import '@material/web/labs/card/elevated-card.js';
+import '@material/web/labs/card/outlined-card.js';
+import '@material/web/ripple/ripple.js';
+
+import './shared/tokens.css';
 import './styles.css';
 
-const copy = {
-  zh: {
-    navResearch: '研究主题',
-    navRoute: '研究路线',
-    navStatus: '服务状态',
-    language: 'EN',
-    eyebrow: 'XJTU · RADIATION EFFECTS RESEARCH',
-    title: 'DRAM 单粒子效应评估',
-    formalTitle: 'AI辅助下的DRAM存储器单粒子效应评估研究',
-    heroText: '展示研究路线、仿真过程与可追溯证据。',
-    routeCta: '查看研究路线',
-    statusCta: '查看服务状态',
-    stageLabel: '当前阶段',
-    stageText: '数据链路持续推进',
-    scopeLabel: '研究对象',
-    scopeText: 'DDR5 · LPDDR5 · 翻转截面 · 错误率',
-    planLabel: '计划进度',
-    plannedLabel: '计划',
-    solvedLabel: '工程完成',
-    runningLabel: '运行中',
-    routeEyebrow: 'RESEARCH ROUTE',
-    routeTitle: '沿研究链路逐步探索',
-    routeIntro: '从文献与数据走向独立验证。',
-    routeTabs: ['研究步骤', '证据线索', '验证重点'],
-    routeItems: [
-      ['01', '文献与数据', '调研评估方法并梳理数据来源。'],
-      ['02', 'Geant4 / TCAD', '构建输运与器件响应的仿真链路。'],
-      ['03', '截面与错误率', '建立数据驱动的预测与评价方法。'],
-      ['04', '独立验证', '对比仿真与实验并评价泛化能力。']
-    ],
-    routeEvidence: [
-      '记录文献来源与数据形成条件。',
-      '关联器件参数与原始仿真输出。',
-      '保存数据划分与模型版本。',
-      '组织独立参考与对比记录。'
-    ],
-    routeValidation: [
-      '核对粒子条件与数据适用范围。',
-      '检查求解收敛与物理响应。',
-      '开展交叉验证与误差分析。',
-      '评估独立样本与泛化表现。'
-    ],
-    statusEyebrow: 'PLATFORM STATUS',
-    statusTitle: '研究服务持续可见',
-    statusText: '查看网站与基础运行环境的服务状态。',
-    statusLink: '打开状态页',
-    boundaryEyebrow: 'PUBLIC FRAME',
-    boundaryTitle: '研究过程与证据同行',
-    boundaryText: '网页展示研究进展。服务器保留原始任务链路。',
-    footer: 'AI辅助下的DRAM存储器单粒子效应评估研究',
-    footerStatus: '公开状态',
-    liveLoading: '正在读取状态',
-    liveUnavailable: '状态等待更新',
-    liveStale: '状态等待更新',
-    serviceLabels: ['研究展示站', 'TCAD 控制器', '仿真运行环境'],
-    serviceDescriptions: ['研究首页与公开状态入口。', '研究流程控制器的服务可用性。', '仿真运行环境的服务可用性。'],
-    statusRefresh: '刷新状态',
-    statusExpand: '展开服务说明',
-    statusCollapse: '收起服务说明',
-    statusFull: '完整状态页',
-    stateLabels: { operational: '运行正常', degraded: '部分异常', offline: '服务离线', maintenance: '维护中', loading: '正在读取', unknown: '等待更新', stale: '等待更新' },
-    statusUpdated: '最近检查',
-    structure: '研究链路示意',
-    platform: '研究平台',
-    nodeLabels: ['粒子输运', '器件响应', '模型预测']
-  },
-  en: {
-    navResearch: 'Research',
-    navRoute: 'Route',
-    navStatus: 'Service status',
-    language: '中',
-    eyebrow: 'XJTU · RADIATION EFFECTS RESEARCH',
-    title: 'Single-Event Effects in DRAM',
-    formalTitle: 'AI-Assisted Assessment of Single-Event Effects in DRAM Memories',
-    heroText: 'Explore research paths, simulation process, and traceable evidence.',
-    routeCta: 'Explore the route',
-    statusCta: 'View service status',
-    stageLabel: 'Current stage',
-    stageText: 'Data flow in progress',
-    scopeLabel: 'Focus',
-    scopeText: 'DDR5 · LPDDR5 · Cross-section · Error rate',
-    planLabel: 'Plan progress',
-    plannedLabel: 'Planned',
-    solvedLabel: 'Engineering complete',
-    runningLabel: 'Running',
-    routeEyebrow: 'RESEARCH ROUTE',
-    routeTitle: 'Explore the research chain',
-    routeIntro: 'From literature and data to independent validation.',
-    routeTabs: ['Research steps', 'Evidence', 'Validation'],
-    routeItems: [
-      ['01', 'Literature & data', 'Review assessment methods and trace data sources.'],
-      ['02', 'Geant4 / TCAD', 'Build the transport and device-response simulation chain.'],
-      ['03', 'Cross-section & error rate', 'Develop data-driven prediction and evaluation methods.'],
-      ['04', 'Independent validation', 'Compare simulations and experiments to evaluate generalization.']
-    ],
-    routeEvidence: [
-      'Record literature sources and the conditions behind the data.',
-      'Connect device parameters with source simulation outputs.',
-      'Preserve the data split and model version.',
-      'Organize independent references and comparison records.'
-    ],
-    routeValidation: [
-      'Check particle conditions and data scope.',
-      'Check convergence and the physical response.',
-      'Perform cross-validation and error analysis.',
-      'Evaluate independent samples and generalization.'
-    ],
-    statusEyebrow: 'PLATFORM STATUS',
-    statusTitle: 'A view into service health',
-    statusText: 'Check the website and supporting research services.',
-    statusLink: 'Open status page',
-    boundaryEyebrow: 'PUBLIC FRAME',
-    boundaryTitle: 'Evidence follows the process',
-    boundaryText: 'The page presents progress. The server keeps the original task chain.',
-    footer: 'AI-Assisted Assessment of Single-Event Effects in DRAM Memories',
-    footerStatus: 'Public status',
-    liveLoading: 'Loading status',
-    liveUnavailable: 'Awaiting status update',
-    liveStale: 'Awaiting status update',
-    serviceLabels: ['Research site', 'TCAD controller', 'Simulation runtime'],
-    serviceDescriptions: ['The research homepage and public status entry.', 'Service availability of the research workflow controller.', 'Service availability of the simulation environment.'],
-    statusRefresh: 'Refresh status',
-    statusExpand: 'Expand service note',
-    statusCollapse: 'Collapse service note',
-    statusFull: 'Full status page',
-    stateLabels: { operational: 'Operational', degraded: 'Degraded', offline: 'Offline', maintenance: 'Maintenance', loading: 'Loading', unknown: 'Awaiting update', stale: 'Awaiting update' },
-    statusUpdated: 'Last checked',
-    structure: 'Research workflow illustration',
-    platform: 'Research platform',
-    nodeLabels: ['Particle transport', 'Device response', 'Model prediction']
-  }
+import {
+  applyTheme,
+  bindReadingProgress,
+  bindTopbar,
+  escapeHtml,
+  getInitialLang,
+  getInitialTheme,
+  initFocusModality,
+  isKeyboardModality,
+  renderFooter,
+  renderTopbar,
+  setTopbarActive
+} from './shared/site-shell.js';
+import { icon } from './shared/icons.js';
+import { bindSlidingPill, syncSlidingThumb } from './shared/sliding-pill.js';
+import { homeContent } from './data/home-content.js';
+import { createDramSimulator } from './components/dram-simulator.js';
+import { mountAgentArchitecture } from './components/agent-architecture.js';
+import { renderResearchCharts } from './components/research-charts.js';
+import { mountEvidence } from './components/evidence.js';
+
+initFocusModality();
+
+const WORKBENCH_VIEWS = ['results', 'architecture', 'evidence', 'status'];
+const VIEW_ICONS = {
+  results: 'radiation',
+  architecture: 'agent',
+  evidence: 'ledger',
+  status: 'telemetry'
 };
 
-const state = { lang: localStorage.getItem('xjtu-lang') === 'en' ? 'en' : 'zh', status: null, statusError: false, statusLoading: false, expandedService: null, routeTab: 0 };
-
-function text(key) {
-  return copy[state.lang][key];
+function getInitialView() {
+  const hash = location.hash.replace('#', '');
+  if (WORKBENCH_VIEWS.includes(hash)) return hash;
+  return 'results';
 }
 
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
+const state = {
+  lang: getInitialLang(),
+  theme: getInitialTheme(),
+  activeView: getInitialView(),
+  viewDirection: 'fade',
+  archTab: 0,
+  archNode: 'controller',
+  archScenario: 'admission',
+  showGuardrails: false,
+  resultStage: 2,
+  status: null,
+  statusError: false,
+  statusLoading: false,
+  expandedService: null
+};
+
+const dramSim = createDramSimulator({
+  lang: state.lang,
+  copy: homeContent
+});
+
+function getCopy() {
+  return homeContent[state.lang];
+}
+
+function getViewAnimClass() {
+  if (state.viewDirection === 'next') return 'view-enter-next';
+  if (state.viewDirection === 'prev') return 'view-enter-prev';
+  return 'view-enter';
+}
+
+function renderResultsStage() {
+  const c = getCopy();
+  const stage = c.results.stages[state.resultStage] || c.results.stages[0];
+  return `
+    <md-elevated-card class="stage-showcase view-enter">
+      <div class="stage-showcase-inner">
+        <div class="stage-showcase-head">
+          <div>
+            <span class="pill ${stage.statusTone}">${escapeHtml(stage.status)}</span>
+            <h3>${escapeHtml(stage.title)}</h3>
+          </div>
+        </div>
+        <p class="stage-summary">${escapeHtml(stage.summary)}</p>
+        <div class="stage-kpi-grid">
+          ${stage.metrics.map(m => `
+            <div class="stage-kpi reveal-item">
+              <span class="stage-kpi-label">${escapeHtml(m.label)}</span>
+              <strong class="stage-kpi-val num">${escapeHtml(m.value)}</strong>
+              <small>${escapeHtml(m.note)}</small>
+            </div>
+          `).join('')}
+        </div>
+        <ul class="stage-highlights">
+          ${stage.highlights.map(h => `<li>${icon('check')}<span>${escapeHtml(h)}</span></li>`).join('')}
+        </ul>
+      </div>
+    </md-elevated-card>
+  `;
+}
+
+function renderWorkbenchPager() {
+  const wb = getCopy().workbench;
+  const idx = WORKBENCH_VIEWS.indexOf(state.activeView);
+  const prev = idx > 0 ? wb.views[idx - 1] : null;
+  const next = idx < wb.views.length - 1 ? wb.views[idx + 1] : wb.views[0];
+  const isLast = idx === wb.views.length - 1;
+
+  return `
+    <div class="next-view-banner reveal-item">
+      <div class="next-view-meta">
+        ${prev
+          ? `<button type="button" class="pager-back-btn" data-switch-view="${prev.id}">${icon('chevron', 'class="rot-90"')} <span>${escapeHtml(wb.prevLabel)} · ${escapeHtml(prev.num)}</span></button>`
+          : `<span class="pager-step-pill num">${escapeHtml(wb.stepLabel)} 01 / 0${wb.views.length}</span>`}
+        <div class="capsule-dots" role="tablist" aria-label="${escapeHtml(wb.stepLabel)}">
+          ${wb.views.map(v => `
+            <button
+              type="button"
+              class="capsule-dot ${v.id === state.activeView ? 'is-active' : ''}"
+              aria-label="${escapeHtml(v.num)} · ${escapeHtml(v.short)}"
+              aria-selected="${String(v.id === state.activeView)}"
+              data-switch-view="${v.id}">
+            </button>
+          `).join('')}
+        </div>
+      </div>
+
+      <div class="next-view-cards">
+        <button type="button" class="next-preview-card" data-switch-view="${next.id}">
+          <div class="next-preview-top">
+            <span class="pill primary">${isLast ? escapeHtml(wb.loopBackLabel) : `${escapeHtml(wb.nextLabel)} · ${escapeHtml(next.num)} / 0${wb.views.length}`}</span>
+            <span class="next-preview-arrow">${icon('arrow')}</span>
+          </div>
+          <strong>${escapeHtml(next.short)} · ${escapeHtml(next.caption)}</strong>
+          <p>${escapeHtml(next.teaser)}</p>
+        </button>
+        ${isLast ? `
+          <a class="next-preview-card next-preview-docs" href="/docs/">
+            <div class="next-preview-top">
+              <span class="pill teal">/docs/ · 6 Chapters</span>
+              <span class="next-preview-arrow">${icon('arrow')}</span>
+            </div>
+            <strong>${escapeHtml(wb.jumpDocsLabel)}</strong>
+            <p>${escapeHtml(getCopy().techBridge.lead)}</p>
+          </a>
+        ` : ''}
+      </div>
+    </div>
+  `;
+}
+
+function renderActiveView() {
+  const c = getCopy();
+  const body = document.querySelector('#workbenchBody');
+  if (!body) return;
+  const animClass = getViewAnimClass();
+
+  if (state.activeView === 'results') {
+    body.innerHTML = `
+      <div class="view-pane ${animClass}">
+        <div class="section-head">
+          <p class="eyebrow">${icon('radiation')} ${escapeHtml(c.results.eyebrow)}</p>
+          <h2>${escapeHtml(c.results.title)}</h2>
+          <p class="lead">${escapeHtml(c.results.lead)}</p>
+        </div>
+        <div class="stage-selector-wrap">
+          <div class="pill-track results-stage-track" id="resultsStageTrack" role="tablist" aria-label="${escapeHtml(c.results.title)}">
+            <span class="pill-thumb" aria-hidden="true"></span>
+            ${c.results.stages.map((st, idx) => `
+              <button
+                type="button"
+                role="tab"
+                class="pill-tab ${idx === state.resultStage ? 'is-active' : ''}"
+                aria-selected="${String(idx === state.resultStage)}"
+                data-pill-value="${idx}">
+                ${escapeHtml(st.tab)}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+        <div id="results-stage-slot">${renderResultsStage()}</div>
+        <div id="research-charts-slot" class="charts-slot"></div>
+        ${renderWorkbenchPager()}
+      </div>
+    `;
+    const stageTrack = document.querySelector('#resultsStageTrack');
+    bindSlidingPill(stageTrack, val => {
+      state.resultStage = Number(val) || 0;
+      const slot = document.querySelector('#results-stage-slot');
+      if (slot) slot.innerHTML = renderResultsStage();
+    });
+    syncSlidingThumb(stageTrack, { activeSelector: '.pill-tab.is-active' });
+    renderResearchCharts(document.querySelector('#research-charts-slot'), state.lang, state.status);
+  } else if (state.activeView === 'architecture') {
+    body.innerHTML = `
+      <div class="view-pane ${animClass}">
+        <div id="architectureMount"></div>
+        ${renderWorkbenchPager()}
+      </div>
+    `;
+    const redrawArch = () => mountAgentArchitecture(document.querySelector('#architectureMount'), getCopy(), state, redrawArch);
+    redrawArch();
+  } else if (state.activeView === 'evidence') {
+    body.innerHTML = `
+      <div class="view-pane ${animClass}">
+        <div id="evidenceMount"></div>
+        ${renderWorkbenchPager()}
+      </div>
+    `;
+    mountEvidence(document.querySelector('#evidenceMount'), state.lang);
+  } else {
+    body.innerHTML = `
+      <div class="view-pane ${animClass}">
+        <div class="status-grid">
+          <div class="section-head" style="margin-bottom:0;">
+            <p class="eyebrow">${icon('telemetry')} ${escapeHtml(c.status.eyebrow)}</p>
+            <h2>${escapeHtml(c.status.title)}</h2>
+            <p class="lead">${escapeHtml(c.status.lead)}</p>
+            <div class="hero-actions" style="margin-top:8px;">
+              <md-filled-button href="https://status.xjtu.shop" target="_blank" rel="noopener">${escapeHtml(c.status.openStatus)}</md-filled-button>
+              <md-outlined-button href="/docs/#web-telemetry">${escapeHtml(c.status.openDocs)}</md-outlined-button>
+            </div>
+          </div>
+          <md-elevated-card class="status-preview" id="status-preview"></md-elevated-card>
+        </div>
+
+        <div class="bridge-divider">
+          <div class="bridge-head" style="margin-top:34px;margin-bottom:18px;">
+            <div class="section-head" style="margin-bottom:0;">
+              <p class="eyebrow">${icon('code')} ${escapeHtml(c.techBridge.eyebrow)}</p>
+              <h3>${escapeHtml(c.techBridge.title)}</h3>
+              <p class="lead">${escapeHtml(c.techBridge.lead)}</p>
+            </div>
+            <md-filled-tonal-button href="/docs/">${escapeHtml(c.techBridge.cta)} ${icon('arrow', 'slot="icon"')}</md-filled-tonal-button>
+          </div>
+          <div class="bridge-grid">
+            ${c.techBridge.items.map(item => `
+              <md-outlined-card class="bridge-card reveal-item">
+                <a class="bridge-link" href="/docs/#${item.anchor}">
+                  <span class="pill primary">${escapeHtml(item.badge)}</span>
+                  <h3>${escapeHtml(item.title)}</h3>
+                  <p>${escapeHtml(item.desc)}</p>
+                  <span class="bridge-cta">${state.lang === 'zh' ? '阅读章节' : 'Read chapter'} ${icon('arrow')}</span>
+                  <md-ripple></md-ripple>
+                </a>
+              </md-outlined-card>
+            `).join('')}
+          </div>
+        </div>
+        ${renderWorkbenchPager()}
+      </div>
+    `;
+    updateStatus();
+  }
+
+  body.querySelectorAll('[data-switch-view]').forEach(btn => {
+    btn.addEventListener('click', () => switchWorkbenchView(btn.dataset.switchView, true));
+  });
+}
+
+function syncWorkbenchDock() {
+  const wb = getCopy().workbench;
+  const idx = Math.max(0, WORKBENCH_VIEWS.indexOf(state.activeView));
+  const counterEl = document.querySelector('#dockStepCounter');
+  if (counterEl) {
+    counterEl.textContent = `${wb.stepLabel} 0${idx + 1} / 0${wb.views.length}`;
+  }
+  const rail = document.querySelector('#workbenchRail');
+  if (rail) {
+    rail.querySelectorAll('.stage-tab').forEach(btn => {
+      const isMatch = btn.dataset.pillValue === state.activeView;
+      btn.classList.toggle('is-active', isMatch);
+      btn.setAttribute('aria-selected', String(isMatch));
+    });
+    syncSlidingThumb(rail, { activeSelector: '.stage-tab.is-active', scrollIntoView: true });
+  }
+  document.querySelectorAll('#dockDots .capsule-dot').forEach(dot => {
+    const isMatch = dot.dataset.switchView === state.activeView;
+    dot.classList.toggle('is-active', isMatch);
+    dot.setAttribute('aria-selected', String(isMatch));
+  });
+}
+
+function switchWorkbenchView(viewId, scrollToDock = true) {
+  if (!WORKBENCH_VIEWS.includes(viewId)) return;
+  const oldIdx = WORKBENCH_VIEWS.indexOf(state.activeView);
+  const newIdx = WORKBENCH_VIEWS.indexOf(viewId);
+  state.viewDirection = newIdx > oldIdx ? 'next' : newIdx < oldIdx ? 'prev' : 'fade';
+  state.activeView = viewId;
+  history.replaceState(null, '', `#${viewId}`);
+  syncWorkbenchDock();
+  setTopbarActive(viewId);
+  renderActiveView();
+  if (scrollToDock) {
+    document.querySelector('#workbench')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+function stepWorkbench(delta, scrollToDock = true) {
+  const idx = WORKBENCH_VIEWS.indexOf(state.activeView);
+  const nextIdx = (idx + delta + WORKBENCH_VIEWS.length) % WORKBENCH_VIEWS.length;
+  switchWorkbenchView(WORKBENCH_VIEWS[nextIdx], scrollToDock);
 }
 
 function render() {
-  const routeItems = text('routeItems')
-    .map(
-      ([number, title, body]) => `
-        <article class="route-step">
-          <div class="route-card-top"><span class="step-number">${number}</span>${icon(['archive', 'simulation', 'model', 'check'][Number(number) - 1])}</div>
-          <div>
-            <h3>${escapeHtml(title)}</h3>
-            <p>${escapeHtml(body)}</p>
-          </div>
-        </article>`
-    )
-    .join('');
+  const c = getCopy();
+  const wb = c.workbench;
+  const activeIdx = Math.max(0, WORKBENCH_VIEWS.indexOf(state.activeView));
+  document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
 
   document.querySelector('#app').innerHTML = `
-    <header class="topbar">
-      <div slot="headline" class="brand">
-        <span class="brand-mark" aria-hidden="true">X</span>
-        <span class="brand-name">xjtu.shop</span>
-      </div>
-      <nav slot="actionItems" class="desktop-nav" aria-label="${escapeHtml(text('navResearch'))}">
-        <a href="#research">${escapeHtml(text('navResearch'))}</a>
-        <a href="#route">${escapeHtml(text('navRoute'))}</a>
-        <a href="https://status.xjtu.shop" rel="noopener">${escapeHtml(text('navStatus'))}</a>
-      </nav>
-      <md-icon-button slot="actionItems" id="languageButton" aria-label="${escapeHtml(text('language'))}">
-        <span class="language-icon">${escapeHtml(text('language'))}</span>
-      </md-icon-button>
-    </header>
+    ${renderTopbar({ activePage: 'home', activeSection: state.activeView, lang: state.lang, theme: state.theme })}
 
     <main>
-      <section id="research" class="hero shell">
+      <section id="overview" class="hero shell">
         <div class="hero-copy">
-          <md-assist-chip href="#evidence" label="${text('platform')}">${icon('simulation', 'slot="icon"')}</md-assist-chip>
-          <p class="eyebrow">${escapeHtml(text('eyebrow'))}</p>
-          <h1>${escapeHtml(text('title'))}</h1>
-          <p class="formal-title">${escapeHtml(text('formalTitle'))}</p>
-          <p class="hero-text">${escapeHtml(text('heroText'))}</p>
+          <md-assist-chip href="/docs/" label="${escapeHtml(c.hero.chip)}">
+            ${icon('docs', 'slot="icon"')}
+          </md-assist-chip>
+          <p class="eyebrow">${escapeHtml(c.hero.eyebrow)}</p>
+          <h1 class="hero-display-title">${escapeHtml(c.hero.title)}</h1>
+          <p class="formal-title">${escapeHtml(c.hero.formalTitle)}</p>
+          <p class="hero-lead">${escapeHtml(c.hero.lead)}</p>
           <div class="hero-actions">
-            <md-filled-button href="#route">${escapeHtml(text('routeCta'))}</md-filled-button>
-            <md-outlined-button href="https://status.xjtu.shop" rel="noopener">${escapeHtml(text('statusCta'))}</md-outlined-button>
+            <md-filled-button id="heroExploreBtn">${escapeHtml(c.hero.ctaPrimary)}</md-filled-button>
+            <md-filled-tonal-button href="/docs/">${escapeHtml(c.hero.ctaDocs)}</md-filled-tonal-button>
+            <md-outlined-button href="https://status.xjtu.shop" target="_blank" rel="noopener">${escapeHtml(c.hero.ctaStatus)}</md-outlined-button>
           </div>
         </div>
-        <div class="hero-visual" role="img" aria-label="${escapeHtml(text('structure'))}">
-          <div class="orbit orbit-one"></div>
-          <div class="orbit orbit-two"></div>
-          <div class="hero-node node-main">
-            <span class="node-kicker">DRAM / SEE</span>
-            <strong>σ · error rate</strong>
-            <span class="node-caption">${text('structure')}</span>
+        <div id="hero-blueprint-slot"></div>
+      </section>
+
+      <section class="signal-strip shell" aria-label="${escapeHtml(c.signals.stageLabel)}">
+        <div class="signal-cell">
+          <span class="signal-label">${escapeHtml(c.signals.stageLabel)}</span>
+          <strong id="stage-reading">${escapeHtml(c.signals.stageFallback)}</strong>
+        </div>
+        <div class="signal-cell">
+          <span class="signal-label">${escapeHtml(c.signals.matrixLabel)}</span>
+          <strong id="plan-reading" class="num">${escapeHtml(c.signals.matrixFallback)}</strong>
+        </div>
+        <div class="signal-cell">
+          <span class="signal-label">${escapeHtml(c.signals.milestoneLabel)}</span>
+          <strong>${escapeHtml(c.signals.milestoneText)}</strong>
+        </div>
+        <div class="signal-cell signal-health">
+          <span class="signal-label">${escapeHtml(c.signals.healthLabel)}</span>
+          <div class="live-pill" id="live-status" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="workbench" class="workbench-shell shell">
+        <div class="workbench-dock" id="workbenchDock">
+          <div class="dock-meta-row">
+            <div class="dock-meta-left">
+              <span class="dock-step-badge num" id="dockStepCounter">${escapeHtml(wb.stepLabel)} 0${activeIdx + 1} / 0${wb.views.length}</span>
+              <div class="capsule-dots" id="dockDots" role="tablist" aria-label="${escapeHtml(wb.stepLabel)}">
+                ${wb.views.map(v => `
+                  <button
+                    type="button"
+                    class="capsule-dot ${v.id === state.activeView ? 'is-active' : ''}"
+                    aria-label="${escapeHtml(v.num)} · ${escapeHtml(v.short)}"
+                    aria-selected="${String(v.id === state.activeView)}"
+                    data-switch-view="${v.id}">
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+            <div class="dock-meta-right">
+              <span class="dock-kbd-hint mono">${escapeHtml(wb.keyboardHint)}</span>
+              <div class="dock-arrows">
+                <button type="button" class="dock-arrow-btn" id="dockPrevBtn" aria-label="${escapeHtml(wb.prevLabel)}" title="${escapeHtml(wb.prevLabel)}">
+                  ${icon('chevron', 'class="rot-90"')}
+                </button>
+                <button type="button" class="dock-arrow-btn" id="dockNextBtn" aria-label="${escapeHtml(wb.nextLabel)}" title="${escapeHtml(wb.nextLabel)}">
+                  ${icon('chevron', 'class="rot-neg-90"')}
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="hero-node node-geant"><span>Geant4</span><small>${text('nodeLabels')[0]}</small></div>
-          <div class="hero-node node-tcad"><span>TCAD</span><small>${text('nodeLabels')[1]}</small></div>
-          <div class="hero-node node-model"><span>AI model</span><small>${text('nodeLabels')[2]}</small></div>
-          <span class="hero-particle particle-one" aria-hidden="true"></span><span class="hero-particle particle-two" aria-hidden="true"></span>
-          <div class="hero-grid"></div>
-        </div>
-      </section>
 
-      <section class="signal-strip shell" aria-label="${escapeHtml(text('stageLabel'))}">
-        <div><span class="signal-label">${escapeHtml(text('stageLabel'))}</span><strong id="stage-reading">${escapeHtml(text('stageText'))}</strong></div>
-        <div><span class="signal-label" id="plan-label">${escapeHtml(text('scopeLabel'))}</span><strong id="plan-reading">${escapeHtml(text('scopeText'))}</strong></div>
-        <div class="live-pill" id="live-status" aria-live="polite"></div>
-      </section>
-
-      <section id="route" class="section shell">
-        <div class="section-heading">
-          <p class="eyebrow">${escapeHtml(text('routeEyebrow'))}</p>
-          <h2>${escapeHtml(text('routeTitle'))}</h2>
-          <p>${escapeHtml(text('routeIntro'))}</p>
+          <div class="stage-track" id="workbenchRail" role="tablist" aria-label="${escapeHtml(wb.stepLabel)}">
+            <span class="stage-thumb" aria-hidden="true"></span>
+            ${wb.views.map(v => {
+              const isMatch = v.id === state.activeView;
+              return `
+                <button
+                  type="button"
+                  role="tab"
+                  class="stage-tab ${isMatch ? 'is-active' : ''}"
+                  aria-selected="${String(isMatch)}"
+                  data-pill-value="${v.id}">
+                  <span class="stage-tab-num mono">${escapeHtml(v.num)}</span>
+                  <span class="stage-tab-body">
+                    <span class="stage-tab-title">
+                      ${icon(VIEW_ICONS[v.id])}
+                      <strong>${escapeHtml(v.short)}</strong>
+                    </span>
+                    <small>${escapeHtml(v.caption)}</small>
+                  </span>
+                </button>
+              `;
+            }).join('')}
+          </div>
         </div>
-        <md-tabs class="route-tabs" aria-label="${escapeHtml(text('routeTitle'))}">
-          ${text('routeTabs').map((label, index) => `<md-primary-tab id="route-tab-${index}" aria-controls="route-panel" ${index === state.routeTab ? 'active' : ''}>${label}</md-primary-tab>`).join('')}
-        </md-tabs>
-        <div class="route-grid" id="route-panel" role="tabpanel" aria-labelledby="route-tab-${state.routeTab}">${routeItems}</div>
-      </section>
 
-      <section id="evidence" class="evidence-section shell"></section>
-
-      <section class="status-section shell">
-        <div class="status-section-copy">
-          <p class="eyebrow">${escapeHtml(text('statusEyebrow'))}</p>
-          <h2>${escapeHtml(text('statusTitle'))}</h2>
-          <p>${escapeHtml(text('statusText'))}</p>
-          <md-filled-button href="https://status.xjtu.shop" rel="noopener">${escapeHtml(text('statusLink'))}</md-filled-button>
-        </div>
-        <md-elevated-card class="status-preview" id="status-preview"></md-elevated-card>
-      </section>
-
-      <section class="boundary-section shell">
-        <div>
-          <p class="eyebrow">${escapeHtml(text('boundaryEyebrow'))}</p>
-          <h2>${escapeHtml(text('boundaryTitle'))}</h2>
-        </div>
-        <div>
-          <p>${escapeHtml(text('boundaryText'))}</p>
-          <details class="more-details">
-            <summary>${state.lang === 'zh' ? '查看说明' : 'Read the note'}</summary>
-            <p>${state.lang === 'zh' ? '仿真由服务器上的原 runner 和受控任务链路负责。网页提供研究路线与公开状态。' : 'Simulations remain managed by the server-side runner and controlled task chain. The page presents the route and public status.'}</p>
-          </details>
-        </div>
+        <div id="workbenchBody" class="workbench-body"></div>
       </section>
     </main>
 
-    <footer class="footer shell">
-      <span>${escapeHtml(text('footer'))}</span>
-      <a href="https://status.xjtu.shop" rel="noopener">${escapeHtml(text('footerStatus'))} ↗</a>
-    </footer>`;
+    ${renderFooter({ lang: state.lang, activePage: 'home' })}
+  `;
 
-  document.querySelector('#languageButton')?.addEventListener('click', () => {
-    state.lang = state.lang === 'zh' ? 'en' : 'zh';
-    localStorage.setItem('xjtu-lang', state.lang);
-    render();
-    document.querySelector('#languageButton').focus();
+  dramSim.mount(document.querySelector('#hero-blueprint-slot'), state.lang);
+
+  bindTopbar({
+    onToggleLang: () => {
+      state.lang = state.lang === 'zh' ? 'en' : 'zh';
+      localStorage.setItem('xjtu-lang', state.lang);
+      render();
+    },
+    onToggleTheme: () => {
+      state.theme = applyTheme(state.theme === 'dark' ? 'light' : 'dark');
+      render();
+      dramSim.redrawTheme();
+    },
+    onSectionClick: key => {
+      if (key === 'overview') {
+        setTopbarActive('overview');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        history.replaceState(null, '', '#overview');
+      } else {
+        switchWorkbenchView(key, true);
+      }
+    }
+  });
+  bindReadingProgress();
+
+  document.querySelector('#heroExploreBtn')?.addEventListener('click', () => {
+    switchWorkbenchView('results', true);
   });
 
-  document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
-  mountEvidence(document.querySelector('#evidence'), state.lang);
-  const updateRoute = () => {
-    const descriptions = state.routeTab === 0 ? text('routeItems').map(item => item[2]) : text(state.routeTab === 1 ? 'routeEvidence' : 'routeValidation');
-    document.querySelectorAll('.route-step p').forEach((p, index) => { p.textContent = descriptions[index]; });
-    document.querySelector('#route-panel').setAttribute('aria-labelledby', `route-tab-${state.routeTab}`);
-  };
-  document.querySelector('.route-tabs').addEventListener('change', event => {
-    state.routeTab = event.currentTarget.activeTabIndex;
-    updateRoute();
+  document.querySelectorAll('#dockDots [data-switch-view]').forEach(btn => {
+    btn.addEventListener('click', () => switchWorkbenchView(btn.dataset.switchView, true));
   });
-  updateRoute();
+
+  document.querySelector('#dockPrevBtn')?.addEventListener('click', () => stepWorkbench(-1, true));
+  document.querySelector('#dockNextBtn')?.addEventListener('click', () => stepWorkbench(1, true));
+
+  const rail = document.querySelector('#workbenchRail');
+  bindSlidingPill(rail, viewId => {
+    if (viewId && viewId !== state.activeView) {
+      switchWorkbenchView(viewId, false);
+    }
+  }, { buttonSelector: '.stage-tab', scrollActiveOnSelect: true });
+  syncWorkbenchDock();
+
+  renderActiveView();
   updateStatus();
 }
 
 function updateStatus() {
-  const previousFocus = document.querySelector('#status-preview')?.contains(document.activeElement) ? document.activeElement?.id : null;
+  const c = getCopy();
   const generated = Date.parse(state.status?.generated_at);
   const threshold = state.status?.health?.freshness?.scheduler_threshold_seconds ?? 180;
-  const stale = state.status && (!Number.isFinite(generated) || Date.now() - generated > threshold * 1000 || generated - Date.now() > 60_000);
+  const stale = state.status && (
+    !Number.isFinite(generated) ||
+    Date.now() - generated > threshold * 1000 ||
+    generated - Date.now() > 60_000
+  );
   const overall = stale ? 'stale' : state.status?.overall || (state.statusError ? 'unknown' : 'loading');
-  const label = text('stateLabels')[overall] || text('stateLabels').unknown;
+  const overallLabel = c.status.stateLabels[overall] || c.status.stateLabels.unknown;
+
   const simulation = state.status?.health?.simulation;
   const summary = state.status?.research_summary ?? state.status?.research;
-  const stage = state.lang === 'zh' ? simulation?.summary_zh || simulation?.summary_en : simulation?.summary_en || simulation?.summary_zh;
+  const stageText = state.lang === 'zh'
+    ? simulation?.summary_zh || simulation?.summary_en
+    : simulation?.summary_en || simulation?.summary_zh;
+
   const stats = summary?.totals;
-  const progress = summary ? [summary.revision, ...[
-    [stats?.planned ?? summary?.budget?.total_cases, 'plannedLabel'],
-    [stats?.solved, 'solvedLabel'],
-    [stats?.running ?? simulation?.active_tasks, 'runningLabel'],
-  ].filter(([value]) => Number.isFinite(value)).map(([value, caption]) => `${text(caption)} ${value}`)].filter(Boolean) : [];
-  document.getElementById('stage-reading').textContent = stage || text('stageText');
-  document.getElementById('plan-label').textContent = progress.length ? text('planLabel') : text('scopeLabel');
-  document.getElementById('plan-reading').textContent = progress.length ? progress.join(' · ') : text('scopeText');
-  document.querySelector('#live-status').innerHTML = `<span class="status-dot ${overall}"></span><span>${escapeHtml(label)}</span>`;
-  const serviceIds = ['research-site', 'tcad-controller', 'simulation-runtime'];
-  const rows = serviceIds.map((id, index) => {
-    const service = state.status?.services?.find(service => service.id === id);
-    const health = state.status?.health?.services?.items?.find(item => item.id === id);
+  const progressParts = summary ? [
+    summary.revision,
+    Number.isFinite(stats?.planned) ? `${c.signals.planned} ${stats.planned}` : null,
+    Number.isFinite(stats?.solved) ? `${c.signals.solved} ${stats.solved}` : null,
+    Number.isFinite(stats?.accepted) ? `${c.signals.accepted} ${stats.accepted}` : null,
+    Number.isFinite(stats?.running ?? simulation?.active_tasks) ? `${c.signals.running} ${stats?.running ?? simulation?.active_tasks}` : null
+  ].filter(Boolean) : [];
+
+  const stageEl = document.getElementById('stage-reading');
+  const planEl = document.getElementById('plan-reading');
+  const liveEl = document.getElementById('live-status');
+  if (stageEl) stageEl.textContent = stageText || c.signals.stageFallback;
+  if (planEl) planEl.textContent = progressParts.length ? progressParts.join(' · ') : c.signals.matrixFallback;
+  if (liveEl) liveEl.innerHTML = `<span class="status-dot ${overall}"></span><span>${escapeHtml(overallLabel)}</span>`;
+
+  if (state.activeView === 'results') {
+    const chartsSlot = document.querySelector('#research-charts-slot');
+    if (chartsSlot) renderResearchCharts(chartsSlot, state.lang, state.status);
+  }
+
+  const previewEl = document.querySelector('#status-preview');
+  if (!previewEl) return;
+
+  const previousFocus = isKeyboardModality() && previewEl.contains(document.activeElement)
+    ? document.activeElement?.id
+    : null;
+
+  const rows = c.status.services.map(svcDef => {
+    const service = state.status?.services?.find(s => s.id === svcDef.id);
+    const health = state.status?.health?.services?.items?.find(i => i.id === svcDef.id);
     const value = stale ? 'stale' : health?.state || service?.state || 'unknown';
-    const expanded = state.expandedService === id;
+    const expanded = state.expandedService === svcDef.id;
     const checked = Date.parse(service?.checked_at);
-    const checkedTime = Number.isFinite(checked) ? new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-CN' : 'en', { dateStyle: 'short', timeStyle: 'short' }).format(checked) : '—';
-    return `<div class="preview-service ${expanded ? 'is-expanded' : ''}">
-      <button class="preview-line" id="preview-toggle-${id}" type="button" data-preview-service="${id}" aria-expanded="${expanded}" aria-controls="preview-note-${id}">
-        <span>${text('serviceLabels')[index]}</span>
-        <b class="preview-state ${value}">${escapeHtml(text('stateLabels')[value] || text('stateLabels').unknown)}</b>
-        <span class="preview-chevron">${icon('chevron')}</span>
-        <md-ripple></md-ripple><md-focus-ring inward></md-focus-ring>
-      </button>
-      <div class="preview-service-note" id="preview-note-${id}" ${expanded ? '' : 'hidden'}>
-        <p>${text('serviceDescriptions')[index]}</p>
-        <div>${text('statusUpdated')} <time>${checkedTime}</time></div>
+    const checkedTime = Number.isFinite(checked)
+      ? new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-CN' : 'en', { dateStyle: 'short', timeStyle: 'short' }).format(checked)
+      : '—';
+
+    return `
+      <div class="preview-service ${expanded ? 'is-expanded' : ''}">
+        <button class="preview-line" id="preview-toggle-${svcDef.id}" type="button" data-preview-service="${svcDef.id}" aria-expanded="${expanded}" aria-controls="preview-note-${svcDef.id}">
+          <span>${escapeHtml(svcDef.name)}</span>
+          <b class="preview-state ${value}">${escapeHtml(c.status.stateLabels[value] || c.status.stateLabels.unknown)}</b>
+          <span class="preview-chevron">${icon('chevron')}</span>
+          <md-ripple></md-ripple>
+        </button>
+        <div class="preview-service-note" id="preview-note-${svcDef.id}" ${expanded ? '' : 'hidden'}>
+          <p>${escapeHtml(svcDef.desc)}</p>
+          <div>${escapeHtml(c.status.updated)} <time>${checkedTime}</time></div>
+        </div>
       </div>
-    </div>`;
+    `;
   }).join('');
-  const time = Number.isFinite(generated) ? new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-CN' : 'en', { hour: '2-digit', minute: '2-digit' }).format(generated) : '—';
-  document.querySelector('#status-preview').innerHTML = `
-    <div class="preview-header">
-      <span class="status-dot ${overall}"></span>
-      <a class="preview-title" href="https://status.xjtu.shop">status.xjtu.shop</a>
-      <md-icon-button id="preview-refresh" class="${state.statusLoading ? 'is-refreshing' : ''}" aria-label="${text('statusRefresh')}" title="${text('statusRefresh')}" ${state.statusLoading ? 'disabled' : ''}>${icon('refresh')}</md-icon-button>
+
+  const updatedTime = Number.isFinite(generated)
+    ? new Intl.DateTimeFormat(state.lang === 'zh' ? 'zh-CN' : 'en', { hour: '2-digit', minute: '2-digit', second: '2-digit' }).format(generated)
+    : '—';
+
+  previewEl.innerHTML = `
+    <div class="preview-inner">
+      <div class="preview-header">
+        <span class="status-dot ${overall}"></span>
+        <a class="preview-title" href="https://status.xjtu.shop" target="_blank" rel="noopener">${escapeHtml(c.status.previewTitle)}</a>
+        <span class="pill ${overall === 'operational' ? 'good' : overall === 'loading' ? 'primary' : 'warn'}">${escapeHtml(overallLabel)}</span>
+        <md-icon-button id="preview-refresh" class="${state.statusLoading ? 'is-refreshing' : ''}" aria-label="${escapeHtml(c.status.refresh)}" title="${escapeHtml(c.status.refresh)}" ${state.statusLoading ? 'disabled' : ''}>
+          ${icon('refresh')}
+        </md-icon-button>
+      </div>
+      ${state.statusLoading ? `<md-linear-progress indeterminate aria-label="${escapeHtml(c.status.loading)}"></md-linear-progress>` : ''}
+      ${rows}
+      <div class="preview-update">
+        <span>${escapeHtml(c.status.updated)} <time>${updatedTime}</time></span>
+        <a href="https://status.xjtu.shop" target="_blank" rel="noopener">${escapeHtml(c.status.fullBoard)} ${icon('external')}</a>
+      </div>
     </div>
-    ${state.statusLoading ? `<md-linear-progress indeterminate aria-label="${text('liveLoading')}"></md-linear-progress>` : ''}
-    ${rows}
-    <div class="preview-update"><span>${text('statusUpdated')} <time>${time}</time></span><a href="https://status.xjtu.shop">${text('statusFull')}${icon('arrow')}</a></div>`;
-  document.querySelectorAll('[data-preview-service]').forEach(button => {
+  `;
+
+  previewEl.querySelectorAll('[data-preview-service]').forEach(button => {
     button.addEventListener('click', () => {
       const id = button.dataset.previewService;
       state.expandedService = state.expandedService === id ? null : id;
-      document.querySelectorAll('[data-preview-service]').forEach(toggle => {
-        const expanded = state.expandedService === toggle.dataset.previewService;
-        toggle.setAttribute('aria-expanded', String(expanded));
-        toggle.closest('.preview-service').classList.toggle('is-expanded', expanded);
-        document.querySelector(`#${toggle.getAttribute('aria-controls')}`).hidden = !expanded;
+      previewEl.querySelectorAll('[data-preview-service]').forEach(toggle => {
+        const exp = state.expandedService === toggle.dataset.previewService;
+        toggle.setAttribute('aria-expanded', String(exp));
+        toggle.closest('.preview-service').classList.toggle('is-expanded', exp);
+        document.querySelector(`#${toggle.getAttribute('aria-controls')}`).hidden = !exp;
       });
     });
   });
-  document.querySelector('#preview-refresh').addEventListener('click', loadStatus);
+
+  previewEl.querySelector('#preview-refresh')?.addEventListener('click', loadStatus);
   if (previousFocus) document.getElementById(previousFocus)?.focus({ preventScroll: true });
+}
+
+async function fetchStatus(path) {
+  const response = await fetch(path, { cache: 'no-store', signal: AbortSignal.timeout(8000) });
+  if (!response.ok) throw new Error(`${path} returned HTTP ${response.status}`);
+  const payload = await response.json();
+  if (!Number.isFinite(Date.parse(payload?.generated_at))) throw new Error(`Invalid payload from ${path}`);
+  return payload;
 }
 
 async function loadStatus() {
@@ -369,16 +603,24 @@ async function loadStatus() {
   updateStatus();
 }
 
-async function fetchStatus(path) {
-  const response = await fetch(path, { cache: 'no-store', signal: AbortSignal.timeout(8000) });
-  if (!response.ok) throw new Error(`${path} returned HTTP ${response.status}`);
-  const status = await response.json();
-  if (!Number.isFinite(Date.parse(status?.generated_at))) throw new Error(`Invalid status payload from ${path}`);
-  return status;
-}
+window.addEventListener('hashchange', () => {
+  const hash = location.hash.replace('#', '');
+  if (WORKBENCH_VIEWS.includes(hash) && hash !== state.activeView) {
+    switchWorkbenchView(hash, true);
+  }
+});
+
+document.addEventListener('keydown', event => {
+  if (event.altKey && (event.key === 'ArrowRight' || event.key === 'ArrowLeft')) {
+    event.preventDefault();
+    stepWorkbench(event.key === 'ArrowRight' ? 1 : -1, true);
+  }
+});
 
 render();
-const refreshVisibleStatus = () => { if (!document.hidden) loadStatus(); };
+const refreshVisibleStatus = () => {
+  if (!document.hidden) loadStatus();
+};
 refreshVisibleStatus();
 document.addEventListener('visibilitychange', refreshVisibleStatus);
 setInterval(refreshVisibleStatus, 60_000);

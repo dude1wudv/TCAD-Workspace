@@ -1,0 +1,275 @@
+{
+  "schema": "dram-report-provenance-v1",
+  "created_utc": "2026-10-10T14:40:28.582416+00:00",
+  "scope": "Model basis, physical mechanisms, completed D1 diagnostics; not final v3 results",
+  "repository_relative_sources": [
+    {
+      "path": "docs/course-project-syllabus.md",
+      "sha256": "849925f6780143bc8547e6f1718c38773401c0313cee1ea57bd296758ad69ae9"
+    },
+    {
+      "path": "experiments/dram-readout-offset-d1/report.md",
+      "sha256": "4b8e0539d4f29799b0432d187a9e22157f9da604016c056de2af496cf2445db7"
+    },
+    {
+      "path": "experiments/dram-readout-offset-d1/interpretation.md",
+      "sha256": "d0d5515d7541091dfcca41ed53666fb19d7b4e395e0b366bf1bed8351d36e991"
+    },
+    {
+      "path": "experiments/dram-readout-offset-d1/data/summary.csv",
+      "sha256": "c954de8ded583ce9a3cc3034a416488f0d5edc3d12fe3fbc690b0f91c70a8956"
+    },
+    {
+      "path": "experiments/dram-readout-offset-d1/validation/independent-final.json",
+      "sha256": "fb928ee2367d5ac08738bbc8837d5a41570825ac14b9a6d77055f4dc90b192d8"
+    },
+    {
+      "path": "experiments/dram-see-v1/report.md",
+      "sha256": "6c8e655df6f901ceffe019c75bd640f8b25528f171038c49bfe9470874313c3c"
+    },
+    {
+      "path": "experiments/dram-see-v1/geant4_transport.cc",
+      "sha256": "8f3ec870dad0905be7516bf657ed033d8cf5c5ade7cef938a941622b2f483ce2"
+    },
+    {
+      "path": "experiments/dram-see-v3/stats-design.json",
+      "sha256": "7852bb1b6a3e9173784e28fc5ae0244d81638b7ec1a39cb6f5cf92cf0a9f84e1"
+    },
+    {
+      "path": "experiments/dram-see-v3/build_case.py",
+      "sha256": "d4f963ad0936d0bbf94ce0126b669bcfa9d0e0105377df8658affebf8bba0dab"
+    },
+    {
+      "path": "experiments/dram-see-v3/demo.md",
+      "sha256": "c279890fa91c42abe4f91e2ad920ee62a5e54e299da74c8e49f461b16f4e852a"
+    },
+    {
+      "path": "experiments/dram-see-v3/data/demo/request-demonstration.json",
+      "sha256": "42982be098a906e5899731e2ca42dd9da673a87ce6f8f4273e97274ee8ec771d"
+    },
+    {
+      "path": "experiments/dram-see-v3/data/summary/20261010T140027916013Z/published-report.md",
+      "sha256": "2c42e354429166c8081fb5c1b5a0e7b030f0aef7bf747251152078c33ee2acd4"
+    },
+    {
+      "path": "local_runtime/dram-see-v3/inputs/v3-physical-l018-b1/geometry.scm",
+      "sha256": "0d4865af7cdb17d59a2069e29610d62fd0467a19d939a20cd9827e3d31e526ff"
+    },
+    {
+      "path": "local_runtime/dram-see-v3/inputs/v3-physical-l018-b1/device.cmd",
+      "sha256": "08ddb7d9748637e2fceb55022e69d0ccae37d5064264391a95d88c87c888cb07"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "report.tex",
+      "sha256": "455cbc52c9ed6356f5b74132f830b285526e7c4896abb3ab3cee83d52d62df37"
+    },
+    {
+      "path": "report.pdf",
+      "sha256": "1edcf97d71fa1b90dfc809c21cfad8e0784151d69ba609911a383445e13d1afe"
+    },
+    {
+      "path": "build.ps1",
+      "sha256": "6050fa32474485cde7153438329e03f77f9ff21c0c33b97e7c13b74d14d82712"
+    },
+    {
+      "path": "README.txt",
+      "sha256": "6a25ee2f519c308bd58de0ab36bf60b5e24e8fcb2806acb7ffeb0f824c21c161"
+    },
+    {
+      "path": "update_sources.py",
+      "sha256": "976207fae42cfed467e4ab166c5ca37fe02b68bec9495ad71e4e5e7cc43a8698"
+    }
+  ],
+  "external_sources": [
+    {
+      "key": "keeth2001",
+      "url": "https://catalogimages.wiley.com/images/db/pdf/0780360141.excerpt.pdf",
+      "verified_scope": "1T1C, precharge, charge sharing, sensing and restoration; printed pp.22-29; not project parameter calibration"
+    },
+    {
+      "key": "g4em",
+      "url": "https://geant4-userdoc.web.cern.ch/UsersGuides/PhysicsListGuide/BackupVersions/V10.7/html/electromagnetic/Opt4.html",
+      "verified_scope": "Geant4 10.7 electromagnetic option4 definition; not a 10.7.3 patch-by-patch audit"
+    },
+    {
+      "key": "ryder2021",
+      "doi": "10.1109/TNS.2021.3060339",
+      "url": "https://nepp.nasa.gov/docs/papers/2021-Ryder-TNS-Paper-SET-Epitaxial-Silicon-Diode-20210010229.pdf",
+      "metadata_verification": "Crossref API: IEEE TNS 68(5), 626-633, May 2021",
+      "verified_scope": "3.6 eV per electron-hole pair; effects of charge spatial/temporal distribution; epitaxial diode, not this DRAM"
+    },
+    {
+      "key": "label1996",
+      "url": "https://nepp.nasa.gov/DocUploads/6D728AF0-2817-4530-97555B6DCB26D083/seecai.pdf",
+      "verified_scope": "SEE generation/collection mechanisms and circuit-dependent upset; pp.21-23"
+    }
+  ],
+  "figure_3": {
+    "x_field": "read_SN_V",
+    "series": [
+      {
+        "field": "D_mV",
+        "points": [
+          {
+            "tag": "rodiag1-scan035",
+            "run_id": "20261010T075140Z-rodiag1-scan035-fd250135",
+            "archive_sha256": "7ab2872a241b864e6c149c45185cbfee9a9e786ab5603bf8590809a9facad5e5",
+            "x_V": 0.350047852347033,
+            "y_mV": -1.6281881277380172
+          },
+          {
+            "tag": "rodiag1-alpha-match",
+            "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+            "archive_sha256": "4180ab071cf0be7c5d3e15551fc4033ba092c1ce56a72bea19cff016b65a85bb",
+            "x_V": 0.393777669739371,
+            "y_mV": 2.4549605553549902
+          },
+          {
+            "tag": "rodiag1-scan045",
+            "run_id": "20261010T075751Z-rodiag1-scan045-bbc7abd1",
+            "archive_sha256": "a621a3719d815e6f769748da1d34981f4318c9c76be7c018d9d01ae1495ac7ea",
+            "x_V": 0.450052638821446,
+            "y_mV": 7.706471591548025
+          },
+          {
+            "tag": "rodiag1-center050",
+            "run_id": "20261010T073750Z-rodiag1-center050-2fde80ba",
+            "archive_sha256": "d06946f0e0a1be5cb4c65261a8cd0ae7c343f1a94815c3a6c7603b640d6bf769",
+            "x_V": 0.50005512489201,
+            "y_mV": 12.369996600361976
+          },
+          {
+            "tag": "rodiag1-scan055",
+            "run_id": "20261010T080358Z-rodiag1-scan055-02fe8094",
+            "archive_sha256": "97cf5065eca790863bd46b59791c05a873944c0fcdca54b9ccd94406c94b1b82",
+            "x_V": 0.55005767254013,
+            "y_mV": 17.031202470839002
+          },
+          {
+            "tag": "rodiag1-bridge090",
+            "run_id": "20261010T073147Z-rodiag1-bridge090-8db1e0b8",
+            "archive_sha256": "9e84c195bedef98eb1d1cab9ac263d615ade3949d6abc5080e4fe5898cf7290d",
+            "x_V": 0.900077175465742,
+            "y_mV": 49.60433068052195
+          }
+        ]
+      },
+      {
+        "field": "two_capacitor_D_mV",
+        "points": [
+          {
+            "tag": "rodiag1-scan035",
+            "run_id": "20261010T075140Z-rodiag1-scan035-fd250135",
+            "archive_sha256": "7ab2872a241b864e6c149c45185cbfee9a9e786ab5603bf8590809a9facad5e5",
+            "x_V": 0.350047852347033,
+            "y_mV": -13.635481293254259
+          },
+          {
+            "tag": "rodiag1-alpha-match",
+            "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+            "archive_sha256": "4180ab071cf0be7c5d3e15551fc4033ba092c1ce56a72bea19cff016b65a85bb",
+            "x_V": 0.393777669739371,
+            "y_mV": -9.66004331141168
+          },
+          {
+            "tag": "rodiag1-scan045",
+            "run_id": "20261010T075751Z-rodiag1-scan045-bbc7abd1",
+            "archive_sha256": "a621a3719d815e6f769748da1d34981f4318c9c76be7c018d9d01ae1495ac7ea",
+            "x_V": 0.450052638821446,
+            "y_mV": -4.544136982363945
+          },
+          {
+            "tag": "rodiag1-center050",
+            "run_id": "20261010T073750Z-rodiag1-center050-2fde80ba",
+            "archive_sha256": "d06946f0e0a1be5cb4c65261a8cd0ae7c343f1a94815c3a6c7603b640d6bf769",
+            "x_V": 0.50005512489201,
+            "y_mV": 0.0015436140509139662
+          },
+          {
+            "tag": "rodiag1-scan055",
+            "run_id": "20261010T080358Z-rodiag1-scan055-02fe8094",
+            "archive_sha256": "97cf5065eca790863bd46b59791c05a873944c0fcdca54b9ccd94406c94b1b82",
+            "x_V": 0.55005767254013,
+            "y_mV": 4.547229809543696
+          },
+          {
+            "tag": "rodiag1-bridge090",
+            "run_id": "20261010T073147Z-rodiag1-bridge090-8db1e0b8",
+            "archive_sha256": "9e84c195bedef98eb1d1cab9ac263d615ade3949d6abc5080e4fe5898cf7290d",
+            "x_V": 0.900077175465742,
+            "y_mV": 36.367184973050136
+          }
+        ]
+      },
+      {
+        "field": "offline_center_BL_reference_D_mV",
+        "points": [
+          {
+            "tag": "rodiag1-scan035",
+            "run_id": "20261010T075140Z-rodiag1-scan035-fd250135",
+            "archive_sha256": "7ab2872a241b864e6c149c45185cbfee9a9e786ab5603bf8590809a9facad5e5",
+            "x_V": 0.350047852347033,
+            "y_mV": -13.998184728099993
+          },
+          {
+            "tag": "rodiag1-alpha-match",
+            "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+            "archive_sha256": "4180ab071cf0be7c5d3e15551fc4033ba092c1ce56a72bea19cff016b65a85bb",
+            "x_V": 0.393777669739371,
+            "y_mV": -9.915036045006985
+          },
+          {
+            "tag": "rodiag1-scan045",
+            "run_id": "20261010T075751Z-rodiag1-scan045-bbc7abd1",
+            "archive_sha256": "a621a3719d815e6f769748da1d34981f4318c9c76be7c018d9d01ae1495ac7ea",
+            "x_V": 0.450052638821446,
+            "y_mV": -4.663525008813951
+          },
+          {
+            "tag": "rodiag1-center050",
+            "run_id": "20261010T073750Z-rodiag1-center050-2fde80ba",
+            "archive_sha256": "d06946f0e0a1be5cb4c65261a8cd0ae7c343f1a94815c3a6c7603b640d6bf769",
+            "x_V": 0.50005512489201,
+            "y_mV": 0.0
+          },
+          {
+            "tag": "rodiag1-scan055",
+            "run_id": "20261010T080358Z-rodiag1-scan055-02fe8094",
+            "archive_sha256": "97cf5065eca790863bd46b59791c05a873944c0fcdca54b9ccd94406c94b1b82",
+            "x_V": 0.55005767254013,
+            "y_mV": 4.661205870477025
+          },
+          {
+            "tag": "rodiag1-bridge090",
+            "run_id": "20261010T073147Z-rodiag1-bridge090-8db1e0b8",
+            "archive_sha256": "9e84c195bedef98eb1d1cab9ac263d615ade3949d6abc5080e4fe5898cf7290d",
+            "x_V": 0.900077175465742,
+            "y_mV": 37.23433408015997
+          }
+        ]
+      }
+    ],
+    "connecting_lines": "visual guides only; no interpolation claim"
+  },
+  "checks": {
+    "plotted_pairs_compared": 18,
+    "maximum_numeric_difference": 0.0,
+    "citation_keys": [
+      "course",
+      "d1",
+      "g4em",
+      "keeth2001",
+      "label1996",
+      "ryder2021",
+      "v1",
+      "v3demo",
+      "v3design",
+      "v3snapshot"
+    ],
+    "cross_reference_targets_exist": true,
+    "raw_solver_reaudit_performed": false,
+    "simulation_inputs_modified": false
+  }
+}

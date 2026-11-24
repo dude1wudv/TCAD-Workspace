@@ -233,12 +233,13 @@ if __name__=='__main__':unittest.main()
 
 
 class ReadOnlyProbeTests(unittest.TestCase):
-    def probe(self,observed_at):
+    def probe(self,observed_at,backing_path=None):
         import tempfile
         import scheduler_probe
         self.folder=tempfile.TemporaryDirectory();self.addCleanup(self.folder.cleanup)
         root=Path(self.folder.name)
-        probe=scheduler_probe.BatchRemoteProbe(dict(state_dir=str(root),workspace=str(Path(__file__).resolve().parents[2])),read_only=True)
+        probe=scheduler_probe.BatchRemoteProbe(dict(state_dir=str(root),workspace=str(Path(__file__).resolve().parents[2]),
+                                                      resources={"backing_disk_path": backing_path}),read_only=True)
         record=dict(run_id='fixture',remote_directory='/fixture',script_sha256='0'*64,
                     process_identity=dict(pid=123,start_ticks=10,boot_id='fixture',cwd='/fixture',run_id='fixture',script_sha256='0'*64,private_metadata='x'*200000),
                     private_manifest='y'*200000)
@@ -256,6 +257,13 @@ class ReadOnlyProbeTests(unittest.TestCase):
     def test_stale_sample_does_not_refresh_remote_facts(self):
         result,argv=self.probe(time.time()-600)
         self.assertFalse(result['ok']);self.assertIsNone(result['observed_at']);self.assertEqual(result['runs'],{})
+
+    def test_missing_backing_mount_does_not_report_the_server_filesystem_as_vm_space(self):
+        import scheduler_probe
+        with mock.patch.object(scheduler_probe.os.path, "ismount", return_value=False):
+            result, _ = self.probe(time.time(), "/fixture/not-mounted")
+        self.assertTrue(result["ok"])
+        self.assertIsNone(result["telemetry"]["backing_disk_free_gib"])
 
 
 class DurableArchiveVerificationTests(unittest.TestCase):

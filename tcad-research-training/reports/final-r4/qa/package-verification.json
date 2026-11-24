@@ -1,0 +1,71 @@
+{
+  "schema": "dram-see-v3-final-r4-package-verification",
+  "utc": "2026-10-12T01:00:22.087096+00:00",
+  "scope": "Document and slide fidelity, source hashes, preserved snapshot and rendering bindings; no new scientific simulation or native PowerPoint execution.",
+  "new_solver_calls": 0,
+  "writes": 0,
+  "bound_source_hashes_checked": 71,
+  "snapshot_outputs_checked": 64,
+  "science_snapshot": {
+    "events": 64,
+    "responses": 128,
+    "aliases": 4,
+    "score_files_preserved_separately": true
+  },
+  "pdfs": [
+    {
+      "file": "course-report.pdf",
+      "sha256": "a948153e0ead8d92ba8667607f1c606cd9481bbaa31b30b7e803890c298bde4e",
+      "pages": 21,
+      "extracted_characters": 21043,
+      "chinese_characters": 9345
+    },
+    {
+      "file": "research-paper.pdf",
+      "sha256": "4f4955d491f85147da6b2871b981bc7f536d4e00168a022dcc43f79f84fbcda1",
+      "pages": 14,
+      "extracted_characters": 13142,
+      "chinese_characters": 5354
+    }
+  ],
+  "tex_commands_exit_codes": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "ppt": {
+    "file": "dram-see-v3-r4-r4.pptx",
+    "sha256": "4b3487f325afdb86cee64f7fe04de5c319cb536e1a32e9273523f5c8713730fd",
+    "slides": 16,
+    "notes": 16,
+    "native_tables": 6,
+    "native_charts": 3,
+    "embedded_xlsx": 3,
+    "source_numeric_points_checked": 32,
+    "editable_chart_precision_decimals": 6,
+    "source_full_precision_unchanged": true,
+    "table_checks": [
+      "matrix column sums",
+      "ridge RMSE",
+      "all ridge error rows",
+      "all boundary rows",
+      "total cost"
+    ],
+    "native_screenshot_bytes_preserved": 2,
+    "native_powerpoint_open_verified": false
+  },
+  "root_visual_receipts_checked": 2,
+  "local_markdown_links_checked": 47,
+  "deferred_self_generated_links_before_sealing": [
+    "delivery-manifest.json",
+    "qa/package-verification.json"
+  ],
+  "state": "PASSED",
+  "actual_exit_code": 0,
+  "actual_command_record": "local_runtime/dram-see-v3/final-r4-document-build/package-r2/package-verification-command.json"
+}

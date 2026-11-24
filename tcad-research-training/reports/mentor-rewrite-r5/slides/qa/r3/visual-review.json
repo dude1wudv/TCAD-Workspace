@@ -1,0 +1,170 @@
+{
+  "schema": "mentor-slides-visual-review.v1",
+  "reviewed_at_utc": "2026-10-12T02:42:22.4352718Z",
+  "state": "PASS",
+  "renderer": "Final PPTX imported with @oai/artifact-tool, then all slides rendered at 1.5 scale",
+  "final": "output/dram-see-v3-mentor-r3.pptx",
+  "final_sha256": "a699ca543a26373d700c43699abb8b0bbe4b6760cffaeff56a542f2e0c48b32b",
+  "reviewed_page_count": 14,
+  "review_method": "All 14 final rendered PNGs individually opened with view_image",
+  "pages": [
+    {
+      "slide": 1,
+      "title": "AI辅助下的多特征尺寸存储器单粒子效应评估",
+      "png": "render/slide-01.png",
+      "sha256": "5e97e13d1f869dae5cff0936b62b9608f511cfcb0ec7a91efbda8576aa223866",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "标题和四项研究规模信息清楚，留白充足。"
+    },
+    {
+      "slide": 2,
+      "title": "研究内容",
+      "png": "render/slide-02.png",
+      "sha256": "c7c22a83d52f8c710510a41e8682e23a421849a36dcad662e19a459531dccc38",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "研究步骤分行排列，正文没有拥挤或重叠。"
+    },
+    {
+      "slide": 3,
+      "title": "参数设置",
+      "png": "render/slide-03.png",
+      "sha256": "7aecdffa0a3b90c734ef5da9be212cdadc1f700f2d9affd95d23a8012ee3ea51",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "参数表行列对齐，单位与训练及测试分组清楚。"
+    },
+    {
+      "slide": 4,
+      "title": "电荷与读出",
+      "png": "render/slide-04.png",
+      "sha256": "085063f9c664070eafa21a3bfadf3936864fd3664887d983bd9893a1c21492fc",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "两类读出量及5 mV分类说明可读，表格没有溢出。"
+    },
+    {
+      "slide": 5,
+      "title": "仿真结果",
+      "png": "render/slide-05.png",
+      "sha256": "e5af60a8aa2a3dfc2aabdfabd371097627f00c8a2392965878c12aa12e05bd08",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "三个阈值的分类图和96/20/8/4主结果完整显示。"
+    },
+    {
+      "slide": 6,
+      "title": "粒子入射后的电场分布",
+      "png": "render/slide-06.png",
+      "sha256": "67ae2419592cdfe922ea0536646c00cb5ef0703480c4c8b0537d0ea4e80ca3d0",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "原生事件截图完整展示，图题和截图未相互遮挡。"
+    },
+    {
+      "slide": 7,
+      "title": "模型训练与验证",
+      "png": "render/slide-07.png",
+      "sha256": "3eee9d7ee4c368e0fc8e76c4c78e384b32b552fb0737258793ede68d1f453a7d",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "四模型、训练和测试数量及冻结顺序清楚。"
+    },
+    {
+      "slide": 8,
+      "title": "预测误差",
+      "png": "render/slide-08.png",
+      "sha256": "38db4912cedd30891de6f013f58e843cc87c488246f135ff8c4f6302684debbf",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "误差图例与数据表可读，比较结论没有截断。"
+    },
+    {
+      "slide": 9,
+      "title": "氧化层试验",
+      "png": "render/slide-09.png",
+      "sha256": "2c6909897f6d24ad2981d94796e4ca2330be0c3d38e242eb69f2f9fe9742dbfc",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "四条氧化层曲线与敏感性数值完整可读。"
+    },
+    {
+      "slide": 10,
+      "title": "边界验证",
+      "png": "render/slide-10.png",
+      "sha256": "68f5f8fd051424a40fc53b69787e86e053be399159103906b200f322f8d92977",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "两目标四比较的表格清楚，分类跨界与未细化项保留。"
+    },
+    {
+      "slide": 11,
+      "title": "结论与后续工作",
+      "png": "render/slide-11.png",
+      "sha256": "244931699546b45e09341987bdcd6520239cec25c3a6babe9d5c0c335ebd577d",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "结论和下一步各自成段，措辞简洁，无文字溢出。"
+    },
+    {
+      "slide": 12,
+      "title": "模型误差明细",
+      "png": "render/slide-12.png",
+      "sha256": "577e31bfc7d10abfef7d49f60b82d39b88d35d1dea5116986eb0f47aaad7316d",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "八行误差明细对齐，指标和单位完整。"
+    },
+    {
+      "slide": 13,
+      "title": "运行记录",
+      "png": "render/slide-13.png",
+      "sha256": "4370934085ad401c4f20d85c3873659692a323ac0c3ce450e045435bf9be58c7",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "原失败、null退出码及累计成本完整保留，表格可读。"
+    },
+    {
+      "slide": 14,
+      "title": "参考电场分布",
+      "png": "render/slide-14.png",
+      "sha256": "fb17148b681b15f01b6c0f439c923b8d9f76277673ac17f2665277746c118f5b",
+      "individually_viewed": true,
+      "clipping": false,
+      "unintended_overlap": false,
+      "readable": true,
+      "finding": "原生参考截图完整展示，图题和窗口内容未相互遮挡。"
+    }
+  ],
+  "native_powerpoint_execution_tested": false,
+  "human_review_claimed": false,
+  "scientific_source_modifications": 0,
+  "new_solver_calls": 0
+}

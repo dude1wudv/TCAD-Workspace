@@ -1,0 +1,100 @@
+{
+  "final": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\output\\dram-see-v3-mentor-r3.pptx",
+  "final_sha256": "a699ca543a26373d700c43699abb8b0bbe4b6760cffaeff56a542f2e0c48b32b",
+  "scientific_sources_unchanged": true,
+  "tables": [
+    {
+      "slide": 3,
+      "rows": 5,
+      "native_and_values_match": true
+    },
+    {
+      "slide": 4,
+      "rows": 3,
+      "native_and_values_match": true
+    },
+    {
+      "slide": 7,
+      "rows": 3,
+      "native_and_values_match": true
+    },
+    {
+      "slide": 8,
+      "rows": 5,
+      "native_and_values_match": true
+    },
+    {
+      "slide": 10,
+      "rows": 5,
+      "native_and_values_match": true
+    },
+    {
+      "slide": 12,
+      "rows": 9,
+      "native_and_values_match": true
+    },
+    {
+      "slide": 13,
+      "rows": 5,
+      "native_and_values_match": true
+    }
+  ],
+  "charts": [
+    {
+      "slide": 5,
+      "series": 4,
+      "native_values_match": true,
+      "workbook_link_present": true
+    },
+    {
+      "slide": 8,
+      "series": 2,
+      "native_values_match": true,
+      "workbook_link_present": true
+    },
+    {
+      "slide": 9,
+      "series": 4,
+      "native_values_match": true,
+      "workbook_link_present": true
+    }
+  ],
+  "native_images": [
+    {
+      "slide": 6,
+      "file": "native-event-window.png",
+      "embedded_bytes_unchanged": true
+    },
+    {
+      "slide": 14,
+      "file": "native-physical-window.png",
+      "embedded_bytes_unchanged": true
+    }
+  ],
+  "checked_slides": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14
+  ],
+  "state": "PASS",
+  "slides": 14,
+  "main_slides": 11,
+  "backup_slides": 3,
+  "failure_rows_preserved": 7,
+  "main_original_failed_null_preserved": 4,
+  "native_table_count": 7,
+  "native_chart_count": 3,
+  "new_solver_calls": 0,
+  "native_powerpoint_execution_tested": false
+}

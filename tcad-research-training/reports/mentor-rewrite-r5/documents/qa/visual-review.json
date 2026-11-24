@@ -1,0 +1,376 @@
+{
+  "utc": "2026-10-12T02:50:05.430494+00:00",
+  "scope": "authoring-agent actual visual review, not mentor review",
+  "state": "PASS",
+  "pages": [
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-01.png",
+      "png_sha256": "9adf5085b5bd42151ddeb08991210c84eea8785e55571cc15c97273c404060ad",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-02.png",
+      "png_sha256": "43d07656141e038804fa740a9df967e67be0b00e68dab82813efdb9f9a26ce82",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-03.png",
+      "png_sha256": "91305878c4fd7601c91c924a7f310e72578e5a277c33c30412092d1c8fc69f59",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-04.png",
+      "png_sha256": "7c3623462f7911e2d3f517c17f5c1be6a14172e72d3aa98177c1ed8a88e17e38",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-05.png",
+      "png_sha256": "f5b3ff45922a2b188a6b72c1ecb310407d43a239eadb2ef68cb60bc0b2e64cd9",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-06.png",
+      "png_sha256": "3481985f88c0f89df566606197472d60ea1104ab84b27dcedfb5f964b3a5234d",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-07.png",
+      "png_sha256": "1569dff918a8e544ee94a94046b77b294f2a6243c9f35fbbd37024ec6bb27a60",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-08.png",
+      "png_sha256": "e189c73073b98fd90bfd8cfd730636d59cddaf892fc9ef2a85402b6b8d38ad94",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-09.png",
+      "png_sha256": "f1837d4f3659e4799f5cad134f9689e990215924e08c2fd87939e6afa5d7db0a",
+      "actual_visual_review": "PASS",
+      "basis": "r5 page actually viewed after final two wording edits",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-10.png",
+      "png_sha256": "02e86bf88e1e4d9b26b3b7c8994801832e1a3c42941a3bd3186fc0b9472a5b2e",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-11.png",
+      "png_sha256": "cfae0f3aa4f2b0bdaae0d34e269ed7004f391c9d467b124cb1bb30ec72b922ea",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-12.png",
+      "png_sha256": "ccf445867c8e8091a6ee03290b9a67c5f9a1a51ec7ebf80b5cd8e1f28753c8c7",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-13.png",
+      "png_sha256": "09fb62f1bc034006725502a9906442a97089256f748297ec76ab8c29ff59935d",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "course-report.pdf",
+      "pdf_sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "png": "qa/r5/course-report/page-14.png",
+      "png_sha256": "9d7fa696b40d9cf5982e0a0495dad8a7718790ac81ff1806d3d2d5338110f1d1",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-1.png",
+      "png_sha256": "c437dc24bac9a7e43d0be6f58a2cef3ae22116058f730db5be3214ec741a3941",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-2.png",
+      "png_sha256": "c8c5bbab42df8f6ece435f85ee6fc99cdd51741979687e8c77e500e8286310d0",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-3.png",
+      "png_sha256": "056bfdead5602806b3979268c9229f7b9b6de4cea276d2847bccba82649aab88",
+      "actual_visual_review": "PASS",
+      "basis": "r5 page actually viewed after final two wording edits",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-4.png",
+      "png_sha256": "6ac45fcbd1524672cbab971cb77e1157e4ee25f10926ab71b26a4bf43b592c89",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-5.png",
+      "png_sha256": "5de09f3bb4b6676c8d35521282856b9ab6ca1ea329e855bd7059a82414f254e9",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-6.png",
+      "png_sha256": "a4efbce7788b082731597ca038d0cc489bcdd3460678877c5478d29b927615f3",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-7.png",
+      "png_sha256": "96ef9513df058d8202d9f841894ba1d601268f4030e249c7da77f6b44ac8d5d7",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-8.png",
+      "png_sha256": "c2ac0db442c9b4a8fd243540c6e42e98f43f14c28f28837881166b5ac4f4de1d",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "pdf_sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "png": "qa/r5/research-paper/page-9.png",
+      "png_sha256": "753dd6b65bd832e596d07aa56689993839578f6ea9b9fe2dc8f69d8f2659118a",
+      "actual_visual_review": "PASS",
+      "basis": "r4 page actually viewed; r5 pixels SHA256 identical",
+      "checks": [
+        "complete page",
+        "readable Chinese",
+        "no clipping or overlap",
+        "formula and table placement",
+        "figure caption/units",
+        "references when present"
+      ]
+    }
+  ],
+  "root_acceptance": "separate external review"
+}

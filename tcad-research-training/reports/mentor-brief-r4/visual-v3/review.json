@@ -1,0 +1,63 @@
+{
+  "utc": "2026-10-12T02:10:20.148755+00:00",
+  "purpose": "导师阅读的三页项目简报；全文改写并保留原数据图",
+  "skills": [
+    "qu-ai-wei",
+    "avoid-ai-writing-zh",
+    "pdf"
+  ],
+  "editing_mode": "文档制作流程中的全文改写步骤；诊断保存在此记录，导师版只含正文",
+  "problem_list": [
+    {
+      "original": "先预测新尺寸，再用仿真检验",
+      "issue": "口号式标题",
+      "revision": "模型训练与验证"
+    },
+    {
+      "original": "把不同条件下的响应放在一起比较",
+      "issue": "标题长且泛泛",
+      "revision": "仿真结果"
+    },
+    {
+      "original": "项目做了什么 / 仿真得到了什么 / 这次比较了哪些条件",
+      "issue": "提问式导航反复出现",
+      "revision": "项目简报 / 仿真结果 / 参数设置"
+    },
+    {
+      "original": "实际运行并留下可查看的结果 / 仿真侧 / 分析侧",
+      "issue": "用分类标签代替具体汇报",
+      "revision": "合并为已完成工作的两个短段，交代计算、数据整理和AI助手用途"
+    },
+    {
+      "original": "结果已归档 / 已形成交付材料",
+      "issue": "强调交付状态的标签过多",
+      "revision": "使用完整短句说明原始输出及报告材料"
+    },
+    {
+      "original": "图注、开场介绍与误差说明",
+      "issue": "存在报幕式介绍、同义复述和模糊搭配",
+      "revision": "逐段重写；保留颜色、形状、单位、阈值、统计类别和误差定义"
+    }
+  ],
+  "rewritten_version": "project-brief.tex",
+  "changes": "重写全文标题和正文，减小大标题字号，保留三页布局和已有数据图；正文不添加编辑说明。",
+  "second_review": {
+    "reviewer": "downstream_audit",
+    "findings": "修正比较对象、整理电荷的搭配及误差比较对象；均已采纳。",
+    "root_review": "逐句检查，未添加经历、因果解释或科学结论。必要术语和参数保留。"
+  },
+  "visual_qa": {
+    "pages": 3,
+    "files": [
+      "qa/r2/page-1.png",
+      "qa/r2/page-2.png",
+      "qa/r2/page-3.png"
+    ],
+    "checked": "根代理逐页查看最终PNG，文字、希腊字母、单位、图表、页脚均可读，无溢出或遮挡。"
+  },
+  "data_check": "qa/data-preservation.json",
+  "build_commands": "qa/r2/commands.json",
+  "pdf_sha256": "5c20559da2c27b9661a8d250310b85328a132c25261256c079c16a8b2741bd73",
+  "no_simulation_or_retraining": true,
+  "install_receipts": "../../../local_runtime/writing-skills-install/20261012T015922Z/receipts.json"
+}

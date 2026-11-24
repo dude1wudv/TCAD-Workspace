@@ -1,0 +1,307 @@
+{
+  "schema": "dram-see-v3-final-r4-root-pdf-visual-review",
+  "utc": "2026-10-12T00:49:44.248611+00:00",
+  "reviewer": "root",
+  "method": "actual tools.view_image inspection of every rendered page",
+  "render_manifest": "reports/final-r4/qa/pdf-r3/render-manifest.json",
+  "render_manifest_sha256": "3e705a59adc52229c3778c8dc1088701e0ecd9afeb3dfc078fa89279cfe1a810",
+  "documents": [
+    {
+      "pdf": "reports/final-r4/course-report.pdf",
+      "sha256": "a948153e0ead8d92ba8667607f1c606cd9481bbaa31b30b7e803890c298bde4e",
+      "page_count": 21,
+      "pages": [
+        {
+          "page": 1,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-01.png",
+          "sha256": "2711e95cd79b1bd576f1065117a5bedefa084729ecbce81c460dccd9bb8a93c1",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "封面标明未校准模型与真实成员待填写"
+        },
+        {
+          "page": 2,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-02.png",
+          "sha256": "97249d2481cc0e181e5d91ccd4b9270637580db6a6e8c2af8f1aa6246219ce84",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "摘要完整数值与适用边界"
+        },
+        {
+          "page": 3,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-03.png",
+          "sha256": "83872d1f56235f3f397c025b0988a7cb70ebfc0902d51ed936953a3663209ef5",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "目录与页码清楚"
+        },
+        {
+          "page": 4,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-04.png",
+          "sha256": "f800ed67821e5c0e1a82ce1bcfe056c51801aa0c28fdbe80d521b3994a0a2481",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "原理公式与课程事实说明"
+        },
+        {
+          "page": 5,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-05.png",
+          "sha256": "579d77d99ba733f9fba9b75df474f91e708f5a6b2728786e47ae2464f6a8c818",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "模型参数表与单位"
+        },
+        {
+          "page": 6,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-06.png",
+          "sha256": "cc572963197cba2622cab7759dfec6fdb1969191fc437b4670eec710ab1c00cd",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "流程图箭头文字及保持读出时序"
+        },
+        {
+          "page": 7,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-07.png",
+          "sha256": "e97f3fcd94ade36340ad274132aaee9554c30f5bff1674e0051813231793f2fd",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "源转换公式、输运限制与矩阵"
+        },
+        {
+          "page": 8,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-08.png",
+          "sha256": "f59c2aac37e28c563f89694ab4f1fee199a57f80a61d0ca92682eff9f1895939",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "连续目标、三阈值与冻结预测"
+        },
+        {
+          "page": 9,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-09.png",
+          "sha256": "ff138e73671bbf07dcc99ba344204ff591c764ee43529225a5dc8a4a27a05514",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "64/128分母与阶段来源"
+        },
+        {
+          "page": 10,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-10.png",
+          "sha256": "a0be10bb7152b3efbc82a6af4f9a82fffb1cae6a4eb9753b04eafc6b2ec55b1e",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "历史诊断两图及三阈值状态表"
+        },
+        {
+          "page": 11,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-11.png",
+          "sha256": "4b9943ea041b6b8a9f5fa0da55cec0abf9944f68da48f0143e3dcaf4544a2f62",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "连续响应范围及全事件读出图"
+        },
+        {
+          "page": 12,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-12.png",
+          "sha256": "c3ddd0aba42c5b184f5e34dbd09ce55f792b0ec7975a791bbd31077626834e5c",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "外推窗口及训练/独立评分表"
+        },
+        {
+          "page": 13,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-13.png",
+          "sha256": "bb07ef1fd3e34de236600e95019089cd32e86867b041065c3157d87bbfb2230b",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "完整裕量评分表与保留两基准残差"
+        },
+        {
+          "page": 14,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-14.png",
+          "sha256": "564f76d7d6d4f8db6ad9c4c09d9f00bfe0f294e34ca8bbfb70f26fb2b562d0ea",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "氧化层明示微小变化与容差非误差条"
+        },
+        {
+          "page": 15,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-15.png",
+          "sha256": "d22eb3638a0a0427a0188e41f485b813faf08206dba5ea6f1848c4540d282baa",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "边界比较/384状态及完整原生窗口"
+        },
+        {
+          "page": 16,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-16.png",
+          "sha256": "c38da55146dee9f4a50a45b7cd279766033458ea3b6f6cc521d942acf4ae6f13",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "真实alpha窗口、4alias与7历史失败、null和成本"
+        },
+        {
+          "page": 17,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-17.png",
+          "sha256": "5bcbe8e94e4fb94853e97cf21c1cddb0383bb6f5d21ec933cde0cb986bde77dd",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "离散不确定与物理模型限制"
+        },
+        {
+          "page": 18,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-18.png",
+          "sha256": "8b888e1e26be043b4a9223e75de3b4c1a434378154b28140d8f188de8df5ed26",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "结论及人工课程责任"
+        },
+        {
+          "page": 19,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-19.png",
+          "sha256": "2ece97aacfcf45b906354df42f747509b2c13fd950bbdc3bb2e3e4c30dd51866",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "参考文献条目与链接完整"
+        },
+        {
+          "page": 20,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-20.png",
+          "sha256": "f308a12b77e009a5e5091e85bacbc6d4946ae323736823b89fafc4b1d5ccd62c",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "课程材料对照/真实人员待办/只读复现"
+        },
+        {
+          "page": 21,
+          "image": "reports/final-r4/qa/pdf-r3/course-report/page-21.png",
+          "sha256": "d995f0ec8e688ebc26ada70e237e9ab271222f8bf69c263b0e5d219f1edaf26c",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "复现步骤与文件级索引"
+        }
+      ]
+    },
+    {
+      "pdf": "reports/final-r4/research-paper.pdf",
+      "sha256": "4f4955d491f85147da6b2871b981bc7f536d4e00168a022dcc43f79f84fbcda1",
+      "page_count": 14,
+      "pages": [
+        {
+          "page": 1,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-01.png",
+          "sha256": "8a51569f1a413cbb1c2079b4af8424015c3945a640cba04ae6d5006e18075722",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "标题摘要完整结果与模型边界"
+        },
+        {
+          "page": 2,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-02.png",
+          "sha256": "4b8e1bf71da1ebfe820816edd09be96eda3d1e9dc0bcf1869ca10ffe0df91aa5",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "模型参数表与前提"
+        },
+        {
+          "page": 3,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-03.png",
+          "sha256": "1f98924c4467074dea27e03fae9fd921f7b9020c50570ae306c60573d7a03352",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "有限路径/源积分公式与物理限制"
+        },
+        {
+          "page": 4,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-04.png",
+          "sha256": "c044add1d709d5e92fed240ad72aa9c26992a788307b4068a9f2f1e8998acea9",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "流程图、带符号目标及三阈值"
+        },
+        {
+          "page": 5,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-05.png",
+          "sha256": "55dc974a15a251597a97c87571ec667064d8a1ea9fbed683e3f36135b4af8848",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "独立分母与完整主线结果"
+        },
+        {
+          "page": 6,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-06.png",
+          "sha256": "03347f7ca3c324f3177ec3a27ba4213d9ac9800fcc927b2b09a6b13d25d3450a",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "范围表及读出曲线"
+        },
+        {
+          "page": 7,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-07.png",
+          "sha256": "2f35176d5626916a31c15c76330e2ae80a573b702c7412db61172989d1d9cb69",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "外推阈值窗口与训练/独立评分"
+        },
+        {
+          "page": 8,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-08.png",
+          "sha256": "0816ca065ddab054526ad3f00f570cd13c97e2f124de1de276f56c52d0afc647",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "完整裕量评分及残差/氧化层变化表"
+        },
+        {
+          "page": 9,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-09.png",
+          "sha256": "eefbaa5588fb10f3f08c62ec51761edbf7f0d5c973da8a04b4e1d20e055fe5b5",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "氧化层限制与全矩阵边界状态"
+        },
+        {
+          "page": 10,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-10.png",
+          "sha256": "2cbe1addb0abf72f6dac51c2771da3a828858e71da6454ff59a2c4ad86fbe964",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "两完整真实原生窗口及来源图注"
+        },
+        {
+          "page": 11,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-11.png",
+          "sha256": "447a0e7adf73d1adb353168accb954e4df0d13a22ed5e4634685a848c965649b",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "FAILED/null与全成本及预测适用范围"
+        },
+        {
+          "page": 12,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-12.png",
+          "sha256": "1f925c27f96f95b5ce862c330490e8b34a8bb4544424b1ca40cac5137f1a967b",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "结论和文献条目"
+        },
+        {
+          "page": 13,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-13.png",
+          "sha256": "6cc638e24538c4641b65fd9f7f2f2de67a0797e40d792620613af892b8bc6256",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "剩余文献可读"
+        },
+        {
+          "page": 14,
+          "image": "reports/final-r4/qa/pdf-r3/research-paper/page-14.png",
+          "sha256": "5a50a76d48c2cf39326d9991394a60dafbafbc62da4b23ee8bfea3cbaad717e2",
+          "actually_viewed": true,
+          "approved": true,
+          "observation": "外部验收与证据来源索引"
+        }
+      ]
+    }
+  ],
+  "approved": true,
+  "scope": "35 PDF pages; no clipping, missing glyphs or overlap observed; original native window images preserved. Does not assert student activity or physical calibration.",
+  "not_covered": "PPT review pending separately."
+}

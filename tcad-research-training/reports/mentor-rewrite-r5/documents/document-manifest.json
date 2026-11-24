@@ -1,0 +1,115 @@
+{
+  "schema": "dram-see-mentor-rewrite-document-delivery",
+  "utc": "2026-10-12T02:50:42.789453+00:00",
+  "state": "AUTHORING_AND_SELF_REVIEW_COMPLETE",
+  "final_build": "qa/r5",
+  "documents": [
+    {
+      "pdf": "course-report.pdf",
+      "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "pages": 14,
+      "images": {
+        "qa/r5/course-report/page-01.png": "9adf5085b5bd42151ddeb08991210c84eea8785e55571cc15c97273c404060ad",
+        "qa/r5/course-report/page-02.png": "43d07656141e038804fa740a9df967e67be0b00e68dab82813efdb9f9a26ce82",
+        "qa/r5/course-report/page-03.png": "91305878c4fd7601c91c924a7f310e72578e5a277c33c30412092d1c8fc69f59",
+        "qa/r5/course-report/page-04.png": "7c3623462f7911e2d3f517c17f5c1be6a14172e72d3aa98177c1ed8a88e17e38",
+        "qa/r5/course-report/page-05.png": "f5b3ff45922a2b188a6b72c1ecb310407d43a239eadb2ef68cb60bc0b2e64cd9",
+        "qa/r5/course-report/page-06.png": "3481985f88c0f89df566606197472d60ea1104ab84b27dcedfb5f964b3a5234d",
+        "qa/r5/course-report/page-07.png": "1569dff918a8e544ee94a94046b77b294f2a6243c9f35fbbd37024ec6bb27a60",
+        "qa/r5/course-report/page-08.png": "e189c73073b98fd90bfd8cfd730636d59cddaf892fc9ef2a85402b6b8d38ad94",
+        "qa/r5/course-report/page-09.png": "f1837d4f3659e4799f5cad134f9689e990215924e08c2fd87939e6afa5d7db0a",
+        "qa/r5/course-report/page-10.png": "02e86bf88e1e4d9b26b3b7c8994801832e1a3c42941a3bd3186fc0b9472a5b2e",
+        "qa/r5/course-report/page-11.png": "cfae0f3aa4f2b0bdaae0d34e269ed7004f391c9d467b124cb1bb30ec72b922ea",
+        "qa/r5/course-report/page-12.png": "ccf445867c8e8091a6ee03290b9a67c5f9a1a51ec7ebf80b5cd8e1f28753c8c7",
+        "qa/r5/course-report/page-13.png": "09fb62f1bc034006725502a9906442a97089256f748297ec76ab8c29ff59935d",
+        "qa/r5/course-report/page-14.png": "9d7fa696b40d9cf5982e0a0495dad8a7718790ac81ff1806d3d2d5338110f1d1"
+      }
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "pages": 9,
+      "images": {
+        "qa/r5/research-paper/page-1.png": "c437dc24bac9a7e43d0be6f58a2cef3ae22116058f730db5be3214ec741a3941",
+        "qa/r5/research-paper/page-2.png": "c8c5bbab42df8f6ece435f85ee6fc99cdd51741979687e8c77e500e8286310d0",
+        "qa/r5/research-paper/page-3.png": "056bfdead5602806b3979268c9229f7b9b6de4cea276d2847bccba82649aab88",
+        "qa/r5/research-paper/page-4.png": "6ac45fcbd1524672cbab971cb77e1157e4ee25f10926ab71b26a4bf43b592c89",
+        "qa/r5/research-paper/page-5.png": "5de09f3bb4b6676c8d35521282856b9ab6ca1ea329e855bd7059a82414f254e9",
+        "qa/r5/research-paper/page-6.png": "a4efbce7788b082731597ca038d0cc489bcdd3460678877c5478d29b927615f3",
+        "qa/r5/research-paper/page-7.png": "96ef9513df058d8202d9f841894ba1d601268f4030e249c7da77f6b44ac8d5d7",
+        "qa/r5/research-paper/page-8.png": "c2ac0db442c9b4a8fd243540c6e42e98f43f14c28f28837881166b5ac4f4de1d",
+        "qa/r5/research-paper/page-9.png": "753dd6b65bd832e596d07aa56689993839578f6ea9b9fe2dc8f69d8f2659118a"
+      }
+    }
+  ],
+  "source_package_whitelist": [
+    "course-report.tex",
+    "research-paper.tex",
+    "style.tex",
+    "score-table.tex",
+    "构建说明.txt"
+  ],
+  "optional_local_build_helpers": [
+    "prepare_table.py",
+    "build_documents.py"
+  ],
+  "relative_asset_requirement": "Preserve documents/ and sibling assets/; figures/tables/references are read-only inputs.",
+  "qa_evidence": [
+    "rewrite-ledger.md",
+    "qa/editorial-review.md",
+    "qa/verify_documents.py",
+    "qa/verification.json",
+    "qa/visual-review.json",
+    "qa/r5/render-manifest.json",
+    "qa/r5/commands.json",
+    "qa/r5/course-report-pass-1.log",
+    "qa/r5/course-report-pass-2.log",
+    "qa/r5/course-report-pass-3.log",
+    "qa/r5/course-report-pass-4.log",
+    "qa/r5/research-paper-pass-1.log",
+    "qa/r5/research-paper-pass-2.log",
+    "qa/r5/research-paper-pass-3.log",
+    "qa/r5/research-paper-pass-4.log",
+    "qa/r5/course-report-render.log",
+    "qa/r5/research-paper-render.log"
+  ],
+  "file_sha256": {
+    "course-report.pdf": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+    "research-paper.pdf": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+    "course-report.tex": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953",
+    "research-paper.tex": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379",
+    "style.tex": "65968169014d23dcbce2c7b0079f21c8611898a6c62349099ae2ecf7129bb4ac",
+    "score-table.tex": "000662bd4c49c4cc41a25647998ab413801e328792fe0a409c433b92735203d1",
+    "构建说明.txt": "92f093a18cb1a822325f41d27cb2d548728edc44f87b2685f770ea3669643e64",
+    "prepare_table.py": "badd0b7011ab3c726daf938e8d7ac81fb92663036eb5f4344c735f0652bc435f",
+    "build_documents.py": "8e3e7f19b8d50441b044fbf13fe02b7267b7ab82fa298627a65a5fba1d1dabd0",
+    "rewrite-ledger.md": "5e1f9c11662aa0990bda60fb71b08c392a7e01e1d73552fa755429a95b66696e",
+    "qa/editorial-review.md": "2c939329be72e3bcba6af256f999d0306c5dc8355eaadee4fd0e9d0c41380886",
+    "qa/verify_documents.py": "871749891e53b1018f32eff6d7fe0f779f8fa2d07ccdd43deb08d2c9c8229de6",
+    "qa/verification.json": "3b2450ee0f165b94dba746715c09631b6ddff6671e422117df76ba06982edc15",
+    "qa/visual-review.json": "9df79049d33057c2a2b43bfd05ade0405fc6c5cbc9087d9f604feab0e55b9c93",
+    "qa/r5/render-manifest.json": "fb4a5e991c488cc819920b1bd5cf4f3ab7f8e0963929bf48d64d07cfc7fba916",
+    "qa/r5/commands.json": "d0656cd89c781e10bd5ca6b22b43480ca835213798b8e17410a62130ebf78835",
+    "qa/r5/course-report-pass-1.log": "1c07f3482b121d73e28d6dce1393e5caa234525379cdfb2e9ce19ca5995fa08b",
+    "qa/r5/course-report-pass-2.log": "a44ca45ed3b5edd8fb5da535b49117c5a85a5e7bd3a088b9ca301da3feeec3d6",
+    "qa/r5/course-report-pass-3.log": "fed8060becf1b0bc87b165d181dd0cb9949ccb68653d91b290a95cfa7afc224e",
+    "qa/r5/course-report-pass-4.log": "0f7a42f56f37747726bdf8b03b40f9d2715b183204829f1710d2ffc1e119675e",
+    "qa/r5/research-paper-pass-1.log": "e360ed99cccbc5809c22ca12df5adfccdc2a861050dfd6de3c4352322c9a658f",
+    "qa/r5/research-paper-pass-2.log": "ffac1cc597162edd4253981f642fbbee66bd1c43f77cdb97a590be5a5384a1d5",
+    "qa/r5/research-paper-pass-3.log": "ed1a98007576053b228dcc56cc507e51a979fffbdfee6d300db3a88620476431",
+    "qa/r5/research-paper-pass-4.log": "92831da4f760e67e2823b93d8828fe1db6a3134d31f25e807cd82dafb5dacfee",
+    "qa/r5/course-report-render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "qa/r5/research-paper-render.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "input_bindings": "qa/r5/render-manifest.json and qa/verification.json",
+  "actual_commands": {
+    "build_documents_r5_outer_exit_code": 0,
+    "build_subcommands": 10,
+    "all_build_subcommand_exit_codes": 0,
+    "verify_documents_exit_code": 0
+  },
+  "visual_review": "All 23 final page pixel contents actually reviewed. 21 r5 PNG hashes equal viewed r4 pages; two changed r5 pages reviewed again.",
+  "scope": "Document rewrite only; no scientific data/source/model edits or new scientific runs.",
+  "nonfinal_candidates": "qa/r1 through qa/r4 are retained development evidence, excluded from the final-PDF selection.",
+  "remaining": "Parent final review and package integration; no claim of mentor approval or human course activities."
+}

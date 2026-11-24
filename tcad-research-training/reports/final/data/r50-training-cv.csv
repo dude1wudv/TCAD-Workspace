@@ -1,0 +1,5 @@
+﻿model,stored_bit,target,unit,selected_alpha,ridge_cv_rmse,baseline_cv_rmse,training_responses_per_model,folds,scope
+bit0:deltaQ_fC,0,deltaQ_fC,fC,0.1,0.10288832374145279,2.279966994767208,32,8,Mean of training LOCO fold RMSE; not independent holdout or extrapolation test
+bit0:deltaM_mV,0,deltaM_mV,mV,0.1,0.9551599971775688,21.458869934530888,32,8,Mean of training LOCO fold RMSE; not independent holdout or extrapolation test
+bit1:deltaQ_fC,1,deltaQ_fC,fC,0.1,0.11290254660220565,2.5157103067863718,32,8,Mean of training LOCO fold RMSE; not independent holdout or extrapolation test
+bit1:deltaM_mV,1,deltaM_mV,mV,0.1,1.0124908409986038,23.383860923895536,32,8,Mean of training LOCO fold RMSE; not independent holdout or extrapolation test

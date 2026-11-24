@@ -1,0 +1,44 @@
+[
+  {
+    "argv": [
+      "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\qa\\r2",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\project-brief.tex"
+    ],
+    "started_utc": "2026-10-12T02:08:16.125145+00:00",
+    "finished_utc": "2026-10-12T02:08:20.898861+00:00",
+    "actual_exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\qa\\r2\\pass-1.log"
+  },
+  {
+    "argv": [
+      "C:/Program Files/MiKTeX/miktex/bin/x64/xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\qa\\r2",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\project-brief.tex"
+    ],
+    "started_utc": "2026-10-12T02:08:20.898861+00:00",
+    "finished_utc": "2026-10-12T02:08:25.560457+00:00",
+    "actual_exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\qa\\r2\\pass-2.log"
+  },
+  {
+    "argv": [
+      "C:/Users/sun/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/Library/bin/pdftoppm.exe",
+      "-r",
+      "130",
+      "-png",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\qa\\r2\\project-brief.pdf",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-brief-r4\\visual-v3\\qa\\r2\\page"
+    ],
+    "finished_utc": "2026-10-12T02:08:26.118567+00:00",
+    "actual_exit_code": 0
+  }
+]

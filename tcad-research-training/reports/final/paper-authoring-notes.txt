@@ -1,0 +1,26 @@
+中文研究论文成稿说明
+
+文件：research-paper.tex；sections/paper/01-introduction.tex至06-conclusion.tex。
+六节正文为完整阶段研究论述，D1历史诊断与R50主结果分开；没有独立测试或扩展的占位图。
+只在获准论文文件范围写入；未改共享文件、原实验资料、求解程序或控制器。
+正文六节含图题和表中文字约5190汉字，连同摘要及附录约5875汉字；计数为Unicode汉字数量，不是学校计字口径。
+只读静态核对已完成：18个标签无重复、交叉引用均有定义、8个文献键在共享bibliography中可找到、5个PDF图均存在，无TODO/待填占位文字。未启动编译，PDF页数与视觉排版由主代理验收。
+
+共享依赖
+shared-preamble.tex、tables/snapshot.tex、references.bib、figures/workflow.tex。
+tables/progress.tex、tables/training-cv.tex按纯tabular包装为table。
+图：d1-reference-comparison.pdf、r50-precharge.pdf、r50-reference.pdf、r50-training-response.pdf、r50-training-cv.pdf。
+引用键：keeth2001、label1996、chen2011、xu2021、ryder2021、g4em、course、project。
+
+主代理接管时需完成
+1. 已按数据代理反馈核对图题：预充图仅为固定事件R100失败/R50独立probe的BL误差；参考图为12项预击前SN和L=.18三状态BL曲线，不是双支路/离线误差图。请在PDF目视时确认图题与图中标识一致。
+2. 编译并目视检查中文、公式、表宽、图题和浮动体；目标8–12页正文为建议，不作为通过门槛。
+3. 确认snapshot日期宏及当前完成范围；本文不把测试进度写死，也不预填最终误差。
+4. 引用题录由主代理核实。本文未另行检索或更新文献。
+5. 最终测试接入需沿用restart-r3/downstream-notes.md的版本化alias；不要直接执行旧extensions.py/delivery.py。本次文稿整理未执行这些脚本。
+
+口径
+训练CV为八组物理工况的平均fold RMSE，不是独立测试，也不是合并残差RMSE。
+模型是已知真实Geant4源与无粒子基线条件下的TCAD响应代理。
+主分类48正确、10判据误读、4临界、2数值不确定，总64训练响应；不是64独立事件。
+最终评分无“必须优于基准才纳入”规则。未完成独立测试、氧化层和边界检查不能被训练成绩替代。

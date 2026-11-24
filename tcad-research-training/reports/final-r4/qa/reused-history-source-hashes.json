@@ -1,0 +1,25 @@
+{
+  "read_only_historical_sources": {
+    "shared-preamble.tex": "9f97e5b35d60c016dc3679ea533de618341fcae852baea73d8d1882cca8db9fa",
+    "references.bib": "9b07e7c87ae6a51549e9f6f112af0387520a290aef7739ea38cd40e1608463ad",
+    "reference-verification.json": "78f1c54283b96b46204e0123fe9c588ad0ab71f32d231f438b1859cee72ab37a",
+    "reference-metadata.json": "071db43b03615111c2fd3c78b6ee86e12c33d40443e51db818fd7c5a34460522",
+    "figures/workflow.tex": "80f1813c5619f3ff6e229d948030571bf5288669dc17266bf0e57c9a13c9d5c5",
+    "sections/course/01-objectives.tex": "98a23f624d1e06e6af909787fd01e8d213a07d40b767f5082c5f17f84df4d648",
+    "sections/course/02-model.tex": "cb89372b2a0192c8f70116d4c3b435bf9a71b48ba80f76c51445c03698027d25",
+    "sections/course/03-platform.tex": "b975468714fac6f6e71bc56808b0a6fe8e315444c345b5adbaf6678ceb186730",
+    "sections/course/04-design.tex": "e70aa25b3c254d00dad00902762318b585dbdb2e3094dee8fff06bcd9211e4c9",
+    "sections/paper/01-introduction.tex": "32c9b94a5eb817f77be63a9e317839d7806114cea08671792f7a36bcb0d67389",
+    "sections/paper/02-model-transfer.tex": "5d5624034f91fd729a755cc7effd1ec1db619115c18e6a2c21350df8590e71c1",
+    "sections/paper/03-workflow-metrics.tex": "76fca20e5242028de6b760b62354b30f6e75a08b9c745dfd02915bd32834aa76",
+    "figures/d1-reference-comparison.pdf": "b46dc336565bb1bc8b9696238a35b00181d557ad328e4d5067ff5a0cbeb45977",
+    "figures/d1-reference-comparison.png": "384e43e034496d875930484c97358fcd1918afd7d4e322452bf850751b0fe523",
+    "figures/d1-reference-comparison.sources.json": "9b12ac5a296bb37a33b39b26d9f9f1d077bff571667d6a098ecdd5cc6c1f419a",
+    "figures/r50-precharge.pdf": "07f01769eb806ff274f98976057cbe79853775da3f915298589874fc15d1a4ec",
+    "figures/r50-precharge.png": "71ba3701800c5ea47b0b7eb7aaec29bc6f1635779d3d2e35f2d2b58a0c08a213",
+    "figures/r50-precharge.sources.json": "e14590e458ad40771f56d5dda418949751b2f1d3dc1590427ccb7911b47532ba"
+  },
+  "source_root": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final",
+  "copied_utc": "2026-10-12T00:27:34.193869+00:00",
+  "scope": "Methods/literature and clearly labeled historical diagnostic figures only; not final r4 result evidence"
+}

@@ -410,6 +410,30 @@ assert.equal(schedulerFor(state.live.simulation).tasks.length,1);
 assert.equal(document.getElementById('schedule').querySelectorAll('.cpu-cell').length,11);
 """)
 
+    def test_response_supply_shows_case_counts_and_hides_expired_values(self):
+        self.render_headline({}, checks=r"""
+state.live.simulation.response_supply = {
+  state:'fresh', observed_at:new Date().toISOString(), fresh_max_age_seconds:360,
+  condition_count:48, case_count:126, counts:{
+    missing_material:0, awaiting_prerequisites:113, ready:0, enqueued:7, zero_reuse:10
+  }, prerequisites:{p0:109, transport:0, threshold:4}
+};
+render();
+const overview = document.getElementById('overview');
+assert.match(overview.innerHTML, /48 组条件 · 126 例响应/);
+assert.match(overview.innerHTML, /缺材料 <b>0<\/b>/);
+assert.match(overview.innerHTML, /待前置验收 <b>113<\/b>/);
+assert.match(overview.innerHTML, /已就绪 <b>0<\/b>/);
+assert.match(overview.innerHTML, /已入队 <b>7<\/b>/);
+assert.match(overview.innerHTML, /已核对零沉积复用 <b>10<\/b>/);
+assert.match(overview.textContent, /双态零源资格 109 · 阈值前置证据 4/);
+assert.match(overview.textContent, /原运行记录/);
+state.live.simulation.response_supply.observed_at = '2020-01-01T00:00:00Z';
+render();
+assert.match(overview.textContent, /供料登记待更新/);
+assert.doesNotMatch(overview.textContent, /缺材料/);
+""")
+
     def test_r06_headline_uses_complete_plan_instead_of_legacy_core(self):
         result = self.render_headline({
             "revision": "r0.6", "totals": {"planned": 396, "solved": 0, "accepted": 0},

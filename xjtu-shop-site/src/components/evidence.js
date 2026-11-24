@@ -4,190 +4,271 @@ import '@material/web/dialog/dialog.js';
 import '@material/web/button/text-button.js';
 import '@material/web/ripple/ripple.js';
 import '@material/web/focus/md-focus-ring.js';
-
-const icons = {
-  simulation: '<rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 1v5m6-5v5M9 18v5m6-5v5M1 9h5m-5 6h5m12-6h5m-5 6h5M9 12h6m-3-3v6"/>',
-  archive: '<path d="M4 8h16v12H4zM3 4h18v4H3zM9 12h6m-4 4h2"/>',
-  model: '<circle cx="5" cy="12" r="2"/><circle cx="18" cy="5" r="2"/><circle cx="18" cy="19" r="2"/><path d="m7 11 9-5M7 13l9 5m2-11v10"/>',
-  demo: '<rect x="2" y="4" width="20" height="16" rx="3"/><path d="M2 9h20m-13 4 3 2-3 2m6 0h3M6 6.5h.01M9 6.5h.01"/>',
-  arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
-  check: '<path d="m5 12 4 4L19 6"/>',
-  refresh: '<path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1"/>',
-  chevron: '<path d="m8 10 4 4 4-4"/>'
-};
-
-export function icon(name, extra = '') {
-  return `<svg ${extra} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.arrow}</svg>`;
-}
+import { icon } from '../shared/icons.js';
+import { escapeHtml } from '../shared/site-shell.js';
 
 const labels = {
   zh: {
-    eyebrow: 'EXPLORE THE EVIDENCE',
-    title: '让每一步有据可循',
-    intro: '四类研究材料。一条可追溯链路。',
-    hint: '选择卡片探索证据',
-    schematic: '研究结构示意',
-    modes: ['内容概览', '记录要素', '复现条件'],
-    detail: '查看说明',
-    close: '完成',
-    selected: '当前视角',
-    document: '研究材料说明',
-    scope: '公开页面介绍证据组织方式。具体研究结果以对应任务记录与验证条件为准。'
+    eyebrow: 'SCIENTIFIC LEDGER & BOUNDARIES',
+    title: '四级证据账本与科学边界',
+    intro: '工程跑通不等同于科学合格。系统完整保留进程身份链、防泄漏分组、历史失败与待闭合门槛。',
+    hint: '点击卡片查看证据契约',
+    modes: ['核心机制', '账本要素', '开放边界'],
+    detail: '展开完整契约说明',
+    close: '关闭',
+    selected: '切换视角',
+    document: '科学证据与契约说明',
+    scope: '公开页面仅展示脱敏规范与审计摘要；原始 run_id、服务器路径与 58 条封存留出明细保持离线保密。'
   },
   en: {
-    eyebrow: 'EXPLORE THE EVIDENCE',
-    title: 'Follow the evidence',
-    intro: 'Four material types. One traceable chain.',
-    hint: 'Select a card to explore',
-    schematic: 'Research structure illustration',
-    modes: ['Overview', 'Record fields', 'Reproduction'],
-    detail: 'Read the note',
-    close: 'Done',
-    selected: 'Selected view',
-    document: 'About these materials',
-    scope: 'This page describes how evidence is organized. Research findings follow their task records and validation conditions.'
+    eyebrow: 'SCIENTIFIC LEDGER & BOUNDARIES',
+    title: '4-Tier Scientific Ledger & Honest Scope',
+    intro: 'Engineering completion never equals scientific acceptance. Provenance, leak-free splits, failures, and open gates stay transparent.',
+    hint: 'Select a card to inspect contract',
+    modes: ['Mechanism', 'Ledger Fields', 'Open Scope'],
+    detail: 'Read Full Contract',
+    close: 'Close',
+    selected: 'Switch perspective',
+    document: 'Scientific Evidence & Contract Note',
+    scope: 'Only redacted specifications and audited summaries appear publicly; raw run IDs, server paths, and 58 sealed holdout cases remain private.'
   }
 };
 
 const content = {
   zh: [
-    { id: 'simulation', title: '真实仿真', subtitle: '从器件响应回到原始记录', tag: '任务链路',
-      description: ['连接器件条件、仿真设置与原始输出。', '每项结果对应一组输入与验证记录。'],
-      fields: ['器件条件', '输入参数', '原始输出'],
-      reproduction: ['确认输入与求解设置。', '沿原任务链路核对输出与收敛记录。'] },
-    { id: 'archive', title: '历史归档', subtitle: '让旧材料保留完整上下文', tag: '来源与条件',
-      description: ['按来源与形成条件整理历史材料。', '复用时一并查看参数范围和原有结论。'],
-      fields: ['来源版本', '形成条件', '适用范围'],
-      reproduction: ['对齐材料版本与形成条件。', '结合原始说明评估当前问题的适用范围。'] },
-    { id: 'model', title: '模型预测', subtitle: '连接训练数据与适用范围', tag: '版本与评价',
-      description: ['围绕翻转截面与错误率建立预测方法。', '预测结果结合模型版本与独立评价解释。'],
-      fields: ['模型版本', '数据划分', '评价条件'],
-      reproduction: ['固定数据划分与模型版本。', '记录输入范围并开展独立验证与泛化评价。'] },
-    { id: 'demo', title: '接口演示', subtitle: '沿交互流程理解研究链路', tag: '流程示意',
-      description: ['用交互页面呈现研究流程与材料关系。', '演示内容按样例语境解读。'],
-      fields: ['流程步骤', '样例说明', '输入输出关系'],
-      reproduction: ['从样例说明进入对应流程。', '逐步检查输入输出关系与交互反馈。'] }
+    {
+      id: 'ledger',
+      iconName: 'ledger',
+      title: '四级科学验收账本',
+      subtitle: 'COLLECTED ≠ solved ≠ accepted ≠ statistics_eligible',
+      tag: '口径隔离',
+      overview: [
+        '将工程归档（COLLECTED）、求解退出（solved）、科学核验（accepted）与统计资格（statistics_eligible）彻底解耦。',
+        'P0 诊断试跑与 396 正式槽位独立计数，绝不混用分母。'
+      ],
+      fields: ['COLLECTED 归档态', 'solved 终点校验', 'accepted 科学核验', 'statistics_eligible 快照'],
+      boundaries: [
+        'r0.6 正式进度随 /live.json 实时投影；统计资格快照目前为 not_connected（214 为用途上限）。',
+        '历史失败尝试（v2 语法错误、v4 TDR 覆盖、r0.6 早期拒步）永久保留在账本中。'
+      ]
+    },
+    {
+      id: 'shield',
+      iconName: 'shield',
+      title: '进程防伪与输入冻结',
+      subtitle: 'PID + start_ticks + boot_id · SHA256SUMS',
+      tag: '不可伪造链',
+      overview: [
+        '每次提交冻结输入 SHA256SUMS 契约，并绑定内核级 PID + start_ticks + boot_id 身份链防止重启错认。',
+        'intent_reconciliation 仅凭完整回执闭合未启动意图，绝不盲目重投。'
+      ],
+      fields: ['输入 SHA256SUMS', 'PID / start_ticks / boot_id', '唯一串行收集锁', 'r06_gate 门禁'],
+      boundaries: [
+        '虚拟机原厂许可完整性工具曾出现退出 255 异常（短求解可用，完整校验持续跟踪）。',
+        'watchdog 仅作阻塞告警，绝不越权强杀活跃求解进程。'
+      ]
+    },
+    {
+      id: 'model',
+      iconName: 'model',
+      title: '防泄漏划分与留出封存',
+      subtitle: '连通分量分组 · HR/HP 58 例屏蔽',
+      tag: '无偏评价',
+      overview: [
+        'splits.py 按器件、复用初级粒子与对照来源构建连通分量图做 3 折分组 CV，杜绝跨折信息泄漏。',
+        'r0.6 的 58 条 HR/HP 留出案例与封存输运池明细在投影层即被剥离。'
+      ],
+      fields: ['连通分量划分图', 'HR(28)+HP(30) 封存', '零沉积事件保留', 'Horvitz-Thompson 权重'],
+      boundaries: [
+        'R → A → F 网络已通过 172 项离线测试，但正式训练与消融实验等待 r0.6 全量合格标签就位。',
+        '未完成正式训练前不向外宣称宏观截面预测曲线。'
+      ]
+    },
+    {
+      id: 'boundary',
+      iconName: 'boundary',
+      title: '待闭合门槛与实验缺口',
+      subtitle: 'P0 共同门槛 · DDR5 外部对照',
+      tag: '诚实边界',
+      overview: [
+        '明确记录 P0 共同门槛、13 槽满载长时内存峰值统计与外部实测数据缺口，避免外推失真。',
+        '所有已发布指标均附样本量、误差口径与物理适用范围。'
+      ],
+      fields: ['P0 共同门槛收尾', '满载 P95 吞吐统计', '研究台 503 模型占位', 'DDR5 实验缺口 G01–G06'],
+      boundaries: [
+        '受邀研究台 /desk/ 预测接口目前明确返回 503 model_pending 占位。',
+        '课题组 DDR5 原始辐照实验交接（G01–G06）与外部验证仍在推进中。'
+      ]
+    }
   ],
   en: [
-    { id: 'simulation', title: 'Native simulation', subtitle: 'From device response to source records', tag: 'Task chain',
-      description: ['Connect device conditions, simulation settings, and source outputs.', 'Each result follows its inputs and validation records.'],
-      fields: ['Device conditions', 'Input parameters', 'Source outputs'],
-      reproduction: ['Confirm the inputs and solver settings.', 'Trace the outputs and convergence records through the original task chain.'] },
-    { id: 'archive', title: 'Historical archive', subtitle: 'Keep the context with the material', tag: 'Source & context',
-      description: ['Organize historical material by source and original conditions.', 'Review its parameter range and conclusions together.'],
-      fields: ['Source version', 'Original conditions', 'Scope'],
-      reproduction: ['Align the version and original conditions.', 'Use the source notes to assess relevance to the current question.'] },
-    { id: 'model', title: 'Model prediction', subtitle: 'Connect training data and scope', tag: 'Version & evaluation',
-      description: ['Develop prediction methods for cross-sections and error rates.', 'Interpret predictions alongside model versions and independent evaluation.'],
-      fields: ['Model version', 'Data split', 'Evaluation conditions'],
-      reproduction: ['Fix the data split and model version.', 'Record the input range and evaluate independent validation and generalization.'] },
-    { id: 'demo', title: 'Interface demo', subtitle: 'Explore the research workflow', tag: 'Workflow illustration',
-      description: ['Present research steps and material relationships through interaction.', 'Read demonstration content in the context of its sample.'],
-      fields: ['Workflow steps', 'Sample notes', 'Input / output links'],
-      reproduction: ['Start from the sample notes.', 'Follow the input / output relationships and interaction feedback.'] }
+    {
+      id: 'ledger',
+      iconName: 'ledger',
+      title: '4-Tier Acceptance Ledger',
+      subtitle: 'COLLECTED ≠ solved ≠ accepted ≠ statistics_eligible',
+      tag: 'Strict Split',
+      overview: [
+        'Decouples engineering archival (COLLECTED), solver exit (solved), scientific acceptance (accepted), and statistical eligibility.',
+        'P0 diagnostics stay strictly separate from the 396 formal r0.6 denominator.'
+      ],
+      fields: ['COLLECTED archival', 'solved endpoint check', 'accepted sign-off', 'statistics_eligible snapshot'],
+      boundaries: [
+        'Formal r0.6 progress streams live via /live.json; statistics snapshot remains not_connected (214 intent cap).',
+        'Historical failures remain permanently immutable in the ledger.'
+      ]
+    },
+    {
+      id: 'shield',
+      iconName: 'shield',
+      title: 'Process Provenance & Hash',
+      subtitle: 'PID + start_ticks + boot_id · SHA256SUMS',
+      tag: 'Anti-Spoofing',
+      overview: [
+        'Freezes input SHA256SUMS and pins kernel-level PID + start_ticks + boot_id chains across every run.',
+        'Receipt-verified reconciliation closes unlaunched intents without blind resubmission.'
+      ],
+      fields: ['Input SHA256SUMS', 'PID / start_ticks / boot_id', 'Serial collector lock', 'Fail-closed r06_gate'],
+      boundaries: [
+        'Legacy VM license integrity tool previously exited 255 while short solves succeeded.',
+        'Watchdog emits alerts only and never kills running solvers.'
+      ]
+    },
+    {
+      id: 'model',
+      iconName: 'model',
+      title: 'Leak-Free Splits & Holdout',
+      subtitle: 'Connected Components · 58 Sealed Cases',
+      tag: 'Unbiased Eval',
+      overview: [
+        'splits.py clusters shared profiles, primaries, and controls into connected components for 3-fold group CV.',
+        'All 58 HR/HP holdout cases are stripped by the projector before public serialization.'
+      ],
+      fields: ['Component split graph', 'HR(28)+HP(30) sealed', 'Zero-dep retention', 'Horvitz-Thompson weights'],
+      boundaries: [
+        'R → A → F passes 172 offline tests; formal training awaits full r0.6 accepted cohorts.',
+        'No macroscopic cross-section predictions are published prior to formal ablation.'
+      ]
+    },
+    {
+      id: 'boundary',
+      iconName: 'boundary',
+      title: 'Open Gates & Data Gaps',
+      subtitle: 'P0 Closure · External DDR5 Data',
+      tag: 'Honest Scope',
+      overview: [
+        'Tracks remaining P0 prerequisites, sustained 13-slot telemetry, and external irradiation dataset validation.',
+        'Published metrics always state exact sample counts and tolerances.'
+      ],
+      fields: ['P0 gate closeout', 'Sustained P95 telemetry', '/desk/ 503 placeholder', 'DDR5 gaps G01–G06'],
+      boundaries: [
+        'Invited /desk/ prediction endpoints return 503 model_pending until trained weights land.',
+        'External DDR5 experimental dataset handover (G01–G06) remains in progress.'
+      ]
+    }
   ]
 };
 
-let selectedId = 'simulation';
+let selectedId = 'ledger';
 let selectedMode = 0;
-
-function diagram(index) {
-  const drawings = [
-    '<path class="diagram-path" d="M0 42H24L32 41L39 16L46 58L54 32L62 42H120"/><path opacity=".25" d="M0 64h120M0 20h120"/>',
-    '<rect class="diagram-layer layer-one" x="22" y="12" width="70" height="42" rx="6"/><rect class="diagram-layer layer-two" x="15" y="20" width="70" height="42" rx="6"/><rect class="diagram-layer layer-three" x="8" y="28" width="70" height="42" rx="6"/>',
-    '<path class="diagram-path" d="M16 40 57 15 98 40 57 65 16 40M57 15v50M16 40h82"/><g class="diagram-nodes"><circle cx="16" cy="40" r="5"/><circle cx="57" cy="15" r="5"/><circle cx="57" cy="65" r="5"/><circle cx="98" cy="40" r="5"/></g>',
-    '<rect x="14" y="15" width="92" height="52" rx="8"/><path opacity=".4" d="M14 29h92M21 22h3m4 0h3"/><path class="diagram-path" d="m35 40 9 8-9 8m21 0h17"/>'
-  ];
-  return `<svg class="evidence-diagram diagram-${index}" viewBox="0 0 120 80" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">${drawings[index]}</svg>`;
-}
 
 export function mountEvidence(root, lang) {
   const l = labels[lang];
   const items = content[lang];
+
   root.innerHTML = `
-    <div class="evidence-decoration" aria-hidden="true">
-      <span class="evidence-orbit evidence-orbit-one"></span>
-      <span class="evidence-orbit evidence-orbit-two"></span>
-      <span class="evidence-signal evidence-signal-one"></span>
-      <span class="evidence-signal evidence-signal-two"></span>
-    </div>
-    <div class="section-heading evidence-intro">
-      <p class="eyebrow">${l.eyebrow}</p>
-      <h2>${l.title}</h2>
-      <p>${l.intro}</p>
-      <div class="evidence-map" aria-hidden="true">
-        <span class="map-node map-node-source">${icon('simulation')}</span>
-        <span class="map-node map-node-model">${icon('model')}</span>
-        <span class="map-node map-node-archive">${icon('archive')}</span>
-        <span class="map-center">${icon('check')}</span>
-        <svg class="map-connections" viewBox="0 0 260 170"><path d="M48 40 130 86 219 34M130 86l49 60" /></svg>
-        <span class="map-dot map-dot-one"></span><span class="map-dot map-dot-two"></span>
+    <div class="evidence-layout">
+      <div class="evidence-left">
+        <div class="section-head" style="margin-bottom:14px;">
+          <p class="eyebrow">${icon('ledger')} ${escapeHtml(l.eyebrow)}</p>
+          <h2>${escapeHtml(l.title)}</h2>
+          <p class="lead">${escapeHtml(l.intro)}</p>
+        </div>
+        <div class="evidence-chips" role="group" aria-label="${escapeHtml(l.selected)}">
+          ${l.modes.map((label, index) => `
+            <md-filter-chip data-evidence-mode="${index}" label="${escapeHtml(label)}" ${index === selectedMode ? 'selected' : ''}></md-filter-chip>
+          `).join('')}
+        </div>
+        <aside id="evidence-detail" class="evidence-detail" aria-live="polite"></aside>
       </div>
-      <span class="evidence-illustration-label">${l.schematic}</span>
-      <div class="evidence-chips" role="group" aria-label="${l.selected}">
-        ${l.modes.map((label, index) => `<md-filter-chip data-evidence-mode="${index}" label="${label}" ${index === selectedMode ? 'selected' : ''}></md-filter-chip>`).join('')}
+
+      <div class="evidence-card-grid" role="group" aria-label="${escapeHtml(l.hint)}">
+        ${items.map((item, index) => `
+          <md-elevated-card class="evidence-card ${item.id === selectedId ? 'is-selected' : ''}" data-evidence-card="${item.id}">
+            <div class="evidence-card-top">
+              <span class="evidence-icon" aria-hidden="true">${icon(item.iconName)}</span>
+              <span class="evidence-index num" aria-hidden="true">0${index + 1}</span>
+            </div>
+            <div class="evidence-card-copy">
+              <h3>${escapeHtml(item.title)}</h3>
+              <p>${escapeHtml(item.subtitle)}</p>
+            </div>
+            <div class="evidence-card-footer">
+              <span class="evidence-tag">${escapeHtml(item.tag)}</span>
+              <span class="evidence-card-arrow" aria-hidden="true">${icon('arrow')}</span>
+            </div>
+            <button class="evidence-select" type="button" data-evidence-id="${item.id}" aria-pressed="${item.id === selectedId}" aria-controls="evidence-detail" aria-label="${escapeHtml(item.title)}">
+              <md-ripple></md-ripple>
+            </button>
+          </md-elevated-card>
+        `).join('')}
       </div>
     </div>
-    <div class="evidence-card-grid" role="group" aria-label="${l.hint}">
-      ${items.map((item, index) => `
-        <md-elevated-card class="evidence-card evidence-card-${index + 1} ${item.id === selectedId ? 'is-selected' : ''}" data-evidence-card="${item.id}">
-          <span class="evidence-card-glow" aria-hidden="true"></span>
-          <div class="evidence-card-top">
-            <span class="evidence-icon" aria-hidden="true">${icon(item.id)}</span>
-            <span class="evidence-index" aria-hidden="true">0${index + 1}</span>
-          </div>
-          ${diagram(index)}
-          <div class="evidence-card-copy"><h3>${item.title}</h3><p>${item.subtitle}</p></div>
-          <div class="evidence-card-footer">
-            <span class="evidence-tag">${item.tag}</span>
-            <span class="evidence-card-arrow" aria-hidden="true">${icon('arrow')}</span>
-          </div>
-          <button class="evidence-select" data-evidence-id="${item.id}" aria-pressed="${item.id === selectedId}" aria-controls="evidence-detail" aria-label="${item.title} · ${l.detail}">
-            <md-ripple></md-ripple><md-focus-ring inward></md-focus-ring>
-          </button>
-        </md-elevated-card>`).join('')}
-    </div>
-    <aside id="evidence-detail" class="evidence-detail" aria-live="polite"></aside>
-    <md-dialog class="evidence-dialog" aria-label="${l.document}">
+
+    <md-dialog quick class="evidence-dialog" aria-label="${escapeHtml(l.document)}">
       <div slot="headline" id="evidence-dialog-title"></div>
       <div slot="content" id="evidence-dialog-content"></div>
-      <div slot="actions"><md-text-button id="evidence-dialog-close">${l.close}</md-text-button></div>
-    </md-dialog>`;
+      <div slot="actions"><md-text-button id="evidence-dialog-close">${escapeHtml(l.close)}</md-text-button></div>
+    </md-dialog>
+  `;
 
   function updateDetail(animate = true) {
-    const item = items.find(item => item.id === selectedId);
+    const item = items.find(entry => entry.id === selectedId) || items[0];
     const index = items.indexOf(item);
     root.querySelectorAll('[data-evidence-card]').forEach(card => {
-      card.classList.toggle('is-selected', card.dataset.evidenceCard === selectedId);
-      card.querySelector('button').setAttribute('aria-pressed', String(card.dataset.evidenceCard === selectedId));
+      const match = card.dataset.evidenceCard === item.id;
+      card.classList.toggle('is-selected', match);
+      card.querySelector('button').setAttribute('aria-pressed', String(match));
     });
     root.querySelectorAll('[data-evidence-mode]').forEach(chip => {
       chip.selected = Number(chip.dataset.evidenceMode) === selectedMode;
     });
+
     const detail = root.querySelector('#evidence-detail');
-    const body = selectedMode === 1
-      ? `<div class="evidence-field-list">${item.fields.map(field => `<span>${field}</span>`).join('')}</div>`
-      : `<p>${(selectedMode === 2 ? item.reproduction : item.description)[0]}</p>`;
+    let body = '';
+    if (selectedMode === 1) {
+      body = `<div class="evidence-field-list">${item.fields.map(field => `<span>${escapeHtml(field)}</span>`).join('')}</div>`;
+    } else {
+      const lines = selectedMode === 2 ? item.boundaries : item.overview;
+      body = `<ul class="evidence-detail-list">${lines.map(line => `<li>${escapeHtml(line)}</li>`).join('')}</ul>`;
+    }
+
     detail.innerHTML = `
       <div class="evidence-detail-heading">
-        <span class="evidence-detail-number">0${index + 1}</span>
-        <div><p class="evidence-detail-label">${l.modes[selectedMode]}</p><h3>${item.title}</h3></div>
+        <span class="evidence-detail-number num">0${index + 1}</span>
+        <div>
+          <p class="evidence-detail-label">${escapeHtml(l.modes[selectedMode])}</p>
+          <h3>${escapeHtml(item.title)}</h3>
+        </div>
       </div>
       <div class="evidence-detail-body">${body}</div>
-      <md-text-button class="evidence-detail-button">${l.detail}<span slot="icon">${icon('arrow')}</span></md-text-button>`;
-    detail.dataset.accent = item.id;
+      <md-text-button class="evidence-detail-button">${escapeHtml(l.detail)}<span slot="icon">${icon('arrow')}</span></md-text-button>
+    `;
+
     if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      detail.animate([{ opacity: .35, transform: 'translateY(5px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 240, easing: 'ease-out' });
+      detail.animate([{ opacity: 0.4, transform: 'translateY(4px)' }, { opacity: 1, transform: 'translateY(0)' }], { duration: 220, easing: 'ease-out' });
     }
+
     detail.querySelector('md-text-button').addEventListener('click', () => {
       root.querySelector('#evidence-dialog-title').textContent = item.title;
       root.querySelector('#evidence-dialog-content').innerHTML = `
-        <p class="dialog-lead">${item.description.join(' ')}</p>
-        <h3>${l.modes[1]}</h3>
-        <div class="evidence-field-list">${item.fields.map(field => `<span>${field}</span>`).join('')}</div>
-        <h3>${l.modes[2]}</h3>
-        <p>${item.reproduction.join(' ')}</p>
-        <p class="dialog-scope">${l.scope}</p>`;
+        <p class="dialog-lead">${escapeHtml(item.overview.join(' '))}</p>
+        <h4>${escapeHtml(l.modes[1])}</h4>
+        <div class="evidence-field-list">${item.fields.map(field => `<span>${escapeHtml(field)}</span>`).join('')}</div>
+        <h4>${escapeHtml(l.modes[2])}</h4>
+        <ul class="evidence-detail-list">${item.boundaries.map(b => `<li>${escapeHtml(b)}</li>`).join('')}</ul>
+        <p class="dialog-scope">${escapeHtml(l.scope)}</p>
+      `;
       root.querySelector('md-dialog').show();
     });
   }
@@ -198,12 +279,14 @@ export function mountEvidence(root, lang) {
       updateDetail();
     });
   });
+
   root.querySelectorAll('[data-evidence-mode]').forEach(chip => {
     chip.addEventListener('click', () => {
       selectedMode = Number(chip.dataset.evidenceMode);
       updateDetail();
     });
   });
+
   root.querySelector('#evidence-dialog-close').addEventListener('click', () => root.querySelector('md-dialog').close());
   updateDetail(false);
 }

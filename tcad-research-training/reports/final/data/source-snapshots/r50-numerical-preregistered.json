@@ -1,0 +1,616 @@
+{
+  "schema": "dram-see-v3-r50-main-numerical-validation",
+  "physical_revision": "r50-main-r1",
+  "state": "VERIFIED",
+  "continuous_passed": true,
+  "classification_stable": true,
+  "comparisons": [
+    {
+      "response_id": "v3-r50-main-l018-alpha-a30-s202610311-b1",
+      "event": {
+        "label": "l018-alpha-a30-s202610311",
+        "condition_id": 1,
+        "replicate": 1,
+        "seed": 202610311,
+        "gate_length_um": 0.18,
+        "particle": "alpha",
+        "energy_MeV": 5.0,
+        "angle_deg": 30,
+        "event_count": 1,
+        "paired_bits": [
+          0,
+          1
+        ],
+        "surface_impact_um": [
+          0.63,
+          0,
+          0
+        ],
+        "launch_position_um": [
+          0.6305773502691896,
+          -0.001,
+          0
+        ],
+        "direction": [
+          -0.49999999999999994,
+          0.8660254037844387,
+          0
+        ],
+        "split": "train",
+        "pilot": true
+      },
+      "stored_bit": 1,
+      "variation": {
+        "step": 0.5,
+        "mesh": 1.0
+      },
+      "continuous_passed": true,
+      "classification_stable": true,
+      "differences_V": {
+        "signal_BL4_V": -2.5791633609051345e-05,
+        "control_BL4_V": 1.6447398998309382e-10,
+        "neutral_BL4_V": 1.6631296340108292e-10,
+        "D4_V": -2.5791799922014746e-05,
+        "M4_V": -2.5791799922014746e-05,
+        "control_D4_V": -1.8389734179891093e-12,
+        "control_M4_V": -1.8389734179891093e-12,
+        "deltaM_V": 2.579179808304133e-05
+      },
+      "deltaQ_difference_fC": -0.002756373464640305,
+      "tolerances": {
+        "readout_V": 0.0005,
+        "deltaQ_fC": 0.01
+      },
+      "classification_comparison": {
+        "0.0025": {
+          "stable": true,
+          "roles": {
+            "signal": {
+              "baseline": "criterion_logic_flip",
+              "refined": "criterion_logic_flip"
+            },
+            "control": {
+              "baseline": "correct",
+              "refined": "correct"
+            }
+          }
+        },
+        "0.005": {
+          "stable": true,
+          "roles": {
+            "signal": {
+              "baseline": "criterion_logic_flip",
+              "refined": "criterion_logic_flip"
+            },
+            "control": {
+              "baseline": "correct",
+              "refined": "correct"
+            }
+          }
+        },
+        "0.01": {
+          "stable": true,
+          "roles": {
+            "signal": {
+              "baseline": "critical",
+              "refined": "critical"
+            },
+            "control": {
+              "baseline": "correct",
+              "refined": "correct"
+            }
+          }
+        }
+      },
+      "numerically_uncertain_thresholds_V": [],
+      "baseline_sources": {
+        "signal": {
+          "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+          "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+        },
+        "control": {
+          "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+          "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+        },
+        "neutral": {
+          "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+          "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+        }
+      },
+      "refined_sources": {
+        "signal": {
+          "run_id": "20261010T220136Z-v3-r50-main-num-l018-alpha-a30-s202610311-b1-s0p5-m1-cf1aa99b",
+          "archive_sha256": "130413d440a0549f8676b3b69e2038f9da3440836766f68478c44a127264b746",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495"
+        },
+        "control": {
+          "run_id": "20261010T214143Z-v3-r50-main-control-l018-b1-ox5-s0p5-m1-6adfbbf7",
+          "archive_sha256": "535e62a919bdb8bf2980b7497d51764b23bc4744abfc72654ddcc7efa1aa29f7",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495"
+        },
+        "neutral": {
+          "run_id": "20261010T215136Z-v3-r50-main-neutral-l018-ox5-s0p5-m1-60fd5e1b",
+          "archive_sha256": "eaf53e144d67d87f0154ba6584c588666dab3113276386765cad2875b282ffa5",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495"
+        }
+      },
+      "baseline_metrics": {
+        "schema": "dram-see-v3-r50-main-matched-metrics",
+        "physical_revision": "r50-main-r1",
+        "stored_bit": 1,
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb",
+        "sources": {
+          "signal": {
+            "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+            "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+          },
+          "control": {
+            "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+            "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+          },
+          "neutral": {
+            "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+            "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+          }
+        },
+        "deltaQ_fC": -4.63079643327683,
+        "D4_V": -0.005900448178831952,
+        "M4_V": -0.005900448178831952,
+        "control_D4_V": 0.03733682039716102,
+        "control_M4_V": 0.03733682039716102,
+        "deltaM_V": 0.04323726857599297,
+        "classification": {
+          "0.0025": "criterion_logic_flip",
+          "0.005": "criterion_logic_flip",
+          "0.01": "critical"
+        },
+        "control_classification": {
+          "0.0025": "correct",
+          "0.005": "correct",
+          "0.01": "correct"
+        },
+        "read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": -0.005900448178832951,
+          "end_margin_V": -0.005900448178831952,
+          "endpoint_change_V": 9.992007221626409e-16,
+          "min_margin_V": -0.005900448178832951,
+          "max_margin_V": -0.005900448178831064,
+          "range_V": 1.887379141862766e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "control_read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": 0.03733682039717101,
+          "end_margin_V": 0.03733682039716102,
+          "endpoint_change_V": -9.992007221626409e-15,
+          "min_margin_V": 0.03733682039716102,
+          "max_margin_V": 0.03733682039717101,
+          "range_V": 9.992007221626409e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity",
+        "interpolation": "piecewise linear on original samples; union of breakpoints for 3.8–4 ns extrema; no extrapolation",
+        "definitions": {
+          "deltaQ_fC": "Cstore*(SNsignal(2.8ns)-SNcontrol(2.8ns))*1e15",
+          "D4_V": "BLsignal(4ns)-BLneutral(4ns)",
+          "M4_V": "(2*original_bit-1)*D4",
+          "deltaM_V": "Mcontrol-Msignal"
+        },
+        "scope": "Criterion readout margin of uncalibrated model; no fixed common-mode subtraction"
+      },
+      "refined_metrics": {
+        "schema": "dram-see-v3-r50-main-matched-metrics",
+        "physical_revision": "r50-main-r1",
+        "stored_bit": 1,
+        "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495",
+        "sources": {
+          "signal": {
+            "run_id": "20261010T220136Z-v3-r50-main-num-l018-alpha-a30-s202610311-b1-s0p5-m1-cf1aa99b",
+            "archive_sha256": "130413d440a0549f8676b3b69e2038f9da3440836766f68478c44a127264b746",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495"
+          },
+          "control": {
+            "run_id": "20261010T214143Z-v3-r50-main-control-l018-b1-ox5-s0p5-m1-6adfbbf7",
+            "archive_sha256": "535e62a919bdb8bf2980b7497d51764b23bc4744abfc72654ddcc7efa1aa29f7",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495"
+          },
+          "neutral": {
+            "run_id": "20261010T215136Z-v3-r50-main-neutral-l018-ox5-s0p5-m1-60fd5e1b",
+            "archive_sha256": "eaf53e144d67d87f0154ba6584c588666dab3113276386765cad2875b282ffa5",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "238fa0f0c86a5d8b17d0ff5531aa93d80202aabe0a5b39b99066c8bb77bea495"
+          }
+        },
+        "deltaQ_fC": -4.63355280674147,
+        "D4_V": -0.005926239978753967,
+        "M4_V": -0.005926239978753967,
+        "control_D4_V": 0.037336820395322046,
+        "control_M4_V": 0.037336820395322046,
+        "deltaM_V": 0.04326306037407601,
+        "classification": {
+          "0.0025": "criterion_logic_flip",
+          "0.005": "criterion_logic_flip",
+          "0.01": "critical"
+        },
+        "control_classification": {
+          "0.0025": "correct",
+          "0.005": "correct",
+          "0.01": "correct"
+        },
+        "read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": -0.005926239978753967,
+          "end_margin_V": -0.005926239978753967,
+          "endpoint_change_V": 0.0,
+          "min_margin_V": -0.005926239978754966,
+          "max_margin_V": -0.0059262399787538556,
+          "range_V": 1.1102230246251565e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "control_read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": 0.037336820395332926,
+          "end_margin_V": 0.037336820395322046,
+          "endpoint_change_V": -1.0880185641326534e-14,
+          "min_margin_V": 0.037336820395321935,
+          "max_margin_V": 0.037336820395332926,
+          "range_V": 1.099120794378905e-14,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity",
+        "interpolation": "piecewise linear on original samples; union of breakpoints for 3.8–4 ns extrema; no extrapolation",
+        "definitions": {
+          "deltaQ_fC": "Cstore*(SNsignal(2.8ns)-SNcontrol(2.8ns))*1e15",
+          "D4_V": "BLsignal(4ns)-BLneutral(4ns)",
+          "M4_V": "(2*original_bit-1)*D4",
+          "deltaM_V": "Mcontrol-Msignal"
+        },
+        "scope": "Criterion readout margin of uncalibrated model; no fixed common-mode subtraction"
+      },
+      "rule": "Continuous tolerance failure blocks expansion; classification crossing remains numerical uncertainty"
+    },
+    {
+      "response_id": "v3-r50-main-l018-alpha-a30-s202610311-b1",
+      "event": {
+        "label": "l018-alpha-a30-s202610311",
+        "condition_id": 1,
+        "replicate": 1,
+        "seed": 202610311,
+        "gate_length_um": 0.18,
+        "particle": "alpha",
+        "energy_MeV": 5.0,
+        "angle_deg": 30,
+        "event_count": 1,
+        "paired_bits": [
+          0,
+          1
+        ],
+        "surface_impact_um": [
+          0.63,
+          0,
+          0
+        ],
+        "launch_position_um": [
+          0.6305773502691896,
+          -0.001,
+          0
+        ],
+        "direction": [
+          -0.49999999999999994,
+          0.8660254037844387,
+          0
+        ],
+        "split": "train",
+        "pilot": true
+      },
+      "stored_bit": 1,
+      "variation": {
+        "step": 1.0,
+        "mesh": 0.7
+      },
+      "continuous_passed": true,
+      "classification_stable": true,
+      "differences_V": {
+        "signal_BL4_V": -4.970253331015861e-06,
+        "control_BL4_V": -5.088394510965877e-06,
+        "neutral_BL4_V": -4.936169379021749e-06,
+        "D4_V": -3.408395199411274e-08,
+        "M4_V": -3.408395199411274e-08,
+        "control_D4_V": -1.5222513194412812e-07,
+        "control_M4_V": -1.5222513194412812e-07,
+        "deltaM_V": -1.1814117995001538e-07
+      },
+      "deltaQ_difference_fC": -5.793571440371181e-06,
+      "tolerances": {
+        "readout_V": 0.0005,
+        "deltaQ_fC": 0.01
+      },
+      "classification_comparison": {
+        "0.0025": {
+          "stable": true,
+          "roles": {
+            "signal": {
+              "baseline": "criterion_logic_flip",
+              "refined": "criterion_logic_flip"
+            },
+            "control": {
+              "baseline": "correct",
+              "refined": "correct"
+            }
+          }
+        },
+        "0.005": {
+          "stable": true,
+          "roles": {
+            "signal": {
+              "baseline": "criterion_logic_flip",
+              "refined": "criterion_logic_flip"
+            },
+            "control": {
+              "baseline": "correct",
+              "refined": "correct"
+            }
+          }
+        },
+        "0.01": {
+          "stable": true,
+          "roles": {
+            "signal": {
+              "baseline": "critical",
+              "refined": "critical"
+            },
+            "control": {
+              "baseline": "correct",
+              "refined": "correct"
+            }
+          }
+        }
+      },
+      "numerically_uncertain_thresholds_V": [],
+      "baseline_sources": {
+        "signal": {
+          "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+          "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+        },
+        "control": {
+          "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+          "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+        },
+        "neutral": {
+          "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+          "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+          "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+        }
+      },
+      "refined_sources": {
+        "signal": {
+          "run_id": "20261010T222442Z-v3-r50-main-num-l018-alpha-a30-s202610311-b1-s1-m0p7-8b4ff242",
+          "archive_sha256": "4e3db855e46eb5be7fb002d36b89cb2f33842d415472e7d9549218ce07a6010a",
+          "mesh_sha256": "ba169358243a8c1c0407efc8ca58f1545b137624d0c8ec2324bf88d9d5678f48",
+          "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770"
+        },
+        "control": {
+          "run_id": "20261010T221329Z-v3-r50-main-control-l018-b1-ox5-s1-m0p7-4a577822",
+          "archive_sha256": "c66de210ab09f24b4cb24b7594e5b273ad7a281b76160c4fc544f37162e1f425",
+          "mesh_sha256": "ba169358243a8c1c0407efc8ca58f1545b137624d0c8ec2324bf88d9d5678f48",
+          "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770"
+        },
+        "neutral": {
+          "run_id": "20261010T221907Z-v3-r50-main-neutral-l018-ox5-s1-m0p7-d3647b28",
+          "archive_sha256": "c028e06543a8bdfd3a6e5bd4c995f28bbff1aae762494144bbaeb0c201834359",
+          "mesh_sha256": "ba169358243a8c1c0407efc8ca58f1545b137624d0c8ec2324bf88d9d5678f48",
+          "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770"
+        }
+      },
+      "baseline_metrics": {
+        "schema": "dram-see-v3-r50-main-matched-metrics",
+        "physical_revision": "r50-main-r1",
+        "stored_bit": 1,
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb",
+        "sources": {
+          "signal": {
+            "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+            "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+          },
+          "control": {
+            "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+            "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+          },
+          "neutral": {
+            "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+            "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+            "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+            "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+          }
+        },
+        "deltaQ_fC": -4.63079643327683,
+        "D4_V": -0.005900448178831952,
+        "M4_V": -0.005900448178831952,
+        "control_D4_V": 0.03733682039716102,
+        "control_M4_V": 0.03733682039716102,
+        "deltaM_V": 0.04323726857599297,
+        "classification": {
+          "0.0025": "criterion_logic_flip",
+          "0.005": "criterion_logic_flip",
+          "0.01": "critical"
+        },
+        "control_classification": {
+          "0.0025": "correct",
+          "0.005": "correct",
+          "0.01": "correct"
+        },
+        "read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": -0.005900448178832951,
+          "end_margin_V": -0.005900448178831952,
+          "endpoint_change_V": 9.992007221626409e-16,
+          "min_margin_V": -0.005900448178832951,
+          "max_margin_V": -0.005900448178831064,
+          "range_V": 1.887379141862766e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "control_read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": 0.03733682039717101,
+          "end_margin_V": 0.03733682039716102,
+          "endpoint_change_V": -9.992007221626409e-15,
+          "min_margin_V": 0.03733682039716102,
+          "max_margin_V": 0.03733682039717101,
+          "range_V": 9.992007221626409e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity",
+        "interpolation": "piecewise linear on original samples; union of breakpoints for 3.8–4 ns extrema; no extrapolation",
+        "definitions": {
+          "deltaQ_fC": "Cstore*(SNsignal(2.8ns)-SNcontrol(2.8ns))*1e15",
+          "D4_V": "BLsignal(4ns)-BLneutral(4ns)",
+          "M4_V": "(2*original_bit-1)*D4",
+          "deltaM_V": "Mcontrol-Msignal"
+        },
+        "scope": "Criterion readout margin of uncalibrated model; no fixed common-mode subtraction"
+      },
+      "refined_metrics": {
+        "schema": "dram-see-v3-r50-main-matched-metrics",
+        "physical_revision": "r50-main-r1",
+        "stored_bit": 1,
+        "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770",
+        "sources": {
+          "signal": {
+            "run_id": "20261010T222442Z-v3-r50-main-num-l018-alpha-a30-s202610311-b1-s1-m0p7-8b4ff242",
+            "archive_sha256": "4e3db855e46eb5be7fb002d36b89cb2f33842d415472e7d9549218ce07a6010a",
+            "mesh_sha256": "ba169358243a8c1c0407efc8ca58f1545b137624d0c8ec2324bf88d9d5678f48",
+            "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770"
+          },
+          "control": {
+            "run_id": "20261010T221329Z-v3-r50-main-control-l018-b1-ox5-s1-m0p7-4a577822",
+            "archive_sha256": "c66de210ab09f24b4cb24b7594e5b273ad7a281b76160c4fc544f37162e1f425",
+            "mesh_sha256": "ba169358243a8c1c0407efc8ca58f1545b137624d0c8ec2324bf88d9d5678f48",
+            "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770"
+          },
+          "neutral": {
+            "run_id": "20261010T221907Z-v3-r50-main-neutral-l018-ox5-s1-m0p7-d3647b28",
+            "archive_sha256": "c028e06543a8bdfd3a6e5bd4c995f28bbff1aae762494144bbaeb0c201834359",
+            "mesh_sha256": "ba169358243a8c1c0407efc8ca58f1545b137624d0c8ec2324bf88d9d5678f48",
+            "matching_contract_sha256": "1f27022c41006e2dfd3b0d7b496aa085793e64236a18e8a149a34e1048256770"
+          }
+        },
+        "deltaQ_fC": -4.63080222684827,
+        "D4_V": -0.005900482262783946,
+        "M4_V": -0.005900482262783946,
+        "control_D4_V": 0.037336668172029075,
+        "control_M4_V": 0.037336668172029075,
+        "deltaM_V": 0.04323715043481302,
+        "classification": {
+          "0.0025": "criterion_logic_flip",
+          "0.005": "criterion_logic_flip",
+          "0.01": "critical"
+        },
+        "control_classification": {
+          "0.0025": "correct",
+          "0.005": "correct",
+          "0.01": "correct"
+        },
+        "read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": -0.005900482262785833,
+          "end_margin_V": -0.005900482262783946,
+          "endpoint_change_V": 1.887379141862766e-15,
+          "min_margin_V": -0.005900482262785833,
+          "max_margin_V": -0.005900482262783946,
+          "range_V": 1.887379141862766e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "control_read_window": {
+          "start_s": 3.8e-09,
+          "end_s": 4e-09,
+          "start_margin_V": 0.037336668172038956,
+          "end_margin_V": 0.037336668172029075,
+          "endpoint_change_V": -9.880984919163893e-15,
+          "min_margin_V": 0.037336668172029075,
+          "max_margin_V": 0.037336668172038956,
+          "range_V": 9.880984919163893e-15,
+          "classification_stability": {
+            "0.0025": true,
+            "0.005": true,
+            "0.01": true
+          }
+        },
+        "validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity",
+        "interpolation": "piecewise linear on original samples; union of breakpoints for 3.8–4 ns extrema; no extrapolation",
+        "definitions": {
+          "deltaQ_fC": "Cstore*(SNsignal(2.8ns)-SNcontrol(2.8ns))*1e15",
+          "D4_V": "BLsignal(4ns)-BLneutral(4ns)",
+          "M4_V": "(2*original_bit-1)*D4",
+          "deltaM_V": "Mcontrol-Msignal"
+        },
+        "scope": "Criterion readout margin of uncalibrated model; no fixed common-mode subtraction"
+      },
+      "rule": "Continuous tolerance failure blocks expansion; classification crossing remains numerical uncertainty"
+    }
+  ],
+  "plan_sha256": "3a10fc7df24d0dfd94353aed79e429059f93ccdf0cee45905bcf0af9ec9c45fb",
+  "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+  "new_independent_events": 0
+}

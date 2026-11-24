@@ -1,0 +1,1063 @@
+{
+  "schema": "dram-see-v3-r50-main-prediction-provenance",
+  "physical_revision": "r50-main-r1",
+  "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+  "followup_plan_sha256": "31a1429197043eb23ef80876fe940e59c97094b1372731cf1bb05e49a6e77177",
+  "first_plan_sha256": "a114556a58798435500889a07812734ee7d2ada302cef09d72d5b8a0f30992b7",
+  "source_sha256": {
+    "experiments/dram-see-v3/r50-main/controller.py": "5e482e6be5fa6a9ac9fd3c922aefc618645e4ef50b8386b6e2c96cc3885c2796",
+    "experiments/dram-see-v3/r50-main/build_case.py": "895c42cd10567396cb751c4b01c0f5e41ff22a9bf70e8bfb3379d20c6c163ae6",
+    "experiments/dram-see-v3/r50-main/audit.py": "acf560c69d7ae849cd6ccc7d136da286f12e32ec94b1e886aa114430b8332bc7",
+    "experiments/dram-see-v3/r50-main/metrics.py": "911daf34a0238ab14f3d3949d2b647a3a2d8dbb976ef9a28f34ff19896764187",
+    "experiments/dram-see-v3/r50-main/numerical.py": "63380f57a9de86fc5cdf99e33d0cd4588c6930a4586355abc59f655dd9001bfd",
+    "experiments/dram-see-v3/r50-main/build_case.py.diff": "e55eaa2cb986a91a75007827ecc4946b4ac2ba5bce73aa6e9efe1feead08ed8a",
+    "experiments/dram-see-v3/r50-main/audit.py.diff": "8e1aefa4e8113d862d54dbe2fd945b6ccbedf6b65403f9e477f10f0304af1a66",
+    "experiments/dram-see-v3/r50-main/metrics.py.diff": "ce2f67ab432aa2f893c1278bbc4391ab79584a3f0b284ac1a18de570dfa26eb7",
+    "experiments/dram-see-v3/r50-main/numerical.py.diff": "1c9819a2d3289436c832a63beb994eb11cf7b96ec2882ce7218ba824171cc987",
+    "experiments/dram-see-v3/r50-main/derivation.json": "bd0f469e3d5d4851cf668afe905eb37239746001c6d9927124deb326a81fc9e4",
+    "experiments/dram-see-v3/r50-main/plan.md": "c2f08d68394b669b0ab7edb6727523743cd00a93647e132756421d40a8d9db67",
+    "experiments/dram-see-v3/r50-main/design.json": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+    "experiments/dram-see-v3/r50-main/design.sha256": "046c17c983280f857f9ff740917aad614da0e2746c988f7154f6f04660a44607",
+    "experiments/dram-see-v3/common.py": "a34c708bf4bc74da5d41c06d9778623eea9c9d3d4c573a2cfa66f0b848f01d50",
+    "experiments/dram-see-v3/run.py": "865829bc951090dec379bd901db39f1d703e47485fe74d133c40f1c1f66bf9ca",
+    "experiments/dram-see-v3/build_case.py": "d4f963ad0936d0bbf94ce0126b669bcfa9d0e0105377df8658affebf8bba0dab",
+    "experiments/dram-see-v3/audit.py": "f76ae7afb300dd77ba55e1c46486e911b82640ff302d4b7ee3bb89b59e05b229",
+    "experiments/dram-see-v3/metrics.py": "a0de9c2521d7403d7c850efb24f0548e73a9451997c42a53f91185c90ca8cb8c",
+    "experiments/dram-see-v3/numerical.py": "91ac28d33904ab17f33d9ef0135e104fcde950ebb1b1fb1e874e1389edb1e481",
+    "experiments/dram-see-v3/event_audit.py": "1690452c509dd555c03aab1f924614e906ec393a3f90a341e927d8e3a2e0b55a",
+    "experiments/dram-see-v3/stats-design.json": "7852bb1b6a3e9173784e28fc5ae0244d81638b7ec1a39cb6f5cf92cf0a9f84e1",
+    "experiments/dram-see-v3/precharge-r50/audit.py": "3e6398ddef3f1d379ba3a45782369cf9754344b646652b4102aad744c6a63708",
+    "experiments/dram-see-v3/precharge-r50/build_case.py": "6b99ee637d07b29d14bc0ee566b13f5cb99694ad6207b75df4d3552d2122dfef",
+    "experiments/dram-see-v1/build_case.py": "7a22e53bc939b236b0b612f42e382b952c362042b28e187414e481e77b9916bd",
+    "experiments/dram-see-v1/analyze.py": "6b0df38bb4db9ff3a77bfaee1ead5ef3b794bf93999411bf016cc45ae526cabf",
+    "experiments/dram-see-v2/build_case.py": "861ddb0188dc5a4f70846b66da7302647dd92fbbad15c42a5087f29f6b3ed46b",
+    "experiments/dram-see-v2/event_audit.py": "4e77890e2adc621b92494e45a545e2fec9bdada38a651a4e75ebedd868be3b02",
+    "experiments/dram-readout-offset-d1/build.py": "ea93df2861321a2ea1870084210c8bed5e858dd5b0f2857e35905cd8f3d6272b",
+    "scripts/tcad.py": "8a08d895d788f053da8d07cc29dd7c745ede9b5f3b29b757ad012ca79f7779d5",
+    "experiments/dram-see-v3/r50-main/source-manifest.json": "21456da4b28881ae21ad586c683a30aed9395e3c2be85e6c22a8f771349410d2",
+    "experiments/dram-see-v3/r50-main/finish.py": "cc975198036381583dffd37fe962a9888f3c2d859fb87ad5b7bdab4c94a0d435",
+    "experiments/dram-see-v3/r50-main/prediction.py": "d6d580d402ff8cb784ecdde454dd8d6218c175a6c669edab2ebd71fc9198dd51",
+    "experiments/dram-see-v3/r50-main/prediction.py.diff": "ed176097dfa2423e5f3535d6b4e273719266c24959d4214173d324136e1daae6",
+    "experiments/dram-see-v3/r50-main/transport_adapter.py": "d9af134f9a6ffa97aec5ee9e3bf6169125d26df3e00c5d414e5445de3945d8d2",
+    "experiments/dram-see-v3/r50-main/transport_adapter.py.diff": "cdece912888807b45cdee063ec5998267374509c7b95e7f6360a904f85eaae03",
+    "experiments/dram-see-v3/r50-main/followup-derivation.json": "305618f5ec8432554f81c667f3d5a71402de6a1a1246959b8cf736bec03dd7a6",
+    "experiments/dram-see-v3/prediction.py": "6ad5d360c7196b95d15319babeac1946cf9ca35d13c3fd35fd197b3bb07349d7",
+    "experiments/dram-see-v3/transport.py": "d7b0fa3fe12717d06e0a7e2da269e5e100148a188f0d0f244714c386f6d623fd",
+    "experiments/dram-see-v1/geant4_transport.cc": "8f3ec870dad0905be7516bf657ed033d8cf5c5ade7cef938a941622b2f483ce2",
+    "experiments/dram-see-v3/r50-main/followup-source-manifest.json": "88e7108af3a28d26c1ab7459bd07b214dcfceaeb27a8752171c6a4f39c4cf80c"
+  },
+  "gates": {
+    "references": {
+      "schema": "dram-see-v3-r50-main-stage",
+      "physical_revision": "r50-main-r1",
+      "stage": "references",
+      "state": "VERIFIED",
+      "plan_sha256": "3a10fc7df24d0dfd94353aed79e429059f93ccdf0cee45905bcf0af9ec9c45fb",
+      "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+      "cases": {
+        "v3-r50-main-control-l018-b0-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+          "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05"
+        },
+        "v3-r50-main-control-l018-b1-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+          "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e"
+        },
+        "v3-r50-main-neutral-l018-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+          "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2"
+        },
+        "v3-r50-main-control-l025-b0-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T174807Z-v3-r50-main-control-l025-b0-ox5-s1-m1-7f3f9f57",
+          "archive_sha256": "432aaa8bd822210d739ef36722d03c813d8af15c9f93a4985eeb64b7eeda11a7"
+        },
+        "v3-r50-main-control-l025-b1-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T175452Z-v3-r50-main-control-l025-b1-ox5-s1-m1-c40fa66d",
+          "archive_sha256": "c9b3c1f3dcb2abfc5d211814bb46835a8187085b2af2a5676d0db271ab9cbb71"
+        },
+        "v3-r50-main-neutral-l025-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T180116Z-v3-r50-main-neutral-l025-ox5-s1-m1-642cb795",
+          "archive_sha256": "ff16ca6d529584a9f0aa59672e6c2e0d4880a825e1850988fbf233a249a1ef48"
+        },
+        "v3-r50-main-control-l035-b0-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+          "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0"
+        },
+        "v3-r50-main-control-l035-b1-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+          "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23"
+        },
+        "v3-r50-main-neutral-l035-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+          "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0"
+        },
+        "v3-r50-main-control-l045-b0-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T182840Z-v3-r50-main-control-l045-b0-ox5-s1-m1-6a750c5d",
+          "archive_sha256": "e6253753140c17c3d7f3eb28d3e76e08b79148954e0a26db5aad7b4b8ef8f21e"
+        },
+        "v3-r50-main-control-l045-b1-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T183541Z-v3-r50-main-control-l045-b1-ox5-s1-m1-dd36fd52",
+          "archive_sha256": "268bc41ca8428feaedc6c75e59a5d4235f2c5679e0a6a63d002bd62128987cb7"
+        },
+        "v3-r50-main-neutral-l045-ox5-s1-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T184202Z-v3-r50-main-neutral-l045-ox5-s1-m1-8a8a93c5",
+          "archive_sha256": "fa8a1059a67843ac632f28a8b5c29b578e5098f9923c745b8fa2f7561825b295"
+        },
+        "v3-r50-main-physical-l018-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T184914Z-v3-r50-main-physical-l018-b0-2f4ad314",
+          "archive_sha256": "e3400f249d3cc16143d855f0f49bdeb33b19a5fe1516f3f2b0cb0bb6ad00d46a",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l018-b0.json",
+          "evidence_sha256": "b2d62330a00444891ecb783dd18e621fcf33c4adf76d193e47253ea880526054"
+        },
+        "v3-r50-main-physical-l018-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T190110Z-v3-r50-main-physical-l018-b1-dc91bf6c",
+          "archive_sha256": "7b21465fb1020c135a9542c8b1065492afd2a960e38436c714f86f3f8b197917",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l018-b1.json",
+          "evidence_sha256": "c3bb613a168b1265c37f0551860c00d8a22a8820a9f2a0b0e771f4782abede51"
+        },
+        "v3-r50-main-physical-l025-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T191238Z-v3-r50-main-physical-l025-b0-900c479f",
+          "archive_sha256": "f1b881f2d4e0ec6e106cb0053547f03da768c31419b143070759c8eeb27380cf",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l025-b0.json",
+          "evidence_sha256": "8fab6a22b40137532afb8301c5f6a75144b175b96be94a211dc828030d41940f"
+        },
+        "v3-r50-main-physical-l025-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T192424Z-v3-r50-main-physical-l025-b1-99dcee57",
+          "archive_sha256": "2ef6adbc6dc4a432df838446a92948ee42e79ae50f2f812d971d233d3c8b72a2",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l025-b1.json",
+          "evidence_sha256": "871c19312bff3a3442089e58710bfa5c3f60e6cbbea157478b1bb82f8dbd5ecc"
+        },
+        "v3-r50-main-physical-l035-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T193504Z-v3-r50-main-physical-l035-b0-452f19dc",
+          "archive_sha256": "05ddecb639952c1e8c047eb169185249764b03c362b9c9c445759047bed71efc",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l035-b0.json",
+          "evidence_sha256": "f2617afd295c0e692373067c2a60fec2f628d283b4b89889ef222bb8708bb962"
+        },
+        "v3-r50-main-physical-l035-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T194547Z-v3-r50-main-physical-l035-b1-99cc4918",
+          "archive_sha256": "36c1f62b5a200a8c2422524a3a51d3285e1d7f9d67ee1f7661ca1f9656127e47",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l035-b1.json",
+          "evidence_sha256": "fb946daaf0da1d4c43b7576a4e2e7aaa326d6573da565b5d37677752ee0d741e"
+        },
+        "v3-r50-main-physical-l045-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T195639Z-v3-r50-main-physical-l045-b0-ef1abc2a",
+          "archive_sha256": "a67808dbbb1462000974df551ca3b08eddb6d0ea3223d1210f50c9e6a220c450",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l045-b0.json",
+          "evidence_sha256": "4464d1aacd9ffc291133aee94d206d45c06d7d47ca32a860aa6eaaf3f02a12f6"
+        },
+        "v3-r50-main-physical-l045-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T200734Z-v3-r50-main-physical-l045-b1-341c0690",
+          "archive_sha256": "53653ad744556cb165cd281e33c141370379339e69030cb433d69c9ffe6ce6e5",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l045-b1.json",
+          "evidence_sha256": "1fbc772415b8d8e5ed2570aba6cb995ef8dc4e62af11b4cdb0e6bc0b8f032a4a"
+        }
+      }
+    },
+    "pilot": {
+      "schema": "dram-see-v3-r50-main-stage",
+      "physical_revision": "r50-main-r1",
+      "stage": "pilot",
+      "state": "VERIFIED",
+      "plan_sha256": "3a10fc7df24d0dfd94353aed79e429059f93ccdf0cee45905bcf0af9ec9c45fb",
+      "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+      "cases": {
+        "v3-r50-main-l018-alpha-a0-s202610301-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T201830Z-v3-r50-main-l018-alpha-a0-s202610301-b0-33855848",
+          "archive_sha256": "e593a53279434552ee7cedf0dae62c677c969e1fb0697777460a84aa1742b9e2",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-alpha-a0-s202610301-b0.json",
+          "evidence_sha256": "a38fcf68c86ce1f2c37a5a0ab2caa10a7468f01752c8716f5fe2ea5e38a326a0"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610301-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T202534Z-v3-r50-main-l018-alpha-a0-s202610301-b1-3aec50d4",
+          "archive_sha256": "c3416073b9fd4a6653ba1321bc42c2dfd729985e8641f589fdf1989144aa5bbb",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-alpha-a0-s202610301-b1.json",
+          "evidence_sha256": "fcc4fc4e76cda31ae4dc456a285ac9bdf53f8e328e546359b36e3436cce9f17f"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610311-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T203228Z-v3-r50-main-l018-alpha-a30-s202610311-b0-bb24fd4e",
+          "archive_sha256": "a318b848a4b89ecc0f9bca6c04596ed40ab55264f3bf35085021f3275acbb2cf",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-alpha-a30-s202610311-b0.json",
+          "evidence_sha256": "34be734a607e5430b9984cc9d2228922d97bcfb7ccdd5946d77fca50af8d480b"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610311-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+          "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-alpha-a30-s202610311-b1.json",
+          "evidence_sha256": "be653703f8eaa0a58b23bb810b5aef2e652c30b3c079c1fef1d6a486433a0272"
+        },
+        "v3-r50-main-l018-proton-a0-s202610321-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T204621Z-v3-r50-main-l018-proton-a0-s202610321-b0-1121afca",
+          "archive_sha256": "bcacf57630115610a7dc1b6f40a5880e63d5da323c36be3ea40f5f945ebd9907",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-proton-a0-s202610321-b0.json",
+          "evidence_sha256": "5385e4a71cdab90281a4f7fffcbc7dd2b56b335a9d9f4e53f0f9b576c7e37788"
+        },
+        "v3-r50-main-l018-proton-a0-s202610321-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T205306Z-v3-r50-main-l018-proton-a0-s202610321-b1-affceae6",
+          "archive_sha256": "37cba8ad8db911650595726c32f2916bdff65da85569185d0dd24801e0874130",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-proton-a0-s202610321-b1.json",
+          "evidence_sha256": "bcd6d09668ca063e415f4c0e04dfd8fdb7dc470abdc88a67f43974ff6619de6b"
+        },
+        "v3-r50-main-l018-proton-a30-s202610331-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T205949Z-v3-r50-main-l018-proton-a30-s202610331-b0-aa1930c7",
+          "archive_sha256": "df3831ef277715bccecf7bb635de84b4e18ebcc2e2379bb33875b310561742ee",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-proton-a30-s202610331-b0.json",
+          "evidence_sha256": "851bb7bcccc2d9212e891f328b6b471b1311f7c82dbbcbb66fbfa564225f46da"
+        },
+        "v3-r50-main-l018-proton-a30-s202610331-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T210630Z-v3-r50-main-l018-proton-a30-s202610331-b1-fe6b589e",
+          "archive_sha256": "7dd02317238a3946e010b66263b2e3c7afc502d2da5a37661185206e2c2c6b1f",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-l018-proton-a30-s202610331-b1.json",
+          "evidence_sha256": "629ab8283ab1e444461086ba121f69638ffe6f67df5de937a926b602fedea63b"
+        },
+        "v3-r50-main-isolation-alpha-a30-b1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T211307Z-v3-r50-main-isolation-alpha-a30-b1-1366ace1",
+          "archive_sha256": "1043cf515df61a341fc2f0d3daf83c49e1892f223917ddb3311be59e1b4f9a5e",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-isolation-alpha-a30-b1.json",
+          "evidence_sha256": "0422ecd515ea241299e2b5c1f7f52597fb1a2353c02b6a8804b3f7487eaaab40"
+        },
+        "v3-r50-main-isolation-proton-a0-b0": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T212731Z-v3-r50-main-isolation-proton-a0-b0-d5d22b2f",
+          "archive_sha256": "1940ee47a58833085cd36b4761a0ede2be842965475e13c45a54f3983e30dd74",
+          "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-isolation-proton-a0-b0.json",
+          "evidence_sha256": "5ae9bf594fe18be4f781cd2ae019fc4208bb6fb02e357823c8b883c8ce030185"
+        }
+      }
+    },
+    "numerical_preregistered": {
+      "schema": "dram-see-v3-r50-main-stage",
+      "physical_revision": "r50-main-r1",
+      "stage": "numerical_preregistered",
+      "state": "VERIFIED",
+      "plan_sha256": "3a10fc7df24d0dfd94353aed79e429059f93ccdf0cee45905bcf0af9ec9c45fb",
+      "design_sha256": "6d52749bb8b9716b13b5ff1aa562a3ee331e3d7a062f32287c23710a5d1cf740",
+      "cases": {
+        "v3-r50-main-control-l018-b1-ox5-s0p5-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T214143Z-v3-r50-main-control-l018-b1-ox5-s0p5-m1-6adfbbf7",
+          "archive_sha256": "535e62a919bdb8bf2980b7497d51764b23bc4744abfc72654ddcc7efa1aa29f7"
+        },
+        "v3-r50-main-neutral-l018-ox5-s0p5-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T215136Z-v3-r50-main-neutral-l018-ox5-s0p5-m1-60fd5e1b",
+          "archive_sha256": "eaf53e144d67d87f0154ba6584c588666dab3113276386765cad2875b282ffa5"
+        },
+        "v3-r50-main-num-l018-alpha-a30-s202610311-b1-s0p5-m1": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T220136Z-v3-r50-main-num-l018-alpha-a30-s202610311-b1-s0p5-m1-cf1aa99b",
+          "archive_sha256": "130413d440a0549f8676b3b69e2038f9da3440836766f68478c44a127264b746",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-num-l018-alpha-a30-s202610311-b1-s0p5-m1.json",
+          "evidence_sha256": "767e54e1b33a14cec4217293e0618a9f62baef43d31c4a9e199ee5c995f4a2ee"
+        },
+        "v3-r50-main-control-l018-b1-ox5-s1-m0p7": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T221329Z-v3-r50-main-control-l018-b1-ox5-s1-m0p7-4a577822",
+          "archive_sha256": "c66de210ab09f24b4cb24b7594e5b273ad7a281b76160c4fc544f37162e1f425"
+        },
+        "v3-r50-main-neutral-l018-ox5-s1-m0p7": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T221907Z-v3-r50-main-neutral-l018-ox5-s1-m0p7-d3647b28",
+          "archive_sha256": "c028e06543a8bdfd3a6e5bd4c995f28bbff1aae762494144bbaeb0c201834359"
+        },
+        "v3-r50-main-num-l018-alpha-a30-s202610311-b1-s1-m0p7": {
+          "state": "VERIFIED",
+          "raw_audit_state": "PASSED",
+          "run_id": "20261010T222442Z-v3-r50-main-num-l018-alpha-a30-s202610311-b1-s1-m0p7-8b4ff242",
+          "archive_sha256": "4e3db855e46eb5be7fb002d36b89cb2f33842d415472e7d9549218ce07a6010a",
+          "evidence": "experiments/dram-see-v3/r50-main/data/metrics/v3-r50-main-num-l018-alpha-a30-s202610311-b1-s1-m0p7.json",
+          "evidence_sha256": "627983cbc7e1d384576e8e87cda651ec871e48e37d63b026cfb1f1a3ead28841"
+        }
+      },
+      "evidence": "experiments/dram-see-v3/r50-main/data/numerical/preregistered.json",
+      "evidence_sha256": "6ab7de5787dca9fb6954608071ca22439de316111c451a8e589837ff38bc2c04",
+      "continuous_passed": true,
+      "classification_stable": true
+    },
+    "train": {
+      "schema": "dram-see-v3-r50-main-restart-training-r2f",
+      "physical_revision": "r50-main-r1",
+      "state": "VERIFIED",
+      "first_plan_sha256": "a114556a58798435500889a07812734ee7d2ada302cef09d72d5b8a0f30992b7",
+      "training_response_ids": [
+        "v3-r50-main-l018-alpha-a0-s202610301-b0",
+        "v3-r50-main-l018-alpha-a0-s202610301-b1",
+        "v3-r50-main-l018-alpha-a0-s202610302-b0",
+        "v3-r50-main-l018-alpha-a0-s202610302-b1",
+        "v3-r50-main-l018-alpha-a0-s202610303-b0",
+        "v3-r50-main-l018-alpha-a0-s202610303-b1",
+        "v3-r50-main-l018-alpha-a0-s202610304-b0",
+        "v3-r50-main-l018-alpha-a0-s202610304-b1",
+        "v3-r50-main-l018-alpha-a30-s202610311-b0",
+        "v3-r50-main-l018-alpha-a30-s202610311-b1",
+        "v3-r50-main-l018-alpha-a30-s202610312-b0",
+        "v3-r50-main-l018-alpha-a30-s202610312-b1",
+        "v3-r50-main-l018-alpha-a30-s202610313-b0",
+        "v3-r50-main-l018-alpha-a30-s202610313-b1",
+        "v3-r50-main-l018-alpha-a30-s202610314-b0",
+        "v3-r50-main-l018-alpha-a30-s202610314-b1",
+        "v3-r50-main-l018-proton-a0-s202610321-b0",
+        "v3-r50-main-l018-proton-a0-s202610321-b1",
+        "v3-r50-main-l018-proton-a0-s202610322-b0",
+        "v3-r50-main-l018-proton-a0-s202610322-b1",
+        "v3-r50-main-l018-proton-a0-s202610323-b0",
+        "v3-r50-main-l018-proton-a0-s202610323-b1",
+        "v3-r50-main-l018-proton-a0-s202610324-b0",
+        "v3-r50-main-l018-proton-a0-s202610324-b1",
+        "v3-r50-main-l018-proton-a30-s202610331-b0",
+        "v3-r50-main-l018-proton-a30-s202610331-b1",
+        "v3-r50-main-l018-proton-a30-s202610332-b0",
+        "v3-r50-main-l018-proton-a30-s202610332-b1",
+        "v3-r50-main-l018-proton-a30-s202610333-b0",
+        "v3-r50-main-l018-proton-a30-s202610333-b1",
+        "v3-r50-main-l018-proton-a30-s202610334-b0",
+        "v3-r50-main-l018-proton-a30-s202610334-b1",
+        "v3-r50-main-l035-alpha-a0-s202610381-b0",
+        "v3-r50-main-l035-alpha-a0-s202610381-b1",
+        "v3-r50-main-l035-alpha-a0-s202610382-b0",
+        "v3-r50-main-l035-alpha-a0-s202610382-b1",
+        "v3-r50-main-l035-alpha-a0-s202610383-b0",
+        "v3-r50-main-l035-alpha-a0-s202610383-b1",
+        "v3-r50-main-l035-alpha-a0-s202610384-b0",
+        "v3-r50-main-l035-alpha-a0-s202610384-b1",
+        "v3-r50-main-l035-alpha-a30-s202610391-b0",
+        "v3-r50-main-l035-alpha-a30-s202610391-b1",
+        "v3-r50-main-l035-alpha-a30-s202610392-b0",
+        "v3-r50-main-l035-alpha-a30-s202610392-b1",
+        "v3-r50-main-l035-alpha-a30-s202610393-b0",
+        "v3-r50-main-l035-alpha-a30-s202610393-b1",
+        "v3-r50-main-l035-alpha-a30-s202610394-b0",
+        "v3-r50-main-l035-alpha-a30-s202610394-b1",
+        "v3-r50-main-l035-proton-a0-s202610401-b0",
+        "v3-r50-main-l035-proton-a0-s202610401-b1",
+        "v3-r50-main-l035-proton-a0-s202610402-b0",
+        "v3-r50-main-l035-proton-a0-s202610402-b1",
+        "v3-r50-main-l035-proton-a0-s202610403-b0",
+        "v3-r50-main-l035-proton-a0-s202610403-b1",
+        "v3-r50-main-l035-proton-a0-s202610404-b0",
+        "v3-r50-main-l035-proton-a0-s202610404-b1",
+        "v3-r50-main-l035-proton-a30-s202610411-b0",
+        "v3-r50-main-l035-proton-a30-s202610411-b1",
+        "v3-r50-main-l035-proton-a30-s202610412-b0",
+        "v3-r50-main-l035-proton-a30-s202610412-b1",
+        "v3-r50-main-l035-proton-a30-s202610413-b0",
+        "v3-r50-main-l035-proton-a30-s202610413-b1",
+        "v3-r50-main-l035-proton-a30-s202610414-b0",
+        "v3-r50-main-l035-proton-a30-s202610414-b1"
+      ],
+      "actual_ledger_tags": {
+        "v3-r50-main-l018-alpha-a0-s202610301-b0": "v3-r50-main-l018-alpha-a0-s202610301-b0",
+        "v3-r50-main-l018-alpha-a0-s202610301-b1": "v3-r50-main-l018-alpha-a0-s202610301-b1",
+        "v3-r50-main-l018-alpha-a0-s202610302-b0": "v3-r50-main-l018-alpha-a0-s202610302-b0",
+        "v3-r50-main-l018-alpha-a0-s202610302-b1": "v3-r50-main-l018-alpha-a0-s202610302-b1",
+        "v3-r50-main-l018-alpha-a0-s202610303-b0": "v3-r50-main-l018-alpha-a0-s202610303-b0",
+        "v3-r50-main-l018-alpha-a0-s202610303-b1": "v3-r50-main-l018-alpha-a0-s202610303-b1",
+        "v3-r50-main-l018-alpha-a0-s202610304-b0": "v3-r50-main-l018-alpha-a0-s202610304-b0",
+        "v3-r50-main-l018-alpha-a0-s202610304-b1": "v3-r50-main-l018-alpha-a0-s202610304-b1",
+        "v3-r50-main-l018-alpha-a30-s202610311-b0": "v3-r50-main-l018-alpha-a30-s202610311-b0",
+        "v3-r50-main-l018-alpha-a30-s202610311-b1": "v3-r50-main-l018-alpha-a30-s202610311-b1",
+        "v3-r50-main-l018-alpha-a30-s202610312-b0": "v3-r50-main-l018-alpha-a30-s202610312-b0",
+        "v3-r50-main-l018-alpha-a30-s202610312-b1": "v3-r50-main-l018-alpha-a30-s202610312-b1",
+        "v3-r50-main-l018-alpha-a30-s202610313-b0": "v3-r50-main-l018-alpha-a30-s202610313-b0",
+        "v3-r50-main-l018-alpha-a30-s202610313-b1": "v3-r50-main-l018-alpha-a30-s202610313-b1",
+        "v3-r50-main-l018-alpha-a30-s202610314-b0": "v3-r50-main-l018-alpha-a30-s202610314-b0",
+        "v3-r50-main-l018-alpha-a30-s202610314-b1": "v3-r50-main-l018-alpha-a30-s202610314-b1",
+        "v3-r50-main-l018-proton-a0-s202610321-b0": "v3-r50-main-l018-proton-a0-s202610321-b0",
+        "v3-r50-main-l018-proton-a0-s202610321-b1": "v3-r50-main-l018-proton-a0-s202610321-b1",
+        "v3-r50-main-l018-proton-a0-s202610322-b0": "v3-r50-main-l018-proton-a0-s202610322-b0",
+        "v3-r50-main-l018-proton-a0-s202610322-b1": "v3-r50-main-l018-proton-a0-s202610322-b1",
+        "v3-r50-main-l018-proton-a0-s202610323-b0": "v3-r50-main-l018-proton-a0-s202610323-b0",
+        "v3-r50-main-l018-proton-a0-s202610323-b1": "v3-r50-main-l018-proton-a0-s202610323-b1",
+        "v3-r50-main-l018-proton-a0-s202610324-b0": "v3-r50-main-l018-proton-a0-s202610324-b0",
+        "v3-r50-main-l018-proton-a0-s202610324-b1": "v3-r50-main-l018-proton-a0-s202610324-b1",
+        "v3-r50-main-l018-proton-a30-s202610331-b0": "v3-r50-main-l018-proton-a30-s202610331-b0",
+        "v3-r50-main-l018-proton-a30-s202610331-b1": "v3-r50-main-l018-proton-a30-s202610331-b1",
+        "v3-r50-main-l018-proton-a30-s202610332-b0": "v3-r50-main-l018-proton-a30-s202610332-b0",
+        "v3-r50-main-l018-proton-a30-s202610332-b1": "v3-r50-main-l018-proton-a30-s202610332-b1",
+        "v3-r50-main-l018-proton-a30-s202610333-b0": "v3-r50-main-l018-proton-a30-s202610333-b0",
+        "v3-r50-main-l018-proton-a30-s202610333-b1": "v3-r50-main-l018-proton-a30-s202610333-b1",
+        "v3-r50-main-l018-proton-a30-s202610334-b0": "v3-r50-main-l018-proton-a30-s202610334-b0",
+        "v3-r50-main-l018-proton-a30-s202610334-b1": "v3-r50-main-l018-proton-a30-s202610334-b1",
+        "v3-r50-main-l035-alpha-a0-s202610381-b0": "v3-r50-main-l035-alpha-a0-s202610381-b0",
+        "v3-r50-main-l035-alpha-a0-s202610381-b1": "v3-r50-main-l035-alpha-a0-s202610381-b1",
+        "v3-r50-main-l035-alpha-a0-s202610382-b0": "v3-r50-main-l035-alpha-a0-s202610382-b0",
+        "v3-r50-main-l035-alpha-a0-s202610382-b1": "v3-r50-main-l035-alpha-a0-s202610382-b1",
+        "v3-r50-main-l035-alpha-a0-s202610383-b0": "v3-r50-main-l035-alpha-a0-s202610383-b0",
+        "v3-r50-main-l035-alpha-a0-s202610383-b1": "v3-r50-main-l035-alpha-a0-s202610383-b1",
+        "v3-r50-main-l035-alpha-a0-s202610384-b0": "v3-r50-main-l035-alpha-a0-s202610384-b0",
+        "v3-r50-main-l035-alpha-a0-s202610384-b1": "v3-r50-main-l035-alpha-a0-s202610384-b1",
+        "v3-r50-main-l035-alpha-a30-s202610391-b0": "v3-r50-main-l035-alpha-a30-s202610391-b0",
+        "v3-r50-main-l035-alpha-a30-s202610391-b1": "v3-r50-main-l035-alpha-a30-s202610391-b1",
+        "v3-r50-main-l035-alpha-a30-s202610392-b0": "v3-r50-main-l035-alpha-a30-s202610392-b0",
+        "v3-r50-main-l035-alpha-a30-s202610392-b1": "v3-r50-main-l035-alpha-a30-s202610392-b1",
+        "v3-r50-main-l035-alpha-a30-s202610393-b0": "v3-r50-main-l035-alpha-a30-s202610393-b0",
+        "v3-r50-main-l035-alpha-a30-s202610393-b1": "v3-r50-main-l035-alpha-a30-s202610393-b1",
+        "v3-r50-main-l035-alpha-a30-s202610394-b0": "v3-r50-main-l035-alpha-a30-s202610394-b0",
+        "v3-r50-main-l035-alpha-a30-s202610394-b1": "v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1",
+        "v3-r50-main-l035-proton-a0-s202610401-b0": "v3-r50-main-l035-proton-a0-s202610401-b0",
+        "v3-r50-main-l035-proton-a0-s202610401-b1": "v3-r50-main-l035-proton-a0-s202610401-b1",
+        "v3-r50-main-l035-proton-a0-s202610402-b0": "v3-r50-main-l035-proton-a0-s202610402-b0",
+        "v3-r50-main-l035-proton-a0-s202610402-b1": "v3-r50-main-l035-proton-a0-s202610402-b1",
+        "v3-r50-main-l035-proton-a0-s202610403-b0": "v3-r50-main-l035-proton-a0-s202610403-b0",
+        "v3-r50-main-l035-proton-a0-s202610403-b1": "v3-r50-main-l035-proton-a0-s202610403-b1",
+        "v3-r50-main-l035-proton-a0-s202610404-b0": "v3-r50-main-l035-proton-a0-s202610404-b0",
+        "v3-r50-main-l035-proton-a0-s202610404-b1": "v3-r50-main-l035-proton-a0-s202610404-b1",
+        "v3-r50-main-l035-proton-a30-s202610411-b0": "v3-r50-main-l035-proton-a30-s202610411-b0",
+        "v3-r50-main-l035-proton-a30-s202610411-b1": "v3-r50-main-l035-proton-a30-s202610411-b1",
+        "v3-r50-main-l035-proton-a30-s202610412-b0": "v3-r50-main-l035-proton-a30-s202610412-b0",
+        "v3-r50-main-l035-proton-a30-s202610412-b1": "v3-r50-main-l035-proton-a30-s202610412-b1",
+        "v3-r50-main-l035-proton-a30-s202610413-b0": "v3-r50-main-l035-proton-a30-s202610413-b0",
+        "v3-r50-main-l035-proton-a30-s202610413-b1": "v3-r50-main-l035-proton-a30-s202610413-b1",
+        "v3-r50-main-l035-proton-a30-s202610414-b0": "v3-r50-main-l035-proton-a30-s202610414-b0",
+        "v3-r50-main-l035-proton-a30-s202610414-b1": "v3-r50-main-l035-proton-a30-s202610414-b1"
+      },
+      "training_independent_events": 32,
+      "training_responses": 64,
+      "records": {
+        "v3-r50-main-l018-alpha-a0-s202610301-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610301-b0",
+          "run_id": "20261010T201830Z-v3-r50-main-l018-alpha-a0-s202610301-b0-33855848",
+          "charged_solver_s": 397.59,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610301-b0.json",
+          "execution_freeze_sha256": "7ab8e34d0b09017f6de51ce3429bf6148789ef9de68b33021e413a6a24cae1bb",
+          "archive_sha256": "e593a53279434552ee7cedf0dae62c677c969e1fb0697777460a84aa1742b9e2"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610301-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610301-b1",
+          "run_id": "20261010T202534Z-v3-r50-main-l018-alpha-a0-s202610301-b1-3aec50d4",
+          "charged_solver_s": 388.11,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610301-b1.json",
+          "execution_freeze_sha256": "d289dbccc93283b9e0b053aa793953fa5251ebf67056b4c47004fd6ea6ba8377",
+          "archive_sha256": "c3416073b9fd4a6653ba1321bc42c2dfd729985e8641f589fdf1989144aa5bbb"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610302-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610302-b0",
+          "run_id": "20261010T223140Z-v3-r50-main-l018-alpha-a0-s202610302-b0-bc5f8588",
+          "charged_solver_s": 387.99,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610302-b0.json",
+          "execution_freeze_sha256": "cf6a0742e3d02df81a57dcaf21b78bf356b5b150531915926c9a176696d3166d",
+          "archive_sha256": "496d4cf52e41894738017339a8be6cd0060575166d05c8b560dc8444214a74b6"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610302-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610302-b1",
+          "run_id": "20261010T223834Z-v3-r50-main-l018-alpha-a0-s202610302-b1-b964ebc8",
+          "charged_solver_s": 388.09,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610302-b1.json",
+          "execution_freeze_sha256": "0a379a36a36dca4e517adae9054578bbefe44158857cbb378f94dca22807080b",
+          "archive_sha256": "cf41da0afe27f907cb78810dc4e4c9b203e781d8f09ea4b034fb5c4aaa491778"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610303-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610303-b0",
+          "run_id": "20261010T224528Z-v3-r50-main-l018-alpha-a0-s202610303-b0-b925d605",
+          "charged_solver_s": 395.68,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610303-b0.json",
+          "execution_freeze_sha256": "dff590d38b3327c019fdb2a9388aacf42f38751a1b61e44c479b658a7b06e220",
+          "archive_sha256": "c68710b984c9d4ad26809301013b5b40129b27885b5d1164780b4d6e95b810d4"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610303-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610303-b1",
+          "run_id": "20261010T225229Z-v3-r50-main-l018-alpha-a0-s202610303-b1-b02472a2",
+          "charged_solver_s": 418.84,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610303-b1.json",
+          "execution_freeze_sha256": "d9e1f2896cef02c1aea5159c01da6609e1ebc3809e8ade6c73aadb46b574ae49",
+          "archive_sha256": "f92d3cfcba3375e3770fcf0ee6cf54caed02a108bdeffc810f7762549c506e12"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610304-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610304-b0",
+          "run_id": "20261010T225952Z-v3-r50-main-l018-alpha-a0-s202610304-b0-ad820071",
+          "charged_solver_s": 392.54,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610304-b0.json",
+          "execution_freeze_sha256": "de19a596c065192cb0635d9fc0e82a3174592788dd767676ff4fc953c832349a",
+          "archive_sha256": "dde636a6fc437b11d6c708b6c9cba51deb39baabd6897f40a54d505c35fc632f"
+        },
+        "v3-r50-main-l018-alpha-a0-s202610304-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a0-s202610304-b1",
+          "run_id": "20261010T230648Z-v3-r50-main-l018-alpha-a0-s202610304-b1-a2857bc6",
+          "charged_solver_s": 373.22,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a0-s202610304-b1.json",
+          "execution_freeze_sha256": "a15b11ac0090087dbbc5af67f9aab8e77d4239cc077e6f3bd3c14b72c7e5aabe",
+          "archive_sha256": "cec8c2d6ffe85d83b7d30987e7d410d6eb2d3dd392c1e65efca78542d0814310"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610311-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610311-b0",
+          "run_id": "20261010T203228Z-v3-r50-main-l018-alpha-a30-s202610311-b0-bb24fd4e",
+          "charged_solver_s": 389.96,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610311-b0.json",
+          "execution_freeze_sha256": "b0dd17abe21bf6de1885c9d08cf79e0853a99cee4500562457fab53dc98eaa4f",
+          "archive_sha256": "a318b848a4b89ecc0f9bca6c04596ed40ab55264f3bf35085021f3275acbb2cf"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610311-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610311-b1",
+          "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+          "charged_solver_s": 393.88,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610311-b1.json",
+          "execution_freeze_sha256": "b61182701b70911370cb9f746e82dd5e7de782376f261fdfb182da6c4eb913a1",
+          "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610312-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610312-b0",
+          "run_id": "20261010T231326Z-v3-r50-main-l018-alpha-a30-s202610312-b0-b4b77b84",
+          "charged_solver_s": 392.77,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610312-b0.json",
+          "execution_freeze_sha256": "df7cbed7c1d22b122ba12efc93afd276a513489076d1e80a4812adb7613733df",
+          "archive_sha256": "c3344584973a3ca2f688d342d1171d6d8c4e056378b3f38551605806a25ec206"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610312-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610312-b1",
+          "run_id": "20261010T232023Z-v3-r50-main-l018-alpha-a30-s202610312-b1-e60ff348",
+          "charged_solver_s": 383.69,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610312-b1.json",
+          "execution_freeze_sha256": "d3a228578fe4dd0eda68701ad18934a18007af60525c67713dd975d1848b6687",
+          "archive_sha256": "3183669b7ce813de46534d75990d9607c9ffb1f71768220ae8370fc54c3306f6"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610313-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610313-b0",
+          "run_id": "20261010T232712Z-v3-r50-main-l018-alpha-a30-s202610313-b0-208744cf",
+          "charged_solver_s": 387.39,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610313-b0.json",
+          "execution_freeze_sha256": "443cea03dfc6469000424683ae4b79a3445c097d0267a0a7f0bcec83220b6526",
+          "archive_sha256": "3870e9ff71bd327d5069fab7f2e555b96f46dc0da59afedc2e05790e20e9b1d3"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610313-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610313-b1",
+          "run_id": "20261010T233403Z-v3-r50-main-l018-alpha-a30-s202610313-b1-c106bdf9",
+          "charged_solver_s": 381.99,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610313-b1.json",
+          "execution_freeze_sha256": "bb45a9eb7d14278306a10122421ff6f4e41fb19a7cd1661b78e007299e4b3d1f",
+          "archive_sha256": "df588808e06009b7477aab2628425bfe256ea8b33f0c9a459f2fc2cafdf2850f"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610314-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610314-b0",
+          "run_id": "20261010T234050Z-v3-r50-main-l018-alpha-a30-s202610314-b0-2890231c",
+          "charged_solver_s": 379.29,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610314-b0.json",
+          "execution_freeze_sha256": "bb5b258d57e188bbc9c832e87cc9dc70b375ce2a8a5bec6b42b0718d6a50e543",
+          "archive_sha256": "4b69e69c5a9d452a1975a5f356984b63524b1ff86f093983cf382d4f5181a7c4"
+        },
+        "v3-r50-main-l018-alpha-a30-s202610314-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-alpha-a30-s202610314-b1",
+          "run_id": "20261010T234734Z-v3-r50-main-l018-alpha-a30-s202610314-b1-b1d5fcc3",
+          "charged_solver_s": 376.2,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-alpha-a30-s202610314-b1.json",
+          "execution_freeze_sha256": "57d76986d5c43bb19122ffe630721d74a8f8c71e9626761dfce29fed491eadb6",
+          "archive_sha256": "9ed730700d0191424770356ef1365e4d349e85422c8ba3e04f5e64e202af832e"
+        },
+        "v3-r50-main-l018-proton-a0-s202610321-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610321-b0",
+          "run_id": "20261010T204621Z-v3-r50-main-l018-proton-a0-s202610321-b0-1121afca",
+          "charged_solver_s": 379.21,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610321-b0.json",
+          "execution_freeze_sha256": "e4837c16cdb1456afeff80e438a20dda73361b6dd52aab95b388948ef240eb9d",
+          "archive_sha256": "bcacf57630115610a7dc1b6f40a5880e63d5da323c36be3ea40f5f945ebd9907"
+        },
+        "v3-r50-main-l018-proton-a0-s202610321-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610321-b1",
+          "run_id": "20261010T205306Z-v3-r50-main-l018-proton-a0-s202610321-b1-affceae6",
+          "charged_solver_s": 377.26,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610321-b1.json",
+          "execution_freeze_sha256": "ffb2cddb47e3ea6c6f060072c15566334df554b98dc221956f17322a7d88aaee",
+          "archive_sha256": "37cba8ad8db911650595726c32f2916bdff65da85569185d0dd24801e0874130"
+        },
+        "v3-r50-main-l018-proton-a0-s202610322-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610322-b0",
+          "run_id": "20261010T235416Z-v3-r50-main-l018-proton-a0-s202610322-b0-b25d8d62",
+          "charged_solver_s": 370.77,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610322-b0.json",
+          "execution_freeze_sha256": "d0cd236e47b9bfb0bff94037dce574ab8c7c7cd3a2c19f94de8a1ef5627a2310",
+          "archive_sha256": "15408d40412185a53710eef8c2e16e224ad72745a088e08e6c6faed48d00aaed"
+        },
+        "v3-r50-main-l018-proton-a0-s202610322-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610322-b1",
+          "run_id": "20261011T000052Z-v3-r50-main-l018-proton-a0-s202610322-b1-ac482b62",
+          "charged_solver_s": 398.59,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610322-b1.json",
+          "execution_freeze_sha256": "1c6f7c163e98b3233ec2efd539205ae97bbc02243afcf1bb5c404530ad5d199d",
+          "archive_sha256": "707bca79d2d31b8d453daf9908c8ee5889e70de01031fa67848a1285167e6179"
+        },
+        "v3-r50-main-l018-proton-a0-s202610323-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610323-b0",
+          "run_id": "20261011T000756Z-v3-r50-main-l018-proton-a0-s202610323-b0-31189d52",
+          "charged_solver_s": 390.06,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610323-b0.json",
+          "execution_freeze_sha256": "7d6775ccdef7b9ab3ae6f60face33fbc57200638e898e615271f59a211036140",
+          "archive_sha256": "9e77a00c2e8c3ccb2f51cfa131340e063d47237923a467ee7771ca175154b6bf"
+        },
+        "v3-r50-main-l018-proton-a0-s202610323-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610323-b1",
+          "run_id": "20261011T001451Z-v3-r50-main-l018-proton-a0-s202610323-b1-c43efc8c",
+          "charged_solver_s": 393.22,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610323-b1.json",
+          "execution_freeze_sha256": "5cacfb4177677fc479413227e92d7ad3695d7b21c338c3f1cebe08964701615a",
+          "archive_sha256": "2c603c4ecbef1f08ea3251a805889d530dc110fc6b3ea0d0452f39bcd6b8f018"
+        },
+        "v3-r50-main-l018-proton-a0-s202610324-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610324-b0",
+          "run_id": "20261011T002149Z-v3-r50-main-l018-proton-a0-s202610324-b0-53f0228e",
+          "charged_solver_s": 410.43,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610324-b0.json",
+          "execution_freeze_sha256": "a3db249e5b187879ea38ebc63a08447f66b333c7966360692614bf2ea8f7f0b7",
+          "archive_sha256": "c442278ca9d01a6a165eafc5e5ca233e4bddb75273d8c2c4936a257e1576089f"
+        },
+        "v3-r50-main-l018-proton-a0-s202610324-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a0-s202610324-b1",
+          "run_id": "20261011T002905Z-v3-r50-main-l018-proton-a0-s202610324-b1-85aecb26",
+          "charged_solver_s": 389.43,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a0-s202610324-b1.json",
+          "execution_freeze_sha256": "2d45ae28da4ea5615ebb0f3d4396a4685782b09c878e377c41e5fca0ce3522e1",
+          "archive_sha256": "47d154bca48e33744381be048ec7e993ac20e185cf244d7e6a1e50bc20ddfb08"
+        },
+        "v3-r50-main-l018-proton-a30-s202610331-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610331-b0",
+          "run_id": "20261010T205949Z-v3-r50-main-l018-proton-a30-s202610331-b0-aa1930c7",
+          "charged_solver_s": 377.35,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610331-b0.json",
+          "execution_freeze_sha256": "f1ab6dbc2771666e6c0a9fabd1aa8eaf1b2c6e304c41278c055f251772a20061",
+          "archive_sha256": "df3831ef277715bccecf7bb635de84b4e18ebcc2e2379bb33875b310561742ee"
+        },
+        "v3-r50-main-l018-proton-a30-s202610331-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610331-b1",
+          "run_id": "20261010T210630Z-v3-r50-main-l018-proton-a30-s202610331-b1-fe6b589e",
+          "charged_solver_s": 371.06,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610331-b1.json",
+          "execution_freeze_sha256": "d576107a96fe675404e4b2c02dd3d4b709958cac6a1e9d134a8092449c051ef6",
+          "archive_sha256": "7dd02317238a3946e010b66263b2e3c7afc502d2da5a37661185206e2c2c6b1f"
+        },
+        "v3-r50-main-l018-proton-a30-s202610332-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610332-b0",
+          "run_id": "20261011T003600Z-v3-r50-main-l018-proton-a30-s202610332-b0-a227f160",
+          "charged_solver_s": 395.71,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610332-b0.json",
+          "execution_freeze_sha256": "70ab927fd3f19541b51e1a001029bd5bd63ba701ba2353b5a11f651f29ac73e2",
+          "archive_sha256": "aaa47db96b554abab2e93ef6e4767bb2468653dbbc9581a3b2eabede58eedb25"
+        },
+        "v3-r50-main-l018-proton-a30-s202610332-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610332-b1",
+          "run_id": "20261011T004300Z-v3-r50-main-l018-proton-a30-s202610332-b1-8b747ac3",
+          "charged_solver_s": 398.9,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610332-b1.json",
+          "execution_freeze_sha256": "716ee46c3339ea5625ce49fb478bc457a6b73957e82626b89c8b30c987d43114",
+          "archive_sha256": "b77f366829f43acb9e7c72e56f99a30dc3e5effaed0d0d3759d3be887632024d"
+        },
+        "v3-r50-main-l018-proton-a30-s202610333-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610333-b0",
+          "run_id": "20261011T005005Z-v3-r50-main-l018-proton-a30-s202610333-b0-0ca450db",
+          "charged_solver_s": 438.18,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610333-b0.json",
+          "execution_freeze_sha256": "ae651ab079283ae1d04e96d3bea2b3b9d80856a9f1dc3f1a7735583877e31b56",
+          "archive_sha256": "d1d404229d45c0f0f5a2c0118794af42805a113ec92bcbdc5cf3a084e3319292"
+        },
+        "v3-r50-main-l018-proton-a30-s202610333-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610333-b1",
+          "run_id": "20261011T005748Z-v3-r50-main-l018-proton-a30-s202610333-b1-4af89e8e",
+          "charged_solver_s": 426.7,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610333-b1.json",
+          "execution_freeze_sha256": "54d413036c9a7aa51f2b8271856c4e91eeca602f77c1ad175d6fb0705e823457",
+          "archive_sha256": "c27c7687e4b7f5ff5084b7f7f141948063ad4fbe85eb1ad6da1283afdc45af0b"
+        },
+        "v3-r50-main-l018-proton-a30-s202610334-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610334-b0",
+          "run_id": "20261011T010521Z-v3-r50-main-l018-proton-a30-s202610334-b0-c2c69545",
+          "charged_solver_s": 403.93,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610334-b0.json",
+          "execution_freeze_sha256": "9e01b2f41c58b0ee4547d9f8552822e6a40828ca1ee589c3d772e92596e6ed56",
+          "archive_sha256": "66573d1c743bdc0d23fd7a38ae2e79e2b2c3ef2fc95766b7e1fbefbd7a85a55a"
+        },
+        "v3-r50-main-l018-proton-a30-s202610334-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l018-proton-a30-s202610334-b1",
+          "run_id": "20261011T011233Z-v3-r50-main-l018-proton-a30-s202610334-b1-76f43a08",
+          "charged_solver_s": 400.8,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l018-proton-a30-s202610334-b1.json",
+          "execution_freeze_sha256": "65fd2fe113bf0d2f510d48fee86dde2a42cff269a216156f9016755a666f7757",
+          "archive_sha256": "d6362eca571e81b54e1db1f6ff218da506a71f2e22fa9a8542c7040501aff64b"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610381-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610381-b0",
+          "run_id": "20261011T011939Z-v3-r50-main-l035-alpha-a0-s202610381-b0-1e609859",
+          "charged_solver_s": 421.63,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610381-b0.json",
+          "execution_freeze_sha256": "f2062f276f105681cf198b08a1f3b48d97c0524e0f395ebb32e0331db6211037",
+          "archive_sha256": "7305bb2bb66e02090931ec70fea7726abe878bfde79dea3e1b762a630e92ffb2"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610381-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610381-b1",
+          "run_id": "20261011T012705Z-v3-r50-main-l035-alpha-a0-s202610381-b1-19c69ae1",
+          "charged_solver_s": 409.92,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610381-b1.json",
+          "execution_freeze_sha256": "594ffbd7b6a2b77529cf3db869961c5da4b06c785673390efd670dd77a79c74c",
+          "archive_sha256": "50580f3a8e715f2ea83dc664a961d0d259077200826c82e5b0fb51bd38458b90"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610382-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610382-b0",
+          "run_id": "20261011T013420Z-v3-r50-main-l035-alpha-a0-s202610382-b0-e0e0b53c",
+          "charged_solver_s": 454.73,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610382-b0.json",
+          "execution_freeze_sha256": "64bfbd3f104fde58932fd4239af606823400a5c43492b918ed974b02cbea63e9",
+          "archive_sha256": "b9e6b6a3082612851fda8ad2385b07ce72061a8a628cceac9a23a814734357df"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610382-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610382-b1",
+          "run_id": "20261011T014219Z-v3-r50-main-l035-alpha-a0-s202610382-b1-8ffa2fee",
+          "charged_solver_s": 408.71,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610382-b1.json",
+          "execution_freeze_sha256": "2471effab426ee59c18637a44cb564c6566e14495706cb81ad2b6df3117ed212",
+          "archive_sha256": "ab5fcfce8c6db6b554fe347a972b1147c177d36f5dbe1e7acfd38bd099e1b632"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610383-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610383-b0",
+          "run_id": "20261011T014931Z-v3-r50-main-l035-alpha-a0-s202610383-b0-79237845",
+          "charged_solver_s": 443.15,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610383-b0.json",
+          "execution_freeze_sha256": "c0bd77226e8a64ee6a78fe07b757f6dbd5b8ddd6ababe54d0da4b6bce12cbc1c",
+          "archive_sha256": "0974c9037e67f8d6d91a1c5c982276fb4d31b3706349a57f29c148be06891251"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610383-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610383-b1",
+          "run_id": "20261011T015719Z-v3-r50-main-l035-alpha-a0-s202610383-b1-9a4f38ac",
+          "charged_solver_s": 403.23,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610383-b1.json",
+          "execution_freeze_sha256": "1ce3f1a4b8b97feaff4fcbc930cddcd24853355e49beab5ffeab09c291fe334c",
+          "archive_sha256": "f8aee3973962c30c7f9ca6eef482a79e4c091120a45b3842e0e5784177b59ec9"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610384-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610384-b0",
+          "run_id": "20261011T020428Z-v3-r50-main-l035-alpha-a0-s202610384-b0-30aa210f",
+          "charged_solver_s": 456.75,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610384-b0.json",
+          "execution_freeze_sha256": "3ef6bb3df09167667a59e9c59e3bda4281e376ac37687fdc2193b90857be8bda",
+          "archive_sha256": "cf558a898a05fc3c91dc6f3cbe2247d72443a0311ea221d7929b1553667b0d8d"
+        },
+        "v3-r50-main-l035-alpha-a0-s202610384-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a0-s202610384-b1",
+          "run_id": "20261011T021230Z-v3-r50-main-l035-alpha-a0-s202610384-b1-aba230a7",
+          "charged_solver_s": 423.38,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a0-s202610384-b1.json",
+          "execution_freeze_sha256": "b849a4943b4fad311db3d2590ef9d4429fcc9996174e460dc41fb1fea56c6834",
+          "archive_sha256": "ea2d852268a661cf3c910d74720ed16c519d5abc3c4ceeecba47a1d50d2466de"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610391-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610391-b0",
+          "run_id": "20261011T021958Z-v3-r50-main-l035-alpha-a30-s202610391-b0-709f8de7",
+          "charged_solver_s": 449.95,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610391-b0.json",
+          "execution_freeze_sha256": "c6b3e6ec966a1ca50391b062dc5ad401411edb41d5f1d3b1d65027de3054a3ac",
+          "archive_sha256": "9fdc38e76db17bca422c6a1bded6f18c8f7d9b84b2270eac41584f9db8feeeca"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610391-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610391-b1",
+          "run_id": "20261011T022753Z-v3-r50-main-l035-alpha-a30-s202610391-b1-883705e6",
+          "charged_solver_s": 416.4,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610391-b1.json",
+          "execution_freeze_sha256": "a75dd01aafe7b15509aa68c4bdf62ec8f2b5552bb5624526eda6f518a2f88a92",
+          "archive_sha256": "c04f8c2a1c578a4f1865de46d47b14b01faca472a3633cac7b95de73c6a35e6e"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610392-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610392-b0",
+          "run_id": "20261011T023513Z-v3-r50-main-l035-alpha-a30-s202610392-b0-d8e88cad",
+          "charged_solver_s": 451.71,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610392-b0.json",
+          "execution_freeze_sha256": "e78f1e7f53753a8d9d6e6f43b1921f562c0755444de33552daf45558eb7cb0dd",
+          "archive_sha256": "b0181b65092cda067644694ac69013701ed626990b8b475d95409bc47f407386"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610392-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610392-b1",
+          "run_id": "20261011T024310Z-v3-r50-main-l035-alpha-a30-s202610392-b1-fc481354",
+          "charged_solver_s": 422.6,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610392-b1.json",
+          "execution_freeze_sha256": "128c5ed580a0b1538df5a44b6cba83cb83083b0de16a45b450c1717e43846860",
+          "archive_sha256": "664a5b82fd5417ec7f9161e3a8540bf65e295a619baffaa84bdabab18ed2b521"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610393-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610393-b0",
+          "run_id": "20261011T025038Z-v3-r50-main-l035-alpha-a30-s202610393-b0-9cf663b9",
+          "charged_solver_s": 433.3,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610393-b0.json",
+          "execution_freeze_sha256": "6989f9b085fce7c6e52344db2b4465d3c10f23304494f5f0f9f39309689c836d",
+          "archive_sha256": "a6afc113a94646abcc08e7683ed472a35aa02254de6d5650d668de440b8de526"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610393-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610393-b1",
+          "run_id": "20261011T025816Z-v3-r50-main-l035-alpha-a30-s202610393-b1-ba594bf0",
+          "charged_solver_s": 400.45,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610393-b1.json",
+          "execution_freeze_sha256": "d544c6952ca4b41feda1490fd532b67af325a3097881cca62c4495c7c0a80cfa",
+          "archive_sha256": "14ca38c3df51729159eb3629294c793b96588e4ea43f10b1e331da8e3a69e6e7"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610394-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-alpha-a30-s202610394-b0",
+          "run_id": "20261011T030524Z-v3-r50-main-l035-alpha-a30-s202610394-b0-2cb5550e",
+          "charged_solver_s": 409.18,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-r1/case-freezes/v3-r50-main-l035-alpha-a30-s202610394-b0.json",
+          "execution_freeze_sha256": "3b5f80bb4f523165a7c591fe7d2d537b1437d3f5fa011f3080065b6d0c078d07",
+          "archive_sha256": "8b524103fd3628a83bf666d0e4924e0c29f831252a8520f624aefb71a781f67d"
+        },
+        "v3-r50-main-l035-alpha-a30-s202610394-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1",
+          "run_id": "20261011T044502Z-v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1-15d9f5f5",
+          "charged_solver_s": 585.68,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2c/case-freezes/v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1.json",
+          "execution_freeze_sha256": "023f24a1f7f926464292e3f2729a41ace6f9e5095d0e360faed962286c9c901c",
+          "archive_sha256": "d4324ad842f9cb13cea4c250c981aec07b492ddc9fa819010960bfe66cf48a73"
+        },
+        "v3-r50-main-l035-proton-a0-s202610401-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610401-b0",
+          "run_id": "20261011T051015Z-v3-r50-main-l035-proton-a0-s202610401-b0-72ddb033",
+          "charged_solver_s": 559.14,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610401-b0.json",
+          "execution_freeze_sha256": "33ac209217cd853d70c0d68cfda6c88ac1ab3dbb2c906ba8a352aecfcd7637dd",
+          "archive_sha256": "ab4c5ecaf8f484d68ae439a030a372b27c2823c6d5944272d4873bb46c932f91"
+        },
+        "v3-r50-main-l035-proton-a0-s202610401-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610401-b1",
+          "run_id": "20261011T051948Z-v3-r50-main-l035-proton-a0-s202610401-b1-aaa223da",
+          "charged_solver_s": 551.42,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610401-b1.json",
+          "execution_freeze_sha256": "042165185852fd082ffaaaa538a96e02d265a61224988d7da2469ab03d39b7e5",
+          "archive_sha256": "13eaa03726fd9c17d5a4c62b1a210c48047c9c45f9781d5bd564538728bb5820"
+        },
+        "v3-r50-main-l035-proton-a0-s202610402-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610402-b0",
+          "run_id": "20261011T052912Z-v3-r50-main-l035-proton-a0-s202610402-b0-cdca2223",
+          "charged_solver_s": 568.78,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610402-b0.json",
+          "execution_freeze_sha256": "114fb9598affe3a3c841818fbd180431afa146866993b3050debb027caafa24a",
+          "archive_sha256": "8a3b97008a663f56faf970f4971911f5c1f588f9918ab3f14a9a92e51f212c5d"
+        },
+        "v3-r50-main-l035-proton-a0-s202610402-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610402-b1",
+          "run_id": "20261011T053856Z-v3-r50-main-l035-proton-a0-s202610402-b1-874ca107",
+          "charged_solver_s": 551.19,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610402-b1.json",
+          "execution_freeze_sha256": "d797755bf6fc2c33bc49349858b2393a34be8c365df3724e59888fa5961a2edd",
+          "archive_sha256": "e91139012308cc30d7c9452e6be750dde62d00738c66db89828e8422a890f571"
+        },
+        "v3-r50-main-l035-proton-a0-s202610403-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610403-b0",
+          "run_id": "20261011T054822Z-v3-r50-main-l035-proton-a0-s202610403-b0-2509b397",
+          "charged_solver_s": 580.53,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610403-b0.json",
+          "execution_freeze_sha256": "0d69bce00f8ead3aebc7087f7400e3d7de5fe8f5e8df99bc3d2ce4388bd4245f",
+          "archive_sha256": "dd24ce1ad0d3f92638c981d4d2ce1ad46955f04150defd057b8ed8a46c26d15d"
+        },
+        "v3-r50-main-l035-proton-a0-s202610403-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610403-b1",
+          "run_id": "20261011T055817Z-v3-r50-main-l035-proton-a0-s202610403-b1-8955c5b6",
+          "charged_solver_s": 552.1,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610403-b1.json",
+          "execution_freeze_sha256": "53247f3d927b5918d021654201176c32be895b0d401f5b2677ceaa016efbbb9c",
+          "archive_sha256": "26cfb5cd99aec472d2f2b9b5c1095ff25e0a84e86fb7473c188c3e3f40f03efe"
+        },
+        "v3-r50-main-l035-proton-a0-s202610404-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610404-b0",
+          "run_id": "20261011T060743Z-v3-r50-main-l035-proton-a0-s202610404-b0-936421f9",
+          "charged_solver_s": 573.41,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610404-b0.json",
+          "execution_freeze_sha256": "7d364c20e6ff8abbd4e342a59d51c3cd30af66862ad4af5d534d9160ceef7e75",
+          "archive_sha256": "96ca200d4c4bda218a071509b1bdf50c1871e8f9f3a80b97af4013660ec8dcc3"
+        },
+        "v3-r50-main-l035-proton-a0-s202610404-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a0-s202610404-b1",
+          "run_id": "20261011T061731Z-v3-r50-main-l035-proton-a0-s202610404-b1-49fb94ed",
+          "charged_solver_s": 550.07,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a0-s202610404-b1.json",
+          "execution_freeze_sha256": "1245e8e9e37e276934681f60ace07e62f9beca46dcf0fc758b6ddf26d35a125d",
+          "archive_sha256": "1553c0f03a8c69b4701da4c4ab7d1bcf881ec2481deeeed602cbc3f661159821"
+        },
+        "v3-r50-main-l035-proton-a30-s202610411-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610411-b0",
+          "run_id": "20261011T062655Z-v3-r50-main-l035-proton-a30-s202610411-b0-d0468b8b",
+          "charged_solver_s": 575.32,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610411-b0.json",
+          "execution_freeze_sha256": "606ac5905cda3d7f42aeb6e438b982b2048fc6b577461d5f51111662bd28f82a",
+          "archive_sha256": "b9112a0dc175255fb388eb25fde72a7d1029db672a141f0d1184fecaeba328ce"
+        },
+        "v3-r50-main-l035-proton-a30-s202610411-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610411-b1",
+          "run_id": "20261011T063645Z-v3-r50-main-l035-proton-a30-s202610411-b1-f36fc027",
+          "charged_solver_s": 551.29,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610411-b1.json",
+          "execution_freeze_sha256": "8405e8f0630ba2ba16633c4c0de9a0002477533d3a5d4ee3ac67fdf168cd07d4",
+          "archive_sha256": "dfd67074bf8f6cc681d3ea7978578481c5ee96c2932a83f47298aeba5f6e06ae"
+        },
+        "v3-r50-main-l035-proton-a30-s202610412-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610412-b0",
+          "run_id": "20261011T064611Z-v3-r50-main-l035-proton-a30-s202610412-b0-fc55b80d",
+          "charged_solver_s": 573.22,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610412-b0.json",
+          "execution_freeze_sha256": "b5e837fc2b100fbbc358bc51055151de88119a21fbcb860a579c8e36f0b09c95",
+          "archive_sha256": "fb422d7a544106624c5a78a0d23ac8993c7c9c27e3db52d940730b23fe7c0874"
+        },
+        "v3-r50-main-l035-proton-a30-s202610412-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610412-b1",
+          "run_id": "20261011T065559Z-v3-r50-main-l035-proton-a30-s202610412-b1-6d4a19ef",
+          "charged_solver_s": 555.91,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610412-b1.json",
+          "execution_freeze_sha256": "aaef387119af610dea37b29b0cdbe198d9b73173691fe3e0f1abb14f1ba2440f",
+          "archive_sha256": "1bfa591181998cc0031a6503b03099d5ae16ade76292bdf584ccc3b1b6b5c6ad"
+        },
+        "v3-r50-main-l035-proton-a30-s202610413-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610413-b0",
+          "run_id": "20261011T070531Z-v3-r50-main-l035-proton-a30-s202610413-b0-ca4764f8",
+          "charged_solver_s": 579.05,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610413-b0.json",
+          "execution_freeze_sha256": "6120b2a976be46d316e20203dcf9330f1f686960f81988c8b7ddfc1809751c3b",
+          "archive_sha256": "f2eb0f20d4cc10f253da4fae1693789e534f9dc8708cb2784f2139b2a0324bc6"
+        },
+        "v3-r50-main-l035-proton-a30-s202610413-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610413-b1",
+          "run_id": "20261011T071525Z-v3-r50-main-l035-proton-a30-s202610413-b1-82e6711a",
+          "charged_solver_s": 557.22,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610413-b1.json",
+          "execution_freeze_sha256": "17541bed2d1dfe1e34b4825003c6316e6a36db7f181eb692add8b7df08918a45",
+          "archive_sha256": "c3c79f0b535245ac6ab629c7527d25b38fd52adc56e39048f91266ae55e13d7e"
+        },
+        "v3-r50-main-l035-proton-a30-s202610414-b0": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610414-b0",
+          "run_id": "20261011T072457Z-v3-r50-main-l035-proton-a30-s202610414-b0-536769d3",
+          "charged_solver_s": 558.51,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610414-b0.json",
+          "execution_freeze_sha256": "fb78a1de0fc08fe01564db6bb9ee582c9729de3608219aa0709266f8af3582d5",
+          "archive_sha256": "9a4b8d77dcf31ccc75eab329f14ef5edf3444d293d2a5730131498c2fbed9f19"
+        },
+        "v3-r50-main-l035-proton-a30-s202610414-b1": {
+          "state": "VERIFIED",
+          "actual_tag": "v3-r50-main-l035-proton-a30-s202610414-b1",
+          "run_id": "20261011T073430Z-v3-r50-main-l035-proton-a30-s202610414-b1-40085e22",
+          "charged_solver_s": 548.94,
+          "execution_freeze": "local_runtime/dram-see-v3/physical-revisions/r50-main-restart-r2e/case-freezes/v3-r50-main-l035-proton-a30-s202610414-b1.json",
+          "execution_freeze_sha256": "86595dcc3ef1179ca6d61ce13455ff3c352642a213e4e5325b3ea00114464b35",
+          "archive_sha256": "94d32dc689dfd899bedefca8da03c3c639d2a7d1c1ef1046b41b272019a8709c"
+        }
+      }
+    }
+  },
+  "ledger_snapshot_sha256": "fbb5d34d5249c2eb363565c9684d689aec9f5a0d2d6a9b206b27bccd43cb8486",
+  "test_responses_seen": 0,
+  "test_submission_check": "actual inputs.tar metadata and complete global ledger; no response archive read",
+  "classification_policy": "critical continuous targets retained; near/crossing flags preserved; known continuous failure blocks"
+}

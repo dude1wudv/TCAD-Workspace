@@ -1,0 +1,249 @@
+{
+  "schema": "dram-final-figure-index-v1",
+  "figures": [
+    {
+      "schema": "dram-final-data-figure-v1",
+      "name": "d1-reference-comparison",
+      "title": "D1 reference comparison",
+      "kind": "scientific_data_plot",
+      "not_native_visual_export": true,
+      "not_gui_screenshot": true,
+      "scope": "Historical D1 reference diagnostic; no R50-main sample",
+      "source_files": [
+        {
+          "path": "experiments/dram-readout-offset-d1/data/summary.csv",
+          "sha256": "c954de8ded583ce9a3cc3034a416488f0d5edc3d12fe3fbc690b0f91c70a8956"
+        }
+      ],
+      "data_files": [
+        {
+          "path": "data/d1-reference-comparison.csv",
+          "sha256": "44ca5c8ca92378c88d6ebb5f96f261f0bc8ade2be3b3eddb4b4c4fdbed985e4c"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/d1-reference-comparison.png",
+          "sha256": "384e43e034496d875930484c97358fcd1918afd7d4e322452bf850751b0fe523"
+        },
+        {
+          "path": "figures/d1-reference-comparison.pdf",
+          "sha256": "b46dc336565bb1bc8b9696238a35b00181d557ad328e4d5067ff5a0cbeb45977"
+        }
+      ],
+      "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+      "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+      "raw_archives_reaudited_this_generation": false,
+      "details": {
+        "observations": [
+          {
+            "reference": "Fixed 0.5 V reference",
+            "D_mV": 2.4549605553549902,
+            "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+            "scope": "D1 historical diagnostic"
+          },
+          {
+            "reference": "Offline matched neutral",
+            "D_mV": -9.915036045006985,
+            "run_id": "20261010T074533Z-rodiag1-alpha-match-d0af10aa",
+            "scope": "D1 historical diagnostic"
+          },
+          {
+            "reference": "Physical matched branch",
+            "D_mV": -9.915036045004989,
+            "run_id": "20261010T082741Z-rodiag1-matched-ref-r3-99f3de31",
+            "scope": "D1 historical diagnostic"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "dram-final-data-figure-v1",
+      "name": "r50-precharge",
+      "title": "R100 to R50 independent probe",
+      "kind": "scientific_data_plot",
+      "not_native_visual_export": true,
+      "not_gui_screenshot": true,
+      "scope": "Same event and unchanged tolerance; R100 remains FAILED; R50 probe excluded from main matrix",
+      "source_files": [
+        {
+          "path": "experiments/dram-see-v3/data/diagnostics/precharge-r50-r1/precharge-checks.csv",
+          "sha256": "3bd7a9a151a43dcb2cd71c4846f9effb36fea22f2672d70ca1d688e7aba0b719"
+        }
+      ],
+      "data_files": [
+        {
+          "path": "data/r50-precharge.csv",
+          "sha256": "c770276876ea0c7008fd745ccb65aa419d69542e28d65739e13d65d50eda65d6"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/r50-precharge.png",
+          "sha256": "71ba3701800c5ea47b0b7eb7aaec29bc6f1635779d3d2e35f2d2b58a0c08a213"
+        },
+        {
+          "path": "figures/r50-precharge.pdf",
+          "sha256": "07f01769eb806ff274f98976057cbe79853775da3f915298589874fc15d1a4ec"
+        }
+      ],
+      "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+      "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+      "raw_archives_reaudited_this_generation": false,
+      "details": {
+        "signed_values_preserved": true
+      }
+    },
+    {
+      "schema": "dram-final-data-figure-v1",
+      "name": "r50-training-response",
+      "title": "R50 training response points",
+      "kind": "scientific_data_plot",
+      "not_native_visual_export": true,
+      "not_gui_screenshot": true,
+      "scope": "All frozen training observations only; no .25/.45 um target values; no fitted or synthetic points",
+      "source_files": [
+        {
+          "path": "experiments/dram-see-v3/r50-main/data/predictions/training-data.json",
+          "sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca"
+        },
+        {
+          "path": "experiments/dram-see-v3/r50-main/data/predictions/freeze.json",
+          "sha256": "f0384066be6d42bb71dad6fd8e4e1a2f474e6f9f45d918da759ca0274a4cff9e"
+        }
+      ],
+      "data_files": [
+        {
+          "path": "data/r50-training-responses.csv",
+          "sha256": "50511d00d934f9e8aab2fd6cb2fd0c1db651fe7058b6fdacb3b85f39af31607d"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/r50-training-response.png",
+          "sha256": "e9cfadbfa0a4a6f58847c656a848c6e07d2af58fbe26925e7c73da9761b436f1"
+        },
+        {
+          "path": "figures/r50-training-response.pdf",
+          "sha256": "51e9601e46a8a5f6d5573889cba9d3d4b0088deee496a995021b771ceb0b7530"
+        }
+      ],
+      "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+      "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+      "raw_archives_reaudited_this_generation": false,
+      "details": {
+        "rows": 64,
+        "independent_events": 32,
+        "observations_each_metric": 64,
+        "gate_lengths_um": [
+          0.18,
+          0.35
+        ],
+        "no_jitter_or_point_omission": true
+      }
+    },
+    {
+      "schema": "dram-final-data-figure-v1",
+      "name": "r50-training-cv",
+      "title": "Training LOCO cross-validation",
+      "kind": "scientific_data_plot",
+      "not_native_visual_export": true,
+      "not_gui_screenshot": true,
+      "scope": "Training model-selection evidence only; independent test metrics remain unreported",
+      "source_files": [
+        {
+          "path": "experiments/dram-see-v3/r50-main/data/predictions/models.json",
+          "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383"
+        },
+        {
+          "path": "experiments/dram-see-v3/r50-main/data/predictions/freeze.json",
+          "sha256": "f0384066be6d42bb71dad6fd8e4e1a2f474e6f9f45d918da759ca0274a4cff9e"
+        }
+      ],
+      "data_files": [
+        {
+          "path": "data/r50-training-cv.csv",
+          "sha256": "f32591f0f896ec997335c70be3cfac9bb8a8519b5a358a5ef09d3f16e6b77c37"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/r50-training-cv.png",
+          "sha256": "14c76fd038bbc49344243020a76028864deec4a4154d76c8f36b73336c448758"
+        },
+        {
+          "path": "figures/r50-training-cv.pdf",
+          "sha256": "34f72fea74f7eea69254da327de6ff988429640810317ec172cc1078ea30f1d5"
+        }
+      ],
+      "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+      "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+      "raw_archives_reaudited_this_generation": false,
+      "details": {
+        "folds": 8,
+        "alpha_candidates": [
+          0,
+          0.01,
+          0.1,
+          1,
+          10
+        ],
+        "selected_alphas": [
+          0.1,
+          0.1,
+          0.1,
+          0.1
+        ]
+      }
+    },
+    {
+      "schema": "dram-final-data-figure-v1",
+      "name": "r50-reference",
+      "title": "R50 unirradiated reference",
+      "kind": "scientific_data_plot",
+      "not_native_visual_export": true,
+      "not_gui_screenshot": true,
+      "scope": "Previously reviewed reference snapshot; baseline-only observations, not particle results; right panel uses L=.18 um",
+      "source_files": [
+        {
+          "path": "experiments/dram-see-v3/r50-main/data/delivery/20261010T2022Z-references/summary.json",
+          "sha256": "cc7b5710cbbe887bfaa464e10cf681cd0ad4a8122194c34e6a67f9c9c8372998"
+        },
+        {
+          "path": "experiments/dram-see-v3/r50-main/data/delivery-reviews/20261010T2022Z-references.md",
+          "sha256": "2ea0ce8552adb877408ce15df4553164b3c6642986ee833174ee4dfabeeabb4c"
+        }
+      ],
+      "data_files": [
+        {
+          "path": "data/r50-reference-baselines.csv",
+          "sha256": "1f6ad4bedce1562e7daf66ba5320be1534e5ca4b35372cdc91706c53e85645dc"
+        },
+        {
+          "path": "data/r50-reference-curves.csv",
+          "sha256": "f813d4b25ef3d43bcda1cb4acdccf0bcc19a1d734701fba49a495c9d56887031"
+        }
+      ],
+      "outputs": [
+        {
+          "path": "figures/r50-reference.png",
+          "sha256": "c444020d4e74b50a539936bc2a1dcd4fc73e69bd46d152fb59e0f7c4e61beb89"
+        },
+        {
+          "path": "figures/r50-reference.pdf",
+          "sha256": "a01d5ebfa407916b302c6a6b44074e0956576318b2b306723ee6cc7f1174acde"
+        }
+      ],
+      "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+      "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+      "raw_archives_reaudited_this_generation": false,
+      "details": {
+        "reference_snapshot_utc": "2026-10-10T20:21:57.699792+00:00",
+        "curves": 12,
+        "initial_states": 12,
+        "display_thinning": "Inherited audited snapshot points; phase boundaries and full 3.8-4 ns retained"
+      }
+    }
+  ],
+  "visual_review": "PENDING_ROOT_IMAGE_INSPECTION"
+}

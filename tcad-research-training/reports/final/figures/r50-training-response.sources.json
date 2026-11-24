@@ -1,0 +1,48 @@
+{
+  "schema": "dram-final-data-figure-v1",
+  "name": "r50-training-response",
+  "title": "R50 training response points",
+  "kind": "scientific_data_plot",
+  "not_native_visual_export": true,
+  "not_gui_screenshot": true,
+  "scope": "All frozen training observations only; no .25/.45 um target values; no fitted or synthetic points",
+  "source_files": [
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/training-data.json",
+      "sha256": "92abb6e8cffe40f462a84a12e2ce625d493398e50e1711aa704e3a4037760dca"
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/predictions/freeze.json",
+      "sha256": "f0384066be6d42bb71dad6fd8e4e1a2f474e6f9f45d918da759ca0274a4cff9e"
+    }
+  ],
+  "data_files": [
+    {
+      "path": "data/r50-training-responses.csv",
+      "sha256": "50511d00d934f9e8aab2fd6cb2fd0c1db651fe7058b6fdacb3b85f39af31607d"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "figures/r50-training-response.png",
+      "sha256": "e9cfadbfa0a4a6f58847c656a848c6e07d2af58fbe26925e7c73da9761b436f1"
+    },
+    {
+      "path": "figures/r50-training-response.pdf",
+      "sha256": "51e9601e46a8a5f6d5573889cba9d3d4b0088deee496a995021b771ceb0b7530"
+    }
+  ],
+  "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+  "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+  "raw_archives_reaudited_this_generation": false,
+  "details": {
+    "rows": 64,
+    "independent_events": 32,
+    "observations_each_metric": 64,
+    "gate_lengths_um": [
+      0.18,
+      0.35
+    ],
+    "no_jitter_or_point_omission": true
+  }
+}

@@ -222,6 +222,36 @@ function renderHealth(payload, scheduler, batch, research, services) {
   </details>`).join('')}</div>${warnings.length ? `<p class="health-alert">${warnings.map(esc).join(' · ')}</p>` : ''}</div>`;
 }
 
+function renderResponseSupply(supply) {
+  if (!supply) return '';
+  const title = b('LHS 响应供料', 'LHS response supply');
+  if (supply.state !== 'fresh' || !validSample(supply.observed_at, supply.fresh_max_age_seconds)) {
+    const stale = ['stale', 'fresh'].includes(supply.state);
+    return `<div class="overview-health"><div class="batch-bar"><strong>${title}</strong>
+      <span>${stale ? b('供料登记待更新', 'Supply register awaiting an update') : b('供料登记暂不可用', 'Supply register unavailable')}</span></div></div>`;
+  }
+  const c = supply.counts;
+  const stages = [
+    [b('缺材料', 'Missing materials'), c.missing_material],
+    [b('待前置验收', 'Awaiting prerequisites'), c.awaiting_prerequisites],
+    [b('已就绪', 'Ready'), c.ready],
+    [b('已入队', 'Entered queue'), c.enqueued],
+    [b('已核对零沉积复用', 'Verified zero-deposition reuse'), c.zero_reuse],
+  ];
+  const waits = [
+    [b('双态零源资格', 'Two-state zero-source qualification'), supply.prerequisites.p0],
+    [b('输运核验收集', 'Verified transport collection'), supply.prerequisites.transport],
+    [b('阈值前置证据', 'Threshold evidence'), supply.prerequisites.threshold],
+  ].filter(([, count]) => count > 0);
+  return `<div class="overview-health" aria-label="${title}">
+    <div class="batch-bar"><strong>${title}</strong><span>${number(supply.condition_count)} ${b('组条件', 'conditions')} · ${number(supply.case_count)} ${b('例响应', 'response cases')}</span></div>
+    <div class="batch-bar">${stages.map(([name, count]) => `<span>${name} <b>${number(count)}</b></span>`).join('')}</div>
+    <div class="batch-bar">
+      ${waits.length ? `<span>${b('当前等待', 'Waiting for')} · ${waits.map(([name, count]) => `${name} ${number(count)}`).join(' · ')}</span>` : ''}
+      <span>${b('已入队含在原队列等待及已有原运行记录的响应。', 'Entered queue includes cases waiting in the original queue and cases with an original run record.')}</span>
+    </div></div>`;
+}
+
 function resourceRow(title, resource, alert = false, hint = '') {
   const { available_bytes: available, total_bytes: total } = resource || {};
   return `<div class="resource-row${alert ? ' low-space' : ''}"${hint ? ` title="${esc(hint)}"` : ''}>
@@ -626,7 +656,7 @@ function render() {
     (payload.generated_at ? b('等待调度态势摘要', 'Awaiting a scheduler summary') :
       state.fullFailed ? b('状态数据暂时不可用', 'Status data unavailable') : b('正在读取状态数据…', 'Loading status…'));
   update('overview', `<md-elevated-card class="m3-card overview-shell"><div class="overview-frame"><div class="overview"><div><h1>${b('仿真状态看板', 'Simulation status')}</h1>
-    <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}</div></md-elevated-card>`);
+    <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}${renderResponseSupply(simulation.response_supply)}</div></md-elevated-card>`);
   update('kpis', renderKpis(payload, scheduler, batch, research, services));
   const sample = scheduler.hasObservation ? `${scheduler.stale ? b('观测快照', 'Snapshot') : b('采样', 'Sampled')} · ${date(scheduler.observedAt)}` : '';
   const matrixHint = state.selectedTask ? b('点击空白处或 Esc 取消选中', 'Click outside or press Esc to clear') : sample;

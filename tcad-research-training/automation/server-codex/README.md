@@ -126,4 +126,23 @@ python3 controller.py --policy <POLICY> drain --cancel
 
 只读对账显式禁用旧存储维护与云盘侧车。已完整校验的原归档在私有 `verified-archives.json` 中保存有界缓存；复用必须同时匹配原 SHA、路径、设备/inode、大小、mtime 与 ctime。缺失或变化仍须完整复核，首次核验由独立维护步骤完成；只读路径本身不写缓存，也不以收集状态代替校验。
 
+### Geant4 原始归档回收与恢复
+
+先保留经原流水线核对的逐 primary 硅电离沉积表、审计收据和选中事件的源包。原始归档在私有 Drive 目录保留无损副本，`operation.json`、抽样身份、运行退出与失败证据留在原目录。终态已释放的成功操作可以使用 `geant4_archive_release.py` 核对原文件、沉积表和云盘回执后回收 `results.tar` 与 `collected/steps.csv`。未给 `--commit` 时仅核对。控制器已支持同一操作的本地冷归档收据，轮询无需下载原包。
+
+```text
+python3 -B geant4_archive_backup.py <原操作目录> --ledger <逐事件沉积表目录> --receipt-out <新备份收据>
+python3 -B geant4_archive_release.py <原操作目录> --backup-receipt <已核验备份收据> --ledger <逐事件沉积表目录>
+python3 -B geant4_archive.py restore <原操作目录> --floor-gib 20
+```
+
+线上连续抽样遇到已冷存的 Geant4 池时，只在需要重建抽样产物时下载并校验原包。冻结工具从原路径读取，退出后清理本次临时原包。待供料或待准入的池须核对调度依赖后再执行回收。需要独立读取原步进表时，用上面的 `restore` 命令恢复原包和步进表。恢复会预留峰值写入空间并校验原始 SHA。读者结束后可复用备份收据再次回收。
+
+`resources.backing_disk_path` 指向实际挂载点，挂载消失或不可读取时报告未知。启用该层准入后，空间不足会等待新提交或需要虚拟机写盘的封存，已经封存的传输仍按服务器可用空间准入。
+
 新增归档的完整校验与缓存写入也在唯一后台收集通道内完成；校验期间不在主循环重复散列。观察既有 intent 时不新增空诊断字段，保留原未启动回执的不可变身份校验。
+## r0.6 已验签批次入队
+
+在现用连续供料版本上，已验签的 TCAD 批次可通过 `month_one_supply.py --policy <policy> <workspace-relative-batch> <batch-sha256>` 发布。批次使用 `tcad-r06-approved-supply-v1`，包含当前 `manifest_sha256` 和 `entries`。每条入料使用现有的 `proposal`、`admission` 与 `evidence` 哈希引用。
+
+发布在原调度器的私有状态目录中新增一份不可覆盖的收据。原供料器读取收据后在后台验证输入和科学准入，并向原队列投递。重复发布同一收据或原队列已存在该任务时，按原任务身份去重。输运池继续使用冻结的输运配方。LHS 输运还需 P2 收据中的 `lhs_native_navigation` 引用、对应组的 P0 资格和对应池的原始输入哈希。

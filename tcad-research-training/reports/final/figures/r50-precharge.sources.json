@@ -1,0 +1,37 @@
+{
+  "schema": "dram-final-data-figure-v1",
+  "name": "r50-precharge",
+  "title": "R100 to R50 independent probe",
+  "kind": "scientific_data_plot",
+  "not_native_visual_export": true,
+  "not_gui_screenshot": true,
+  "scope": "Same event and unchanged tolerance; R100 remains FAILED; R50 probe excluded from main matrix",
+  "source_files": [
+    {
+      "path": "experiments/dram-see-v3/data/diagnostics/precharge-r50-r1/precharge-checks.csv",
+      "sha256": "3bd7a9a151a43dcb2cd71c4846f9effb36fea22f2672d70ca1d688e7aba0b719"
+    }
+  ],
+  "data_files": [
+    {
+      "path": "data/r50-precharge.csv",
+      "sha256": "c770276876ea0c7008fd745ccb65aa419d69542e28d65739e13d65d50eda65d6"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "figures/r50-precharge.png",
+      "sha256": "71ba3701800c5ea47b0b7eb7aaec29bc6f1635779d3d2e35f2d2b58a0c08a213"
+    },
+    {
+      "path": "figures/r50-precharge.pdf",
+      "sha256": "07f01769eb806ff274f98976057cbe79853775da3f915298589874fc15d1a4ec"
+    }
+  ],
+  "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+  "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+  "raw_archives_reaudited_this_generation": false,
+  "details": {
+    "signed_values_preserved": true
+  }
+}

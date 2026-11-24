@@ -1055,6 +1055,22 @@ class RuntimeTests(unittest.TestCase):
         self.assertFalse(result["queue_complete"])
         self.assertFalse(result["runs"][0]["success"])
 
+    def test_released_geant4_can_use_cold_receipt_only_when_the_tar_is_absent(self):
+        engine = self.engine()
+        run = self.base / "geant4-run"
+        run.mkdir()
+        original = run / "operation.json"
+        intent = {"backend": "geant4", "run_id": run.name}
+        record = {"state": "COLLECTED_PENDING_AUDIT", "collection_verified": True,
+                  "archive_sha256": "a" * 64}
+        with patch.object(runtime.geant4_archive, "verify_cold", return_value=True) as verify:
+            self.assertTrue(engine._receipt(intent, record, original))
+            verify.assert_called_once_with(original, record)
+            verify.reset_mock()
+            (run / "results.tar").write_bytes(b"different archive")
+            self.assertFalse(engine._receipt(intent, record, original))
+            verify.assert_not_called()
+
     def test_retained_archive_remains_collected_without_recollection(self):
         self.task("retained")
         engine = self.engine()

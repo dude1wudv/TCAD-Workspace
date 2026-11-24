@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from research_projection import build_research
+from research_projection import build_research, private_evidence_verified
 from test_r06_projection import NOW, RESULT_HASH, r06_plan, solved
 
 
@@ -141,6 +141,50 @@ class R06ExternalAcceptanceTests(unittest.TestCase):
         self.write_record(dict(self.record, evidence=evidence))
         with self.assertRaises(ValueError):
             self.project()
+
+    def test_workspace_relative_evidence_is_bounded_to_historical_cases(self):
+        relative = "local_runtime/server-codex/historical-observation.json"
+        proof = self.workspace / relative
+        proof.parent.mkdir(parents=True)
+        content = b"x" * (4 * 1024 * 1024 + 1)
+        proof.write_bytes(content)
+        references = [{"path": relative, "sha256": hashlib.sha256(content).hexdigest()}]
+        historical = "r06-s-d0-nominal-p09-b1"
+        self.assertTrue(private_evidence_verified(references, self.plan_path, "Test", historical))
+        self.assertFalse(private_evidence_verified(references, self.plan_path, "Test", self.case_id))
+        proof.write_bytes(content + b"changed")
+        self.assertFalse(private_evidence_verified(references, self.plan_path, "Test", historical))
+        with proof.open("ab") as stream:
+            stream.truncate(20 * 1024 * 1024 + 1)
+        with self.assertRaises(ValueError):
+            private_evidence_verified(references, self.plan_path, "Test", historical)
+        traversal = [dict(references[0], path="local_runtime/server-codex/../outside.json")]
+        with self.assertRaises(ValueError):
+            private_evidence_verified(traversal, self.plan_path, "Test", historical)
+
+    def test_workspace_relative_threshold_evidence_matches_original_manifest(self):
+        identity = "r06-t-d2-narrow-fin-shape-b-x10-b1"
+        plan = json.loads(self.original_plan)
+        threshold = next(case for case in plan["cases"] if case["block"] == "T")
+        threshold["case_id"] = identity
+        self.plan_path.write_text(json.dumps(plan), encoding="utf-8")
+        self.original_plan = self.plan_path.read_bytes()
+        self.runtime["intents"]["private-task"]["scientific_admission"]["case_id"] = identity
+        self.record_path = self.record_path.with_name(identity + ".json")
+        manifest = "local_runtime/cloud-benchmark/centos79-guest-20261116/runs/private-run/manifest.json"
+        readout = "local_runtime/server-codex/team-readout/private-run/pair.json"
+        references = []
+        for relative in (manifest, readout):
+            proof = self.workspace / relative
+            proof.parent.mkdir(parents=True)
+            proof.write_bytes(b"synthetic test evidence")
+            references.append({"path": relative, "sha256": hashlib.sha256(proof.read_bytes()).hexdigest()})
+        self.write_record(dict(self.record, case_id=identity, evidence=references))
+        report = self.project()
+        self.assertEqual(report["counts"]["T"]["accepted"], 1)
+        self.assertNotIn(manifest, json.dumps(report))
+        (self.workspace / manifest).write_bytes(b"changed")
+        self.assertEqual(self.project()["counts"]["T"]["accepted"], 0)
 
     def test_nonfinite_constants_and_duplicate_json_keys_are_rejected(self):
         self.record_path.write_text(

@@ -1,0 +1,3080 @@
+[
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610301,
+    "condition_id": 0,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610301",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.368585753896442,
+    "source_event_sha256": "4c145abddfcc64882dbe12bdf2b6fd81a58c4b5e9fa92a406741954349f00336",
+    "targets": {
+      "deltaQ_fC": -4.205071732286612,
+      "deltaM_mV": -39.745688347425975
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T201830Z-v3-r50-main-l018-alpha-a0-s202610301-b0-33855848",
+        "archive_sha256": "e593a53279434552ee7cedf0dae62c677c969e1fb0697777460a84aa1742b9e2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610301,
+    "condition_id": 0,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610301",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.368585753896442,
+    "source_event_sha256": "4c145abddfcc64882dbe12bdf2b6fd81a58c4b5e9fa92a406741954349f00336",
+    "targets": {
+      "deltaQ_fC": -4.64496137111035,
+      "deltaM_mV": 43.36981286610397
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T202534Z-v3-r50-main-l018-alpha-a0-s202610301-b1-3aec50d4",
+        "archive_sha256": "c3416073b9fd4a6653ba1321bc42c2dfd729985e8641f589fdf1989144aa5bbb",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610302,
+    "condition_id": 0,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610302",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.162985169626231,
+    "source_event_sha256": "2c180a7b447d3058093bb35b01f768b7945830060759a984196c6fe540834570",
+    "targets": {
+      "deltaQ_fC": -4.076411592455682,
+      "deltaM_mV": -38.525995072619004
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T223140Z-v3-r50-main-l018-alpha-a0-s202610302-b0-bc5f8588",
+        "archive_sha256": "496d4cf52e41894738017339a8be6cd0060575166d05c8b560dc8444214a74b6",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610302,
+    "condition_id": 0,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610302",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.162985169626231,
+    "source_event_sha256": "2c180a7b447d3058093bb35b01f768b7945830060759a984196c6fe540834570",
+    "targets": {
+      "deltaQ_fC": -4.4970295249514995,
+      "deltaM_mV": 41.985686003704004
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "critical",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [
+      5.0
+    ],
+    "classification_numerical_status": "near boundary unresolved",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T223834Z-v3-r50-main-l018-alpha-a0-s202610302-b1-b964ebc8",
+        "archive_sha256": "cf41da0afe27f907cb78810dc4e4c9b203e781d8f09ea4b034fb5c4aaa491778",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610303,
+    "condition_id": 0,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610303",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.425765615210283,
+    "source_event_sha256": "9578fc22f8666d023573c7f709fa3d81988d12244f90f2eced6f4fbb34ba1a61",
+    "targets": {
+      "deltaQ_fC": -4.821374560729052,
+      "deltaM_mV": -45.51420689463698
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T224528Z-v3-r50-main-l018-alpha-a0-s202610303-b0-b925d605",
+        "archive_sha256": "c68710b984c9d4ad26809301013b5b40129b27885b5d1164780b4d6e95b810d4",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610303,
+    "condition_id": 0,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610303",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.425765615210283,
+    "source_event_sha256": "9578fc22f8666d023573c7f709fa3d81988d12244f90f2eced6f4fbb34ba1a61",
+    "targets": {
+      "deltaQ_fC": -5.41196121755864,
+      "deltaM_mV": 50.55002799390201
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "criterion_logic_flip"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T225229Z-v3-r50-main-l018-alpha-a0-s202610303-b1-b02472a2",
+        "archive_sha256": "f92d3cfcba3375e3770fcf0ee6cf54caed02a108bdeffc810f7762549c506e12",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610304,
+    "condition_id": 0,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610304",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.215048428095947,
+    "source_event_sha256": "ae5ec89a42a3239ea818a2c62b1b94f9a4ff412a4cf98da4481c95a1ad97ae7c",
+    "targets": {
+      "deltaQ_fC": -4.1090824017595615,
+      "deltaM_mV": -38.835875604093964
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T225952Z-v3-r50-main-l018-alpha-a0-s202610304-b0-ad820071",
+        "archive_sha256": "dde636a6fc437b11d6c708b6c9cba51deb39baabd6897f40a54d505c35fc632f",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610304,
+    "condition_id": 0,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-alpha-a0-s202610304",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.215048428095947,
+    "source_event_sha256": "ae5ec89a42a3239ea818a2c62b1b94f9a4ff412a4cf98da4481c95a1ad97ae7c",
+    "targets": {
+      "deltaQ_fC": -4.53446631463509,
+      "deltaM_mV": 42.33594265687002
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "critical",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [
+      5.0
+    ],
+    "classification_numerical_status": "near boundary unresolved",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T230648Z-v3-r50-main-l018-alpha-a0-s202610304-b1-a2857bc6",
+        "archive_sha256": "cec8c2d6ffe85d83b7d30987e7d410d6eb2d3dd392c1e65efca78542d0814310",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610311,
+    "condition_id": 1,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610311",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.754545654401554,
+    "source_event_sha256": "50b1997de431e7043113839ea9be3a288633c5eaa71f299583b3edb4ab38d839",
+    "targets": {
+      "deltaQ_fC": -4.140342430307412,
+      "deltaM_mV": -39.132282004556984
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T203228Z-v3-r50-main-l018-alpha-a30-s202610311-b0-bb24fd4e",
+        "archive_sha256": "a318b848a4b89ecc0f9bca6c04596ed40ab55264f3bf35085021f3275acbb2cf",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610311,
+    "condition_id": 1,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610311",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.754545654401554,
+    "source_event_sha256": "50b1997de431e7043113839ea9be3a288633c5eaa71f299583b3edb4ab38d839",
+    "targets": {
+      "deltaQ_fC": -4.63079643327683,
+      "deltaM_mV": 43.23726857599297
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "MATCHED_REFINEMENT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "preregistered checked",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+        "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610312,
+    "condition_id": 1,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610312",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.004141108525108,
+    "source_event_sha256": "a90da8bc0267267a94dcef7f14c9e44fd579a8ea168ffa87f7cb0824bc87d2d8",
+    "targets": {
+      "deltaQ_fC": -3.759098384401482,
+      "deltaM_mV": -35.513574280452985
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T231326Z-v3-r50-main-l018-alpha-a30-s202610312-b0-b4b77b84",
+        "archive_sha256": "c3344584973a3ca2f688d342d1171d6d8c4e056378b3f38551605806a25ec206",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610312,
+    "condition_id": 1,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610312",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.004141108525108,
+    "source_event_sha256": "a90da8bc0267267a94dcef7f14c9e44fd579a8ea168ffa87f7cb0824bc87d2d8",
+    "targets": {
+      "deltaQ_fC": -4.19328894011008,
+      "deltaM_mV": 39.14442816692698
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "critical",
+      "0.005": "critical",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T232023Z-v3-r50-main-l018-alpha-a30-s202610312-b1-e60ff348",
+        "archive_sha256": "3183669b7ce813de46534d75990d9607c9ffb1f71768220ae8370fc54c3306f6",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610313,
+    "condition_id": 1,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610313",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.133444222312402,
+    "source_event_sha256": "0b3fe0d891603f8b744b61c0312332ac82a5f7030b25019f3af5a0895b9f698f",
+    "targets": {
+      "deltaQ_fC": -3.8251153470090027,
+      "deltaM_mV": -36.14050689221598
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T232712Z-v3-r50-main-l018-alpha-a30-s202610313-b0-208744cf",
+        "archive_sha256": "3870e9ff71bd327d5069fab7f2e555b96f46dc0da59afedc2e05790e20e9b1d3",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610313,
+    "condition_id": 1,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610313",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.133444222312402,
+    "source_event_sha256": "0b3fe0d891603f8b744b61c0312332ac82a5f7030b25019f3af5a0895b9f698f",
+    "targets": {
+      "deltaQ_fC": -4.2685036596713894,
+      "deltaM_mV": 39.84791782232
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "critical",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [
+      2.5
+    ],
+    "classification_numerical_status": "near boundary unresolved",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T233403Z-v3-r50-main-l018-alpha-a30-s202610313-b1-c106bdf9",
+        "archive_sha256": "df588808e06009b7477aab2628425bfe256ea8b33f0c9a459f2fc2cafdf2850f",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610314,
+    "condition_id": 1,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610314",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.613890149981054,
+    "source_event_sha256": "035ec9fcd6398c3088468ce37018ce59f1361cb6fc07d53c36b8555d701ce2fd",
+    "targets": {
+      "deltaQ_fC": -3.5595699031444923,
+      "deltaM_mV": -33.61886989670998
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T234050Z-v3-r50-main-l018-alpha-a30-s202610314-b0-2890231c",
+        "archive_sha256": "4b69e69c5a9d452a1975a5f356984b63524b1ff86f093983cf382d4f5181a7c4",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610314,
+    "condition_id": 1,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-alpha-a30-s202610314",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.613890149981054,
+    "source_event_sha256": "035ec9fcd6398c3088468ce37018ce59f1361cb6fc07d53c36b8555d701ce2fd",
+    "targets": {
+      "deltaQ_fC": -3.96676107517151,
+      "deltaM_mV": 37.026027160422025
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "critical",
+      "0.005": "critical",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T234734Z-v3-r50-main-l018-alpha-a30-s202610314-b1-b1d5fcc3",
+        "archive_sha256": "9ed730700d0191424770356ef1365e4d349e85422c8ba3e04f5e64e202af832e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610321,
+    "condition_id": 2,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610321",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6980337335812341,
+    "source_event_sha256": "f8af87e08a5a84993456f440f0e4869d58db2414a5a686cd9e81908c225570d2",
+    "targets": {
+      "deltaQ_fC": -0.31357680908854396,
+      "deltaM_mV": -2.9494019499209934
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T204621Z-v3-r50-main-l018-proton-a0-s202610321-b0-1121afca",
+        "archive_sha256": "bcacf57630115610a7dc1b6f40a5880e63d5da323c36be3ea40f5f945ebd9907",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610321,
+    "condition_id": 2,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610321",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6980337335812341,
+    "source_event_sha256": "f8af87e08a5a84993456f440f0e4869d58db2414a5a686cd9e81908c225570d2",
+    "targets": {
+      "deltaQ_fC": -0.33990386168784026,
+      "deltaM_mV": 3.168175042564947
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T205306Z-v3-r50-main-l018-proton-a0-s202610321-b1-affceae6",
+        "archive_sha256": "37cba8ad8db911650595726c32f2916bdff65da85569185d0dd24801e0874130",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610322,
+    "condition_id": 2,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610322",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8840020074663894,
+    "source_event_sha256": "3c71058af8be4f408d43e22510904d0ac6281f7bb9c0dc4baf635be591928c75",
+    "targets": {
+      "deltaQ_fC": -0.40231138605619793,
+      "deltaM_mV": -3.7843462070719647
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T235416Z-v3-r50-main-l018-proton-a0-s202610322-b0-b25d8d62",
+        "archive_sha256": "15408d40412185a53710eef8c2e16e224ad72745a088e08e6c6faed48d00aaed",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610322,
+    "condition_id": 2,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610322",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8840020074663894,
+    "source_event_sha256": "3c71058af8be4f408d43e22510904d0ac6281f7bb9c0dc4baf635be591928c75",
+    "targets": {
+      "deltaQ_fC": -0.43625071705787,
+      "deltaM_mV": 4.066340389373035
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T000052Z-v3-r50-main-l018-proton-a0-s202610322-b1-ac482b62",
+        "archive_sha256": "707bca79d2d31b8d453daf9908c8ee5889e70de01031fa67848a1285167e6179",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610323,
+    "condition_id": 2,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610323",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8508136018216186,
+    "source_event_sha256": "0a5bd3ef959d0797399c99daf7d6e18b2ddf0fc72ea49dd081439bf74a7a35e5",
+    "targets": {
+      "deltaQ_fC": -0.3863286231133849,
+      "deltaM_mV": -3.6339458336179797
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T000756Z-v3-r50-main-l018-proton-a0-s202610323-b0-31189d52",
+        "archive_sha256": "9e77a00c2e8c3ccb2f51cfa131340e063d47237923a467ee7771ca175154b6bf",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610323,
+    "condition_id": 2,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610323",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8508136018216186,
+    "source_event_sha256": "0a5bd3ef959d0797399c99daf7d6e18b2ddf0fc72ea49dd081439bf74a7a35e5",
+    "targets": {
+      "deltaQ_fC": -0.4188916557921696,
+      "deltaM_mV": 3.904511130178978
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T001451Z-v3-r50-main-l018-proton-a0-s202610323-b1-c43efc8c",
+        "archive_sha256": "2c603c4ecbef1f08ea3251a805889d530dc110fc6b3ea0d0452f39bcd6b8f018",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610324,
+    "condition_id": 2,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610324",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8515323805840238,
+    "source_event_sha256": "a8768afeb0204bc53ff5d7cf44c71d3bd673839033cbd1bb38d0be11555d22a4",
+    "targets": {
+      "deltaQ_fC": -0.386674104178147,
+      "deltaM_mV": -3.6371968135749944
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T002149Z-v3-r50-main-l018-proton-a0-s202610324-b0-53f0228e",
+        "archive_sha256": "c442278ca9d01a6a165eafc5e5ca233e4bddb75273d8c2c4936a257e1576089f",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610324,
+    "condition_id": 2,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-proton-a0-s202610324",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8515323805840238,
+    "source_event_sha256": "a8768afeb0204bc53ff5d7cf44c71d3bd673839033cbd1bb38d0be11555d22a4",
+    "targets": {
+      "deltaQ_fC": -0.41926686274321945,
+      "deltaM_mV": 3.908008963297016
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T002905Z-v3-r50-main-l018-proton-a0-s202610324-b1-85aecb26",
+        "archive_sha256": "47d154bca48e33744381be048ec7e993ac20e185cf244d7e6a1e50bc20ddfb08",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610331,
+    "condition_id": 3,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610331",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.43205437853535517,
+    "source_event_sha256": "82ee4ca9fe56c6c8ae67d19f38c7471f5501ef5368ad4231ff05167abca610e2",
+    "targets": {
+      "deltaQ_fC": -0.164257472598755,
+      "deltaM_mV": -1.544726023725962
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T205949Z-v3-r50-main-l018-proton-a30-s202610331-b0-aa1930c7",
+        "archive_sha256": "df3831ef277715bccecf7bb635de84b4e18ebcc2e2379bb33875b310561742ee",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610331,
+    "condition_id": 3,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610331",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.43205437853535517,
+    "source_event_sha256": "82ee4ca9fe56c6c8ae67d19f38c7471f5501ef5368ad4231ff05167abca610e2",
+    "targets": {
+      "deltaQ_fC": -0.18082851598610006,
+      "deltaM_mV": 1.685373807821966
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261010T210630Z-v3-r50-main-l018-proton-a30-s202610331-b1-fe6b589e",
+        "archive_sha256": "7dd02317238a3946e010b66263b2e3c7afc502d2da5a37661185206e2c2c6b1f",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610332,
+    "condition_id": 3,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610332",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6573198003285422,
+    "source_event_sha256": "a54afbfa26acd8ed7499372c6726066b17f33cc35ae804fc606cef02952f2b38",
+    "targets": {
+      "deltaQ_fC": -0.25293281198656303,
+      "deltaM_mV": -2.3788615323039886
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T003600Z-v3-r50-main-l018-proton-a30-s202610332-b0-a227f160",
+        "archive_sha256": "aaa47db96b554abab2e93ef6e4767bb2468653dbbc9581a3b2eabede58eedb25",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610332,
+    "condition_id": 3,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610332",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6573198003285422,
+    "source_event_sha256": "a54afbfa26acd8ed7499372c6726066b17f33cc35ae804fc606cef02952f2b38",
+    "targets": {
+      "deltaQ_fC": -0.2785499141915193,
+      "deltaM_mV": 2.5962523921020386
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T004300Z-v3-r50-main-l018-proton-a30-s202610332-b1-8b747ac3",
+        "archive_sha256": "b77f366829f43acb9e7c72e56f99a30dc3e5effaed0d0d3759d3be887632024d",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610333,
+    "condition_id": 3,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610333",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.7606879144347924,
+    "source_event_sha256": "9dbed6997a18e5bf01295fe8431aa0169b44ea7ce59cf7665ac5784675795e55",
+    "targets": {
+      "deltaQ_fC": -0.29427457381937,
+      "deltaM_mV": -2.7677984036649783
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T005005Z-v3-r50-main-l018-proton-a30-s202610333-b0-0ca450db",
+        "archive_sha256": "d1d404229d45c0f0f5a2c0118794af42805a113ec92bcbdc5cf3a084e3319292",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610333,
+    "condition_id": 3,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610333",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.7606879144347924,
+    "source_event_sha256": "9dbed6997a18e5bf01295fe8431aa0169b44ea7ce59cf7665ac5784675795e55",
+    "targets": {
+      "deltaQ_fC": -0.32413699703633947,
+      "deltaM_mV": 3.0211988383439525
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T005748Z-v3-r50-main-l018-proton-a30-s202610333-b1-4af89e8e",
+        "archive_sha256": "c27c7687e4b7f5ff5084b7f7f141948063ad4fbe85eb1ad6da1283afdc45af0b",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610334,
+    "condition_id": 3,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610334",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.7022762548137713,
+    "source_event_sha256": "cda094cbab089327c9ae881fb4f6dfca552bdb0d9c77c303700ebc7f364f4e0e",
+    "targets": {
+      "deltaQ_fC": -0.27086191775752094,
+      "deltaM_mV": -2.547531799593994
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T010521Z-v3-r50-main-l018-proton-a30-s202610334-b0-c2c69545",
+        "archive_sha256": "66573d1c743bdc0d23fd7a38ae2e79e2b2c3ef2fc95766b7e1fbefbd7a85a55a",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+        "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.18,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610334,
+    "condition_id": 3,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l018-proton-a30-s202610334",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.7022762548137713,
+    "source_event_sha256": "cda094cbab089327c9ae881fb4f6dfca552bdb0d9c77c303700ebc7f364f4e0e",
+    "targets": {
+      "deltaQ_fC": -0.29832003948280006,
+      "deltaM_mV": 2.780540757557959
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T011233Z-v3-r50-main-l018-proton-a30-s202610334-b1-76f43a08",
+        "archive_sha256": "d6362eca571e81b54e1db1f6ff218da506a71f2e22fa9a8542c7040501aff64b",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "control": {
+        "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+        "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      },
+      "neutral": {
+        "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+        "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+        "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+        "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610381,
+    "condition_id": 8,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610381",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.826962881332826,
+    "source_event_sha256": "92dc8a874de7626b165ac04f77572c502977f0df294f355c603f0bf4d7a72600",
+    "targets": {
+      "deltaQ_fC": -4.607669010311012,
+      "deltaM_mV": -43.196865695508016
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T011939Z-v3-r50-main-l035-alpha-a0-s202610381-b0-1e609859",
+        "archive_sha256": "7305bb2bb66e02090931ec70fea7726abe878bfde79dea3e1b762a630e92ffb2",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610381,
+    "condition_id": 8,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610381",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.826962881332826,
+    "source_event_sha256": "92dc8a874de7626b165ac04f77572c502977f0df294f355c603f0bf4d7a72600",
+    "targets": {
+      "deltaQ_fC": -5.020303828085049,
+      "deltaM_mV": 46.46563940716997
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T012705Z-v3-r50-main-l035-alpha-a0-s202610381-b1-19c69ae1",
+        "archive_sha256": "50580f3a8e715f2ea83dc664a961d0d259077200826c82e5b0fb51bd38458b90",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610382,
+    "condition_id": 8,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610382",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.21669686980689,
+    "source_event_sha256": "289683c9d2ff6449fe01464f89c91e866902c6f5ed1de6d82286544b7d2b42b0",
+    "targets": {
+      "deltaQ_fC": -4.861749213786742,
+      "deltaM_mV": -45.60081043129599
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T013420Z-v3-r50-main-l035-alpha-a0-s202610382-b0-e0e0b53c",
+        "archive_sha256": "b9e6b6a3082612851fda8ad2385b07ce72061a8a628cceac9a23a814734357df",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610382,
+    "condition_id": 8,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610382",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.21669686980689,
+    "source_event_sha256": "289683c9d2ff6449fe01464f89c91e866902c6f5ed1de6d82286544b7d2b42b0",
+    "targets": {
+      "deltaQ_fC": -5.30693908913847,
+      "deltaM_mV": 49.125109640589024
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "criterion_logic_flip"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T014219Z-v3-r50-main-l035-alpha-a0-s202610382-b1-8ffa2fee",
+        "archive_sha256": "ab5fcfce8c6db6b554fe347a972b1147c177d36f5dbe1e7acfd38bd099e1b632",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610383,
+    "condition_id": 8,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610383",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.04493062150555,
+    "source_event_sha256": "2572f0c739dcdea909e7053029c9c009a6cf92557092e6f1804ae82e11d17666",
+    "targets": {
+      "deltaQ_fC": -4.750053670122302,
+      "deltaM_mV": -44.543845370944965
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T014931Z-v3-r50-main-l035-alpha-a0-s202610383-b0-79237845",
+        "archive_sha256": "0974c9037e67f8d6d91a1c5c982276fb4d31b3706349a57f29c148be06891251",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610383,
+    "condition_id": 8,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610383",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.04493062150555,
+    "source_event_sha256": "2572f0c739dcdea909e7053029c9c009a6cf92557092e6f1804ae82e11d17666",
+    "targets": {
+      "deltaQ_fC": -5.180325252871519,
+      "deltaM_mV": 47.950249298071014
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "criterion_logic_flip"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T015719Z-v3-r50-main-l035-alpha-a0-s202610383-b1-9a4f38ac",
+        "archive_sha256": "f8aee3973962c30c7f9ca6eef482a79e4c091120a45b3842e0e5784177b59ec9",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610384,
+    "condition_id": 8,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610384",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.802428270790404,
+    "source_event_sha256": "cd78abba7d216381b03c137da0c86cfa307cd2c358c11010b1a1da983d7e159e",
+    "targets": {
+      "deltaQ_fC": -4.591615012464793,
+      "deltaM_mV": -43.04503384390801
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T020428Z-v3-r50-main-l035-alpha-a0-s202610384-b0-30aa210f",
+        "archive_sha256": "cf558a898a05fc3c91dc6f3cbe2247d72443a0311ea221d7929b1553667b0d8d",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 0,
+    "seed": 202610384,
+    "condition_id": 8,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-alpha-a0-s202610384",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 7.802428270790404,
+    "source_event_sha256": "cd78abba7d216381b03c137da0c86cfa307cd2c358c11010b1a1da983d7e159e",
+    "targets": {
+      "deltaQ_fC": -5.002311745289069,
+      "deltaM_mV": 46.29873326618195
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T021230Z-v3-r50-main-l035-alpha-a0-s202610384-b1-aba230a7",
+        "archive_sha256": "ea2d852268a661cf3c910d74720ed16c519d5abc3c4ceeecba47a1d50d2466de",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610391,
+    "condition_id": 9,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610391",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 9.204098394534075,
+    "source_event_sha256": "65a80f8f37afac8caaa0c526c584ecf928bb92d4c9a09c76b86c9cfd830e0e62",
+    "targets": {
+      "deltaQ_fC": -4.296537231966822,
+      "deltaM_mV": -40.256225677126004
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T021958Z-v3-r50-main-l035-alpha-a30-s202610391-b0-709f8de7",
+        "archive_sha256": "9fdc38e76db17bca422c6a1bded6f18c8f7d9b84b2270eac41584f9db8feeeca",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610391,
+    "condition_id": 9,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610391",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 9.204098394534075,
+    "source_event_sha256": "65a80f8f37afac8caaa0c526c584ecf928bb92d4c9a09c76b86c9cfd830e0e62",
+    "targets": {
+      "deltaQ_fC": -4.69996721339884,
+      "deltaM_mV": 43.494482638811945
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T022753Z-v3-r50-main-l035-alpha-a30-s202610391-b1-883705e6",
+        "archive_sha256": "c04f8c2a1c578a4f1865de46d47b14b01faca472a3633cac7b95de73c6a35e6e",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610392,
+    "condition_id": 9,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610392",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 9.334489108196633,
+    "source_event_sha256": "e732d3e4a6e8334a06149421dc32646a9d502dbce962d087d0c1f827d91e630b",
+    "targets": {
+      "deltaQ_fC": -4.364335710580622,
+      "deltaM_mV": -40.89665345023402
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T023513Z-v3-r50-main-l035-alpha-a30-s202610392-b0-d8e88cad",
+        "archive_sha256": "b0181b65092cda067644694ac69013701ed626990b8b475d95409bc47f407386",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610392,
+    "condition_id": 9,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610392",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 9.334489108196633,
+    "source_event_sha256": "e732d3e4a6e8334a06149421dc32646a9d502dbce962d087d0c1f827d91e630b",
+    "targets": {
+      "deltaQ_fC": -4.775973293287169,
+      "deltaM_mV": 44.19935398910002
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T024310Z-v3-r50-main-l035-alpha-a30-s202610392-b1-fc481354",
+        "archive_sha256": "664a5b82fd5417ec7f9161e3a8540bf65e295a619baffaa84bdabab18ed2b521",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610393,
+    "condition_id": 9,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610393",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.788782155592461,
+    "source_event_sha256": "eda4e9eab275c4175015d65736ab7278870db0fb34a4cb2b2cc26953e570b885",
+    "targets": {
+      "deltaQ_fC": -4.080819650791372,
+      "deltaM_mV": -38.219972241139985
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T025038Z-v3-r50-main-l035-alpha-a30-s202610393-b0-9cf663b9",
+        "archive_sha256": "a6afc113a94646abcc08e7683ed472a35aa02254de6d5650d668de440b8de526",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610393,
+    "condition_id": 9,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610393",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 8.788782155592461,
+    "source_event_sha256": "eda4e9eab275c4175015d65736ab7278870db0fb34a4cb2b2cc26953e570b885",
+    "targets": {
+      "deltaQ_fC": -4.45883555482586,
+      "deltaM_mV": 41.258630075333926
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "critical",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T025816Z-v3-r50-main-l035-alpha-a30-s202610393-b1-ba594bf0",
+        "archive_sha256": "14ca38c3df51729159eb3629294c793b96588e4ea43f10b1e331da8e3a69e6e7",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610394,
+    "condition_id": 9,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610394",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 9.335198217823137,
+    "source_event_sha256": "dd4a7380ae20612ba5b8d84a9fdd6ec9f631e7529d4baee0d153f84e609d07c6",
+    "targets": {
+      "deltaQ_fC": -4.364704465022252,
+      "deltaM_mV": -40.900137301927984
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T030524Z-v3-r50-main-l035-alpha-a30-s202610394-b0-2cb5550e",
+        "archive_sha256": "8b524103fd3628a83bf666d0e4924e0c29f831252a8520f624aefb71a781f67d",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "alpha",
+    "angle_deg": 30,
+    "seed": 202610394,
+    "condition_id": 9,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-alpha-a30-s202610394",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 9.335198217823137,
+    "source_event_sha256": "dd4a7380ae20612ba5b8d84a9fdd6ec9f631e7529d4baee0d153f84e609d07c6",
+    "targets": {
+      "deltaQ_fC": -4.776386963600059,
+      "deltaM_mV": 44.20319047528898
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "criterion_logic_flip",
+      "0.005": "criterion_logic_flip",
+      "0.01": "critical"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T044502Z-v3-r50-main-retry-r2-l035-alpha-a30-s202610394-b1-15d9f5f5",
+        "archive_sha256": "d4324ad842f9cb13cea4c250c981aec07b492ddc9fa819010960bfe66cf48a73",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610401,
+    "condition_id": 10,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610401",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.5366917084008891,
+    "source_event_sha256": "004d56ef72b6fab20550fe1c9f6437afbd4bb3b60e842eb2f33bb96885b980c3",
+    "targets": {
+      "deltaQ_fC": -0.24628725932670112,
+      "deltaM_mV": -2.2950310317549905
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T051015Z-v3-r50-main-l035-proton-a0-s202610401-b0-72ddb033",
+        "archive_sha256": "ab4c5ecaf8f484d68ae439a030a372b27c2823c6d5944272d4873bb46c932f91",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610401,
+    "condition_id": 10,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610401",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.5366917084008891,
+    "source_event_sha256": "004d56ef72b6fab20550fe1c9f6437afbd4bb3b60e842eb2f33bb96885b980c3",
+    "targets": {
+      "deltaQ_fC": -0.2633289494204194,
+      "deltaM_mV": 2.432815164644997
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T051948Z-v3-r50-main-l035-proton-a0-s202610401-b1-aaa223da",
+        "archive_sha256": "13eaa03726fd9c17d5a4c62b1a210c48047c9c45f9781d5bd564538728bb5820",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610402,
+    "condition_id": 10,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610402",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.47028356130507676,
+    "source_event_sha256": "dbfbfde6b93b8b51b958ed589a521e0055e34797a711939362dcd86c5147b9b7",
+    "targets": {
+      "deltaQ_fC": -0.21482101874104612,
+      "deltaM_mV": -2.0017520549500123
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T052912Z-v3-r50-main-l035-proton-a0-s202610402-b0-cdca2223",
+        "archive_sha256": "8a3b97008a663f56faf970f4971911f5c1f588f9918ab3f14a9a92e51f212c5d",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610402,
+    "condition_id": 10,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610402",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.47028356130507676,
+    "source_event_sha256": "dbfbfde6b93b8b51b958ed589a521e0055e34797a711939362dcd86c5147b9b7",
+    "targets": {
+      "deltaQ_fC": -0.22964975157715894,
+      "deltaM_mV": 2.121640376869016
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T053856Z-v3-r50-main-l035-proton-a0-s202610402-b1-874ca107",
+        "archive_sha256": "e91139012308cc30d7c9452e6be750dde62d00738c66db89828e8422a890f571",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610403,
+    "condition_id": 10,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610403",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.9662788194569174,
+    "source_event_sha256": "1135851cbda20bdbf2224d4c99d46c8e128d9fd5ec0f341ab2966458da4938fa",
+    "targets": {
+      "deltaQ_fC": -0.456025628566397,
+      "deltaM_mV": -4.2503510488610114
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T054822Z-v3-r50-main-l035-proton-a0-s202610403-b0-2509b397",
+        "archive_sha256": "dd24ce1ad0d3f92638c981d4d2ce1ad46955f04150defd057b8ed8a46c26d15d",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610403,
+    "condition_id": 10,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610403",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.9662788194569174,
+    "source_event_sha256": "1135851cbda20bdbf2224d4c99d46c8e128d9fd5ec0f341ab2966458da4938fa",
+    "targets": {
+      "deltaQ_fC": -0.4880566461482094,
+      "deltaM_mV": 4.509334811703014
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T055817Z-v3-r50-main-l035-proton-a0-s202610403-b1-8955c5b6",
+        "archive_sha256": "26cfb5cd99aec472d2f2b9b5c1095ff25e0a84e86fb7473c188c3e3f40f03efe",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610404,
+    "condition_id": 10,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610404",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.3215898455414342,
+    "source_event_sha256": "548e1868548dbfea18b9d062e7e71f9107595d76ed3d72e5b4512f9ce6f0084a",
+    "targets": {
+      "deltaQ_fC": -0.14535017829875804,
+      "deltaM_mV": -1.3543170958100204
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T060743Z-v3-r50-main-l035-proton-a0-s202610404-b0-936421f9",
+        "archive_sha256": "96ca200d4c4bda218a071509b1bdf50c1871e8f9f3a80b97af4013660ec8dcc3",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 0,
+    "seed": 202610404,
+    "condition_id": 10,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-proton-a0-s202610404",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.3215898455414342,
+    "source_event_sha256": "548e1868548dbfea18b9d062e7e71f9107595d76ed3d72e5b4512f9ce6f0084a",
+    "targets": {
+      "deltaQ_fC": -0.15532952072503936,
+      "deltaM_mV": 1.4349918187960276
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T061731Z-v3-r50-main-l035-proton-a0-s202610404-b1-49fb94ed",
+        "archive_sha256": "1553c0f03a8c69b4701da4c4ab7d1bcf881ec2481deeeed602cbc3f661159821",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610411,
+    "condition_id": 11,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610411",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6443923684954449,
+    "source_event_sha256": "945e5ce1c38cebad8b66ec13ac01e705e30826f4955cb5d45b8e8e6397c46c60",
+    "targets": {
+      "deltaQ_fC": -0.24091064318920508,
+      "deltaM_mV": -2.2449173671320044
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T062655Z-v3-r50-main-l035-proton-a30-s202610411-b0-d0468b8b",
+        "archive_sha256": "b9112a0dc175255fb388eb25fde72a7d1029db672a141f0d1184fecaeba328ce",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610411,
+    "condition_id": 11,
+    "replicate": 1,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610411",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6443923684954449,
+    "source_event_sha256": "945e5ce1c38cebad8b66ec13ac01e705e30826f4955cb5d45b8e8e6397c46c60",
+    "targets": {
+      "deltaQ_fC": -0.2592160324985493,
+      "deltaM_mV": 2.3948140114610217
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T063645Z-v3-r50-main-l035-proton-a30-s202610411-b1-f36fc027",
+        "archive_sha256": "dfd67074bf8f6cc681d3ea7978578481c5ee96c2932a83f47298aeba5f6e06ae",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610412,
+    "condition_id": 11,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610412",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6961602285515927,
+    "source_event_sha256": "2f1727c5ce4af7dc59125e36ed4d63642e3e935ad666a2e9af13493ba10cf68d",
+    "targets": {
+      "deltaQ_fC": -0.2609025554482741,
+      "deltaM_mV": -2.431258050412999
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T064611Z-v3-r50-main-l035-proton-a30-s202610412-b0-fc55b80d",
+        "archive_sha256": "fb422d7a544106624c5a78a0d23ac8993c7c9c27e3db52d940730b23fe7c0874",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610412,
+    "condition_id": 11,
+    "replicate": 2,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610412",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.6961602285515927,
+    "source_event_sha256": "2f1727c5ce4af7dc59125e36ed4d63642e3e935ad666a2e9af13493ba10cf68d",
+    "targets": {
+      "deltaQ_fC": -0.28074705205719974,
+      "deltaM_mV": 2.593750248387927
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T065559Z-v3-r50-main-l035-proton-a30-s202610412-b1-6d4a19ef",
+        "archive_sha256": "1bfa591181998cc0031a6503b03099d5ae16ade76292bdf584ccc3b1b6b5c6ad",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610413,
+    "condition_id": 11,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610413",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8474099735834913,
+    "source_event_sha256": "6c11df86f679e19c942cd8d75d73f09f5dcdaf0328f4987a39dd3364b72ff792",
+    "targets": {
+      "deltaQ_fC": -0.319828714246545,
+      "deltaM_mV": -2.9805398688980134
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T070531Z-v3-r50-main-l035-proton-a30-s202610413-b0-ca4764f8",
+        "archive_sha256": "f2eb0f20d4cc10f253da4fae1693789e534f9dc8708cb2784f2139b2a0324bc6",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610413,
+    "condition_id": 11,
+    "replicate": 3,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610413",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.8474099735834913,
+    "source_event_sha256": "6c11df86f679e19c942cd8d75d73f09f5dcdaf0328f4987a39dd3364b72ff792",
+    "targets": {
+      "deltaQ_fC": -0.344227728393679,
+      "deltaM_mV": 3.180297371109919
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T071525Z-v3-r50-main-l035-proton-a30-s202610413-b1-82e6711a",
+        "archive_sha256": "c3c79f0b535245ac6ab629c7527d25b38fd52adc56e39048f91266ae55e13d7e",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610414,
+    "condition_id": 11,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610414",
+    "stored_bit": 0,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.9613586445900167,
+    "source_event_sha256": "91f2047c24504d1eab68706a8ab3a370dafd22be0c670d6054e103dd11371538",
+    "targets": {
+      "deltaQ_fC": -0.3647070561687671,
+      "deltaM_mV": -3.3989177269749815
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T072457Z-v3-r50-main-l035-proton-a30-s202610414-b0-536769d3",
+        "archive_sha256": "9a4b8d77dcf31ccc75eab329f14ef5edf3444d293d2a5730131498c2fbed9f19",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+        "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  },
+  {
+    "gate_length_um": 0.35,
+    "particle": "proton",
+    "angle_deg": 30,
+    "seed": 202610414,
+    "condition_id": 11,
+    "replicate": 4,
+    "split": "train",
+    "event_label": "l035-proton-a30-s202610414",
+    "stored_bit": 1,
+    "physical_revision": "r50-main-r1",
+    "Qdep_fC": 0.9613586445900167,
+    "source_event_sha256": "91f2047c24504d1eab68706a8ab3a370dafd22be0c670d6054e103dd11371538",
+    "targets": {
+      "deltaQ_fC": -0.39260707988873933,
+      "deltaM_mV": 3.6273280686429654
+    },
+    "continuous_valid": true,
+    "continuous_numerical_status": "RAW_AUDIT_PASSED",
+    "classification": {
+      "0.0025": "correct",
+      "0.005": "correct",
+      "0.01": "correct"
+    },
+    "classification_numerically_uncertain_thresholds_mV": [],
+    "classification_numerical_status": "outside near-boundary band",
+    "sources": {
+      "signal": {
+        "run_id": "20261011T073430Z-v3-r50-main-l035-proton-a30-s202610414-b1-40085e22",
+        "archive_sha256": "94d32dc689dfd899bedefca8da03c3c639d2a7d1c1ef1046b41b272019a8709c",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "control": {
+        "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+        "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      },
+      "neutral": {
+        "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+        "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+        "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+        "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+      }
+    },
+    "metric_validity": "metrics_computed; physical_reference_and_sensitivity_gates_must_be_joined_before_final_validity"
+  }
+]

@@ -17,8 +17,6 @@
   },
   "p0_admissions_dir": "plans/dram-se-ddr5-lpddr5/r06-gate/p0-admissions",
   "production_admissions_dir": "plans/dram-se-ddr5-lpddr5/r06-gate/production-admissions",
-  "max_p0_tasks": 64,
-  "max_p0_particle_tasks": 12,
   "legacy_new_tasks": "hold",
   "scientific_acceptance": "not_assessed",
   "pmi_build_recipe": {

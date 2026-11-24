@@ -1,0 +1,145 @@
+{
+  "schema": "dram-see-v3-final-r4-root-presentation-visual-review",
+  "utc": "2026-10-12T00:54:00.791079+00:00",
+  "reviewer": "root",
+  "method": "actual tools.view_image inspection of all 16 final PPTX re-import rendered slides",
+  "presentation": "reports/final-r4/dram-see-v3-r4-r4.pptx",
+  "presentation_sha256": "4b3487f325afdb86cee64f7fe04de5c319cb536e1a32e9273523f5c8713730fd",
+  "validation_receipt": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/validation.json",
+  "validation_sha256": "e8b930ceec531f89ed55dd4d32a854ce59c76406d70f101f2c2b6277b8c8bab0",
+  "core_slides": 12,
+  "backup_slides": 4,
+  "slides": [
+    {
+      "slide": 1,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-01.png",
+      "sha256": "4f35a9bc2e2d52fdbc2a01d7bbaac5e6562105d24fb9f6b99e179a8f97719d4e",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "完成分母和5mV状态明确，科学边界在首页"
+    },
+    {
+      "slide": 2,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-02.png",
+      "sha256": "93ccfbc3589edc8b1b516f942e6f69de9667245c5077fcbdc6fb76f551cab7ac",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "公式两列及sig/ctl/neu定义、分类条件均清楚"
+    },
+    {
+      "slide": 3,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-03.png",
+      "sha256": "7af218b6746787f6787313e7288073476cf66991faa6626fd066d00e59007582",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "冻结、输入到评分流程及无越界请求清楚"
+    },
+    {
+      "slide": 4,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-04.png",
+      "sha256": "7e07b178d5b3729bc1b3decf73d774702f0816e7b9b715b16c0822f1514bc150",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "训练/域内/外推32+16+16独立事件表正确"
+    },
+    {
+      "slide": 5,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-05.png",
+      "sha256": "4a7b0e71acebfa82dd3b72a5d44ce8533b4233f35fb5e2737fbde11e1c32ca64",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "初态时序和历史预充失败分开说明"
+    },
+    {
+      "slide": 6,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-06.png",
+      "sha256": "9721021ddcd286df3d87770c3c64d710df5284a15bc719478b954c2cc449ac81",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "未修改完整物理参考owned窗口，场/单位/来源可核"
+    },
+    {
+      "slide": 7,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-07.png",
+      "sha256": "402b63439c56291076867dbb0dddf1c4aea574fe536a0135de885db7b1225c8a",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "三阈值128堆叠图保留不确定及7历史失败说明"
+    },
+    {
+      "slide": 8,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-08.png",
+      "sha256": "c1abbf5e66bc78aa71de55a6f9f4517445bef8b41af124baed1b517ce0a2e095",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "原生RMSE图和电荷表，pooled残差限制明示"
+    },
+    {
+      "slide": 9,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-09.png",
+      "sha256": "6d37d12a13158d61cbbaaab1034bcee1fbad20aabf7e162f880457bde76dc707",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "原生氧化层差值图保留微小量，容差非误差条明示"
+    },
+    {
+      "slide": 10,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-10.png",
+      "sha256": "e8989949b4ef285af7045aa93390cb93f5b90ee5e8db38d17e64338c8ba6e77c",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "四边界比较，5mV一跨界加三未定，N不增加"
+    },
+    {
+      "slide": 11,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-11.png",
+      "sha256": "dcbe1f8cfab372f57574fa40ff1b07e91d1f669feb714499d1e7ea3cbd0f6c25",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "7失败、4alias、224账项、全费用/null保留"
+    },
+    {
+      "slide": 12,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-12.png",
+      "sha256": "9425e4424274f1e8e8d23f5684213ee5d74231b0394cd2e2e8a7f8ac87fc9175",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "结论范围和真实学生/教师/答辩待办"
+    },
+    {
+      "slide": 13,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-13.png",
+      "sha256": "1ef0d9e10f9a19a95d0abb32e0b4201374b584da03933004ee50d9b5f82fa56f",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "分区八行固定预测误差及单位可读"
+    },
+    {
+      "slide": 14,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-14.png",
+      "sha256": "823a4baa2e42b15825c0d3dab7a346678b1c9b96be846303b3c4311a8210b86e",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "未修改完整alpha/30deg/seed311/bit1窗口"
+    },
+    {
+      "slide": 15,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-15.png",
+      "sha256": "3ee827de4e945af07fc966ade295a64daba8c0c70abea75e2c456beae178fc36",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "文献入口和二维/EM/N4适用范围"
+    },
+    {
+      "slide": 16,
+      "image": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4/slides/slide-16.png",
+      "sha256": "7ca8f2dec440ec8e4a9232561f52fd34f65283ed83a349ef36a624c054a34c51",
+      "actually_viewed": true,
+      "approved": true,
+      "observation": "只读演示步骤与全部人工事项待填写"
+    }
+  ],
+  "approved": true,
+  "layout_observations": "All titles, tables, native charts, formulas and full native windows readable; no clipping or overlap observed. Native text/charts/tables editable per package checks; display rounding does not alter frozen input.",
+  "limit": "Rendered with artifact-tool after final PPTX import; no claim of execution in native Microsoft PowerPoint or student presentation."
+}

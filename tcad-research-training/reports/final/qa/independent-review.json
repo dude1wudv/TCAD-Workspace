@@ -1,0 +1,136 @@
+{
+  "schema": "independent-manuscript-evidence-review-v1",
+  "reviewed_at": "2026-10-11",
+  "snapshot": "2026-10-11 05:02:41 UTC-08:00",
+  "scope": "Read-only content/evidence review of research-paper.tex, course-report.tex, included sections/tables against reports/final evidence package and referenced experiment source snapshots. No solver, SSH, controller, or experiment run started.",
+  "result": "no_blocking_evidence_mismatches_found",
+  "blocking_items": [],
+  "checks": [
+    {
+      "topic": "Training sample denominator and classification",
+      "finding": "一致。64条训练响应=32个独立事件×两种配对位值；逐表复算 effective_classification_5mV 为 correct 48、criterion_logic_flip 10、critical 4、numerically_uncertain 2。3个重试别名的 additional_independent_events 均为0。稿件明确64响应不是64次独立入射，数值不确定没有并入其他类别。",
+      "status": "pass",
+      "manuscript_locations": [
+        "reports/final/sections/paper/03-workflow-metrics.tex:34-35",
+        "reports/final/sections/paper/04-results.tex:37-49",
+        "reports/final/sections/course/04-design.tex:4-8,30-35",
+        "reports/final/sections/course/05-results.tex:86-90"
+      ],
+      "evidence_locations": [
+        "reports/final/data/r50-training-responses.csv:1-65",
+        "reports/final/data/retry-aliases.csv:1-4",
+        "reports/final/data/evidence.json:progress,training"
+      ]
+    },
+    {
+      "topic": "Fixed snapshot and independent test boundary",
+      "finding": "一致。快照逻辑槽位为训练64/64、域内留出19 verified+1 running+12 missing、外推0 verified+0 running+32 missing。冻结记录有64条配对预测且test_responses_seen=0；稿件未把冻结预测或训练交叉验证冒充独立测试评分。",
+      "status": "pass",
+      "manuscript_locations": [
+        "reports/final/tables/snapshot.tex:1-9",
+        "reports/final/tables/progress.tex:1-9",
+        "reports/final/sections/paper/05-prediction-discussion.tex:36-39",
+        "reports/final/sections/course/05-results.tex:3-18,104-110"
+      ],
+      "evidence_locations": [
+        "reports/final/data/evidence.json:snapshot,progress,freeze",
+        "reports/final/data/source-snapshots/prediction-freeze.json",
+        "reports/final/data/retry-aliases.csv"
+      ]
+    },
+    {
+      "topic": "D1/reference definitions and quantities",
+      "finding": "一致。历史D1的固定参考+2.454960555 mV、离线匹配中性参考−9.915036045 mV、物理匹配支路−9.915036045 mV均与归档一致；中心中性读出偏移12.369996600 mV及理想电容共享预测差0.001543614 mV相符。稿件区分neutral参考与同位值control，并将D1限定为历史诊断。",
+      "status": "pass",
+      "manuscript_locations": [
+        "reports/final/research-paper.tex:11-12",
+        "reports/final/sections/paper/03-workflow-metrics.tex:14-32",
+        "reports/final/sections/paper/04-results.tex:2-16",
+        "reports/final/sections/course/04-design.tex:10-28",
+        "reports/final/sections/course/05-results.tex:36-49"
+      ],
+      "evidence_locations": [
+        "reports/final/data/d1-reference-comparison.csv:1-4",
+        "reports/final/data/source-snapshots/d1-summary.csv:3-4,9-10",
+        "reports/final/data/evidence.json:d1_reference"
+      ]
+    },
+    {
+      "topic": "Old 100-ohm failure and R50 revision",
+      "finding": "一致。旧R100固定事件绝对预充误差13.297362 μV超过10 μV且保留FAILED；独立R50 probe为4.731204 μV并通过。稿件明确称独立物理版本/probe，不回写旧失败或计入主矩阵。",
+      "status": "pass",
+      "manuscript_locations": [
+        "reports/final/sections/paper/02-model-transfer.tex:19-22",
+        "reports/final/sections/paper/04-results.tex:19-35",
+        "reports/final/sections/course/02-model.tex:28-35,54-64",
+        "reports/final/sections/course/05-results.tex:52-83",
+        "reports/final/sections/course/06-discussion.tex:3-8"
+      ],
+      "evidence_locations": [
+        "reports/final/data/r50-precharge.csv:1-3",
+        "reports/final/data/evidence.json:r50_probe_precharge,r50_reference_snapshot",
+        "reports/final/evidence-index.csv:E12,E20"
+      ]
+    },
+    {
+      "topic": "Cross-validation versus test and reported RMSE",
+      "finding": "一致。四模型alpha均为0.1，八折工况LOCO平均折RMSE与表格精度相符：ΔQ 0.102888/0.112903 fC；ΔM 0.955160/1.012491 mV。稿件指出这些分数服务训练阶段模型选择，不是独立测试误差，且预测输入包括Geant4沉积和已知基线。",
+      "status": "pass",
+      "manuscript_locations": [
+        "reports/final/tables/training-cv.tex:1-10",
+        "reports/final/sections/paper/05-prediction-discussion.tex:10-39",
+        "reports/final/sections/paper/06-conclusion.tex:4-6",
+        "reports/final/sections/course/04-design.tex:37-56",
+        "reports/final/sections/course/05-results.tex:104-125"
+      ],
+      "evidence_locations": [
+        "reports/final/data/r50-training-cv.csv:1-5",
+        "reports/final/data/evidence.json:training.cv",
+        "reports/final/data/source-snapshots/frozen-models.json",
+        "reports/final/data/source-snapshots/prediction-freeze.json"
+      ]
+    },
+    {
+      "topic": "Scientific scope, natural-language capability, units and formulas",
+      "finding": "未发现不一致。自然语言功能被限制为限定模板到冻结矩阵的映射，且明确无自主求解入口；模型标为未校准二维探索模型。单位换算与维度关系自洽：MeV至eV因子10^6、3.6 eV/对、Qdep=qNeh、线电荷Qdep/ell、源积分电荷及LET的pC/μm字段说明；读出公式中D、M、ΔM符号定义与正文解释匹配。",
+      "status": "pass",
+      "manuscript_locations": [
+        "reports/final/research-paper.tex:11-12",
+        "reports/final/sections/paper/02-model-transfer.tex:28-57",
+        "reports/final/sections/paper/03-workflow-metrics.tex:1-12,14-35",
+        "reports/final/sections/paper/05-prediction-discussion.tex:39-44",
+        "reports/final/sections/paper/06-conclusion.tex:6",
+        "reports/final/sections/course/03-platform.tex:3-16,26-54",
+        "reports/final/sections/course/06-discussion.tex:30-53"
+      ],
+      "evidence_locations": [
+        "reports/final/data/evidence.json:model,freeze",
+        "reports/final/data/source-snapshots/r50-demo-implementation.md:1-16,42-70",
+        "reports/final/data/source-snapshots/r50-numerical-preregistered.json",
+        "reports/final/evidence-index.csv:E14,E16-E18"
+      ]
+    }
+  ],
+  "commands": [
+    {
+      "evidence": "64 rows, 32 unique events, classes 48/10/4/2, 3 aliases with zero new events; progress 64/64,19/1/12,0/0/32; freeze test_responses_seen=0 and test_paired_predictions=64.",
+      "command": "Import-Csv r50-training-responses.csv; Group-Object effective_classification_5mV; unique event_label count; sum retry-aliases.additional_independent_events; inspect progress.tex and prediction-freeze.json; assert all expected counts",
+      "exit_code": 0
+    },
+    {
+      "evidence": "Located boundary, metric and reported-number statements in both manuscript sources.",
+      "command": "rg -n ... reports/final/sections/paper reports/final/research-paper.tex reports/final/tables",
+      "exit_code": 0
+    },
+    {
+      "evidence": "The source snapshot contains the reported D1 and reference quantities.",
+      "command": "rg -n D1 reported numbers against reports/final/data/source-snapshots/d1-summary.csv and reports/final/data/d1-reference-comparison.csv",
+      "exit_code": 0
+    }
+  ],
+  "unverified": [
+    "No raw archive re-audit or live ledger/process check; the stipulated fixed snapshot was used.",
+    "No visual/layout, PDF, citation-source, or bibliography claim audit; these were outside this review request.",
+    "No fresh simulation or controller execution."
+  ]
+}
