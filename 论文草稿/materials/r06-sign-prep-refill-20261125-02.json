@@ -1,0 +1,115 @@
+{
+  "order_id": "r06-sign-prep-refill-20261125-02",
+  "status": "partial",
+  "scheduler": {
+    "capacity": 16,
+    "before": {
+      "observed_at_utc": "2026-11-25T15:03:00Z",
+      "running": 16,
+      "free": 0,
+      "ready": 11,
+      "awaiting_acceptance": 11,
+      "missing_material": 47,
+      "blocked_by_stage": {
+        "missing_material": 47,
+        "awaiting_acceptance": 11,
+        "other": 0
+      },
+      "r06_released_runs": 230
+    },
+    "after": {
+      "observed_at_utc": "2026-11-25T16:08:26Z",
+      "running": 16,
+      "free": 0,
+      "ready": 18,
+      "awaiting_acceptance": 2,
+      "missing_material": 47,
+      "blocked_by_stage": {
+        "missing_material": 47,
+        "awaiting_acceptance": 2,
+        "other": 0
+      },
+      "r06_released_runs": 231
+    }
+  },
+  "acceptance": {
+    "lhs03": {
+      "criterion": "r06-step-tol-v2",
+      "step_difference_limit_uV": 500.0,
+      "minimum_readout_margin_uV": 101.56,
+      "verified": [
+        "35 ns terminal point",
+        "three zero-source integrals",
+        "write and hold polarity",
+        "h/4 to h/8 actual BE step comparison",
+        "both bits"
+      ],
+      "h4_h8_difference_uV": {
+        "b0": 342.456937659,
+        "b1": 200.771554332
+      },
+      "readout_margin_V": {
+        "b0": 0.045981466357188,
+        "b1": 0.030577828017404
+      },
+      "signed": "dual-state P0 qualification, Z bindings, and case-acceptance receipts"
+    },
+    "d2": {
+      "p2_authorized": true,
+      "threshold_bracket_observed": false,
+      "decision_scope": "right-censored release for independently P0-qualified profiles",
+      "manifest_sha256": "ab1b6a44b5d965e249695b32b504248428c35aa0262a405a6e5b0f5232a930c6",
+      "p1_decision_sha256": "480f0c1297e232ca2085f53707fd3d2afe76694813c09d9bfb6575baefc1adb9",
+      "navigation_report_sha256": "9eecf31ca1926a4ccfac33eb176b05e15650d397f5e52f8a7796c4f4f1a92a17",
+      "navigation_pools_passed": 48
+    },
+    "remaining": {
+      "count": 2,
+      "status": "awaiting_standard_acceptance_material",
+      "blocker": "The current scheduler still reports two acceptance-stage records. The available post-collection evidence does not provide a complete standard readout package for signing in this order."
+    }
+  },
+  "repairs": {
+    "count": 2,
+    "status": "isolated_repair_package_ready",
+    "details": [
+      {
+        "bit": 0,
+        "failure_class": "lost_without_exit after runtime identity handoff",
+        "handling": "new isolated input and repair task prepared with unchanged physical inputs"
+      },
+      {
+        "bit": 1,
+        "failure_class": "remote exit 143 without native success",
+        "handling": "new isolated input and repair task prepared while retaining the original failure record"
+      }
+    ]
+  },
+  "response_supply": {
+    "service": {
+      "scheduler": "active",
+      "response_service": "inactive_after_successful_manual_run",
+      "response_timer": "active_waiting"
+    },
+    "response_status": {
+      "succeeded": 40,
+      "not_submitted": 8,
+      "intake_errors": 0
+    },
+    "published_batches": 2,
+    "publication_result": "The original signed publication entry point accepted the available LHS03 C0 and C1 batches. The ready queue increased from 11 to 18."
+  },
+  "remaining_blockers": {
+    "missing_material": 47,
+    "pinned_response_context_and_profile_source_adapter": 40,
+    "解锁条件": "Provide the pinned response context and profile source adapter for each affected S condition, then let the existing timer or scheduler prepare a new signed batch.",
+    "repair_follow_up": "The two isolated repair tasks require execution and later standard readout review."
+  },
+  "resource_snapshot": {
+    "server_available_gib_before": 55.95,
+    "virtual_machine_available_gib_before": 61.85,
+    "virtual_machine_growth_headroom_gib_before": 46.4,
+    "server_available_gib_after_rounded": 56.0
+  },
+  "evidence_boundary": "This snapshot records scheduler counts, signed qualification work, the existing P2 decision, response supply status, repair handoff state, and disk observations available during this order. It does not claim completion of the two remaining acceptance records or the 47 material blockers."
+}
