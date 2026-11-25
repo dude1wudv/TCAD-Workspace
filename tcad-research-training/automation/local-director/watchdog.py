@@ -12,9 +12,9 @@ from pathlib import Path
 
 from codex_runner import finalize_and_precheck, launch_worker, terminate_worker
 from config import BASE_DIR, load_config
-from probes import compute_state_fingerprint, probe_codex_worker, probe_server, probe_thesis
+from probes import compute_state_fingerprint, probe_codex_worker, probe_server, probe_thesis, summarize_server
 from runtime import LockBusy, add_event, file_lock, load_state, order_dir, save_state, state_lock
-from schemas import DeliveryReceipt, WorkOrder, append_jsonl, atomic_write, parse_time, write_json
+from schemas import DeliveryReceipt, WorkOrder, append_jsonl, atomic_write, parse_time, read_json, write_json
 from status_publisher import redact_configured_text, redact_text, refresh_status
 
 
@@ -62,6 +62,43 @@ def _advance_worker(cfg, state, worker, now, *, dry_run):
         state.pending_events = [event for event in state.pending_events if event["reason"] != "CODEX_STALLED"]
 
 
+_MILESTONE_KEYS = (
+    "r06_released_runs",
+    "lhs_zero_pairs_collected",
+    "lhs_halfstep_pairs_collected",
+    "lhs_quartersteps_count",
+    "lhs_eighthsteps_count",
+    "d2_x10_feedback_count",
+    "d2_x30_feedback_count",
+    "lhs_transport_collected",
+    "repair_requests",
+)
+_STARVE_COOLDOWN_SECONDS = 1200
+
+
+def _load_milestones(cfg):
+    path = cfg.state_dir / "milestones.json"
+    try:
+        data = read_json(path)
+        return data if isinstance(data, dict) else {}
+    except (FileNotFoundError, OSError, ValueError):
+        return {}
+
+
+def _milestone_increased(previous, current):
+    changed = []
+    for key in _MILESTONE_KEYS:
+        old = previous.get(key)
+        new = current.get(key)
+        if isinstance(new, int) and isinstance(old, int) and new > old:
+            changed.append(f"{key}:{old}->{new}")
+        elif isinstance(new, list) and isinstance(old, list) and len(new) > len(old):
+            changed.append(f"{key}:{len(old)}->{len(new)}")
+        elif old is None and ((isinstance(new, int) and new > 0 and key == "repair_requests") or False):
+            changed.append(f"{key}:0->{new}")
+    return changed
+
+
 def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, *, dry_run):
     if state.active_turn and _due(now, state.active_turn["started_at"], cfg.director_turn_timeout_seconds):
         if not dry_run:
@@ -82,6 +119,30 @@ def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, 
     elif server.get("service_active") is True:
         state.server_service_blocked = False
         state.pending_events = [event for event in state.pending_events if event["reason"] != "SCHEDULER_UNAVAILABLE"]
+
+    summary = server.get("summary") if isinstance(server.get("summary"), dict) else summarize_server(server)
+    active = state.active_order
+    worker_busy = bool(active and active.get("status") in {"queued", "retry_queued", "running", "stalled"})
+    milestones = _load_milestones(cfg)
+    prev_counts = milestones.get("counts") if isinstance(milestones.get("counts"), dict) else {}
+    cur_counts = {key: summary.get(key) for key in _MILESTONE_KEYS}
+    deltas = _milestone_increased(prev_counts, cur_counts)
+    if deltas:
+        add_event(state, "SIM_MILESTONE_COLLECTED", "urgent", ", ".join(deltas[:4]))
+    if summary.get("starved") and not worker_busy and _due(now, milestones.get("last_starve_at"), _STARVE_COOLDOWN_SECONDS):
+        detail = (
+            f"空闲 {summary.get('free_slots', 0)}/{summary.get('slots_total', 0)} 槽 · "
+            f"运行 {summary.get('running', 0)} · 待排 {summary.get('ready', 0)} · "
+            f"待验收 {summary.get('awaiting_acceptance', 0)} · 缺料 {summary.get('missing_material', 0)}"
+        )
+        add_event(state, "SLOTS_STARVING", "urgent", detail)
+        milestones["last_starve_at"] = _timestamp(now)
+    elif not summary.get("starved"):
+        state.pending_events = [event for event in state.pending_events if event["reason"] != "SLOTS_STARVING"]
+    if not dry_run and (deltas or not prev_counts or milestones.get("last_starve_at") == _timestamp(now)):
+        milestones["counts"] = cur_counts
+        write_json(cfg.state_dir / "milestones.json", milestones)
+
     fingerprint = compute_state_fingerprint(server, thesis)
     if fingerprint != state.fingerprint:
         if state.fingerprint:
@@ -112,15 +173,28 @@ def _pick_event(cfg, state, now, local_date):
 def _write_briefing(cfg, state, event, server, thesis, now):
     names = ", ".join(entry["reason"] for entry in state.pending_events)
     active = state.active_order
+    summary = server.get("summary") if isinstance(server.get("summary"), dict) else summarize_server(server)
     lines = [
         f"# Local Director 简报 · {_timestamp(now)}",
         f"- 本轮触发 `{event['reason']}` {event['detail']}",
         f"- 待处理事件 {names}",
         f"- 已用每日唤醒 {state.daily_wakeups_used}/{cfg.gemini_daily_cap}",
         f"- 服务器在线 {server.get('online')} · 来源 {server.get('source')} · 调度服务 {server.get('service_active')}",
+        (
+            f"- 槽位态势：运行 {summary.get('running', 0)} / 总 {summary.get('slots_total', 0)} · "
+            f"空闲 {summary.get('free_slots', 0)} · 待排 {summary.get('ready', 0)} · "
+            f"饥饿 {summary.get('starved', False)} · 待验收 {summary.get('awaiting_acceptance', 0)} · "
+            f"缺料 {summary.get('missing_material', 0)}"
+        ),
         f"- 论文 {thesis.get('chapters_done', 0)}/{thesis.get('chapters_total', 0)} 章 · 素材 {thesis.get('assets_count', 0)} · 构建 {thesis.get('build_ok')}",
         f"- 最近决策 {state.last_decision}",
     ]
+    if summary.get("starved") or summary.get("awaiting_acceptance", 0) > 0 or summary.get("missing_material", 0) > 0:
+        lines.append(
+            "- **【硬性行动指令】**：严禁再派只读诊断/方案报告单！必须直接派发端到端 `sim_ops`/`sim_repair` 执行工单，"
+            "要求 Codex 按 `prompts/server-ops-playbook.md` 切 `tcad` 账号复核读出、签署合格资格/Z绑定/P2放行/case-acceptance、"
+            "备料并调 `month_one_supply.py` 投递填满空槽，并在交卷前核验 `running + ready` 实际回升！"
+        )
     if active:
         order = active["order"]
         lines.append(f"- 工单 `{order['order_id']}` · `{order['category']}` · {active['status']} · 第 {active['attempt']} 次")
@@ -131,11 +205,11 @@ def _write_briefing(cfg, state, event, server, thesis, now):
         lines.append("- 使用 `director_ctl.py notify --level digest` 归档并投递日报。")
     if event["reason"] == "CODEX_CIRCUIT_BROKEN":
         lines.append("- 原工单已熔断，请评估新策略。")
-    summaries = (server.get("observation") or {}, server.get("explain") or {}, thesis)
-    data = redact_configured_text(cfg, json.dumps(summaries, ensure_ascii=False, default=str))
+    compact_payload = {"server_summary": summary, "thesis": thesis}
+    data = redact_configured_text(cfg, json.dumps(compact_payload, ensure_ascii=False, default=str))
     header = redact_configured_text(cfg, "\n".join(lines))
     path = cfg.state_dir / "briefings" / f"brief-{now.strftime('%Y%m%dT%H%M%S%fZ')}.md"
-    text = f"{header}\n\n## 采样摘要\n{data}"
+    text = f"{header}\n\n## 紧凑态势摘要\n{data}"
     atomic_write(path, text.encode("utf-8")[:6143].decode("utf-8", "ignore") + "\n")
     return path
 

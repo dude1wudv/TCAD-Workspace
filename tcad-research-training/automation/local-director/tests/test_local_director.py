@@ -902,5 +902,84 @@ class CutoverTests(OfflineCase):
             systemctl.assert_not_called()
 
 
+class SlotStarvationTests(OfflineCase):
+    def test_starved_slots_and_milestones_trigger_urgent_events(self):
+        import watchdog
+        from probes import summarize_server
+
+        cfg = self.cfg
+        base_obs = {
+            "running_count": 4,
+            "active_count": 4,
+            "max_parallel_jobs": 16,
+            "scheduler": {"pool": {"slots": {"total": 16, "free": 12, "quarantined": 0}}},
+            "runs": [
+                {"id": "r06-p0-lhs01-hold22-zero-h8-b0-r1", "collected": True, "success": True, "occupied": False},
+            ],
+            "repair_requests": [{"id": "r06-repair-1"}],
+        }
+        base_explain = {
+            "replenishment": {
+                "ready": 0,
+                "preparing": False,
+                "blocked_count": 95,
+                "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 47, "other": 0},
+                "blocked": {"r06-lhs01-g0-proton-r1": "no enabled profile with a pinned P0 qualification"},
+            }
+        }
+        snap = {"online": True, "source": "ssh", "service_active": True, "observation": base_obs, "explain": base_explain}
+        summary = summarize_server(snap)
+        self.assertTrue(summary["starved"])
+        self.assertEqual(summary["free_slots"], 12)
+        self.assertEqual(summary["awaiting_acceptance"], 47)
+        self.assertEqual(summary["lhs_eighthsteps_count"], 1)
+        self.assertEqual(summary["repair_requests"], 1)
+
+        snap["summary"] = summary
+        now = datetime(2026, 11, 25, 1, 0, tzinfo=timezone.utc)
+        thesis = {"chapters_done": 0, "chapters_total": 6, "assets_count": 0, "build_ok": True}
+        with patch("watchdog.probe_server", return_value=snap), patch("watchdog.probe_thesis", return_value=thesis):
+            dry = watchdog.tick(cfg, dry_run=True, now=now)
+        self.assertEqual(dry["bucket"], "urgent")
+        self.assertIn(dry["reason"], {"SLOTS_STARVING", "SIM_MILESTONE_COLLECTED"})
+        self.assertIn("SLOTS_STARVING", dry["pending_events"])
+
+    def test_briefing_contains_action_mandate_and_compact_summary(self):
+        import watchdog
+        from probes import summarize_server
+
+        cfg = self.cfg
+        state = DirectorState()
+        snap = {
+            "online": True,
+            "source": "ssh",
+            "service_active": True,
+            "observation": {
+                "running_count": 4,
+                "scheduler": {"pool": {"slots": {"total": 16, "free": 12, "quarantined": 0}}},
+                "runs": [{"id": f"pad-{i}", "payload": "x" * 500} for i in range(400)],
+            },
+            "explain": {
+                "replenishment": {
+                    "ready": 0,
+                    "preparing": False,
+                    "blocked_count": 95,
+                    "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 47},
+                }
+            },
+        }
+        snap["summary"] = summarize_server(snap)
+        brief = watchdog._write_briefing(
+            cfg, state, {"reason": "SLOTS_STARVING", "bucket": "urgent", "detail": "空闲 12/16 槽"},
+            snap, {"chapters_done": 0, "chapters_total": 6, "assets_count": 0, "build_ok": True},
+            datetime(2026, 11, 25, 1, 0, tzinfo=timezone.utc),
+        )
+        text = brief.read_text(encoding="utf-8")
+        self.assertIn("严禁再派只读诊断", text)
+        self.assertIn("month_one_supply.py", text)
+        self.assertIn('"awaiting_acceptance": 47', text)
+        self.assertLessEqual(len(text.encode("utf-8")), 6144)
+
+
 if __name__ == "__main__":
     unittest.main()

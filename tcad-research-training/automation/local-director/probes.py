@@ -13,7 +13,15 @@ from config import Config, ssh_command
 from schemas import DirectorState, load_json, parse_time, read_json
 
 
-_SSH_SECTIONS = ("__DIRECTOR_OBSERVATION__", "__DIRECTOR_SERVICE__", "__DIRECTOR_EXPLAIN__")
+_SSH_SECTIONS = (
+    "__DIRECTOR_OBSERVATION__",
+    "__DIRECTOR_SERVICE__",
+    "__DIRECTOR_EXPLAIN__",
+    "__DIRECTOR_MAINTENANCE__",
+    "__DIRECTOR_RESPONSE__",
+)
+_MAINTENANCE_SUMMARY_PATH = "/var/lib/tcad-run-maintenance/summary.json"
+_RESPONSE_SUPPLY_PATH = "/home/tcad/course-workspace/local_runtime/server-codex/r06-lhs-response-supply-r1/response-status.json"
 _NOISE_KEYS = {
     "utc", "timestamp", "time", "source", "errors", "events", "progress", "metrics",
     "system", "resources", "virtual_machine", "activity_feed", "ready_since", "elapsed", "duration",
@@ -51,7 +59,7 @@ def pid_alive(pid: int) -> bool:
 
 
 def _server_script(cfg: Config) -> str:
-    observation, service, explain = _SSH_SECTIONS
+    observation, service, explain, maintenance, response_supply = _SSH_SECTIONS
     script = [
         f"printf '%s\\n' {observation}",
         f"cat -- {shlex.quote(cfg.remote_observation_path)}",
@@ -60,9 +68,135 @@ def _server_script(cfg: Config) -> str:
         f"printf '\\n%s\\n' {explain}",
     ]
     if cfg.remote_controller_cmd:
-        command = "PYTHONDONTWRITEBYTECODE=1 " + shlex.join([*cfg.remote_controller_cmd, "--policy", cfg.remote_policy_path, "explain"])
-        script.append(f"{command} --month-one 2>/dev/null || {command} || :")
+        cmd_argv = [*cfg.remote_controller_cmd, "--policy", cfg.remote_policy_path, "explain"]
+        quoted = shlex.join(cmd_argv)
+        run_tcad = f"runuser -u tcad -- env PYTHONDONTWRITEBYTECODE=1 {quoted}"
+        run_direct = f"PYTHONDONTWRITEBYTECODE=1 {quoted}"
+        script.append(
+            f'if [ "$(id -u)" -eq 0 ] && command -v runuser >/dev/null 2>&1; then '
+            f'{run_tcad} --month-one 2>/dev/null || {run_tcad} 2>/dev/null || :; '
+            f'else {run_direct} --month-one 2>/dev/null || {run_direct} 2>/dev/null || :; fi'
+        )
+    script.extend([
+        f"printf '\\n%s\\n' {maintenance}",
+        f"cat -- {shlex.quote(_MAINTENANCE_SUMMARY_PATH)} 2>/dev/null || printf '{{}}'",
+        f"printf '\\n%s\\n' {response_supply}",
+        f"cat -- {shlex.quote(_RESPONSE_SUPPLY_PATH)} 2>/dev/null || printf '{{}}'",
+    ])
     return "\n".join(script)
+
+
+def _int_count(mapping: dict, key: str) -> int:
+    value = mapping.get(key) if isinstance(mapping, dict) else None
+    return value if type(value) is int and value >= 0 else 0
+
+
+def summarize_server(snapshot: dict) -> dict:
+    """Build a compact, team-leader-compatible operational summary for decisions and wakeups."""
+    obs = snapshot.get("observation") if isinstance(snapshot.get("observation"), dict) else {}
+    explain = snapshot.get("explain") if isinstance(snapshot.get("explain"), dict) else {}
+    maint = snapshot.get("maintenance") if isinstance(snapshot.get("maintenance"), dict) else {}
+    resp = snapshot.get("response_supply") if isinstance(snapshot.get("response_supply"), dict) else {}
+
+    scheduler = obs.get("scheduler") if isinstance(obs.get("scheduler"), dict) else {}
+    pool = scheduler.get("pool") if isinstance(scheduler.get("pool"), dict) else {}
+    slots = pool.get("slots") if isinstance(pool.get("slots"), dict) else {}
+    supply = explain.get("replenishment") if isinstance(explain.get("replenishment"), dict) else (
+        scheduler.get("replenishment") if isinstance(scheduler.get("replenishment"), dict) else {}
+    )
+
+    running = _int_count(obs, "running_count")
+    active_count = _int_count(obs, "active_count")
+    slots_total = _int_count(slots, "total")
+    free_slots = _int_count(slots, "free")
+    if slots_total == 0 and isinstance(explain.get("slot_flow"), dict):
+        flow_slots = explain["slot_flow"].get("slots")
+        if isinstance(flow_slots, list) and flow_slots:
+            slots_total = len(flow_slots)
+            free_slots = sum(1 for row in flow_slots if isinstance(row, dict) and row.get("state") == "free")
+            if running == 0:
+                running = sum(1 for row in flow_slots if isinstance(row, dict) and row.get("state") == "running")
+    limit = _int_count(obs, "max_parallel_jobs")
+    if limit and active_count:
+        free_slots = min(free_slots, max(0, limit - active_count)) if free_slots else max(0, limit - active_count)
+
+    ready = _int_count(supply, "ready")
+    preparing = supply.get("preparing") is True or _int_count(supply, "preparing_up_to") > 0
+    quarantined = _int_count(slots, "quarantined")
+    blocked_by_stage = supply.get("blocked_by_stage") if isinstance(supply.get("blocked_by_stage"), dict) else {}
+    missing_material = _int_count(blocked_by_stage, "missing_material")
+    awaiting_acceptance = _int_count(blocked_by_stage, "awaiting_acceptance")
+    blocked_count = _int_count(supply, "blocked_count")
+
+    reason_counts: dict[str, int] = {}
+    blocked_map = supply.get("blocked") if isinstance(supply.get("blocked"), dict) else {}
+    for reason in blocked_map.values():
+        if isinstance(reason, str) and reason.strip():
+            key = reason.strip()[:100]
+            reason_counts[key] = reason_counts.get(key, 0) + 1
+    top_reasons = dict(sorted(reason_counts.items(), key=lambda pair: (-pair[1], pair[0]))[:6])
+
+    runs = obs.get("runs") if isinstance(obs.get("runs"), list) else []
+    collected = {row["id"] for row in runs if isinstance(row, dict) and isinstance(row.get("id"), str)
+                 and row.get("collected") is True and row.get("success") is True}
+    released = sum(
+        isinstance(row, dict) and isinstance(row.get("id"), str)
+        and row["id"].startswith("r06-") and row.get("collected") is True and row.get("occupied") is False
+        for row in runs
+    )
+    lhs_zero_pairs = [f"LHS{idx:02}" for idx in range(1, 7)
+                      if all(f"r06-p0-lhs{idx:02}-hold22-readout-b{bit}-r1" in collected for bit in (0, 1))]
+    lhs_halfsteps = [f"LHS{idx:02}" for idx in range(1, 7)
+                     if all(f"r06-p0-lhs{idx:02}-hold22-zero-h2-b{bit}-r1" in collected for bit in (0, 1))]
+    lhs_quartersteps = sorted(key for key in collected if key.startswith("r06-p0-lhs") and "-hold22-zero-h4-" in key)
+    lhs_eighthsteps = sorted(key for key in collected if key.startswith("r06-p0-lhs") and "-hold22-zero-h8-" in key)
+    d2_feedback = sorted(key for key in collected if key.startswith("r06-t-d2-narrow-fin-") and "-x10-" in key)
+    d2_x30_feedback = sorted(key for key in collected if key.startswith("r06-t-d2-narrow-fin-") and "-x30-" in key)
+    lhs_transport = sum(
+        key.startswith(tuple(f"r06-lhs{idx:02}-" for idx in range(1, 7))) and "-proton-" in key
+        for key in collected
+    )
+    repair_requests = sum(
+        isinstance(row, dict) and isinstance(row.get("id"), str) and row["id"].startswith("r06-")
+        for row in (obs.get("repair_requests") if isinstance(obs.get("repair_requests"), list) else [])
+    )
+    maint_counts = maint.get("counts") if isinstance(maint.get("counts"), dict) else {}
+    maint_compact = {k: v for k, v in maint_counts.items() if type(v) is int and v > 0}
+    resp_groups = len(resp.get("cases")) if isinstance(resp.get("cases"), list) else 0
+
+    starved = bool(
+        snapshot.get("online")
+        and snapshot.get("service_active") is not False
+        and free_slots >= 2
+        and ready == 0
+        and not preparing
+        and (blocked_count > 0 or awaiting_acceptance > 0 or missing_material > 0 or slots_total > 0)
+    )
+    return {
+        "running": running,
+        "free_slots": free_slots,
+        "slots_total": slots_total,
+        "ready": ready,
+        "preparing": preparing,
+        "starved": starved,
+        "quarantined": quarantined,
+        "blocked_count": blocked_count,
+        "missing_material": missing_material,
+        "awaiting_acceptance": awaiting_acceptance,
+        "top_blocked_reasons": top_reasons,
+        "last_publication_utc": (supply.get("last_publication") or {}).get("utc") if isinstance(supply.get("last_publication"), dict) else None,
+        "r06_released_runs": released,
+        "repair_requests": repair_requests,
+        "lhs_zero_pairs_collected": lhs_zero_pairs,
+        "lhs_halfstep_pairs_collected": lhs_halfsteps,
+        "lhs_quartersteps_count": len(lhs_quartersteps),
+        "lhs_eighthsteps_count": len(lhs_eighthsteps),
+        "d2_x10_feedback_count": len(d2_feedback),
+        "d2_x30_feedback_count": len(d2_x30_feedback),
+        "lhs_transport_collected": lhs_transport,
+        "maintenance_counts": maint_compact,
+        "response_supply_groups": resp_groups,
+    }
 
 
 def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
@@ -70,7 +204,7 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
     try:
         command = ssh_command(cfg, _server_script(cfg))
         result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8",
-                                errors="replace", timeout=35, check=False)
+                                errors="replace", timeout=40, check=False)
     except (OSError, ValueError, subprocess.TimeoutExpired) as error:
         errors.append(f"ssh: {type(error).__name__}")
         return False
@@ -80,10 +214,12 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
     stream = "\n" + result.stdout
     _, observed_marker, stream = stream.partition(f"\n{_SSH_SECTIONS[0]}\n")
     observation, service_marker, stream = stream.partition(f"\n{_SSH_SECTIONS[1]}\n")
-    service, explain_marker, explain = stream.partition(f"\n{_SSH_SECTIONS[2]}\n")
+    service, explain_marker, stream = stream.partition(f"\n{_SSH_SECTIONS[2]}\n")
     if not (observed_marker and service_marker and explain_marker):
         errors.append("ssh: invalid probe response")
         return False
+    explain, maint_marker, stream = stream.partition(f"\n{_SSH_SECTIONS[3]}\n")
+    maintenance, resp_marker, response_supply = stream.partition(f"\n{_SSH_SECTIONS[4]}\n") if maint_marker else ("", "", "")
     snapshot.update(online=True, source="ssh")
     service = service.strip()
     if service in {"active", "inactive", "failed", "activating", "deactivating", "reloading", "maintenance"}:
@@ -102,12 +238,22 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
             errors.append(f"ssh: {key} unavailable or invalid")
         else:
             snapshot[key] = payload
+    for key, text, present in (("maintenance", maintenance, bool(maint_marker)), ("response_supply", response_supply, bool(resp_marker))):
+        if not present or not text.strip():
+            continue
+        try:
+            payload = load_json(text)
+            if isinstance(payload, dict):
+                snapshot[key] = payload
+        except ValueError:
+            pass
+    snapshot["summary"] = summarize_server(snapshot)
     return True
 
 
 def probe_server(cfg: Config) -> dict:
     snapshot = {"online": False, "source": "offline", "observation": {},
-                "service_active": None, "explain": {}, "errors": []}
+                "service_active": None, "explain": {}, "maintenance": {}, "response_supply": {}, "errors": []}
     if cfg.server_ssh_target:
         if _ssh_snapshot(cfg, snapshot):
             return snapshot
@@ -115,6 +261,7 @@ def probe_server(cfg: Config) -> dict:
         snapshot["errors"].append("ssh: target unconfigured")
     if not cfg.public_status_url:
         snapshot["errors"].append("public: URL unconfigured")
+        snapshot["summary"] = summarize_server(snapshot)
         return snapshot
     try:
         with request.urlopen(cfg.public_status_url, timeout=10) as response:
@@ -123,6 +270,7 @@ def probe_server(cfg: Config) -> dict:
             raise ValueError("expected a public status snapshot")
     except (OSError, ValueError) as error:
         snapshot["errors"].append(f"public: {type(error).__name__}")
+        snapshot["summary"] = summarize_server(snapshot)
         return snapshot
 
     simulation = public["simulation"]
@@ -133,6 +281,7 @@ def probe_server(cfg: Config) -> dict:
             if service.get("state") in ("operational", "offline"):
                 snapshot["service_active"] = service["state"] == "operational"
             break
+    snapshot["summary"] = summarize_server(snapshot)
     return snapshot
 
 

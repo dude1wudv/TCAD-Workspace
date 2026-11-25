@@ -235,7 +235,12 @@ def launch_worker(
         "worker_pid_path": str(folder / "worker-pid.json"), "stop_path": str(folder / "stop.json"),
         "job_name": f"Local\\TCADDirector-{uuid4().hex}" if os.name == "nt" else None,
     }
-    prompt = preamble + "\n\n## Work order\n" + json.dumps(order_data, ensure_ascii=False, indent=2)
+    playbook = ""
+    if order.category in {"sim_ops", "sim_repair"}:
+        playbook_path = PROMPTS / "server-ops-playbook.md"
+        if playbook_path.is_file():
+            playbook = "\n\n" + playbook_path.read_text(encoding="utf-8-sig").strip()
+    prompt = preamble + playbook + "\n\n## Work order\n" + json.dumps(order_data, ensure_ascii=False, indent=2)
     prompt += ("\nReport cumulative changed files for this order using repository-relative paths. "
                "Run each acceptance check as a separate shell command exactly as supplied. "
                "Do not stage or commit files. Preserve existing worktree changes.\n")
