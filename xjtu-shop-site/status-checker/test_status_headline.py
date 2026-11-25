@@ -179,7 +179,7 @@ class MockTemplate extends MockNode {
   set innerHTML(value) { this.content.innerHTML = value; }
 }
 document = {
-  documentElement:{dataset:{}}, body: new MockNode('body'), hidden:false, addEventListener() {},
+  documentElement:{dataset:{}}, body: new MockNode('body'), hidden:false, cookie:'', addEventListener() {},
   createElement:(name)=>name === 'template' ? new MockTemplate() : new MockNode(name),
   querySelector:(selector)=>document.body.querySelector(selector),
   querySelectorAll:(selector)=>document.body.querySelectorAll(selector),
@@ -199,7 +199,7 @@ const timers = new Map();
 const savedValues = new Map([['xjtu-slot-replay-event','launch-1']]);
 const context = vm.createContext({
   assert,fs,SOURCE_PATH,app,
-  document,window:{matchMedia},matchMedia,
+  document,window:{matchMedia},matchMedia,location:{hostname:'status.xjtu.shop'},
   systemTheme:{matches:false,addEventListener(){}},statusTheme:'light',applyStatusTheme:()=>{},
   AbortSignal:{timeout:()=>undefined},
   localStorage:{getItem:(k)=>savedValues.get(k),setItem:(k,v)=>savedValues.set(k,v)},
@@ -221,6 +221,7 @@ class StatusHeadlineTests(unittest.TestCase):
             "const SOURCE_PATH=" + json.dumps(str(source)) + ";\n"
             "const RESEARCH_PATH=" + json.dumps(str(research_source)) + ";\n"
             "const TELEMETRY_PATH=" + json.dumps(str(source.with_name("components") / "telemetry-charts.js")) + ";\n"
+            "const I18N_PATH=" + json.dumps(str(source.with_name("shared") / "i18n.js")) + ";\n"
             "const RESEARCH=" + json.dumps(research) + ";\n"
             "const LANGUAGE=" + json.dumps(language) + ";\n"
             "const CHECKS=" + json.dumps(checks) + ";\n" + NODE_DOM + r"""
@@ -278,10 +279,13 @@ const researchModule = new vm.SourceTextModule(fs.readFileSync(RESEARCH_PATH,'ut
 await researchModule.link(()=>{throw new Error('Unexpected research dependency');});
 const telemetryModule = new vm.SourceTextModule(fs.readFileSync(TELEMETRY_PATH,'utf8'),{context});
 await telemetryModule.link(()=>{throw new Error('Unexpected telemetry dependency');});
+const i18nModule = new vm.SourceTextModule(fs.readFileSync(I18N_PATH,'utf8'),{context});
+await i18nModule.link(()=>{throw new Error('Unexpected i18n dependency');});
 const module = new vm.SourceTextModule(source+'\n'+test,{context});
 await module.link((specifier)=>{
   if (specifier === './research-dashboard.js') return researchModule;
   if (specifier === './components/telemetry-charts.js') return telemetryModule;
+  if (specifier === './shared/i18n.js') return i18nModule;
   if (!dependencies.has(specifier)) dependencies.set(specifier,new vm.SyntheticModule([],function(){},{context}));
   return dependencies.get(specifier);
 });

@@ -25,6 +25,7 @@ import {
   setTopbarActive
 } from './shared/site-shell.js';
 import { icon } from './shared/icons.js';
+import { setLang, applyDocumentLang } from './shared/i18n.js';
 import { bindSlidingPill, syncSlidingThumb } from './shared/sliding-pill.js';
 import { homeContent } from './data/home-content.js';
 import { createDramSimulator } from './components/dram-simulator.js';
@@ -40,6 +41,16 @@ const VIEW_ICONS = {
   architecture: 'agent',
   evidence: 'ledger',
   status: 'telemetry'
+};
+const PAGE_META = {
+  zh: {
+    title: 'DRAM 单粒子效应评估研究 · tcad.xjtu.shop',
+    description: 'AI辅助下的DRAM存储器单粒子效应评估研究公开主页：涵盖服务器Agent自治调度架构、Geant4/TCAD多代次仿真成果与可追溯科学证据。'
+  },
+  en: {
+    title: 'DRAM Single-Event Effects Research · tcad.xjtu.shop',
+    description: 'Public research homepage for AI-assisted DRAM single-event-effects assessment: Geant4/TCAD multi-generation simulation results, server Agent autonomy, and traceable scientific evidence.'
+  }
 };
 
 function getInitialView() {
@@ -316,7 +327,7 @@ function render() {
   const c = getCopy();
   const wb = c.workbench;
   const activeIdx = Math.max(0, WORKBENCH_VIEWS.indexOf(state.activeView));
-  document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
+  applyDocumentLang(state.lang, PAGE_META[state.lang]);
 
   document.querySelector('#app').innerHTML = `
     ${renderTopbar({ activePage: 'home', activeSection: state.activeView, lang: state.lang, theme: state.theme })}
@@ -425,8 +436,7 @@ function render() {
 
   bindTopbar({
     onToggleLang: () => {
-      state.lang = state.lang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('xjtu-lang', state.lang);
+      state.lang = setLang(state.lang === 'zh' ? 'en' : 'zh');
       render();
     },
     onToggleTheme: () => {

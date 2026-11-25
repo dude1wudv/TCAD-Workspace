@@ -147,7 +147,7 @@ for key in ('totals', 'counts', 'blocks', 'budget', 'diagnostics'):
     assert key in live['research_summary'], key
 assert live['research_summary']['projection_state'] in {'fresh', 'cached_stale', 'unavailable'}
 
-for host, page in [('tcad.xjtu.shop', 'index.html'), ('status.xjtu.shop', 'status.html')]:
+for host, page in [('www.xjtu.shop', 'portal.html'), ('tcad.xjtu.shop', 'index.html'), ('status.xjtu.shop', 'status.html')]:
     curl = ['curl', '--noproxy', '*', '--resolve', host + ':443:127.0.0.1', '--max-time', '10', '-fsS']
     for route in ['/'] + re.findall(r'(?:src|href)="(/assets/[^"]+)"', (root / page).read_text(encoding='utf-8')):
         subprocess.run([*curl, 'https://' + host + route, '-o', '/dev/null'], check=True)
@@ -162,6 +162,15 @@ for host, page in [('tcad.xjtu.shop', 'index.html'), ('status.xjtu.shop', 'statu
     headers, _, _ = response.partition(b'\r\n\r\n')
     cache_control = [line for line in headers.lower().splitlines() if line.startswith(b'cache-control:')]
     assert cache_control == [b'cache-control: no-cache'], host
+
+apex_resp = subprocess.check_output([
+    'curl', '--noproxy', '*', '--resolve', 'xjtu.shop:443:127.0.0.1',
+    '--max-time', '10', '-sS', '-I', 'https://xjtu.shop/'
+])
+apex_lines = apex_resp.decode('utf-8', errors='replace').splitlines()
+assert apex_lines and ' 308 ' in apex_lines[0], apex_lines[:2]
+apex_loc = [line.split(':', 1)[1].strip() for line in apex_lines if line.lower().startswith('location:')]
+assert apex_loc == ['https://www.xjtu.shop/'], apex_loc
 
 now = dt.datetime.now(dt.timezone.utc)
 for document in documents.values():

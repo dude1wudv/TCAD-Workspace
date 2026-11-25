@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#005cbb" />
+    <meta
+      name="description"
+      content="Public portal for AI-assisted DRAM single-event-effects research: explore simulation results, technical documentation, and live compute telemetry across xjtu.shop."
+    />
+    <link rel="canonical" href="https://www.xjtu.shop/" />
+    <title>XJTU DRAM SEE Research Portal · www.xjtu.shop</title>
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('xjtu-theme') || localStorage.getItem('xjtu-status-theme');
+          var dark =
+            saved === 'dark' ||
+            (!saved && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+          var theme = dark ? 'dark' : 'light';
+          document.documentElement.dataset.theme = theme;
+          var meta = document.querySelector('meta[name="theme-color"]');
+          if (meta) meta.setAttribute('content', dark ? '#0c121c' : '#005cbb');
+          var m = document.cookie.match(/(?:^|; )xjtu-lang=(en|zh)(?:;|$)/);
+          var lang = m ? m[1] : localStorage.getItem('xjtu-lang');
+          if (lang === 'zh') document.documentElement.lang = 'zh-CN';
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/portal.js"></script>
+  </body>
+</html>

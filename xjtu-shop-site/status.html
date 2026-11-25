@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#f3f6fa" />
-    <meta name="description" content="DRAM 单粒子效应研究的公开仿真遥测、服务健康与科研计划进度。" />
-    <title>仿真状态看板 · xjtu.shop</title>
+    <meta name="description" content="Public simulation telemetry, service health, and research plan progress for the DRAM single-event-effects project." />
+    <title>Simulation Status · status.xjtu.shop</title>
     <script>
       const systemTheme = matchMedia('(prefers-color-scheme: dark)');
       const applyStatusTheme = (theme) => {
@@ -15,6 +15,11 @@
       let statusTheme;
       try { statusTheme = localStorage.getItem('xjtu-status-theme'); } catch {}
       applyStatusTheme(['light', 'dark'].includes(statusTheme) ? statusTheme : systemTheme.matches ? 'dark' : 'light');
+      try {
+        var m = document.cookie.match(/(?:^|; )xjtu-lang=(en|zh)(?:;|$)/);
+        var lang = m ? m[1] : localStorage.getItem('xjtu-lang');
+        if (lang === 'zh') document.documentElement.lang = 'zh-CN';
+      } catch (e) {}
     </script>
     <style>
       :root { color-scheme: light; background: #f3f6fa; }
