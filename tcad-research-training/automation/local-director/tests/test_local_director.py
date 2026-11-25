@@ -980,6 +980,155 @@ class SlotStarvationTests(OfflineCase):
         self.assertIn('"awaiting_acceptance": 47', text)
         self.assertLessEqual(len(text.encode("utf-8")), 6144)
 
+    def test_semantic_fingerprint_ignores_raw_observation_jitter(self):
+        from probes import compute_state_fingerprint, summarize_server
+
+        base_obs = {
+            "running_count": 8,
+            "active_count": 8,
+            "max_parallel_jobs": 16,
+            "fingerprint": "aaa111",
+            "scheduler": {"pool": {"slots": {"total": 16, "free": 8, "quarantined": 0}}},
+            "runs": [{"id": "r06-run-1", "collected": True, "success": True, "occupied": False}],
+        }
+        base_explain = {
+            "pending_reasons_at_observation": {"admission_telemetry": 10},
+            "replenishment": {"ready": 18, "preparing": True, "blocked_count": 59, "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 11}},
+        }
+        snap1 = {"online": True, "service_active": True, "observation": base_obs, "explain": base_explain}
+        snap1["summary"] = summarize_server(snap1)
+        snap2 = {
+            "online": True,
+            "service_active": True,
+            "observation": base_obs | {"fingerprint": "bbb222", "running_count": 9},
+            "explain": base_explain | {"pending_reasons_at_observation": {"admission_server_disk": 6}},
+        }
+        snap2["summary"] = summarize_server(snap2)
+        thesis = {"chapters_done": 1, "chapters_total": 6, "assets_count": 5, "build_ok": True}
+        self.assertEqual(compute_state_fingerprint(snap1, thesis), compute_state_fingerprint(snap2, thesis))
+
+        snap3 = {
+            "online": True,
+            "service_active": True,
+            "observation": base_obs | {"runs": base_obs["runs"] + [{"id": "r06-p0-lhs03-hold22-zero-h8-b1-r1", "collected": True, "success": True, "occupied": False}]},
+            "explain": base_explain,
+        }
+        snap3["summary"] = summarize_server(snap3)
+        self.assertNotEqual(compute_state_fingerprint(snap1, thesis), compute_state_fingerprint(snap3, thesis))
+
+    def test_worker_busy_suppresses_state_changed_and_routine_milestones_stay_routine(self):
+        import watchdog
+        from probes import summarize_server
+
+        cfg = self.cfg
+        order = work_order()
+        state = DirectorState(
+            daily_date=TODAY,
+            last_periodic_at=NOW.isoformat(),
+            fingerprint="initial-fp",
+            active_order={"order": order.to_dict(), "status": "running", "attempt": 1, "run_meta": {"pid": 1234}},
+        )
+        save_state(cfg, state)
+        write_json(cfg.state_dir / "milestones.json", {"counts": {"r06_released_runs": 10, "lhs_eighthsteps_count": 8}})
+        snap = {
+            "online": True,
+            "service_active": True,
+            "observation": {"running_count": 8, "runs": [{"id": f"r06-r-{i}", "collected": True, "success": True, "occupied": False} for i in range(11)]},
+            "explain": {"replenishment": {"ready": 10, "blocked_count": 0}},
+        }
+        snap["summary"] = summarize_server(snap)
+        with (
+            patch("watchdog.probe_server", return_value=snap),
+            patch("watchdog.probe_thesis", return_value={}),
+            patch("watchdog.probe_codex_worker", return_value={"status": "running"}),
+            patch("watchdog.new_conversation", return_value="mock-conv") as conv,
+            patch("watchdog.refresh_status"),
+        ):
+            result = watchdog.tick(cfg, now=NOW)
+        self.assertIsNone(result["reason"])
+        conv.assert_not_called()
+        updated = load_state(cfg)
+        self.assertNotIn("STATE_CHANGED", [e["reason"] for e in updated.pending_events])
+        milestone_events = [e for e in updated.pending_events if e["reason"] == "SIM_MILESTONE_COLLECTED"]
+        self.assertEqual(len(milestone_events), 1)
+        self.assertEqual(milestone_events[0]["bucket"], "routine")
+
+    def test_state_changed_sets_routine_cooldown(self):
+        import watchdog
+
+        cfg = self.cfg
+        save_state(cfg, DirectorState(daily_date=TODAY, last_periodic_at=NOW.isoformat(), fingerprint="old-fp"))
+        with (
+            patch("watchdog.probe_server", return_value={"online": True, "service_active": True, "summary": {"running": 8, "free_slots": 8, "ready": 5, "starved": False}}),
+            patch("watchdog.probe_thesis", return_value={}),
+            patch("watchdog.probe_codex_worker", return_value={"status": "idle"}),
+            patch("watchdog.new_conversation", return_value="mock-conv"),
+            patch("watchdog.refresh_status"),
+        ):
+            first = watchdog.tick(cfg, now=NOW)
+        self.assertEqual(first["reason"], "STATE_CHANGED")
+        state = load_state(cfg)
+        self.assertTrue(state.next_wake_at)
+        state.active_turn = None
+        state.fingerprint = "another-old-fp"
+        save_state(cfg, state)
+        with (
+            patch("watchdog.probe_server", return_value={"online": True, "service_active": True, "summary": {"running": 8, "free_slots": 8, "ready": 5, "starved": False}}),
+            patch("watchdog.probe_thesis", return_value={}),
+            patch("watchdog.probe_codex_worker", return_value={"status": "idle"}),
+            patch("watchdog.new_conversation", return_value="mock-conv") as conv,
+            patch("watchdog.refresh_status"),
+        ):
+            second = watchdog.tick(cfg, now=NOW + timedelta(minutes=3))
+        self.assertIsNone(second["reason"])
+        conv.assert_not_called()
+
+    def test_reclaim_orphaned_watchdog_only_terminates_dead_parent_holder(self):
+        from runtime import reclaim_orphaned_watchdog
+
+        lock_path = self.cfg.state_dir / "watchdog.lock"
+        owner_path = self.cfg.state_dir / "watchdog.owner.json"
+        write_json(owner_path, {"pid": 42424, "ppid": 99999, "started_at": NOW.isoformat()})
+        with (
+            patch("probes.pid_alive", side_effect=lambda p: p == 42424),
+            patch("runtime._process_is_watchdog", return_value=True),
+            patch("runtime._terminate_pid", return_value=True) as kill_fn,
+        ):
+            # pid_alive returns True for 42424 on initial check and False after kill if we use a counter:
+            alive_calls = {"n": 0}
+            def fake_alive(p):
+                if p == 99999:
+                    return False
+                alive_calls["n"] += 1
+                return alive_calls["n"] == 1
+            with patch("probes.pid_alive", side_effect=fake_alive):
+                self.assertTrue(reclaim_orphaned_watchdog(lock_path, wait_seconds=0.5))
+            kill_fn.assert_called_once_with(42424)
+
+        with (
+            patch("probes.pid_alive", return_value=True),
+            patch("runtime._terminate_pid") as kill_fn,
+        ):
+            self.assertFalse(reclaim_orphaned_watchdog(lock_path, wait_seconds=0.5))
+            kill_fn.assert_not_called()
+
+    def test_daemon_exits_cleanly_when_parent_exits(self):
+        import watchdog
+
+        fake_watcher = Mock(ppid=99999)
+        fake_watcher.parent_exited.return_value = True
+        with (
+            patch.object(watchdog, "load_config", return_value=self.cfg),
+            patch.object(watchdog, "ParentWatcher", return_value=fake_watcher),
+            patch.object(watchdog, "tick") as mock_tick,
+            redirect_stdout(io.StringIO()) as stdout,
+        ):
+            code = watchdog.main(["--daemon", "--exit-with-parent"])
+        self.assertEqual(code, 0)
+        mock_tick.assert_not_called()
+        fake_watcher.close.assert_called_once()
+        self.assertEqual(json.loads(stdout.getvalue())["status"], "parent_exited")
+
 
 if __name__ == "__main__":
     unittest.main()

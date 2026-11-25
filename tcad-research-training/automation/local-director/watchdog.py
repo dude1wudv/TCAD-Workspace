@@ -7,13 +7,24 @@ import shutil
 import subprocess
 import sys
 import time
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from codex_runner import finalize_and_precheck, launch_worker, terminate_worker
 from config import BASE_DIR, load_config
 from probes import compute_state_fingerprint, probe_codex_worker, probe_server, probe_thesis, summarize_server
-from runtime import LockBusy, add_event, file_lock, load_state, order_dir, save_state, state_lock
+from runtime import (
+    LockBusy,
+    ParentWatcher,
+    add_event,
+    file_lock,
+    load_state,
+    order_dir,
+    reclaim_orphaned_watchdog,
+    save_state,
+    state_lock,
+)
 from schemas import DeliveryReceipt, WorkOrder, append_jsonl, atomic_write, parse_time, read_json, write_json
 from status_publisher import redact_configured_text, redact_text, refresh_status
 
@@ -62,18 +73,29 @@ def _advance_worker(cfg, state, worker, now, *, dry_run):
         state.pending_events = [event for event in state.pending_events if event["reason"] != "CODEX_STALLED"]
 
 
-_MILESTONE_KEYS = (
-    "r06_released_runs",
+_URGENT_MILESTONE_KEYS = (
     "lhs_zero_pairs_collected",
     "lhs_halfstep_pairs_collected",
     "lhs_quartersteps_count",
     "lhs_eighthsteps_count",
     "d2_x10_feedback_count",
     "d2_x30_feedback_count",
-    "lhs_transport_collected",
     "repair_requests",
 )
+_ROUTINE_MILESTONE_KEYS = (
+    "r06_released_runs",
+    "lhs_transport_collected",
+)
+_MILESTONE_KEYS = (*_URGENT_MILESTONE_KEYS, *_ROUTINE_MILESTONE_KEYS)
 _STARVE_COOLDOWN_SECONDS = 1200
+_STATE_CHANGE_COOLDOWN_SECONDS = 1800
+_WORKER_BUSY_DEFERRED_REASONS = {
+    "STATE_CHANGED",
+    "PERIODIC_REVIEW",
+    "SIM_MILESTONE_COLLECTED",
+    "SLOTS_STARVING",
+    "SERVER_RECOVERED",
+}
 
 
 def _load_milestones(cfg):
@@ -85,9 +107,9 @@ def _load_milestones(cfg):
         return {}
 
 
-def _milestone_increased(previous, current):
+def _milestone_increased(previous, current, keys=_MILESTONE_KEYS):
     changed = []
-    for key in _MILESTONE_KEYS:
+    for key in keys:
         old = previous.get(key)
         new = current.get(key)
         if isinstance(new, int) and isinstance(old, int) and new > old:
@@ -126,9 +148,13 @@ def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, 
     milestones = _load_milestones(cfg)
     prev_counts = milestones.get("counts") if isinstance(milestones.get("counts"), dict) else {}
     cur_counts = {key: summary.get(key) for key in _MILESTONE_KEYS}
-    deltas = _milestone_increased(prev_counts, cur_counts)
-    if deltas:
+    urgent_deltas = _milestone_increased(prev_counts, cur_counts, _URGENT_MILESTONE_KEYS)
+    routine_deltas = _milestone_increased(prev_counts, cur_counts, _ROUTINE_MILESTONE_KEYS)
+    deltas = [*urgent_deltas, *routine_deltas]
+    if urgent_deltas:
         add_event(state, "SIM_MILESTONE_COLLECTED", "urgent", ", ".join(deltas[:4]))
+    elif routine_deltas:
+        add_event(state, "SIM_MILESTONE_COLLECTED", "routine", ", ".join(routine_deltas[:4]))
     if summary.get("starved") and not worker_busy and _due(now, milestones.get("last_starve_at"), _STARVE_COOLDOWN_SECONDS):
         detail = (
             f"空闲 {summary.get('free_slots', 0)}/{summary.get('slots_total', 0)} 槽 · "
@@ -145,7 +171,7 @@ def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, 
 
     fingerprint = compute_state_fingerprint(server, thesis)
     if fingerprint != state.fingerprint:
-        if state.fingerprint:
+        if state.fingerprint and not worker_busy:
             add_event(state, "STATE_CHANGED", "routine")
         state.fingerprint = fingerprint
     for reason, field in DAILY.items():
@@ -160,11 +186,20 @@ def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, 
 def _pick_event(cfg, state, now, local_date):
     if state.active_turn or not _due(now, state.wakeup_backoff_until):
         return None
+    active = state.active_order
+    worker_running = bool(active and active.get("status") in {"queued", "retry_queued", "running"})
     for bucket in ("urgent", "daily", "routine"):
         if bucket == "routine" and not _due(now, state.next_wake_at):
             continue
         if cfg.can_consume_wakeup(state, bucket, local_date):
-            event = next((entry for entry in state.pending_events if entry["bucket"] == bucket), None)
+            event = next(
+                (
+                    entry for entry in state.pending_events
+                    if entry["bucket"] == bucket
+                    and (not worker_running or entry["reason"] not in _WORKER_BUSY_DEFERRED_REASONS)
+                ),
+                None,
+            )
             if event is not None:
                 return event
     return None
@@ -284,6 +319,10 @@ def _record_wakeup(cfg, state, event, brief_path, now):
         state.daily_executed.append(reason)
     if reason == "PERIODIC_REVIEW":
         state.last_periodic_at = _timestamp(now)
+    if reason == "STATE_CHANGED":
+        cooldown_until = now + timedelta(seconds=_STATE_CHANGE_COOLDOWN_SECONDS)
+        if not state.next_wake_at or parse_time(state.next_wake_at) < cooldown_until:
+            state.next_wake_at = _timestamp(cooldown_until)
     state.pending_events.remove(event)
     state.wakeup_failures = 0
     state.wakeup_backoff_until = ""
@@ -356,6 +395,26 @@ def tick(cfg, *, dry_run=False, force_trigger=None, now=None):
         return _tick_state(cfg, load_state(cfg), server, thesis, moment, False, force_trigger)
 
 
+@contextmanager
+def _acquire_watchdog_lock(lock_path: Path, *, reclaim_orphan: bool = False):
+    deadline = time.monotonic() + (4.0 if reclaim_orphan else 0.0)
+    reclaimed = False
+    while True:
+        try:
+            with file_lock(lock_path):
+                yield
+            return
+        except LockBusy:
+            if not reclaim_orphan:
+                raise
+            if not reclaimed and reclaim_orphaned_watchdog(lock_path):
+                reclaimed = True
+                continue
+            if time.monotonic() >= deadline:
+                raise
+            time.sleep(0.25)
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Local Director 本地看门狗")
     parser.add_argument("--config", type=Path)
@@ -364,33 +423,47 @@ def main(argv=None):
     modes.add_argument("--tick", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force-trigger")
+    parser.add_argument("--exit-with-parent", action="store_true")
     args = parser.parse_args(argv)
     if args.daemon and (args.dry_run or args.force_trigger):
         parser.error("--dry-run and --force-trigger require --tick")
+    if args.exit_with_parent and not args.daemon:
+        parser.error("--exit-with-parent requires --daemon")
     try:
         cfg = load_config(args.config)
         if args.dry_run:
             print(json.dumps(tick(cfg, dry_run=True, force_trigger=args.force_trigger), ensure_ascii=False))
             return 0
-        with file_lock(cfg.state_dir / "watchdog.lock"):
-            while True:
-                started = time.monotonic()
-                try:
-                    result = tick(cfg, force_trigger=args.force_trigger)
-                    print(json.dumps(result, ensure_ascii=False), flush=True)
-                except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
-                    if not args.daemon:
-                        raise
-                    LOG.error("watchdog tick failed: %s", redact_text(str(error)))
-                if args.tick:
-                    return 0
-                deadline = started + cfg.heartbeat_interval_seconds
-                while time.monotonic() < deadline:
+        watcher = ParentWatcher() if args.exit_with_parent else None
+        try:
+            with _acquire_watchdog_lock(cfg.state_dir / "watchdog.lock", reclaim_orphan=bool(args.exit_with_parent)):
+                while True:
+                    if watcher and watcher.parent_exited():
+                        print(json.dumps({"status": "parent_exited", "ppid": watcher.ppid}, ensure_ascii=False), flush=True)
+                        return 0
+                    started = time.monotonic()
                     try:
-                        _pump_queued_orders(cfg)
-                    except (OSError, RuntimeError, ValueError) as error:
-                        LOG.error("queued order pump failed: %s", redact_text(str(error)))
-                    time.sleep(min(3.0, max(0.0, deadline - time.monotonic())))
+                        result = tick(cfg, force_trigger=args.force_trigger)
+                        print(json.dumps(result, ensure_ascii=False), flush=True)
+                    except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+                        if not args.daemon:
+                            raise
+                        LOG.error("watchdog tick failed: %s", redact_text(str(error)))
+                    if args.tick:
+                        return 0
+                    deadline = started + cfg.heartbeat_interval_seconds
+                    while time.monotonic() < deadline:
+                        if watcher and watcher.parent_exited():
+                            print(json.dumps({"status": "parent_exited", "ppid": watcher.ppid}, ensure_ascii=False), flush=True)
+                            return 0
+                        try:
+                            _pump_queued_orders(cfg)
+                        except (OSError, RuntimeError, ValueError) as error:
+                            LOG.error("queued order pump failed: %s", redact_text(str(error)))
+                        time.sleep(min(3.0, max(0.0, deadline - time.monotonic())))
+        finally:
+            if watcher is not None:
+                watcher.close()
     except KeyboardInterrupt:
         return 130
     except (OSError, RuntimeError, ValueError, LockBusy, subprocess.SubprocessError) as error:

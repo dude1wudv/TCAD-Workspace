@@ -27,7 +27,24 @@ _NOISE_KEYS = {
     "system", "resources", "virtual_machine", "activity_feed", "ready_since", "elapsed", "duration",
     "runtime", "uptime", "summary", "notes", "log_tail", "transient_log_tail",
     "action", "dispatched", "termination_seconds", "observation_age_seconds", "completed_24h",
+    "fingerprint", "pending_reasons_at_observation", "selected_local_archive_bytes",
 }
+_FINGERPRINT_SUMMARY_KEYS = (
+    "starved",
+    "quarantined",
+    "blocked_count",
+    "missing_material",
+    "awaiting_acceptance",
+    "top_blocked_reasons",
+    "repair_requests",
+    "lhs_zero_pairs_collected",
+    "lhs_halfstep_pairs_collected",
+    "lhs_quartersteps_count",
+    "lhs_eighthsteps_count",
+    "d2_x10_feedback_count",
+    "d2_x30_feedback_count",
+    "response_supply_groups",
+)
 _NOISE_PARTS = {"timestamp", "elapsed", "duration", "latency", "uptime", "mtime", "percent"}
 
 
@@ -437,6 +454,24 @@ def _stable(value):
 
 
 def compute_state_fingerprint(server_snap: dict, thesis_snap: dict) -> str:
-    stable = _stable({"server": server_snap, "thesis": thesis_snap})
+    if isinstance(server_snap, dict) and isinstance(server_snap.get("summary"), dict):
+        summary = server_snap["summary"]
+        running = summary.get("running", 0)
+        free_slots = summary.get("free_slots", 0)
+        ready = summary.get("ready", 0)
+        released = summary.get("r06_released_runs", 0)
+        transport = summary.get("lhs_transport_collected", 0)
+        server_state = {
+            "online": server_snap.get("online"),
+            "service_active": server_snap.get("service_active"),
+            "has_ready": bool(isinstance(ready, int) and ready > 0),
+            "slots_idle_empty": bool(isinstance(running, int) and running == 0 and isinstance(free_slots, int) and free_slots > 0),
+            "released_bucket": released // 5 if isinstance(released, int) else 0,
+            "transport_bucket": transport // 4 if isinstance(transport, int) else 0,
+            **{key: summary.get(key) for key in _FINGERPRINT_SUMMARY_KEYS},
+        }
+        stable = _stable({"server": server_state, "thesis": thesis_snap})
+    else:
+        stable = _stable({"server": server_snap, "thesis": thesis_snap})
     encoded = json.dumps(stable, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
     return hashlib.sha256(encoded).hexdigest()
