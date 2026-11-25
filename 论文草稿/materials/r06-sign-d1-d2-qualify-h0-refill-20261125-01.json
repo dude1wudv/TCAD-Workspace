@@ -1,0 +1,267 @@
+{
+  "order_id": "r06-sign-d1-d2-qualify-h0-refill-20261125-01",
+  "status": "completed_with_external_read_only_gates",
+  "observation_date": "2026-11-25",
+  "scope": {
+    "local_changed_files": [
+      "论文草稿/materials/r06-sign-d1-d2-qualify-h0-refill-20261125-01.json"
+    ],
+    "preexisting_worktree_changes_preserved": true,
+    "asset_registry_modified": false,
+    "source_files_modified": false,
+    "original_run_directories_modified": false,
+    "original_run_ids_modified": false,
+    "original_strict_refusals_modified": false,
+    "additional_solver_pool_created": false
+  },
+  "before": {
+    "observed_utc": "2026-11-25T20:35:57.703488+00:00",
+    "running": 16,
+    "free": 0,
+    "ready": 4,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "awaiting_acceptance": 2,
+    "missing_material": 46,
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00",
+    "last_publication_tasks": [
+      "r06-s-lhs03-development-p04-b1-supply-r1",
+      "r06-s-lhs03-development-p04-b0-supply-r1"
+    ],
+    "r06_released_runs": null,
+    "lhs_transport_collected": null,
+    "ready_by_backend": {
+      "tcad": 4
+    }
+  },
+  "d1_d2_acceptance": {
+    "decision_reference": [
+      "r06-d1-d2-acceptance-v1",
+      "r06-d1-thread-audit-v1",
+      "r06-d2-exact-readout-grid-v1"
+    ],
+    "original_records_preserved": true,
+    "receipts": [
+      {
+        "case_id": "r06-t-d1-short-channel-shape-a-x30-b1",
+        "status": "accepted",
+        "receipt_created": true,
+        "receipt_relative_path": "plans/dram-se-ddr5-lpddr5/r06-gate/results/case-acceptance/r06-t-d1-short-channel-shape-a-x30-b1.json",
+        "receipt_sha256": "a25094b3a787d85d1c93fed9356c8cd0c92eb142decf5cc879882605433a324e",
+        "evidence_file": "d1-amended-readout-evidence.json",
+        "evidence_sha256": "9430cb74701742eaebf004de900daf170aad82c16770f1bcc0db77b20c24cb3b",
+        "event_run_id": "auto-r06-t-d1-short-channel-shape-a-x30-b1-supply--455fbd8d8c334dfa",
+        "event_results_sha256": "266750d1eba7af79e5c8ff99a940d97f91944dad920e4a0cc3dd615e3d1ed7a4",
+        "matched_zero_run_id": "auto-r06-p0-d1-zero-whr-b1-read-damped-r2-4aa4bac5ede049df",
+        "matched_zero_results_sha256": "44870d66248f7ff97cf37b429e55daa4a0db3140680384f9c21e2ba77539f0e3",
+        "measured_values": {
+          "terminal_time_ns": "35.0",
+          "event_source_integrals": [
+            "37554.23485351159",
+            "37554.23485351159",
+            "37554.23485351159"
+          ],
+          "zero_source_integrals": [
+            "0E-41",
+            "0E-41",
+            "0E-41"
+          ],
+          "mevent_V": "0.024934786484250",
+          "mzero_V": "0.026114683051315",
+          "delta_m_V": "-0.001179896567065",
+          "actual_thread_count": 1
+        },
+        "original_strict_refusal_reason": "Declared frozen single-thread execution conflicted with the recorded Number_Of_Threads=4 field. The run log records assembly_threads=1 and solver_threads=1."
+      },
+      {
+        "case_id": "r06-t-d2-narrow-fin-shape-a-x10-b0",
+        "status": "accepted",
+        "receipt_created": true,
+        "receipt_relative_path": "plans/dram-se-ddr5-lpddr5/r06-gate/results/case-acceptance/r06-t-d2-narrow-fin-shape-a-x10-b0.json",
+        "receipt_sha256": "5653860b9383db345777195fdaf6403f29466a027e89c7c1a888395f51bbf15a",
+        "evidence_file": "d2-amended-readout-evidence.json",
+        "evidence_sha256": "7c3f472bb4fa61b7b4ecd6296b9c091be41b4dd6df1ea9f4207e1b5c848a7af2",
+        "event_run_id": "auto-r06-t-d2-narrow-fin-shape-a-x10-b0-supply-r1-9d123b7b367a4ee2",
+        "event_results_sha256": "2a5a6a3357ca5e5b43318588eb84fb2e3591481224b24e2fb4e7d2d31e34eee5",
+        "matched_zero_run_id": "auto-r06-p0-d2-zero-whr-b0-r1-d9f44ad172d74b8f",
+        "matched_zero_results_sha256": "3e6cd992daf41dd27df841c300e73eced62a1bd705bb3552e53b49644e8089eb",
+        "measured_values": {
+          "terminal_time_ns": "35.0",
+          "event_source_integrals": [
+            "12244.503216500916625",
+            "12244.503216500916625",
+            "12244.503216500916625"
+          ],
+          "zero_source_integrals": [
+            "0E-41",
+            "0E-41",
+            "0E-41"
+          ],
+          "mevent_V": "0.044010104122456",
+          "mzero_V": "0.043541873459770",
+          "delta_m_V": "0.000468230662686",
+          "event_time_grid_points": 736,
+          "zero_time_grid_points": 714,
+          "readout_time_ns_present_in_event_grid": true,
+          "readout_time_ns_present_in_zero_grid": true,
+          "readout_time_ns": "31.9000000000000"
+        },
+        "original_strict_refusal_reason": "The event and zero-source time grids had different point counts. Both grids contain the exact 31.9 ns readout point under the amended exact-readout-grid decision."
+      }
+    ],
+        "controller_projection_after_receipts": {
+      "d1_state": "evidence_record_to_verify",
+      "d2_state": "evidence_record_to_verify",
+      "awaiting_acceptance_remaining": 2,
+          "interpretation": "The two accepted receipt files exist and pass the receipt field check. The two live replenishment acceptance entries are phase blocks unrelated to these T receipts.",
+          "phase_block_rules": {
+            "AL": "awaiting formal development acquisition and matching inputs",
+            "HR/HP": "awaiting model freeze and matching holdout inputs"
+          },
+          "trigger": "The official month-one preparation rule emits AL and HR/HP when the post-P2 release or later entries are unavailable. Accepted D1/D2 T evidence records do not satisfy those phase gates."
+    },
+    "downstream_publication": {
+      "performed": false,
+          "reason": "The official preparation pass produced no publishable downstream entry because the AL and HR/HP phase gates remain active. No batch was fabricated or submitted."
+    }
+  },
+  "h0_zero_source": {
+    "qualification_signed": false,
+    "qualification_blocker": "The h/2 time-step companion runs are absent. A fresh standard-reader recheck reports drift in the frozen reader dependency.",
+    "h_half_material_submitted": false,
+    "h_half_template_check": {
+      "existing_lhs_h2_queue_tasks": 12,
+      "existing_lhs_h2_profiles": [
+        "LHS01-development",
+        "LHS02-development",
+        "LHS03-development",
+        "LHS04-development",
+        "LHS05-development",
+        "LHS06-development"
+      ],
+      "h0_h2_queue_tasks": 0,
+      "approved_h0_h2_batches": 0,
+      "official_h0_h2_prepared_entries": 0,
+      "safe_h0_h2_publication": false,
+      "reason": "The existing h/2 queue templates are profile-specific LHS development inputs. The frozen recipe has no H0 h/2 entry, and official preparation returns the AL and HR/HP phase gates before any H0 h/2 batch can be admitted."
+    },
+    "h0_b0": {
+      "run_id": "auto-r06-p0-h0-zero-whr-b0-r1-8cea6412c35442b4",
+      "terminal_time_ns": "35.0",
+      "three_zero_integrals": true,
+      "write_polarity": "BL=0 V",
+      "hold_polarity": "BL precharge=+0.6 V",
+      "readout_margin_V": "0.043707171044212",
+      "actual_thread_count": 1,
+      "accepted_BE_count": 640,
+      "rejected_BE_count": 34
+    },
+    "h0_b1": {
+      "run_id": "auto-r06-p0-h0-zero-whr-b1-r1-deb571c514014334",
+      "terminal_time_ns": "35.0",
+      "three_zero_integrals": true,
+      "write_polarity": "BL=+1.2 V",
+      "hold_polarity": "BL precharge=+0.6 V",
+      "readout_margin_V": "0.026046777096128",
+      "actual_thread_count": 1,
+      "accepted_BE_count": 847,
+      "rejected_BE_count": 110
+    },
+    "supply_action": {
+      "performed": false,
+      "reason": "The formal H0 qualification gate requires the missing h/2 companion evidence. No new scientific input was invented or submitted."
+    }
+  },
+  "response_supply": {
+    "published": false,
+    "succeeded_pools": 48,
+    "not_submitted_batches_exposed": 0,
+    "service_result": "success",
+    "service_state": "activating",
+    "timer_result": "success",
+    "timer_state": "active",
+    "timer_unit_state": "enabled",
+    "reason_ready_not_refilled": "running=16, free=0, ready=4, and the response status exposes no remaining not_submitted batch. The existing service and timer are active."
+  },
+  "h1_h2_and_repairs": {
+    "isolated_zero_geometry": {
+      "total_checked": 204,
+      "out_of_bounds": 127,
+      "not_task_candidates": 77,
+      "not_task_candidate_reason": "The remaining 77 items failed the exact task-candidate selection and gate filters after the isolated geometry screening. They were not admitted to the task candidate set."
+    },
+    "repair_requests": [
+      {
+        "status": "held",
+        "action": "read_only",
+        "reason": "Background verification has not cleared the hold."
+      },
+      {
+        "status": "held",
+        "action": "read_only",
+        "reason": "Background verification has not cleared the hold."
+      }
+    ]
+  },
+    "after": {
+    "observed_utc": "2026-11-25T20:53:18.575532+00:00",
+    "scheduler_slot_observation_utc": "2026-11-25T20:53:46.249001+00:00",
+    "wait_after_actions_seconds": 15,
+    "running": 16,
+    "free": 0,
+    "ready": 4,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "awaiting_acceptance": 2,
+    "missing_material": 46,
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00",
+    "last_publication_tasks": [
+      "r06-s-lhs03-development-p04-b1-supply-r1",
+      "r06-s-lhs03-development-p04-b0-supply-r1"
+    ],
+    "r06_released_runs": null,
+    "lhs_transport_collected": null,
+    "ready_by_backend": {
+      "tcad": 4
+    }
+  },
+  "comparison": {
+    "running_delta": 0,
+    "free_delta": 0,
+    "ready_delta": 0,
+    "awaiting_acceptance_delta": 0,
+    "missing_material_delta": 0,
+    "blocked_by_stage_delta": {
+      "missing_material": 0,
+      "awaiting_acceptance": 0,
+      "other": 0
+    }
+  },
+  "verification_boundary": {
+    "verified": [
+      "The two D1/D2 case-acceptance receipt files were created with accepted status and verified hashes.",
+      "The original run directories, run identities, and strict refusal records were preserved.",
+      "The H0 readout metrics and missing h/2 evidence were recorded.",
+      "The official preparation rule was checked and the two acceptance-stage entries were identified as AL and HR/HP phase gates.",
+      "The existing LHS01-development through LHS06-development h/2 queue templates were counted and no H0 h/2 queue or approved batch was found.",
+      "The response service and timer reported successful active operation, with 48 successful response pools and no exposed not_submitted batch.",
+      "The 15-second post-action controller snapshot was collected."
+    ],
+    "external_read_only_gates": [
+      "The live controller replenishment count remained at awaiting_acceptance=2 because the AL and HR/HP phase gates are still active.",
+      "H0 formal qualification and Z binding require the missing h/2 companion evidence and a consistent frozen reader dependency.",
+      "Ready supply remained at 4 because no compliant unpublished response batch was available while all 16 slots were running.",
+      "No downstream batch was published because official preparation produced no admitted entry."
+    ]
+  },
+  "acceptance_check": {
+    "command": "python -m json.tool 论文草稿/materials/r06-sign-d1-d2-qualify-h0-refill-20261125-01.json",
+    "result": "passed"
+  }
+}
