@@ -1,0 +1,853 @@
+[
+  {
+    "slide": 1,
+    "title": "AI辅助下的多特征尺寸\n存储器单粒子效应评估",
+    "backup": false,
+    "text": [
+      "AI辅助下的多特征尺寸\n存储器单粒子效应评估",
+      "DRAM 单粒子效应研究",
+      "1",
+      "项目汇报",
+      "比较不同栅长的电荷变化和读出结果，\n用仿真数据训练并检验预测模型。",
+      "4",
+      "种栅长",
+      "64",
+      "个独立粒子事件",
+      "128",
+      "次存储响应"
+    ],
+    "notes": "研究对象是1T1C DRAM单元。项目比较4种栅长在α粒子和质子入射后的电荷变化与读出结果，并用仿真数据训练预测模型。AI助手参与条件整理、脚本编写、运行调度和结果分析。机器学习预测另由4个岭回归模型完成。",
+    "sourceRefs": [
+      "../assets/data/snapshot/summary.json",
+      "../assets/data/frozen-models.json"
+    ]
+  },
+  {
+    "slide": 2,
+    "title": "研究内容",
+    "backup": false,
+    "text": [
+      "研究内容",
+      "以1T1C DRAM单元为对象，计算粒子入射后的电荷与读出响应。",
+      "DRAM 单粒子效应研究",
+      "2",
+      "粒子输运",
+      "Geant4计算材料中的能量沉积",
+      "存储单元响应",
+      "Sentaurus TCAD计算电荷和读出变化",
+      "数据分析",
+      "比较不同栅长、粒子和入射角度",
+      "模型预测",
+      "用已有尺寸的数据预测测试尺寸的结果",
+      "AI助手参与条件整理、脚本编写、运行调度和结果分析。"
+    ],
+    "notes": "Geant4计算粒子在材料中的能量沉积。项目将硅中的电离沉积映射到器件仿真源项，再由Sentaurus TCAD计算存储单元响应。同一事件分别计算存储0和存储1。分析采用同条件对照和中性参考。AI助手支持脚本与数据处理，预测模型使用本项目产生的仿真数据。",
+    "sourceRefs": [
+      "../assets/data/snapshot/report.md",
+      "../../final-r4/sections/paper/02-model-transfer.tex"
+    ]
+  },
+  {
+    "slide": 3,
+    "title": "参数设置",
+    "backup": false,
+    "text": [
+      "参数设置",
+      "每个粒子事件分别计算存储0和存储1，共64个事件、128次响应。",
+      "DRAM 单粒子效应研究",
+      "3",
+      "共同条件",
+      "α粒子、质子\n能量均为5 MeV\n入射角度0°、30°\n每组使用4个独立种子\n名义氧化层厚度5 nm"
+    ],
+    "notes": "训练集包含0.18和0.35 μm两个栅长，共32个独立事件、64次响应。0.25 μm用于尺寸区间内测试，0.45 μm用于区间外测试，各16个独立事件、32次响应。每组栅长、粒子与角度有4个独立种子。重试与补充计算不增加独立事件数。名义氧化层厚度为5 nm，位线预充电电阻为50 Ω。",
+    "sourceRefs": [
+      "../assets/data/snapshot/summary.json.design",
+      "../assets/data/snapshot/statistics.csv"
+    ],
+    "tables": [
+      [
+        [
+          "用途",
+          "栅长（μm）",
+          "事件",
+          "响应"
+        ],
+        [
+          "训练",
+          "0.18、0.35",
+          "32",
+          "64"
+        ],
+        [
+          "区间内测试",
+          "0.25",
+          "16",
+          "32"
+        ],
+        [
+          "区间外测试",
+          "0.45",
+          "16",
+          "32"
+        ],
+        [
+          "合计",
+          "4种",
+          "64",
+          "128"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 4,
+    "title": "电荷与读出",
+    "backup": false,
+    "text": [
+      "电荷与读出",
+      "电荷变化反映入射影响，读出裕量用于判断存储值能否正确读出。",
+      "DRAM 单粒子效应研究",
+      "4",
+      "5 mV主判据",
+      "高于5 mV：正确读出\n低于−5 mV：判据误读",
+      "±5 mV以内：临界\n数值不确定另行统计"
+    ],
+    "notes": "电荷指标ΔQ=Cs×(SNsig−SNctl)，在2.8 ns计算，Cs=10 fF。读出差D=BLsig−BLneu，裕量M=(2b−1)D，裕量变化ΔM=Mctl−M，在4 ns计算。sig为粒子信号，ctl为同位对照，neu为同条件中性参考。M>ε为正确，M<−ε为判据误读，|M|≤ε为临界，数值不确定独立列出。判据误读指当前读出判据下的结果，不代表实际感放锁存或持久位翻转。",
+    "sourceRefs": [
+      "../../final-r4/sections/paper/03-workflow-metrics.tex",
+      "../assets/tables/thresholds.tex"
+    ],
+    "tables": [
+      [
+        [
+          "观察量",
+          "计算时刻",
+          "比较对象"
+        ],
+        [
+          "电荷变化",
+          "2.8 ns",
+          "粒子入射与同位对照"
+        ],
+        [
+          "读出裕量",
+          "4 ns",
+          "信号位线与中性参考"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 5,
+    "title": "仿真结果",
+    "backup": false,
+    "text": [
+      "仿真结果",
+      "全部128次主实验响应完成。主判据取5 mV。",
+      "DRAM 单粒子效应研究",
+      "5",
+      "5 mV统计",
+      "96",
+      "正确读出",
+      "20",
+      "判据误读",
+      "8",
+      "临界",
+      "4",
+      "数值不确定"
+    ],
+    "notes": "5 mV判据下为96项正确读出、20项判据误读、8项临界及4项数值不确定。图中同时给出2.5和10 mV判据，分别为96/27/4/1与96/5/26/1，顺序为正确、误读、临界、不确定。4项不确定的来源见边界验证页。所有统计均使用同一组128次响应，工程失败保留在历史记录中。",
+    "sourceRefs": [
+      "../assets/data/writing-results.json.threshold_counts",
+      "../assets/data/snapshot/responses.csv"
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "config": {
+          "position": {
+            "left": 50,
+            "top": 205,
+            "width": 845,
+            "height": 431
+          },
+          "categories": [
+            "2.5 mV",
+            "5 mV",
+            "10 mV"
+          ],
+          "series": [
+            {
+              "name": "正确读出",
+              "values": [
+                96,
+                96,
+                96
+              ],
+              "fill": "#367C70"
+            },
+            {
+              "name": "判据误读",
+              "values": [
+                27,
+                20,
+                5
+              ],
+              "fill": "#CC7053"
+            },
+            {
+              "name": "临界",
+              "values": [
+                4,
+                8,
+                26
+              ],
+              "fill": "#D5A34A"
+            },
+            {
+              "name": "数值不确定",
+              "values": [
+                1,
+                4,
+                1
+              ],
+              "fill": "#83749E"
+            }
+          ],
+          "barOptions": {
+            "direction": "column",
+            "grouping": "stacked",
+            "gapWidth": 90
+          },
+          "hasLegend": true,
+          "legend": {
+            "position": "bottom",
+            "textStyle": {
+              "fontSize": 22
+            }
+          },
+          "xAxis": {
+            "textStyle": {
+              "fontSize": 22,
+              "fill": "#677A83"
+            },
+            "line": {
+              "fill": "#CAD6DC",
+              "width": 1
+            },
+            "majorGridlines": null
+          },
+          "yAxis": {
+            "textStyle": {
+              "fontSize": 22,
+              "fill": "#677A83"
+            },
+            "line": {
+              "fill": "#CAD6DC",
+              "width": 1
+            },
+            "majorGridlines": {
+              "fill": "#E0E7EA",
+              "width": 1
+            },
+            "min": 0,
+            "max": 128,
+            "majorUnit": 32,
+            "title": {
+              "text": "响应数",
+              "textStyle": {
+                "fontSize": 22
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "slide": 6,
+    "title": "粒子入射后的电场分布",
+    "backup": false,
+    "text": [
+      "粒子入射后的电场分布",
+      "α粒子，30°入射，存储1。图中保留原始变量、单位和色标。",
+      "DRAM 单粒子效应研究",
+      "6"
+    ],
+    "notes": "此图为SVisual原生窗口截图，显示0.18 μm单元在4 ns时的电场幅值。事件seed为202610311，存储1。图像为原始native-event-window.png完整窗口，仅按比例置入幻灯片。电场图用于查看空间分布，读出状态由位线曲线和中性参考计算。",
+    "sourceRefs": [
+      "../assets/figures/native-event-window.png",
+      "../assets/data/native-visual-review.json"
+    ],
+    "images": [
+      {
+        "name": "native-event-window.png",
+        "sha256": "b561a9c81fa63fc69b1956bcfaf667f0026c790d8cb5d46aafa910a707f8c846",
+        "unchanged": true
+      }
+    ]
+  },
+  {
+    "slide": 7,
+    "title": "模型训练与验证",
+    "backup": false,
+    "text": [
+      "模型训练与验证",
+      "采用4个岭回归模型，分别预测两种存储状态下的电荷和裕量变化。",
+      "DRAM 单粒子效应研究",
+      "7",
+      "训练",
+      "64次响应，0.18和0.35 μm",
+      "保存预测",
+      "固定模型及64条测试预测",
+      "测试",
+      "64次响应，0.25和0.45 μm",
+      "测试仿真开始前已保存预测值。"
+    ],
+    "notes": "四个Ridge模型按存储位与目标分别训练：存储0的ΔQ、存储0的ΔM、存储1的ΔQ、存储1的ΔM。64次训练响应来自0.18和0.35 μm。超参数通过训练集内部按事件分组的交叉验证选择。模型及64条测试响应预测在测试求解前固定。每条响应预测包含电荷与裕量两个目标。测试只读取已固定预测，不重新拟合。",
+    "sourceRefs": [
+      "../assets/data/frozen-models.json",
+      "../assets/data/snapshot/original-r4-prediction-scores.json",
+      "../assets/tables/training-cv.tex"
+    ],
+    "tables": [
+      [
+        [
+          "存储状态",
+          "预测目标",
+          "模型数"
+        ],
+        [
+          "存储0",
+          "电荷变化、裕量变化",
+          "2"
+        ],
+        [
+          "存储1",
+          "电荷变化、裕量变化",
+          "2"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 8,
+    "title": "预测误差",
+    "backup": false,
+    "text": [
+      "预测误差",
+      "4个模型在两种测试栅长上的误差均低于训练均值预测。",
+      "DRAM 单粒子效应研究",
+      "8",
+      "岭回归的RMSE"
+    ],
+    "notes": "左图比较裕量变化的均方根误差。训练均值方法对每个目标采用相应训练集目标的平均值。右表为4个模型在两种测试栅长上的RMSE，每个模型、每种测试栅长有16个响应。完整MAE、RMSE和最大绝对误差见补充资料。图表数值由最终评分文件读取，展示舍入不修改原评分。",
+    "sourceRefs": [
+      "../assets/data/snapshot/final-numerical-prediction-scores.json",
+      "../assets/data/snapshot/prediction-scores.csv"
+    ],
+    "charts": [
+      {
+        "type": "bar",
+        "config": {
+          "position": {
+            "left": 45,
+            "top": 225,
+            "width": 715,
+            "height": 405
+          },
+          "categories": [
+            "0.25 存储0",
+            "0.25 存储1",
+            "0.45 存储0",
+            "0.45 存储1"
+          ],
+          "series": [
+            {
+              "name": "训练均值",
+              "values": [
+                18.448022,
+                20.066626,
+                18.867683,
+                20.219896
+              ],
+              "fill": "#B8C9D1"
+            },
+            {
+              "name": "岭回归",
+              "values": [
+                0.798415,
+                0.838043,
+                0.519434,
+                0.504929
+              ],
+              "fill": "#287A9A"
+            }
+          ],
+          "barOptions": {
+            "direction": "column",
+            "grouping": "clustered",
+            "gapWidth": 90
+          },
+          "hasLegend": true,
+          "legend": {
+            "position": "bottom",
+            "textStyle": {
+              "fontSize": 22
+            }
+          },
+          "xAxis": {
+            "textStyle": {
+              "fontSize": 19,
+              "fill": "#677A83"
+            },
+            "line": {
+              "fill": "#CAD6DC",
+              "width": 1
+            },
+            "majorGridlines": null
+          },
+          "yAxis": {
+            "textStyle": {
+              "fontSize": 22,
+              "fill": "#677A83"
+            },
+            "line": {
+              "fill": "#CAD6DC",
+              "width": 1
+            },
+            "majorGridlines": {
+              "fill": "#E0E7EA",
+              "width": 1
+            },
+            "min": 0,
+            "max": 25,
+            "majorUnit": 5,
+            "title": {
+              "text": "裕量变化RMSE（mV）",
+              "textStyle": {
+                "fontSize": 22
+              }
+            }
+          }
+        }
+      }
+    ],
+    "tables": [
+      [
+        [
+          "目标／状态",
+          "0.25 μm",
+          "0.45 μm"
+        ],
+        [
+          "电荷变化（fC）\n存储0",
+          "0.0883",
+          "0.0680"
+        ],
+        [
+          "电荷变化（fC）\n存储1",
+          "0.0946",
+          "0.0672"
+        ],
+        [
+          "裕量变化（mV）\n存储0",
+          "0.7984",
+          "0.5194"
+        ],
+        [
+          "裕量变化（mV）\n存储1",
+          "0.8380",
+          "0.5049"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 9,
+    "title": "氧化层试验",
+    "backup": false,
+    "text": [
+      "氧化层试验",
+      "完成14项补充计算，比较4、5、6 nm氧化层厚度。",
+      "DRAM 单粒子效应研究",
+      "9",
+      "最大绝对变化",
+      "0.11256 mV",
+      "0.005784 fC",
+      "读出分类保持不变",
+      "比较使用相同的硅入口事件。5 nm沿用主实验结果。"
+    ],
+    "notes": "14项新计算包含8项信号、4项中性参考和2项对照，5 nm基线复用主实验结果。固定0.25 μm、0°入射和硅入口事件，比较4和6 nm相对5 nm的变化。最大绝对裕量变化约0.11256 mV，最大绝对电荷变化约0.005784 fC，分类保持。此比较固定硅入口，不重算各厚度材料堆栈的粒子输运。未逐厚度独立细化，不将微小差异表述为统计显著效应。",
+    "sourceRefs": [
+      "../assets/data/snapshot/summary.json.oxide",
+      "../assets/tables/oxide.tex",
+      "../assets/data/snapshot/extension-cases.csv"
+    ],
+    "charts": [
+      {
+        "type": "line",
+        "config": {
+          "position": {
+            "left": 50,
+            "top": 204,
+            "width": 815,
+            "height": 414
+          },
+          "categories": [
+            "4 nm",
+            "5 nm",
+            "6 nm"
+          ],
+          "series": [
+            {
+              "name": "α粒子 存储0",
+              "values": [
+                0.067724,
+                0,
+                -0.110119
+              ],
+              "line": {
+                "fill": "#287A9A",
+                "width": 3
+              },
+              "marker": {
+                "symbol": "circle",
+                "size": 8,
+                "fill": "#287A9A"
+              }
+            },
+            {
+              "name": "α粒子 存储1",
+              "values": [
+                -0.062974,
+                0,
+                0.11256
+              ],
+              "line": {
+                "fill": "#CC7053",
+                "width": 3
+              },
+              "marker": {
+                "symbol": "square",
+                "size": 8,
+                "fill": "#CC7053"
+              }
+            },
+            {
+              "name": "质子 存储0",
+              "values": [
+                0.00324,
+                0,
+                -0.005893
+              ],
+              "line": {
+                "fill": "#367C70",
+                "width": 3
+              },
+              "marker": {
+                "symbol": "diamond",
+                "size": 8,
+                "fill": "#367C70"
+              }
+            },
+            {
+              "name": "质子 存储1",
+              "values": [
+                -0.003771,
+                0,
+                0.006209
+              ],
+              "line": {
+                "fill": "#83749E",
+                "width": 3
+              },
+              "marker": {
+                "symbol": "triangle",
+                "size": 8,
+                "fill": "#83749E"
+              }
+            }
+          ],
+          "lineOptions": {
+            "smooth": false
+          },
+          "hasLegend": true,
+          "legend": {
+            "position": "bottom",
+            "textStyle": {
+              "fontSize": 21
+            }
+          },
+          "xAxis": {
+            "textStyle": {
+              "fontSize": 22,
+              "fill": "#677A83"
+            },
+            "line": {
+              "fill": "#CAD6DC",
+              "width": 1
+            },
+            "majorGridlines": null
+          },
+          "yAxis": {
+            "textStyle": {
+              "fontSize": 22,
+              "fill": "#677A83"
+            },
+            "line": {
+              "fill": "#CAD6DC",
+              "width": 1
+            },
+            "majorGridlines": {
+              "fill": "#E0E7EA",
+              "width": 1
+            },
+            "min": -0.15,
+            "max": 0.15,
+            "majorUnit": 0.05,
+            "numberFormatCode": "0.00",
+            "title": {
+              "text": "相对5 nm的裕量变化（mV）",
+              "textStyle": {
+                "fontSize": 22
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  {
+    "slide": 10,
+    "title": "边界验证",
+    "backup": false,
+    "text": [
+      "边界验证",
+      "从全部128次响应中选取2个近边界目标，分别减小时间步和网格尺寸。",
+      "DRAM 单粒子效应研究",
+      "10",
+      "1项在5 mV判据处跨界。另有3项近界响应尚未细化。",
+      "以上4项均列为数值不确定。"
+    ],
+    "notes": "两目标为seed 202610304与202610313，均为存储1，来自完整128响应的距离排名。各执行半时间步和0.7网格尺度，合计4项补充计算。连续量验收容差为0.5 mV与0.01 fC，4项比较均通过，最大电荷差约0.003490 fC。202610304的半步长结果在5 mV判据处跨界。该响应与3项尚未细化的近界响应共同记为4项数值不确定。细化不增加独立事件数。",
+    "sourceRefs": [
+      "../assets/data/snapshot/summary.json.numerical_boundary",
+      "../assets/tables/boundary.tex",
+      "../assets/tables/numerical-status.tex"
+    ],
+    "tables": [
+      [
+        [
+          "目标",
+          "细化方式",
+          "最大电压差（mV）",
+          "连续量检查"
+        ],
+        [
+          "202610304／存储1",
+          "时间步减半",
+          "0.032654",
+          "通过"
+        ],
+        [
+          "202610304／存储1",
+          "网格尺寸×0.7",
+          "0.005088",
+          "通过"
+        ],
+        [
+          "202610313／存储1",
+          "时间步减半",
+          "0.025337",
+          "通过"
+        ],
+        [
+          "202610313／存储1",
+          "网格尺寸×0.7",
+          "0.005088",
+          "通过"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 11,
+    "title": "结论与后续工作",
+    "backup": false,
+    "text": [
+      "结论与后续工作",
+      "DRAM 单粒子效应研究",
+      "11",
+      "已完成的研究",
+      "完成4种栅长的仿真比较，获得128次存储响应。\n4个预测模型在两种测试栅长上的误差均低于训练均值预测。",
+      "后续工作",
+      "校准器件电学与感放模型，扩大粒子能量、入射位置和样本范围。",
+      "结论限于当前二维模型与入射条件。"
+    ],
+    "notes": "本阶段完成4种栅长、64个独立粒子事件与128次配对存储响应，模型和预测在测试前固定。两种测试尺寸的4个模型误差均低于训练均值基线。后续研究需要实际工艺和电学参数校准、感放模型校准，并扩展能量、位置与样本范围。当前二维仿真用于比较设定条件下的响应，不能直接推断商业DRAM辐射可靠性。本页不对学生操作、教师审核或答辩完成情况作任何声明。",
+    "sourceRefs": [
+      "../assets/data/snapshot/summary.json",
+      "../../final-r4/sections/paper/05-prediction-discussion.tex"
+    ]
+  },
+  {
+    "slide": 12,
+    "title": "模型误差明细",
+    "backup": true,
+    "text": [
+      "模型误差明细",
+      "每行含16个测试响应。误差单位随预测目标列出。",
+      "补充资料",
+      "12"
+    ],
+    "notes": "补充表列出4个岭回归模型在区间内和区间外测试上的MAE、RMSE及最大绝对误差。表中的0.25 μm对应holdout，0.45 μm对应extrapolation。均为最终评分原表中的有效样本数与指标。",
+    "sourceRefs": [
+      "../assets/data/snapshot/final-numerical-prediction-scores.json",
+      "../assets/data/snapshot/prediction-scores.csv"
+    ],
+    "tables": [
+      [
+        [
+          "栅长（μm）",
+          "状态",
+          "预测目标",
+          "MAE",
+          "RMSE",
+          "最大误差"
+        ],
+        [
+          "0.25",
+          "存储0",
+          "电荷／fC",
+          "0.0566",
+          "0.0883",
+          "0.1816"
+        ],
+        [
+          "0.25",
+          "存储0",
+          "裕量／mV",
+          "0.5270",
+          "0.7984",
+          "1.6456"
+        ],
+        [
+          "0.25",
+          "存储1",
+          "电荷／fC",
+          "0.0618",
+          "0.0946",
+          "0.1989"
+        ],
+        [
+          "0.25",
+          "存储1",
+          "裕量／mV",
+          "0.5498",
+          "0.8380",
+          "1.7654"
+        ],
+        [
+          "0.45",
+          "存储0",
+          "电荷／fC",
+          "0.0528",
+          "0.0680",
+          "0.1364"
+        ],
+        [
+          "0.45",
+          "存储0",
+          "裕量／mV",
+          "0.4050",
+          "0.5194",
+          "1.0753"
+        ],
+        [
+          "0.45",
+          "存储1",
+          "电荷／fC",
+          "0.0517",
+          "0.0672",
+          "0.1442"
+        ],
+        [
+          "0.45",
+          "存储1",
+          "裕量／mV",
+          "0.3877",
+          "0.5049",
+          "1.1051"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 13,
+    "title": "运行记录",
+    "backup": true,
+    "text": [
+      "运行记录",
+      "原失败记录和重试记录分别保存，独立事件总数保持64个。",
+      "补充资料",
+      "13",
+      "累计时间包含失败和重试，用于记录计算资源消耗。"
+    ],
+    "notes": "全局历史保留7条FAILED。R50主线4项重试采用明确alias，保留原失败与null退出码，不将未知退出码补为0。原逻辑响应仍只有128项，工程重试与确定性扩展均不增加独立科学样本。全账本包含224条记录，旧206条加扩展18条，累计求解时间包括原失败、重试、旧版本和扩展。来源与实际run映射保存在response-sources.json、sources.json、raw-submission-index.json及original-failures.json。绑定快照的SHA256为58650c6a934c81b07bf03e7aca5917f73b499307baf5c6c276debd47c8ef7ca3。",
+    "sourceRefs": [
+      "../assets/data/snapshot/original-failures.json",
+      "../assets/data/snapshot/ledger-snapshot.json",
+      "../assets/data/snapshot/response-sources.json",
+      "../assets/data/snapshot/sources.json"
+    ],
+    "tables": [
+      [
+        [
+          "记录",
+          "保留情况"
+        ],
+        [
+          "历史失败",
+          "7条FAILED均保留"
+        ],
+        [
+          "主实验重试",
+          "4项，原失败及未知退出码null保留"
+        ],
+        [
+          "全账本",
+          "224条记录，含18项补充计算"
+        ],
+        [
+          "累计求解时间",
+          "100022.07 s，约27.78 h"
+        ]
+      ]
+    ]
+  },
+  {
+    "slide": 14,
+    "title": "参考电场分布",
+    "backup": true,
+    "text": [
+      "参考电场分布",
+      "0.18 μm单元，存储1，4 ns时的电场幅值。",
+      "补充资料",
+      "14"
+    ],
+    "notes": "此图为物理参考计算的SVisual原生完整窗口，来源native-physical-window.png。截图保持原始像素，不将其改绘成界面。变量为Abs(ElectricField-V)，单位V/cm，坐标单位μm。它与主报告中的粒子事件电场图属于不同计算，不能仅凭图像色彩推断电荷收集或读出分类。完整参考文献见../assets/references.bib。",
+    "sourceRefs": [
+      "../assets/figures/native-physical-window.png",
+      "../assets/data/native-visual-review.json",
+      "../assets/references.bib"
+    ],
+    "images": [
+      {
+        "name": "native-physical-window.png",
+        "sha256": "3c488a1571a23b36fa456db88639fb8c30d181c7d2c0d465c85176b79a454a98",
+        "unchanged": true
+      }
+    ]
+  }
+]

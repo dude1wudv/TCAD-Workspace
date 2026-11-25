@@ -1,0 +1,187 @@
+{
+  "schema": "dram-see-v3-final-r4-ppt-render-binding",
+  "recorded_utc": "2026-10-12T00:52:51.053340+00:00",
+  "pptx": "reports/final-r4/dram-see-v3-r4-r4.pptx",
+  "pptx_sha256": "4b3487f325afdb86cee64f7fe04de5c319cb536e1a32e9273523f5c8713730fd",
+  "slide_count": 16,
+  "core_slides": 12,
+  "backup_slides": 4,
+  "renderer": "@oai/artifact-tool, finalizer output re-imported through PresentationFile.importPptx",
+  "scale": 1.5,
+  "dimensions": [
+    1920,
+    1080
+  ],
+  "actual_build_and_render_exit_code": 0,
+  "render_source_is_finalized_pptx": true,
+  "build_script": "reports/final-r4/build_deck.mjs",
+  "build_script_sha256": "f346110ece7cebce7ba0f3e5da6a265599343a8666996cb2b0f19f1a8cda850d",
+  "command": [
+    "C:/Users/sun/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin/node.exe",
+    "local_runtime/dram-see-v3/final-r4-document-build/build_deck.mjs",
+    "r4"
+  ],
+  "launch_log": "local_runtime/dram-see-v3/final-r4-document-build/deck-r4-launch.log",
+  "images": [
+    {
+      "slide": 1,
+      "image": "qa/ppt-r4/slide-01.png",
+      "sha256": "4f35a9bc2e2d52fdbc2a01d7bbaac5e6562105d24fb9f6b99e179a8f97719d4e",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 2,
+      "image": "qa/ppt-r4/slide-02.png",
+      "sha256": "93ccfbc3589edc8b1b516f942e6f69de9667245c5077fcbdc6fb76f551cab7ac",
+      "matches_self_reviewed_r3_png": false,
+      "r4_changed_page_self_reviewed": true
+    },
+    {
+      "slide": 3,
+      "image": "qa/ppt-r4/slide-03.png",
+      "sha256": "7af218b6746787f6787313e7288073476cf66991faa6626fd066d00e59007582",
+      "matches_self_reviewed_r3_png": false,
+      "r4_changed_page_self_reviewed": true
+    },
+    {
+      "slide": 4,
+      "image": "qa/ppt-r4/slide-04.png",
+      "sha256": "7e07b178d5b3729bc1b3decf73d774702f0816e7b9b715b16c0822f1514bc150",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 5,
+      "image": "qa/ppt-r4/slide-05.png",
+      "sha256": "4a7b0e71acebfa82dd3b72a5d44ce8533b4233f35fb5e2737fbde11e1c32ca64",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 6,
+      "image": "qa/ppt-r4/slide-06.png",
+      "sha256": "9721021ddcd286df3d87770c3c64d710df5284a15bc719478b954c2cc449ac81",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 7,
+      "image": "qa/ppt-r4/slide-07.png",
+      "sha256": "402b63439c56291076867dbb0dddf1c4aea574fe536a0135de885db7b1225c8a",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 8,
+      "image": "qa/ppt-r4/slide-08.png",
+      "sha256": "c1abbf5e66bc78aa71de55a6f9f4517445bef8b41af124baed1b517ce0a2e095",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 9,
+      "image": "qa/ppt-r4/slide-09.png",
+      "sha256": "6d37d12a13158d61cbbaaab1034bcee1fbad20aabf7e162f880457bde76dc707",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 10,
+      "image": "qa/ppt-r4/slide-10.png",
+      "sha256": "e8989949b4ef285af7045aa93390cb93f5b90ee5e8db38d17e64338c8ba6e77c",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 11,
+      "image": "qa/ppt-r4/slide-11.png",
+      "sha256": "dcbe1f8cfab372f57574fa40ff1b07e91d1f669feb714499d1e7ea3cbd0f6c25",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 12,
+      "image": "qa/ppt-r4/slide-12.png",
+      "sha256": "9425e4424274f1e8e8d23f5684213ee5d74231b0394cd2e2e8a7f8ac87fc9175",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 13,
+      "image": "qa/ppt-r4/slide-13.png",
+      "sha256": "1ef0d9e10f9a19a95d0abb32e0b4201374b584da03933004ee50d9b5f82fa56f",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 14,
+      "image": "qa/ppt-r4/slide-14.png",
+      "sha256": "823a4baa2e42b15825c0d3dab7a346678b1c9b96be846303b3c4311a8210b86e",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    },
+    {
+      "slide": 15,
+      "image": "qa/ppt-r4/slide-15.png",
+      "sha256": "3ee827de4e945af07fc966ade295a64daba8c0c70abea75e2c456beae178fc36",
+      "matches_self_reviewed_r3_png": false,
+      "r4_changed_page_self_reviewed": true
+    },
+    {
+      "slide": 16,
+      "image": "qa/ppt-r4/slide-16.png",
+      "sha256": "7ca8f2dec440ec8e4a9232561f52fd34f65283ed83a349ef36a624c054a34c51",
+      "matches_self_reviewed_r3_png": true,
+      "r4_changed_page_self_reviewed": false
+    }
+  ],
+  "author_self_review": {
+    "r3_individually_viewed_slides": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "r4_individually_viewed_changed_slides": [
+      2,
+      3,
+      15
+    ],
+    "r4_unchanged_pngs_bound_to_r3_review": [
+      1,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      16
+    ],
+    "issues_fixed": [
+      "slide 2 formula wrapping and column spacing",
+      "slide 3 label spacing",
+      "slide 15 author name 师立勤"
+    ],
+    "current_visible_clipping_or_overlap_found": false,
+    "claim": "Agent tools.view_image review of rendered images; not human classroom or native PowerPoint execution."
+  },
+  "native_powerpoint_open_verified": false
+}

@@ -1,0 +1,13 @@
+[Unit]
+Description=Prepare r0.6 LHS responses from collected native runs
+After=tcad-autonomy.service
+
+[Service]
+Type=oneshot
+User=tcad
+WorkingDirectory=/home/tcad/course-workspace
+Environment=PYTHONDONTWRITEBYTECODE=1
+UMask=0077
+Nice=15
+IOSchedulingClass=idle
+ExecStart=/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-r06-lhs-response/supply.py --policy /etc/tcad-autonomy/policy.json --publish

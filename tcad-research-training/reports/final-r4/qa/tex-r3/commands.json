@@ -1,0 +1,112 @@
+[
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\course-report.tex"
+    ],
+    "started_utc": "2026-10-12T00:43:34.8988605Z",
+    "finished_utc": "2026-10-12T00:43:42.2095782Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\course-report-pass-1.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\bibtex.exe",
+      "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\course-report"
+    ],
+    "started_utc": "2026-10-12T00:43:42.2248041Z",
+    "finished_utc": "2026-10-12T00:43:42.5351234Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\course-report-pass-2.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\course-report.tex"
+    ],
+    "started_utc": "2026-10-12T00:43:42.5369042Z",
+    "finished_utc": "2026-10-12T00:43:50.3290163Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\course-report-pass-3.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\course-report.tex"
+    ],
+    "started_utc": "2026-10-12T00:43:50.3318530Z",
+    "finished_utc": "2026-10-12T00:43:57.7472291Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\course-report-pass-4.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\research-paper.tex"
+    ],
+    "started_utc": "2026-10-12T00:43:57.7540851Z",
+    "finished_utc": "2026-10-12T00:44:04.7136906Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\research-paper-pass-1.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\bibtex.exe",
+      "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\research-paper"
+    ],
+    "started_utc": "2026-10-12T00:44:04.7151834Z",
+    "finished_utc": "2026-10-12T00:44:05.1296513Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\research-paper-pass-2.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\research-paper.tex"
+    ],
+    "started_utc": "2026-10-12T00:44:05.1332932Z",
+    "finished_utc": "2026-10-12T00:44:12.1176777Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\research-paper-pass-3.log"
+  },
+  {
+    "argv": [
+      "C:\\Program Files\\MiKTeX\\miktex\\bin\\x64\\xelatex.exe",
+      "--disable-installer",
+      "-no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error",
+      "-output-directory=E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3",
+      "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\research-paper.tex"
+    ],
+    "started_utc": "2026-10-12T00:44:12.1195455Z",
+    "finished_utc": "2026-10-12T00:44:19.1774895Z",
+    "exit_code": 0,
+    "log": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\tex-20261012T0050Z-r3\\research-paper-pass-4.log"
+  }
+]

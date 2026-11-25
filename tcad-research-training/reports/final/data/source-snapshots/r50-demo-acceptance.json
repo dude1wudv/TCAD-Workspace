@@ -1,0 +1,97 @@
+{
+  "utc": "2026-10-10T18:42:39.729386+00:00",
+  "reviewer": "root",
+  "source_sha256": "679ccc9fb2cc5a5d0a18975d930a2d62b4d6b5de486c68599b5894d659b5cdcd",
+  "manifest_sha256": "1ac41f42164cf846facc743b6357bd0278f78b62cdab5fdf7531849308e92899",
+  "developer_tests": 7,
+  "independent_tests": 5,
+  "independent_exit_code": 0,
+  "independent_log_sha256": "7528d5917eb22a2eca919fd10ce19fc20394df42066574f60fb17e7af4909241",
+  "software_mapping_accepted": true,
+  "review": "Entire demo.py and original events/parse_request read; named AST adapters preserve original grammar and fixed source checks; no run/queue/deck/SSH/GUI entry. Same64 events/128 paired main cases and exact source identity. Preview labels planned-only; locate no run or result inference.",
+  "actual_student_demo": false,
+  "scientific_result": false,
+  "mapping_cli_receipts": [
+    {
+      "name": "preview",
+      "argv": [
+        "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v3\\r50-main\\demo.py",
+        "preview"
+      ],
+      "started_utc": "2026-10-10T18:42:39.732356+00:00",
+      "finished_utc": "2026-10-10T18:42:40.367880+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout_sha256": "d58e68abfc8e790c86b6ef31d76e99e21a5c20939b55049b6ab1d46832a9c1d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "audit",
+      "argv": [
+        "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v3\\r50-main\\demo.py",
+        "audit"
+      ],
+      "started_utc": "2026-10-10T18:42:40.375823+00:00",
+      "finished_utc": "2026-10-10T18:42:41.022796+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout_sha256": "c34c694b72cc164301c552601600eea41eb86bfbcc9c6d38e215ed97f77b4313",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "locate",
+      "argv": [
+        "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v3\\r50-main\\demo.py",
+        "locate",
+        "--event-label",
+        "l018-alpha-a30-s202610311",
+        "--bit",
+        "1"
+      ],
+      "started_utc": "2026-10-10T18:42:41.031145+00:00",
+      "finished_utc": "2026-10-10T18:42:41.658261+00:00",
+      "exit_code": 0,
+      "expected_exit_code": 0,
+      "stdout_sha256": "20fa6649190fd97586e39cbbdb2979e548418c1c574088faa74b0240c6d4f60e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "rejected",
+      "argv": [
+        "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "E:\\TCAD-Workspace\\tcad-research-training\\experiments\\dram-see-v3\\r50-main\\demo.py",
+        "preview",
+        "--text",
+        "扫描几个尺寸"
+      ],
+      "started_utc": "2026-10-10T18:42:41.672744+00:00",
+      "finished_utc": "2026-10-10T18:42:43.170594+00:00",
+      "exit_code": 2,
+      "expected_exit_code": 2,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "cdfc885157af84a8f4f0002ea000d63586046ea12028005141666176dc2ce869"
+    }
+  ],
+  "events_sha256": "cbe102daad489f560b2b2004f66157d9594fac9d13e0bc04a136d0fe7a6cc794",
+  "responses_sha256": "904b82cc35d8fd69c14698e0bbbe34f014e7f24f32e9b06ba0fa4fdcc19009e0",
+  "rejected_samples": 10,
+  "active_sources_unchanged": 30,
+  "actual_solver_calls": 0,
+  "actual_g4_calls": 0,
+  "student_status": "PENDING_REAL_STUDENT_EVIDENCE"
+}

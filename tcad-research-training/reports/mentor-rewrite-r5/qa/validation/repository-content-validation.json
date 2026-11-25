@@ -1,0 +1,826 @@
+{
+  "schema": "mentor-rewrite-r5-repository-content-validation-v1",
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "course-report.pdf_hash_and_page_count",
+      "passed": true,
+      "detail": {
+        "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+        "pages": 14
+      }
+    },
+    {
+      "check": "course-report.pdf_no_unresolved_question_mark_refs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "research-paper.pdf_hash_and_page_count",
+      "passed": true,
+      "detail": {
+        "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+        "pages": 9
+      }
+    },
+    {
+      "check": "research-paper.pdf_no_unresolved_question_mark_refs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "course-report.pdf_r5_render_binding",
+      "passed": true,
+      "detail": {
+        "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+        "pages": 14
+      }
+    },
+    {
+      "check": "research-paper.pdf_r5_render_binding",
+      "passed": true,
+      "detail": {
+        "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+        "pages": 9
+      }
+    },
+    {
+      "check": "r5_rendered_pages_match_manifest",
+      "passed": true,
+      "detail": {
+        "count": 23,
+        "mismatches": []
+      }
+    },
+    {
+      "check": "64_independent_events_128_paired_responses",
+      "passed": true,
+      "detail": {
+        "events": 64,
+        "responses": 128,
+        "paired": true
+      }
+    },
+    {
+      "check": "source_5mV_counts_96_20_8_4",
+      "passed": true,
+      "detail": {
+        "correct": 96,
+        "criterion_error": 20,
+        "critical": 8,
+        "numerically_uncertain": 4
+      }
+    },
+    {
+      "check": "course_threshold_counts_96_20_8_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "paper_threshold_counts_96_20_8_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "brief_threshold_counts_96_20_8_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "materials_threshold_counts_96_20_8_4",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "64_train_responses_four_models_32_each_lambda_01",
+      "passed": true,
+      "detail": {
+        "train_responses": 64,
+        "models": {
+          "bit0:deltaQ_fC": {
+            "n": 32,
+            "lambda": 0.1
+          },
+          "bit0:deltaM_mV": {
+            "n": 32,
+            "lambda": 0.1
+          },
+          "bit1:deltaQ_fC": {
+            "n": 32,
+            "lambda": 0.1
+          },
+          "bit1:deltaM_mV": {
+            "n": 32,
+            "lambda": 0.1
+          }
+        }
+      }
+    },
+    {
+      "check": "three_features_and_train_holdout_extrapolation",
+      "passed": true,
+      "detail": [
+        "Qdep_fC",
+        "Qdep_fC/L_um",
+        "Qdep_fC*sin(theta)"
+      ]
+    },
+    {
+      "check": "four_models_each_8_loco_folds_28_plus_4",
+      "passed": true,
+      "detail": {
+        "bit0:deltaQ_fC": [
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ]
+        ],
+        "bit0:deltaM_mV": [
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ]
+        ],
+        "bit1:deltaQ_fC": [
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ]
+        ],
+        "bit1:deltaM_mV": [
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ],
+          [
+            28,
+            4
+          ]
+        ]
+      }
+    },
+    {
+      "check": "eight_test_rmse_values_in_score_data",
+      "passed": true,
+      "detail": [
+        "0.0672",
+        "0.0680",
+        "0.0883",
+        "0.0946",
+        "0.5049",
+        "0.5194",
+        "0.7984",
+        "0.8380"
+      ]
+    },
+    {
+      "check": "score_table_all_eight_rmse",
+      "passed": true,
+      "detail": [
+        "0.0672",
+        "0.0680",
+        "0.0883",
+        "0.0946",
+        "0.5049",
+        "0.5194",
+        "0.7984",
+        "0.8380"
+      ]
+    },
+    {
+      "check": "course_pdf_all_eight_rmse",
+      "passed": true,
+      "detail": [
+        "0.0672",
+        "0.0680",
+        "0.0883",
+        "0.0946",
+        "0.5049",
+        "0.5194",
+        "0.7984",
+        "0.8380"
+      ]
+    },
+    {
+      "check": "paper_pdf_all_eight_rmse",
+      "passed": true,
+      "detail": [
+        "0.0672",
+        "0.0680",
+        "0.0883",
+        "0.0946",
+        "0.5049",
+        "0.5194",
+        "0.7984",
+        "0.8380"
+      ]
+    },
+    {
+      "check": "both_tex_sources_include_shared_score_table",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "14_oxide_rows_2_boundary_objects_1_crossing",
+      "passed": true,
+      "detail": {
+        "oxide": 14,
+        "boundary_objects": [
+          "v3-r50-main-num-l018-alpha-a0-s202610304-b1",
+          "v3-r50-main-num-l018-alpha-a30-s202610313-b1"
+        ],
+        "crossing_events": [
+          "l018-alpha-a0-s202610304"
+        ]
+      }
+    },
+    {
+      "check": "course_extension_facts_including_crossing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "paper_extension_facts_including_crossing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "materials_extension_facts_including_crossing",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "brief_extension_counts_without_overclaiming_crossing_detail",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "four_original_aliases_failed_null",
+      "passed": true,
+      "detail": {
+        "v3-r50-main-l035-alpha-a30-s202610394-b1": {
+          "state": "FAILED",
+          "runner_exit_code": null
+        },
+        "v3-r50-main-l025-alpha-a30-s202610353-b0": {
+          "state": "FAILED",
+          "runner_exit_code": null
+        },
+        "v3-r50-main-l025-proton-a0-s202610361-b0": {
+          "state": "FAILED",
+          "runner_exit_code": null
+        },
+        "v3-r50-main-l025-proton-a30-s202610371-b1": {
+          "state": "FAILED",
+          "runner_exit_code": null
+        }
+      }
+    },
+    {
+      "check": "course_unknown_failure_codes_preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "paper_unknown_failure_codes_preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "course_source_unknown_failure_codes_preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "paper_source_unknown_failure_codes_preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "course-report_bibliography_nonempty_refs_resolved",
+      "passed": true,
+      "detail": {
+        "bibitem_count": 8,
+        "cite_commands": [
+          "keeth2001",
+          "course",
+          "g4em",
+          "ryder2021",
+          "chen2011",
+          "xu2021",
+          "label1996",
+          "project"
+        ],
+        "undefined_warnings": false
+      }
+    },
+    {
+      "check": "research-paper_bibliography_nonempty_refs_resolved",
+      "passed": true,
+      "detail": {
+        "bibitem_count": 7,
+        "cite_commands": [
+          "keeth2001",
+          "label1996",
+          "chen2011",
+          "xu2021",
+          "ryder2021",
+          "g4em",
+          "project"
+        ],
+        "undefined_warnings": false
+      }
+    },
+    {
+      "check": "brief_current_hash",
+      "passed": true,
+      "detail": "0033a73c8d0ebe9f42355b68b3b6e7aac90354f1e859793d35a96e880820f1be"
+    },
+    {
+      "check": "materials_source_unchanged",
+      "passed": true,
+      "detail": "a279aeedf62ad503817c5fa0ed3889a7165cd238d34258a6044f363b3629678a"
+    },
+    {
+      "check": "reuse_existing_ppt_content_qa",
+      "passed": true,
+      "detail": {
+        "ppt_sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+        "content": "PASS",
+        "revision": "PASS"
+      }
+    }
+  ],
+  "failures": [],
+  "pdfs": {
+    "course-report.pdf": {
+      "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f",
+      "pages": 14
+    },
+    "research-paper.pdf": {
+      "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace",
+      "pages": 9
+    }
+  },
+  "brief_tex_sha256": "0033a73c8d0ebe9f42355b68b3b6e7aac90354f1e859793d35a96e880820f1be",
+  "materials_tex_sha256": "a279aeedf62ad503817c5fa0ed3889a7165cd238d34258a6044f363b3629678a",
+  "pptx_sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+  "r5_render_manifest_sha256": "fb4a5e991c488cc819920b1bd5cf4f3ab7f8e0963929bf48d64d07cfc7fba916",
+  "page_render_hashes": [
+    {
+      "path": "qa/r5/course-report/page-01.png",
+      "expected": "9adf5085b5bd42151ddeb08991210c84eea8785e55571cc15c97273c404060ad",
+      "actual": "9adf5085b5bd42151ddeb08991210c84eea8785e55571cc15c97273c404060ad",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-02.png",
+      "expected": "43d07656141e038804fa740a9df967e67be0b00e68dab82813efdb9f9a26ce82",
+      "actual": "43d07656141e038804fa740a9df967e67be0b00e68dab82813efdb9f9a26ce82",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-03.png",
+      "expected": "91305878c4fd7601c91c924a7f310e72578e5a277c33c30412092d1c8fc69f59",
+      "actual": "91305878c4fd7601c91c924a7f310e72578e5a277c33c30412092d1c8fc69f59",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-04.png",
+      "expected": "7c3623462f7911e2d3f517c17f5c1be6a14172e72d3aa98177c1ed8a88e17e38",
+      "actual": "7c3623462f7911e2d3f517c17f5c1be6a14172e72d3aa98177c1ed8a88e17e38",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-05.png",
+      "expected": "f5b3ff45922a2b188a6b72c1ecb310407d43a239eadb2ef68cb60bc0b2e64cd9",
+      "actual": "f5b3ff45922a2b188a6b72c1ecb310407d43a239eadb2ef68cb60bc0b2e64cd9",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-06.png",
+      "expected": "3481985f88c0f89df566606197472d60ea1104ab84b27dcedfb5f964b3a5234d",
+      "actual": "3481985f88c0f89df566606197472d60ea1104ab84b27dcedfb5f964b3a5234d",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-07.png",
+      "expected": "1569dff918a8e544ee94a94046b77b294f2a6243c9f35fbbd37024ec6bb27a60",
+      "actual": "1569dff918a8e544ee94a94046b77b294f2a6243c9f35fbbd37024ec6bb27a60",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-08.png",
+      "expected": "e189c73073b98fd90bfd8cfd730636d59cddaf892fc9ef2a85402b6b8d38ad94",
+      "actual": "e189c73073b98fd90bfd8cfd730636d59cddaf892fc9ef2a85402b6b8d38ad94",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-09.png",
+      "expected": "f1837d4f3659e4799f5cad134f9689e990215924e08c2fd87939e6afa5d7db0a",
+      "actual": "f1837d4f3659e4799f5cad134f9689e990215924e08c2fd87939e6afa5d7db0a",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-10.png",
+      "expected": "02e86bf88e1e4d9b26b3b7c8994801832e1a3c42941a3bd3186fc0b9472a5b2e",
+      "actual": "02e86bf88e1e4d9b26b3b7c8994801832e1a3c42941a3bd3186fc0b9472a5b2e",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-11.png",
+      "expected": "cfae0f3aa4f2b0bdaae0d34e269ed7004f391c9d467b124cb1bb30ec72b922ea",
+      "actual": "cfae0f3aa4f2b0bdaae0d34e269ed7004f391c9d467b124cb1bb30ec72b922ea",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-12.png",
+      "expected": "ccf445867c8e8091a6ee03290b9a67c5f9a1a51ec7ebf80b5cd8e1f28753c8c7",
+      "actual": "ccf445867c8e8091a6ee03290b9a67c5f9a1a51ec7ebf80b5cd8e1f28753c8c7",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-13.png",
+      "expected": "09fb62f1bc034006725502a9906442a97089256f748297ec76ab8c29ff59935d",
+      "actual": "09fb62f1bc034006725502a9906442a97089256f748297ec76ab8c29ff59935d",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/course-report/page-14.png",
+      "expected": "9d7fa696b40d9cf5982e0a0495dad8a7718790ac81ff1806d3d2d5338110f1d1",
+      "actual": "9d7fa696b40d9cf5982e0a0495dad8a7718790ac81ff1806d3d2d5338110f1d1",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-1.png",
+      "expected": "c437dc24bac9a7e43d0be6f58a2cef3ae22116058f730db5be3214ec741a3941",
+      "actual": "c437dc24bac9a7e43d0be6f58a2cef3ae22116058f730db5be3214ec741a3941",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-2.png",
+      "expected": "c8c5bbab42df8f6ece435f85ee6fc99cdd51741979687e8c77e500e8286310d0",
+      "actual": "c8c5bbab42df8f6ece435f85ee6fc99cdd51741979687e8c77e500e8286310d0",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-3.png",
+      "expected": "056bfdead5602806b3979268c9229f7b9b6de4cea276d2847bccba82649aab88",
+      "actual": "056bfdead5602806b3979268c9229f7b9b6de4cea276d2847bccba82649aab88",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-4.png",
+      "expected": "6ac45fcbd1524672cbab971cb77e1157e4ee25f10926ab71b26a4bf43b592c89",
+      "actual": "6ac45fcbd1524672cbab971cb77e1157e4ee25f10926ab71b26a4bf43b592c89",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-5.png",
+      "expected": "5de09f3bb4b6676c8d35521282856b9ab6ca1ea329e855bd7059a82414f254e9",
+      "actual": "5de09f3bb4b6676c8d35521282856b9ab6ca1ea329e855bd7059a82414f254e9",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-6.png",
+      "expected": "a4efbce7788b082731597ca038d0cc489bcdd3460678877c5478d29b927615f3",
+      "actual": "a4efbce7788b082731597ca038d0cc489bcdd3460678877c5478d29b927615f3",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-7.png",
+      "expected": "96ef9513df058d8202d9f841894ba1d601268f4030e249c7da77f6b44ac8d5d7",
+      "actual": "96ef9513df058d8202d9f841894ba1d601268f4030e249c7da77f6b44ac8d5d7",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-8.png",
+      "expected": "c2ac0db442c9b4a8fd243540c6e42e98f43f14c28f28837881166b5ac4f4de1d",
+      "actual": "c2ac0db442c9b4a8fd243540c6e42e98f43f14c28f28837881166b5ac4f4de1d",
+      "matches": true
+    },
+    {
+      "path": "qa/r5/research-paper/page-9.png",
+      "expected": "753dd6b65bd832e596d07aa56689993839578f6ea9b9fe2dc8f69d8f2659118a",
+      "actual": "753dd6b65bd832e596d07aa56689993839578f6ea9b9fe2dc8f69d8f2659118a",
+      "matches": true
+    }
+  ],
+  "facts": {
+    "rmse": {
+      "deltaQ_fC/0/holdout": "0.0883",
+      "deltaM_mV/0/holdout": "0.7984",
+      "deltaQ_fC/1/holdout": "0.0946",
+      "deltaM_mV/1/holdout": "0.8380",
+      "deltaQ_fC/0/extrapolation": "0.0680",
+      "deltaM_mV/0/extrapolation": "0.5194",
+      "deltaQ_fC/1/extrapolation": "0.0672",
+      "deltaM_mV/1/extrapolation": "0.5049"
+    },
+    "threshold_counts": {
+      "correct": 96,
+      "criterion_error": 20,
+      "critical": 8,
+      "numerically_uncertain": 4
+    },
+    "cv_folds": {
+      "bit0:deltaQ_fC": [
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ]
+      ],
+      "bit0:deltaM_mV": [
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ]
+      ],
+      "bit1:deltaQ_fC": [
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ]
+      ],
+      "bit1:deltaM_mV": [
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ],
+        [
+          28,
+          4
+        ]
+      ]
+    },
+    "boundary_crossing_count": 1,
+    "aliases": {
+      "v3-r50-main-l035-alpha-a30-s202610394-b1": {
+        "state": "FAILED",
+        "runner_exit_code": null
+      },
+      "v3-r50-main-l025-alpha-a30-s202610353-b0": {
+        "state": "FAILED",
+        "runner_exit_code": null
+      },
+      "v3-r50-main-l025-proton-a0-s202610361-b0": {
+        "state": "FAILED",
+        "runner_exit_code": null
+      },
+      "v3-r50-main-l025-proton-a30-s202610371-b1": {
+        "state": "FAILED",
+        "runner_exit_code": null
+      }
+    },
+    "references": {
+      "course-report": {
+        "bibitem_count": 8,
+        "cite_commands": [
+          "keeth2001",
+          "course",
+          "g4em",
+          "ryder2021",
+          "chen2011",
+          "xu2021",
+          "label1996",
+          "project"
+        ],
+        "undefined_warnings": false
+      },
+      "research-paper": {
+        "bibitem_count": 7,
+        "cite_commands": [
+          "keeth2001",
+          "label1996",
+          "chen2011",
+          "xu2021",
+          "ryder2021",
+          "g4em",
+          "project"
+        ],
+        "undefined_warnings": false
+      }
+    }
+  },
+  "scope": [
+    "Repository-source/PDF/QA text, hash and frozen-snapshot checks only; no reading or writing of the user-edited external package.",
+    "No simulations, solver, model fitting, compilation or visual review; root owns the visual checks.",
+    "Final-package receipt/hash/copy validation is paused pending root identification of the authoritative user-edited report file."
+  ]
+}

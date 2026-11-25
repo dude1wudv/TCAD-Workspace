@@ -1,0 +1,32 @@
+两份导师批阅稿的可编辑源文件
+
+当前正式输出只有 course-report.pdf（课程报告，14页）与 research-paper.pdf（研究论文，9页）。qa/r1 至 qa/r4 是保留的构建记录，不作为交付版本。最终构建与逐页图像在 qa/r5/。
+
+请保持以下相邻目录结构：
+  documents/course-report.tex
+  documents/research-paper.tex
+  documents/style.tex
+  documents/score-table.tex
+  assets/references.bib
+  assets/tables/
+  assets/figures/
+  assets/data/
+
+TeX 的图、表与参考文献均采用 ../assets 相对路径。score-table.tex 已包含正式评分表，正常编译不必运行 prepare_table.py。数据与原生窗口图只读复用。
+
+在已具备 XeLaTeX、ctex、Fandol 中文字体和 PGF/TikZ 的 TeX 环境中，进入 documents 目录，对两份文稿分别执行：
+  xelatex --disable-installer -no-shell-escape -interaction=nonstopmode -halt-on-error course-report.tex
+  bibtex course-report
+  xelatex --disable-installer -no-shell-escape -interaction=nonstopmode -halt-on-error course-report.tex
+  xelatex --disable-installer -no-shell-escape -interaction=nonstopmode -halt-on-error course-report.tex
+再将 course-report 替换为 research-paper 执行同样四步。
+--disable-installer 是本机 MiKTeX 参数；其他 TeX 发行版需按其命令行语法配置，同时保持禁用 shell escape。上述便携方式要求已有依赖，不执行依赖安装。
+
+build_documents.py 是本工作区的构建和渲染记录脚本，含本机 MiKTeX、Poppler 和额外 PGF 路径，不应原样当作跨机器路径配置。它在本机使用的 TEXINPUTS 仅为：
+  E:/TCAD-Workspace/tcad-research-training/local_runtime/report-writing-20261010/tex-deps/pgf/base/tex//;
+不要将上层 tex-deps 目录递归加入 TEXINPUTS，以免覆盖系统 color.cfg。
+本机最终执行为：
+  C:\Users\sun\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe -X utf8 reports\mentor-rewrite-r5\documents\build_documents.py r5
+实际 6 次 XeLaTeX、2 次 BibTeX、2 次 Poppler 及外层脚本退出码均为 0。逐条命令、时间、环境与日志见 qa/r5/commands.json；PDF 到 PNG 的逐页哈希见 qa/r5/render-manifest.json。
+
+本次只改写文稿，不运行仿真、不训练模型、不改动冻结数据。附带的是数据表、图件和来源索引；大型 TDR/PLT 与远程原始档案仍保存在原工作区。

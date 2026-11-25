@@ -15,6 +15,7 @@ import json
 import math
 import os
 import re
+import stat
 import subprocess
 import sys
 import tempfile
@@ -22,27 +23,50 @@ import time
 import unicodedata
 from pathlib import Path
 from typing import Callable, Iterable
+import progress_store
 from research_projection import (
     admission, build_research, development_alias, execution, failed_unlaunched, intent_case_id, parameters,
-    load_cached_research, load_stats_snapshot, public_id as safe_public_id, runtime_intents,
-    save_cached_research, sealed_case_id, sealed_intent,
+    load_cached_research, load_stats_snapshot, public_id as safe_public_id, read_bounded_json,
+    reject_json_constant, runtime_intents,
+    save_cached_research, sealed_case_id, sealed_intent, unique_object,
 )
 from progress_store import load_public_progress
 from input_parameters import read_input_parameters
-from scheduler_observation import fs_space, has_holdout_marker, load_scheduler, public_identity, storage_fields
+from scheduler_observation import (
+    finite, fs_space, has_holdout_marker, integer, load_scheduler, public_identity, storage_fields,
+)
 from telemetry_history import HISTORY_PATH, update_history
 
 
 UTC = dt.timezone.utc
 OBSERVATION_STALE_SECONDS = 180
 ALLOWED_STATES = {"operational", "degraded", "maintenance", "offline"}
-OBSERVATION_PATH = Path(os.environ.get("TCAD_STATUS_OBSERVATION", "/var/lib/tcad-autonomy/observation.json"))
-RUNTIME_PATH = Path(os.environ.get("TCAD_STATUS_RUNTIME", "/var/lib/tcad-autonomy/runtime.json"))
+SERVICE_STATE_ROOT = Path("/var/lib")
+AUTONOMY_STATE_ROOT = SERVICE_STATE_ROOT / "tcad-autonomy"
+OBSERVATION_PATH = Path(os.environ.get("TCAD_STATUS_OBSERVATION", AUTONOMY_STATE_ROOT / "observation.json"))
+RUNTIME_PATH = Path(os.environ.get("TCAD_STATUS_RUNTIME", AUTONOMY_STATE_ROOT / "runtime.json"))
 WEB_OBSERVATION_PATH = Path(os.environ.get("TCAD_STATUS_WEB_OBSERVATION", "/var/lib/tcad-autonomy/web-observation.json"))
 PAUSE_PATH = Path(os.environ.get("TCAD_STATUS_PAUSE", "/var/lib/tcad-autonomy/pause.json"))
 PLAN_PATH = Path(os.environ.get("TCAD_STATUS_PLAN", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json"))
 PROGRESS_PATH = Path(os.environ.get("TCAD_STATUS_PROGRESS_DB", "/var/lib/xjtu-shop-status/progress.sqlite3"))
+AUTO_DIRECTOR_PATH = Path(os.environ.get("TCAD_STATUS_AUTO_DIRECTOR", "/var/lib/xjtu-shop-status/auto-director.json"))
 WORK_ITEMS_PATH = Path(os.environ.get("TCAD_STATUS_WORK_ITEMS", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/work-items.json"))
+SERVER_CODEX_STATE_ROOT = Path("/home/tcad/course-workspace/local_runtime/server-codex")
+RESPONSE_SUPPLY_PATH = Path(os.environ.get(
+    "TCAD_STATUS_RESPONSE_SUPPLY",
+    SERVER_CODEX_STATE_ROOT / "r06-lhs-response-supply-r1" / "response-status.json",
+))
+RESPONSE_SUPPLY_MAX_AGE_SECONDS = 360
+RECONCILIATION_ROOT = SERVER_CODEX_STATE_ROOT / "r06-case-reconciliation-r1"
+CASE_WAITS_PATH = Path(os.environ.get("TCAD_STATUS_CASE_WAITS", RECONCILIATION_ROOT / "case-waits.json"))
+REFILL_TIMING_PATH = Path(os.environ.get("TCAD_STATUS_REFILL_TIMING", RECONCILIATION_ROOT / "refill-timing.json"))
+REFILL_TIMING_MAX_AGE_SECONDS = 360
+MAINTENANCE_PATH = Path(os.environ.get("TCAD_MAINTENANCE_SUMMARY", SERVICE_STATE_ROOT / "tcad-run-maintenance" / "summary.json"))
+MAINTENANCE_STAGES = (
+    "find_or_extract_readout", "verify_extraction_handoff", "inspect_retained_result",
+    "inspect_backup_receipt", "diagnose_or_reconcile", "unsupported_format", "await_release",
+    "metadata_review", "identity_review", "manifest_review",
+)
 POOL_ROOT = Path(os.environ.get("TCAD_STATUS_POOL_ROOT", "/home/tcad/course-workspace/local_runtime/cloud-benchmark"))
 RUNS_ROOT = Path(os.environ.get(
     "TCAD_STATUS_RUNS_ROOT",
@@ -54,10 +78,43 @@ RESEARCH_CACHE_PATH = Path(os.environ.get(
 ))
 STATS_SNAPSHOT_PATH = os.environ.get("TCAD_STATUS_STATS_SNAPSHOT")
 VM_OVERLAY_PATH = Path(os.environ.get("TCAD_STATUS_VM_OVERLAY", "/srv/tcad-isolated-vm/rocky9-20261116/overlay"))
-SERVER_STORAGE_WARNING_BYTES = 20 * 1024**3
+SERVER_STORAGE_WARNING_BYTES = 5 * 1024**3
 FRESHNESS_LIMIT_SECONDS = 180
+DISPATCH_FLOW_SCHEMA = "tcad-dispatch-flow-v1"
+DISPATCH_SLOT_STATES = {"running", "launching", "sealing", "quarantined", "free", "unknown"}
+DISPATCH_FREE_REASONS = {
+    "no_ready_task", "resource_wait", "backend_switch", "paused", "dispatch_pending", "unknown",
+    "geant4_reservation", "dependency_blocked", "gate_blocked", "guest_memory_below_reserve",
+    "host_disk_below_floor", "guest_disk_below_floor", "backing_disk_below_floor", "license_unavailable",
+    "slot_probe_pending", "slot_probe_isolated",
+}
+SUPPLY_WAIT_REASONS = ("engine_gate", "awaiting_publication", "awaiting_evidence_or_retry")
+EXECUTION_RESULTS = ("solver_finished", "failed", "missing_data", "under_review")
 PUBLIC_REDACTION = re.compile(
     r"/(?:home|srv|var)/|(?<![a-z0-9])(?:run_id|pid|ssh|lm_license_file)(?![a-z0-9])", re.I,
+)
+DIRECTOR_ENUMS = {
+    "director_state": {"idle", "monitoring", "gemini_active", "codex_running", "backoff", "offline"},
+    "mode": {"event_driven", "paused", "disabled"},
+    "active_order_category": {"sim_ops", "sim_repair", "data_extract", "predictor", "thesis_assets", "latex_build", "web_status", "none"},
+    "active_order_state": {"idle", "running", "awaiting_audit", "retrying", "circuit_broken"},
+}
+DIRECTOR_COUNTS = (
+    "daily_wakeups_used", "daily_wakeups_cap", "active_order_attempt",
+    "thesis_chapters_done", "thesis_chapters_total",
+)
+DIRECTOR_FIELDS = set(DIRECTOR_ENUMS) | set(DIRECTOR_COUNTS) | {
+    "updated_at", "thesis_last_sprint_utc", "thesis_build_ok", "recent_public_note",
+}
+DIRECTOR_UTC = re.compile(r"[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\.[0-9]{1,6})?(?:Z|\+00:00)")
+DIRECTOR_PRIVATE_TEXT = re.compile(
+    r"[_@%&=;|`$#~{}\[\]]|[a-z0-9]+-[a-z0-9]+|[a-z0-9]+\.[a-z]{2,}|(?<![a-z0-9])--?[a-z]"
+    r"|\b(?:hr|hp)[0-9]*\b|\b[0-9a-f]{12,}\b"
+    r"|\b(?:tcad|hk|sub[0-9]+|localhost|tailscale|hostname|holdout|run[ -]?ids?"
+    r"|password|passwd|token|secret|credential|authorization|bearer|license|api[ -]?key"
+    r"|rsync|sftp|cmd|python[0-9]*|npm|docker|git|chmod|chown|mkdir|rm|cat|grep|cd|ls|whoami)\b"
+    r"|密码|密钥|令牌|凭据|许可证|连接地址|内部编号|封存留出",
+    re.IGNORECASE | re.ASCII,
 )
 
 
@@ -163,6 +220,229 @@ def parse_time(value: object) -> dt.datetime | None:
 def public_time(value: object) -> str | None:
     parsed = parse_time(value)
     return parsed.isoformat().replace("+00:00", "Z") if parsed else None
+
+
+def director_utc(value: object) -> str | None:
+    return public_time(value) if isinstance(value, str) and DIRECTOR_UTC.fullmatch(value) else None
+
+
+def load_auto_director(path: Path = AUTO_DIRECTOR_PATH, now: dt.datetime | None = None) -> dict | None:
+    try:
+        if not path.is_file():
+            return None
+        snapshot = json.loads(path.read_text(encoding="utf-8"), object_pairs_hook=unique_object,
+                              parse_constant=reject_json_constant)
+    except (OSError, ValueError, RecursionError):
+        return None
+    if not isinstance(snapshot, dict) or snapshot.keys() - {"schema_version"} != DIRECTOR_FIELDS:
+        return None
+    version = snapshot.get("schema_version", 1)
+    if type(version) is not int or version != 1:
+        return None
+    if any(not isinstance(snapshot[key], str) or snapshot[key] not in choices for key, choices in DIRECTOR_ENUMS.items()):
+        return None
+    if any(type(snapshot[key]) is not int or snapshot[key] < 0 for key in DIRECTOR_COUNTS):
+        return None
+    updated_at = director_utc(snapshot["updated_at"])
+    sprint = snapshot["thesis_last_sprint_utc"]
+    last_sprint = director_utc(sprint)
+    build_ok = snapshot["thesis_build_ok"]
+    if not updated_at or (sprint is not None and not last_sprint) or (build_ok is not None and type(build_ok) is not bool):
+        return None
+    try:
+        note = progress_store._text(snapshot["recent_public_note"], "recent_public_note", limit=160)
+        check_public_payload(note)
+        if DIRECTOR_PRIVATE_TEXT.search(unicodedata.normalize("NFKC", note)):
+            note = None
+    except ValueError:
+        note = None
+    age = age_seconds(updated_at, now if now is not None else dt.datetime.now(UTC))
+    return dict(snapshot, updated_at=updated_at, thesis_last_sprint_utc=last_sprint,
+                recent_public_note=note or None, age_seconds=age, stale=age > 900)
+
+
+def project_response_supply(report, observation, queue, runtime, now):
+    stamp = parse_time(report.get("observation_utc"))
+    observed = parse_time(observation.get("utc"))
+    unavailable = {"state": "unavailable"}
+    if report.get("schema") != "tcad-r06-lhs-response-supply-v1" or stamp is None or observed is None:
+        return unavailable
+    limit = RESPONSE_SUPPLY_MAX_AGE_SECONDS
+    if (not -60 <= (now - stamp).total_seconds() <= limit
+            or not -60 <= (now - observed).total_seconds() <= OBSERVATION_STALE_SECONDS):
+        return {"state": "stale", "observed_at": public_time(report["observation_utc"])}
+
+    rows, jobs, runs = report.get("cases"), queue.get("tasks"), observation.get("runs")
+    intents = runtime.get("intents")
+    if (queue.get("schema") != "tcad-work-items-v1" or not isinstance(rows, list) or not rows
+            or not isinstance(jobs, list) or not isinstance(runs, list) or not isinstance(intents, dict)):
+        return unavailable
+
+    # The original queue and observation may both contain a task. Bind each
+    # task (including retries and opaque IDs) to its formal response case once.
+    enqueued = set()
+    for job in (*jobs, *runs):
+        task_id = job.get("id") if isinstance(job, dict) else None
+        if not isinstance(task_id, str):
+            return unavailable
+        intent = intents.get(task_id, {})
+        if not isinstance(intent, dict):
+            return unavailable
+        case_id = intent_case_id(intent, task_id.removesuffix("-supply-r1"))
+        if case_id:
+            enqueued.add(case_id)
+
+    conditions = set()
+    stages = {}
+    prerequisites = dict(p0=0, transport=0, threshold=0)
+    for row in rows:
+        if (not isinstance(row, dict) or not isinstance(row.get("profile"), str)
+                or not isinstance(row.get("radiation"), str) or not isinstance(row.get("cases"), dict)):
+            return unavailable
+        conditions.add((row["profile"], row["radiation"]))
+        for case_id, item in row["cases"].items():
+            if not isinstance(item, dict) or not re.fullmatch(r"r06-[st]-lhs[0-9]+-[a-z0-9-]+", case_id):
+                return unavailable
+            status = item.get("status")
+            if case_id in enqueued:
+                stage = "enqueued"
+            elif status == "queued_or_run":
+                return unavailable
+            elif status in ("staged", "approved_waiting_queue"):
+                stage = "ready"
+            elif status == "verified_zero_reuse":
+                stage = "zero_reuse"
+            elif status in ("pending", "blocked"):
+                if not row.get("qualification"):
+                    stage = "p0"
+                elif row.get("pool_status") != "succeeded":
+                    stage = "transport"
+                elif status == "pending" and item.get("block") == "T" and item.get("dependency"):
+                    stage = "threshold"
+                else:
+                    stage = "missing_material"
+            else:
+                return unavailable
+            if stages.setdefault(case_id, stage) != stage:
+                return unavailable
+
+    if not stages:
+        return unavailable
+    counts = dict(missing_material=0, awaiting_prerequisites=0, ready=0, enqueued=0, zero_reuse=0)
+    for stage in stages.values():
+        if stage in prerequisites:
+            prerequisites[stage] += 1
+            counts["awaiting_prerequisites"] += 1
+        else:
+            counts[stage] += 1
+    return {
+        "state": "fresh", "observed_at": public_time(report["observation_utc"]),
+        "fresh_max_age_seconds": limit, "condition_count": len(conditions), "case_count": len(stages),
+        "counts": counts, "prerequisites": prerequisites,
+    }
+
+
+def response_supply_status(observation, runtime_path, now):
+    try:
+        report = read_json(RESPONSE_SUPPLY_PATH)
+        if not report:
+            return {"state": "unavailable"}
+        return project_response_supply(report, observation, read_json(WORK_ITEMS_PATH), read_json(runtime_path), now)
+    except (OSError, ValueError):
+        return {"state": "unavailable"}
+
+
+def observation_max_age(observation: dict) -> int:
+    threshold = observation.get("fresh_max_age_seconds")
+    return threshold if type(threshold) is int and 30 <= threshold <= OBSERVATION_STALE_SECONDS else OBSERVATION_STALE_SECONDS
+
+
+def project_planner(observation: dict, now: dt.datetime) -> dict | None:
+    scheduler = observation.get("scheduler")
+    source = scheduler.get("planner") if isinstance(scheduler, dict) else None
+    stamp = parse_time(observation.get("utc"))
+    if not isinstance(source, dict) or stamp is None:
+        return None
+    if not -60 <= (now - stamp).total_seconds() <= observation_max_age(observation):
+        return None
+    offline, status, retry_after, mode = (source.get(key) for key in ("offline", "status", "retry_after", "mode"))
+    return {
+        "offline": offline if type(offline) is bool else None,
+        "status": status if status in ("offline", "idle", "online", "running") else None,
+        "retry_after": retry_after if epoch_to_iso(retry_after) and retry_after > 0 else None,
+        "mode": mode if mode == "repair_only_async" else None,
+    }
+
+
+def project_dispatch_flow(observation: dict, now: dt.datetime) -> dict | None:
+    scheduler = observation.get("scheduler")
+    source = scheduler.get("flow") if isinstance(scheduler, dict) else None
+    if not isinstance(source, dict) or source.get("schema") != DISPATCH_FLOW_SCHEMA:
+        return None
+    stamp = parse_time(observation.get("utc"))
+    threshold = observation_max_age(observation)
+    result = {
+        "schema": DISPATCH_FLOW_SCHEMA, "state": "unknown", "observed_at": public_time(observation.get("utc")),
+        "fresh_max_age_seconds": threshold,
+    }
+    if stamp is None:
+        return result
+    if not -60 <= (now - stamp).total_seconds() <= threshold:
+        return {**result, "state": "stale"}
+    rows = source.get("slots")
+    if not isinstance(rows, list):
+        return result
+    slots, seen = [], set()
+    for row in rows:
+        if not isinstance(row, dict):
+            return result
+        slot = integer(row.get("slot"), maximum=2**53 - 1)
+        threads = integer(row.get("threads"), minimum=1, maximum=2**53 - 1)
+        if slot is None or threads is None or slot in seen:
+            return result
+        seen.add(slot)
+        state, reason = row.get("state"), row.get("idle_reason", row.get("reason"))
+        if not isinstance(state, str) or state not in DISPATCH_SLOT_STATES:
+            state = "unknown"
+        if reason is not None and (not isinstance(reason, str) or reason not in DISPATCH_FREE_REASONS):
+            reason = "unknown"
+        backend = row.get("backend")
+        slots.append({
+            "slot": slot, "threads": threads, "state": state, "reason": reason, "idle_reason": reason,
+            "backend": backend if backend in ("tcad", "geant4") else None,
+        })
+    collection = source.get("collection")
+    collection = collection if isinstance(collection, dict) else {}
+    pending = integer(collection.get("pending"), maximum=2**53 - 1)
+    oldest = finite(collection.get("oldest_wait_seconds"))
+    supply = scheduler.get("replenishment")
+    repairs = observation.get("repair_requests")
+    if isinstance(supply, dict) or isinstance(repairs, list):
+        supply = supply if isinstance(supply, dict) else {}
+        waiting_reason = supply.get("waiting_reason")
+        result["supply"] = {
+            **{key: integer(supply.get(key), maximum=2**53 - 1) for key in ("ready", "staged")},
+            "waiting_reason": waiting_reason if waiting_reason in (*SUPPLY_WAIT_REASONS, None) else "unknown",
+            "repair_waiting": len(repairs) if isinstance(repairs, list) else None,
+        }
+    result.update(state="fresh", slots=slots, collection={
+        "pending": pending, "oldest_wait_seconds": oldest if oldest is not None and oldest >= 0 else None,
+    })
+    decision = scheduler.get("last_decision")
+    breakdown = decision.get("blocked_breakdown") if isinstance(decision, dict) else None
+    if isinstance(breakdown, dict):
+        blocked = {}
+        for key, aliases in (("gate_blocked", ("scientific_gate_pending",)),
+                             ("dependency_blocked", ("dependencies_pending", "required_artifacts_pending"))):
+            if key in breakdown:
+                aliases = (key,)
+            counts = [count for name in aliases
+                      if (count := integer(breakdown.get(name), maximum=2**53 - 1)) is not None]
+            if counts and sum(counts) <= 2**53 - 1:
+                blocked[key] = sum(counts)
+        if blocked:
+            result["blocked_tasks"] = blocked
+    return result
 
 
 def epoch_to_iso(value: object) -> str | None:
@@ -310,9 +590,12 @@ def simulation_status(
     runtime_path: Path = RUNTIME_PATH,
     runs_root: Path | None = None,
     now: dt.datetime | None = None,
+    *,
+    observation: dict | None = None,
 ) -> dict:
     runs_root = Path(runs_root or discover_runs_root())
-    observation = read_json(observation_path)
+    if observation is None:
+        observation = read_json(observation_path)
     observed_at = public_time(observation.get("utc"))
     observed = bool(observation)
     runs = observation.get("runs", [])
@@ -346,9 +629,7 @@ def simulation_status(
     runs = normalized_runs
     current = now or dt.datetime.now(UTC)
     age = max(0.0, (current - parse_time(observed_at)).total_seconds()) if observed else None
-    threshold = observation.get("fresh_max_age_seconds", OBSERVATION_STALE_SECONDS)
-    if type(threshold) is not int or not 30 <= threshold <= OBSERVATION_STALE_SECONDS:
-        threshold = OBSERVATION_STALE_SECONDS
+    threshold = observation_max_age(observation)
     total = len(runs)
     running = [item for item in runs if str(item.get("status")).lower() == "running"]
     collected = [item for item in runs if item.get("collected")]
@@ -616,6 +897,7 @@ def build_activity_feed(scheduler: dict | None, simulation: dict, now: dt.dateti
             "batch_label_en": task.get("batch_label_en"),
             "engine": engine,
             "state": task.get("state"),
+            "execution_result": task.get("execution_result") if task.get("execution_result") in EXECUTION_RESULTS else None,
             "health": task.get("health"),
             "health_reason": task.get("health_reason"),
             "health_detail_zh": task.get("health_detail_zh"),
@@ -642,6 +924,7 @@ def build_activity_feed(scheduler: dict | None, simulation: dict, now: dt.dateti
             "kind": run.get("kind"), "finished_at": run.get("finished_at"),
             "elapsed_seconds": run.get("elapsed_seconds"),
             "collection_result": run.get("collection_result"),
+            "execution_result": run.get("execution_result") if run.get("execution_result") in EXECUTION_RESULTS else None,
             "health": run.get("health"),
         })
     if not outcomes:
@@ -659,6 +942,95 @@ def build_activity_feed(scheduler: dict | None, simulation: dict, now: dt.dateti
     return {"mode": mode, "live_items": live_items[:8], "recent_outcomes": outcomes[:8]}
 
 
+def maintenance_summary(path, now):
+    result = {
+        "version": 1, "state": "unknown", "observed_at": None, "counts": None,
+        "selected_archive_bytes": None, "reclaimed_bytes": None,
+    }
+    limit = 16 * 1024
+    try:
+        if path.resolve() != path.absolute() or not path.is_file():
+            return result
+        flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0) | getattr(os, "O_NONBLOCK", 0)
+        with os.fdopen(os.open(path, flags), "rb") as stream:
+            metadata = os.fstat(stream.fileno())
+            if not stat.S_ISREG(metadata.st_mode) or metadata.st_size > limit:
+                return result
+            raw = stream.read(limit + 1)
+        if len(raw) > limit:
+            return result
+        doc = json.loads(raw, object_pairs_hook=unique_object, parse_constant=reject_json_constant)
+    except (OSError, RuntimeError, ValueError):
+        return result
+    if not isinstance(doc, dict) or doc.get("schema") != "tcad-maintenance-summary-v1":
+        return result
+    stamp = parse_time(doc.get("observed_at"))
+    if stamp is None:
+        return result
+    seconds = (now - stamp).total_seconds()
+    if seconds < -5:
+        return result
+    result["observed_at"] = stamp.isoformat()
+    if seconds > FRESHNESS_LIMIT_SECONDS:
+        return {**result, "state": "stale"}
+    counts, sizes = doc.get("counts"), doc.get("selected_local_archive_bytes")
+    if not isinstance(counts, dict) or not isinstance(sizes, dict) or set(counts) != set(sizes):
+        return result
+    if set(counts).difference(MAINTENANCE_STAGES):
+        return result
+    if any(integer(value, maximum=2**53 - 1) is None for value in (*counts.values(), *sizes.values())):
+        return result
+    return {
+        **result, "state": "fresh", "counts": {key: counts.get(key, 0) for key in MAINTENANCE_STAGES},
+        "selected_archive_bytes": sizes.get("find_or_extract_readout", 0),
+    }
+
+
+def read_reconciliation_snapshot(path):
+    try:
+        snapshot = read_bounded_json(path, 2 * 1024 * 1024)
+        if not isinstance(snapshot, dict):
+            raise ValueError("Invalid reconciliation snapshot")
+        return snapshot
+    except FileNotFoundError:
+        return {}
+    except (OSError, ValueError, RecursionError):
+        print("Optional reconciliation snapshot could not be read.", file=sys.stderr)
+        return {}
+
+
+def refill_timing_status(path, now):
+    snapshot = read_reconciliation_snapshot(path)
+    generated = parse_time(snapshot.get("generated_at"))
+    if (snapshot.get("schema") != "tcad-r06-refill-timing-v1" or generated is None
+            or not 0 <= (now - generated).total_seconds() <= REFILL_TIMING_MAX_AGE_SECONDS):
+        return None
+    return (project_refill_timing(snapshot.get("threshold_followup_summary"), "r06-threshold-followup", generated)
+            or project_refill_timing(snapshot.get("public_summary"), "lhs02-threshold-x10-to-x30", generated))
+
+
+def project_refill_timing(summary, scope, generated):
+    if (not isinstance(summary, dict) or summary.get("schema") != "tcad-r06-refill-timing-public-v1"
+            or summary.get("scope") != scope):
+        return None
+    count, seconds = summary.get("sample_count"), summary.get("latest_seconds")
+    started_text = summary.get("latest_started_at")
+    started = parse_time(started_text)
+    if type(count) is not int or not 0 <= count <= 2**53 - 1:
+        return None
+    if count == 0:
+        if seconds is not None or started_text is not None:
+            return None
+    elif (type(seconds) is not int or not 0 <= seconds <= 2**53 - 1
+          or started is None or started > generated
+          or started_text != started.isoformat(timespec="seconds").replace("+00:00", "Z")):
+        return None
+    return {
+        "schema": "tcad-r06-refill-timing-public-v1", "scope": scope, "sample_count": count,
+        "latest_seconds": seconds, "latest_started_at": started_text,
+    }
+
+
 def build_status(
     maintenance: str | None = None,
     runner: Callable[..., subprocess.CompletedProcess] = subprocess.run,
@@ -671,27 +1043,33 @@ def build_status(
     research: dict | None = None,
     research_state: str | None = None,
     research_cache_path: Path = RESEARCH_CACHE_PATH,
+    auto_director_path: Path = AUTO_DIRECTOR_PATH,
 ) -> dict:
     runs_root = Path(runs_root or discover_runs_root())
     checked_at = now_iso()
     current = dt.datetime.now(UTC)
     # Prefer the newest host-side observation. This never calls a guest runner.
-    selected_path = observation_path
+    controller_observation = read_json(observation_path)
+    observation = controller_observation
     if observation_path == OBSERVATION_PATH:
-        candidates = [(path, read_json(path)) for path in (observation_path, WEB_OBSERVATION_PATH)]
-        if candidates[1][1].get("controller_mode") == "autonomous":
-            # The maintenance owner explicitly hands back to the regular observer.
-            selected_path = observation_path
-        else:
-            web_age = age_seconds(candidates[1][1].get("utc"), current)
-            web_limit = candidates[1][1].get("fresh_max_age_seconds")
-            web_limit = web_limit if type(web_limit) is int and 30 <= web_limit <= 180 else FRESHNESS_LIMIT_SECONDS
-            if web_age is not None and web_age <= web_limit:
-                selected_path, _ = max(candidates, key=lambda pair: public_time(pair[1].get("utc")) or "")
-            else:
-                selected_path = observation_path
-    observation = read_json(selected_path)
-    simulation = simulation_status(selected_path, runtime_path, runs_root, now=current)
+        web_observation = read_json(WEB_OBSERVATION_PATH)
+        # An autonomous web observation explicitly hands back to the controller.
+        if web_observation.get("controller_mode") != "autonomous":
+            web_age = age_seconds(web_observation.get("utc"), current)
+            if web_age is not None and web_age <= observation_max_age(web_observation):
+                observation = max((controller_observation, web_observation),
+                                  key=lambda sample: parse_time(sample.get("utc")) or dt.datetime.min.replace(tzinfo=UTC))
+    simulation = simulation_status(observation_path, runtime_path, runs_root, now=current, observation=observation)
+    simulation["response_supply"] = response_supply_status(controller_observation, runtime_path, current)
+    refill_timing = refill_timing_status(REFILL_TIMING_PATH, current)
+    if refill_timing is not None:
+        simulation["refill_timing"] = refill_timing
+    dispatch_flow = project_dispatch_flow(controller_observation, current)
+    if dispatch_flow is not None:
+        simulation["dispatch_flow"] = dispatch_flow
+    planner = project_planner(controller_observation, current)
+    if planner is not None:
+        simulation["planner"] = planner
     scheduler = load_scheduler(scheduler_path)
     if scheduler is not None:
         simulation["scheduler"] = scheduler
@@ -723,6 +1101,7 @@ def build_status(
                 PLAN_PATH, manifest_index(runs_root), observation, progress,
                 now=current, runtime=read_json(runtime_path), work_items=read_json(WORK_ITEMS_PATH),
                 scheduler=scheduler, stats_snapshot=stats,
+                case_waits=read_reconciliation_snapshot(CASE_WAITS_PATH),
             )
             projection_state = "fresh" if research.get("available") else "unavailable"
             research["projected_at"] = checked_at
@@ -750,7 +1129,17 @@ def build_status(
             "profiles": [], "progress": [], "projection_state": "unavailable",
         }
         projection_state = "unavailable"
+    research = dict(research)
+    research.pop("paper_progress", None)
     research["projection_state"] = projection_state or ("fresh" if research.get("available") else "unavailable")
+    if research["projection_state"] == "cached_stale":
+        if isinstance(research.get("cases"), list):
+            research["cases"] = [
+                {key: value for key, value in item.items() if key != "public_wait_zh"}
+                for item in research["cases"] if isinstance(item, dict)
+            ]
+        research.pop("case_waits_observed_at", None)
+        research.pop("case_waits_max_age_seconds", None)
     if (not research.get("projected_at") and research.get("available")
             and mode in {"full", "both"} and projection_state == "fresh"):
         research["projected_at"] = checked_at
@@ -759,6 +1148,19 @@ def build_status(
         "freshness": build_freshness_health(scheduler, research, current),
         "simulation": build_simulation_health(scheduler, simulation),
     }
+    director = load_auto_director(auto_director_path, current)
+    if director is not None:
+        health["director"] = {key: director[key] for key in (
+            "director_state", "mode", "updated_at", "stale", "daily_wakeups_used", "daily_wakeups_cap",
+            "active_order_category", "active_order_state", "active_order_attempt", "recent_public_note",
+        )}
+        research["paper_progress"] = {
+            "chapters_done": director["thesis_chapters_done"],
+            "chapters_total": director["thesis_chapters_total"],
+            "last_sprint_utc": director["thesis_last_sprint_utc"],
+            "build_ok": director["thesis_build_ok"],
+            "updated_at": director["updated_at"],
+        }
     return {
         "schema_version": 2,
         "generated_at": checked_at,
@@ -770,6 +1172,7 @@ def build_status(
         "activity_feed": build_activity_feed(scheduler, simulation, current),
         "research": research,
         "maintenance": maintenance,
+        "maintenance_summary": maintenance_summary(MAINTENANCE_PATH, current),
     }
 
 
@@ -826,7 +1229,7 @@ def build_live(status, history):
     summary = {key: research[key] for key in (
         "schema_version", "available", "revision", "updated_at", "observed_at", "observation_stale",
         "projected_at", "projection_state", "totals", "counts", "blocks", "budget", "diagnostics",
-        "statistics_snapshot_status",
+        "statistics_snapshot_status", "paper_progress",
     ) if key in research}
     return {
         **{key: value for key, value in status.items() if key != "research"},

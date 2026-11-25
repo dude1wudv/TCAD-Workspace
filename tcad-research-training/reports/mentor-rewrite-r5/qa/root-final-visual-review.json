@@ -1,0 +1,18 @@
+{
+  "schema": "mentor-delivery-root-visual-review-v1",
+  "reviewer": "root",
+  "status": "PASS",
+  "method": "Opened final rendered pages individually using view_image; inspected text, equations, figures, table headings, units, page edges and captions.",
+  "artifacts": [
+    {"artifact": "01_项目简报.pdf", "pages": 3, "render": "qa/brief-r2", "review": "All final pages read and viewed; no clipping or overlap. Open editor source checked successfully with built-in compiler."},
+    {"artifact": "02_课程报告.pdf", "pages": 14, "render": "documents/qa/r5/course-report", "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f", "review": "All 14 pages individually viewed; diagrams, scientific plots, native images, score tables and references legible; no clipping or overlap."},
+    {"artifact": "03_研究论文.pdf", "pages": 9, "render": "documents/qa/r5/research-paper", "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace", "review": "All 9 pages individually viewed; equations, citations, tables and figures fit their pages with no clipping or overlap."},
+    {"artifact": "04_汇报演示.pptx", "pages": 14, "render": "slides/qa/r4/render", "sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025", "review": "All r3 slides individually viewed. Requested one wording correction on slide 10 to distinguish four numerical comparisons from four uncertain main responses. r4 slide 10 individually viewed and accepted; remaining 13 slides have identical PNG bytes and content to reviewed r3, as recorded in revision-comparison.json."},
+    {"artifact": "05_课程配套材料.pdf", "pages": 4, "render": "qa/materials-r1", "review": "All final pages individually viewed; layout and training/validation explanation legible; built-in compiler success."}
+  ],
+  "total_pdf_pages": 30,
+  "total_ppt_slides": 14,
+  "native_powerpoint_execution_tested": false,
+  "source_science_rerun": false,
+  "references": ["root-brief-materials-review.json", "../documents/qa/visual-review.json", "../slides/qa/r4/revision-comparison.json", "../slides/qa/r4/content-verification.json"]
+}

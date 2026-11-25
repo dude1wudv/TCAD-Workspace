@@ -1,0 +1,12 @@
+{
+  "state": "PASSED",
+  "ledger_snapshot_once_and_preserved": true,
+  "six_freeze_files_match": true,
+  "three_failed_originals_preserved_with_verified_aliases": true,
+  "training_rows": 64,
+  "training_independent_events": 32,
+  "figures_png_pdf_sources": 5,
+  "finite_training_numbers": true,
+  "no_raw_reaudit": true,
+  "no_visual_review": true
+}

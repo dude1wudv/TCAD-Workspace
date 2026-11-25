@@ -140,7 +140,7 @@ const metrics = {
   storage: {
     title: ['三层存储余量', 'Storage headroom'],
     labels: [['服务器剩余空间', 'Server remaining'], ['服务器上虚拟机磁盘文件可增长空间', 'VM disk file growth space on server'], ['虚拟机剩余空间', 'VM remaining']],
-    fields: ['server_remaining_gib', 'vm_disk_growth_available_gib', 'vm_remaining_gib'], unit: ' GiB', warning: 20,
+    fields: ['server_remaining_gib', 'vm_disk_growth_available_gib', 'vm_remaining_gib'], unit: ' GiB', warning: 5,
   },
 };
 const plot = { left: 34, right: 310, top: 12, bottom: 88, width: 320 };

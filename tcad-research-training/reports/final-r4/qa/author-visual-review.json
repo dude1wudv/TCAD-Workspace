@@ -1,0 +1,59 @@
+{
+  "schema": "dram-see-v3-final-r4-author-visual-review",
+  "recorded_utc": "2026-10-12T00:52:51.088950+00:00",
+  "reviewer": "downstream_delivery author agent",
+  "method": "actual tools.view_image inspection",
+  "documents": [
+    {
+      "pdf": "course-report.pdf",
+      "sha256": "a948153e0ead8d92ba8667607f1c606cd9481bbaa31b30b7e803890c298bde4e",
+      "pages_individually_viewed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21
+      ]
+    },
+    {
+      "pdf": "research-paper.pdf",
+      "sha256": "4f4955d491f85147da6b2871b981bc7f536d4e00168a022dcc43f79f84fbcda1",
+      "pages_individually_viewed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14
+      ]
+    }
+  ],
+  "page_render_binding": "qa/pdf-r3/render-manifest.json",
+  "visible_clipping_missing_glyph_or_overlap_found": false,
+  "ppt_review_binding": "qa/ppt-r4/render-manifest.json",
+  "human_course_activity_claimed": false
+}

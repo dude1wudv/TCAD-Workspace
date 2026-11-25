@@ -1,0 +1,27 @@
+{
+  "utc": "2026-10-12T01:29:53.298064+00:00",
+  "reviewer": "root",
+  "method": "Actually viewed both complete rendered pages with tools.view_image",
+  "pdf_sha256": "601af6f8bca56eb23ae1a1b78b88176afde9f8c4c7ecc718a9ae88e0e1c16a3e",
+  "pages": 2,
+  "png_sha256": {
+    "page-1.png": "76d7f4366d11ce599e2db30c496c45c577a9ca2b8e2de9e66b3e2f19dec5a5cc",
+    "page-2.png": "75f2c526c5e412a80b700d920e2f1492deb3b55b71cbe84ae2614db66b733ba5"
+  },
+  "visual_pass": true,
+  "observations": "Both pages readable. All Chinese glyphs, numeric ranges, units and tables visible; no clipping or overlap. AI assistant, fixed parsing and four trained ridge models are distinguished; no student execution or teacher approval claimed.",
+  "content_checks": {
+    "four_trained_models": true,
+    "train_events_responses": [
+      32,
+      64
+    ],
+    "all_eight_ridge_rmse_better_than_corresponding_mean": true,
+    "test_n_per_bit_target": 16,
+    "frozen_sources_unchanged": true,
+    "original_package_manifest_unchanged": true
+  },
+  "actual_authoring_exit_code": 0,
+  "actual_poppler_exit_code": 0,
+  "runtime": "Existing bundled reportlab and Poppler; no installation, simulation or retraining"
+}

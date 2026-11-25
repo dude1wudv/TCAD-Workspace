@@ -1,0 +1,48 @@
+{
+  "schema": "dram-final-data-figure-v1",
+  "name": "r50-reference",
+  "title": "R50 unirradiated reference",
+  "kind": "scientific_data_plot",
+  "not_native_visual_export": true,
+  "not_gui_screenshot": true,
+  "scope": "Previously reviewed reference snapshot; baseline-only observations, not particle results; right panel uses L=.18 um",
+  "source_files": [
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/delivery/20261010T2022Z-references/summary.json",
+      "sha256": "cc7b5710cbbe887bfaa464e10cf681cd0ad4a8122194c34e6a67f9c9c8372998"
+    },
+    {
+      "path": "experiments/dram-see-v3/r50-main/data/delivery-reviews/20261010T2022Z-references.md",
+      "sha256": "2ea0ce8552adb877408ce15df4553164b3c6642986ee833174ee4dfabeeabb4c"
+    }
+  ],
+  "data_files": [
+    {
+      "path": "data/r50-reference-baselines.csv",
+      "sha256": "1f6ad4bedce1562e7daf66ba5320be1534e5ca4b35372cdc91706c53e85645dc"
+    },
+    {
+      "path": "data/r50-reference-curves.csv",
+      "sha256": "f813d4b25ef3d43bcda1cb4acdccf0bcc19a1d734701fba49a495c9d56887031"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "figures/r50-reference.png",
+      "sha256": "c444020d4e74b50a539936bc2a1dcd4fc73e69bd46d152fb59e0f7c4e61beb89"
+    },
+    {
+      "path": "figures/r50-reference.pdf",
+      "sha256": "a01d5ebfa407916b302c6a6b44074e0956576318b2b306723ee6cc7f1174acde"
+    }
+  ],
+  "script_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+  "visual_review": "PENDING_ROOT_IMAGE_INSPECTION",
+  "raw_archives_reaudited_this_generation": false,
+  "details": {
+    "reference_snapshot_utc": "2026-10-10T20:21:57.699792+00:00",
+    "curves": 12,
+    "initial_states": 12,
+    "display_thinning": "Inherited audited snapshot points; phase boundaries and full 3.8-4 ns retained"
+  }
+}

@@ -1,0 +1,95 @@
+\begin{table}[tbp]
+  \centering
+  \small
+  \caption{r0.6 冻结的器件构型与六维参数}
+  \label{tab:r06-modeling-profiles}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}Xrrrrrr@{}}
+    \toprule
+    构型 & \(L_{\mathrm{g}}\)（倍） & \(W_{\mathrm{fin}}\)（倍） &
+    \(T_{\mathrm{ox}}\)（倍） & \(H_{\mathrm{jc}}\)（nm） &
+    \(N_{\mathrm{A}}\)（倍） & \(N_{\mathrm{D}}\)（倍） \\
+    \midrule
+    D0    & 1.0000 & 1.0000 & 1.0000 & 82.0000 & 1.0000 & 1.0000 \\
+    D1    & 0.8000 & 1.0000 & 1.0000 & 82.0000 & 1.0000 & 1.0000 \\
+    D2    & 1.0000 & 0.8000 & 1.0000 & 82.0000 & 1.0000 & 1.0000 \\
+    D3    & 1.0000 & 1.0000 & 1.0000 & 82.0000 & 0.5000 & 1.0000 \\
+    \addlinespace
+    LHS01 & 1.0599 & 1.1707 & 0.8714 & 85.5173 & 0.9756 & 1.8691 \\
+    LHS02 & 0.9137 & 1.0449 & 0.9917 & 88.0594 & 1.7891 & 0.8611 \\
+    LHS03 & 0.9612 & 0.9793 & 1.1337 & 89.7511 & 0.6591 & 1.0686 \\
+    LHS04 & 1.0150 & 0.8743 & 1.0618 & 91.8117 & 1.5316 & 1.4782 \\
+    LHS05 & 0.8256 & 0.8334 & 0.8259 & 85.2907 & 1.2308 & 0.6719 \\
+    LHS06 & 0.8611 & 1.0923 & 1.1253 & 82.1354 & 0.5867 & 0.5410 \\
+    \addlinespace
+    H0    & 1.2000 & 1.0000 & 1.0000 & 82.0000 & 1.0000 & 1.0000 \\
+    H1    & 0.8348 & 0.8460 & 0.8944 & 87.0397 & 0.5668 & 1.2813 \\
+    H2    & 1.0047 & 1.1388 & 0.8906 & 89.8735 & 0.6053 & 0.6732 \\
+    \bottomrule
+  \end{tabularx}
+  \par\smallskip
+  \begin{minipage}{\linewidth}
+    \footnotesize
+    参数取自 \texttt{month-one-cases-r06.json} 的 \texttt{profiles}，表中保留四位小数。
+    「倍」均指相对基准倍率，其中 \(N_{\mathrm{A}}\) 与 \(N_{\mathrm{D}}\) 缩放各自的基准掺杂剖面。
+    D0--D3 是基准及单参数扰动的开发锚点，LHS01--LHS06 是以拉丁超立方填充的多参数开发点。
+    H0--H2 封存供构型留出评估，其中 H0 检验长栅外推，H1/H2 的范围仅逐轴核对，联合凸包归属待验证。
+    各构型的写入、保持、读出及粒子响应资格以逐项执行验收为准。
+  \end{minipage}
+\end{table}
+
+\begin{table}[tbp]
+  \centering
+  \small
+  \caption{r0.6 冻结的质子入射条件与留出划分}
+  \label{tab:r06-modeling-proton-pools}
+  \begin{tabularx}{\linewidth}{@{}lrrr>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    池编号 & \(E\)（MeV） & \(\theta\)（度） & \(\phi\)（度） & 设计用途 \\
+    \midrule
+    G0 &   1 &  0 &  0 & 开发 \\
+    G1 &   5 & 30 &  0 & 开发 \\
+    G2 &  20 & 60 & 90 & 开发 \\
+    G3 &  58 &  0 &  0 & 开发 \\
+    G4 &  98 & 30 & 90 & 开发 \\
+    G5 & 120 & 60 &  0 & 开发 \\
+    C0 &   5 &  0 &  0 & 开发 \\
+    C1 &  58 & 30 &  0 & 开发 \\
+    \addlinespace
+    C2 &  20 & 45 & 90 & 封存辐照留出 \\
+    C3 & 150 & 60 & 90 & 封存辐照留出 \\
+    \bottomrule
+  \end{tabularx}
+  \par\smallskip
+  \begin{minipage}{\linewidth}
+    \footnotesize
+    入射条件取自 \texttt{month-one-cases-r06.json} 的 \texttt{radiations}。
+    极角 \(\theta\) 相对器件表面法向定义，\(\phi\) 为方位角。
+    C2/C3 仅用于辐照留出（HR）。构型留出（HP）的入射条件取自八个开发池。
+  \end{minipage}
+\end{table}
+
+\begin{table}[tbp]
+  \centering
+  \small
+  \caption{r0.6 粒子输运与器件瞬态的耦合设置}
+  \label{tab:r06-modeling-coupling}
+  \begin{tabularx}{\linewidth}{@{}l>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    项目 & 设计设置 \\
+    \midrule
+    输运抽样 & 按发射面均匀采样，每个输运池初始目标为 \(10^5\) 个初级质子，有统计缺口且留有证据时扩至 \(10^6\)。保留零沉积事件。 \\
+    耦合链路 & 将 Geant4 的三维硅电离沉积映射至 Sentaurus 网格和时间窗，通过节点 PMI 输入载流子生成率。
+    非零源积分相对误差须小于 \(10^{-9}\)。 \\
+    保持窗 & \(18.2\text{--}30\)\,ns，位于写释放之后、读操作之前。 \\
+    粒子源时刻 & 计划绑定 \(22\)\,ns，采用 \texttt{r06-hold-window-v1} 时序，实际使用须通过 P0 时序验收。 \\
+    读出采样 & 在 \(31.9\)\,ns 读取位线电压，以 \(0.6\)\,V 为裕量计算参考。 \\
+    零源对照 & 关闭粒子源，与注入工况匹配构型、存储位、网格、时序及数值设置。 \\
+    \bottomrule
+  \end{tabularx}
+  \par\smallskip
+  \begin{minipage}{\linewidth}
+    \footnotesize
+    依据冻结清单的 \texttt{timing\_contract}、r0.6 首月预算、执行授权及设计审查。
+    实际注入时序、源积分及配对结果以相应工况的执行与验收记录为准。
+  \end{minipage}
+\end{table}

@@ -24,9 +24,9 @@
 | `zero_whr` | 明确 nodal 源，header 的记录数及分配数都为0；瞬态不超过35ns |
 | `prefix_repeatability`、`logging_short_probe`、`logging_long_pair`、`timing_sensitivity` | 仅D0、每个诊断只绑定一个primary、非空且有SHA的 `event_provenance`；瞬态不超过35ns |
 
-TCAD配方用原r4的2数值线程/核心；只允许原生工具。P0最多64项，其中上述四种单事件诊断最多12项，包含修复；额度从持久化提交intent核算，不把尚未提交的草案当消耗，也不能靠删除准入文件释放额度。这是防止诊断无限扩张的工程上限，不是要求用完。超限或新增配方须有新的有界维护版本，不得改名绕过。13个profile的zero可在共同门禁通过前准备和检查；留出zero仍须隔离。
+TCAD配方用原r4的2数值线程/核心，只允许原生工具。P0 总数和粒子诊断数均无固定上限。旧版契约仍可携带 `max_p0_tasks` 和 `max_p0_particle_tasks`，准入检查忽略这两个字段。每项诊断仍须符合配方和证据要求，修复沿原谱系并受控制器的修复次数限制。新增配方须经维护修订。13个profile的zero可在共同门禁通过前准备和检查，留出zero仍须隔离。
 
-`pmi_build` 是唯一资源例外：它不是TCAD求解，沿原单核operation profile在空闲池执行，仍计入全局最多4任务及P0工程预算。编译返回 `compiled_only`，不构成O2科学通过；随后经原生ELF及输入验签才能物化TCAD探针。
+`pmi_build` 沿原单核operation profile在空闲池执行，计入全局最多4个活动任务，并单独记入P0诊断成本。编译返回 `compiled_only`。随后经原生ELF及输入验签才能物化TCAD探针，O2科学验收仍须核查对应证据。
 
 ## 正式开发、输运和留出
 

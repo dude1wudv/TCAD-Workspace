@@ -17,7 +17,8 @@ tcad=importlib.util.module_from_spec(spec);spec.loader.exec_module(tcad)
 
 class RecoveryTests(unittest.TestCase):
     def test_live_descendant_lock_prevents_snapshot(self):
-        evidence={'state':'EXECUTED','remote_directory':'/original/existing'}
+        evidence={'state':'EXECUTED','remote_directory':'/original/existing',
+                  'input_sha256':{},'script_sha256':'fixture','steps':[],'tool_evidence':{}}
         def locked(ssh,script,**kwargs):
             self.assertIn('exec 9>/original/.solver.lock; flock -n 9 || exit 75;',script)
             raise subprocess.CalledProcessError(75,['ssh'])

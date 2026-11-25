@@ -1,0 +1,30 @@
+% Preamble for Thesis v2 (XeLaTeX + ctexart, minimal clean baseline)
+\usepackage{geometry}
+\geometry{a4paper, left=2.6cm, right=2.6cm, top=2.8cm, bottom=2.8cm}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{booktabs, longtable, array, tabularx}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{siunitx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{cite}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue!60!black,
+  citecolor=blue!60!black,
+  urlcolor=blue!60!black,
+  pdftitle={AI辅助下的DRAM存储器单粒子效应评估研究}
+}
+
+\graphicspath{{figures/}}
+
+% 显式数据待补标记：严禁把未完成实验或外部缺失数据写成已完成结论
+\newcommand{\pendingdata}[1]{%
+  \noindent\fcolorbox{orange!70!black}{orange!8}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}{%
+      \small\textbf{【待补充实测/证据】}\ #1%
+    }%
+  }\par\vspace{0.4em}%
+}

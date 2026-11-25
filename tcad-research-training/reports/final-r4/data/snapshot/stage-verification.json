@@ -1,0 +1,560 @@
+{
+  "references": {
+    "state": "VERIFIED",
+    "planned_comparisons": 8,
+    "passed_comparisons": 8,
+    "cases": [
+      {
+        "tag": "v3-r50-main-physical-l018-b0",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": -1.9984014443252818e-15,
+            "reference_BL_V": -2.9976021664879227e-15,
+            "D_V": 9.992007221626409e-16
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T184914Z-v3-r50-main-physical-l018-b0-2f4ad314",
+              "archive_sha256": "e3400f249d3cc16143d855f0f49bdeb33b19a5fe1516f3f2b0cb0bb6ad00d46a",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "signal": {
+              "run_id": "20261010T172751Z-v3-r50-main-control-l018-b0-ox5-s1-m1-e83956bc",
+              "archive_sha256": "2b818a4c582eeee04dfa326cbf74d1ec52c53b0bde665c6424116409d6f81a05",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "neutral": {
+              "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+              "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            }
+          },
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l018-b0.json",
+        "evidence_sha256": "b2d62330a00444891ecb783dd18e621fcf33c4adf76d193e47253ea880526054"
+      },
+      {
+        "tag": "v3-r50-main-physical-l018-b1",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": 3.9968028886505635e-15,
+            "reference_BL_V": -9.992007221626409e-16,
+            "D_V": 4.9960036108132044e-15
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T190110Z-v3-r50-main-physical-l018-b1-dc91bf6c",
+              "archive_sha256": "7b21465fb1020c135a9542c8b1065492afd2a960e38436c714f86f3f8b197917",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "signal": {
+              "run_id": "20261010T173418Z-v3-r50-main-control-l018-b1-ox5-s1-m1-12901ba0",
+              "archive_sha256": "edd7f3fbf407376eb38fb7fefeb01e315a0c25800d68eba3b2ed2e674dc0d46e",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "neutral": {
+              "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+              "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            }
+          },
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l018-b1.json",
+        "evidence_sha256": "c3bb613a168b1265c37f0551860c00d8a22a8820a9f2a0b0e771f4782abede51"
+      },
+      {
+        "tag": "v3-r50-main-physical-l025-b0",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": -9.992007221626409e-16,
+            "reference_BL_V": -9.992007221626409e-16,
+            "D_V": 0.0
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T191238Z-v3-r50-main-physical-l025-b0-900c479f",
+              "archive_sha256": "f1b881f2d4e0ec6e106cb0053547f03da768c31419b143070759c8eeb27380cf",
+              "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+              "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31"
+            },
+            "signal": {
+              "run_id": "20261010T174807Z-v3-r50-main-control-l025-b0-ox5-s1-m1-7f3f9f57",
+              "archive_sha256": "432aaa8bd822210d739ef36722d03c813d8af15c9f93a4985eeb64b7eeda11a7",
+              "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+              "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31"
+            },
+            "neutral": {
+              "run_id": "20261010T180116Z-v3-r50-main-neutral-l025-ox5-s1-m1-642cb795",
+              "archive_sha256": "ff16ca6d529584a9f0aa59672e6c2e0d4880a825e1850988fbf233a249a1ef48",
+              "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+              "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31"
+            }
+          },
+          "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l025-b0.json",
+        "evidence_sha256": "8fab6a22b40137532afb8301c5f6a75144b175b96be94a211dc828030d41940f"
+      },
+      {
+        "tag": "v3-r50-main-physical-l025-b1",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": 0.0,
+            "reference_BL_V": 9.992007221626409e-16,
+            "D_V": -9.992007221626409e-16
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T192424Z-v3-r50-main-physical-l025-b1-99dcee57",
+              "archive_sha256": "2ef6adbc6dc4a432df838446a92948ee42e79ae50f2f812d971d233d3c8b72a2",
+              "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+              "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31"
+            },
+            "signal": {
+              "run_id": "20261010T175452Z-v3-r50-main-control-l025-b1-ox5-s1-m1-c40fa66d",
+              "archive_sha256": "c9b3c1f3dcb2abfc5d211814bb46835a8187085b2af2a5676d0db271ab9cbb71",
+              "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+              "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31"
+            },
+            "neutral": {
+              "run_id": "20261010T180116Z-v3-r50-main-neutral-l025-ox5-s1-m1-642cb795",
+              "archive_sha256": "ff16ca6d529584a9f0aa59672e6c2e0d4880a825e1850988fbf233a249a1ef48",
+              "mesh_sha256": "9c5bbcc270e2bf4fb32fd3a848c2b70a5e38cb10b208fe512f6e844d4b9c41ad",
+              "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31"
+            }
+          },
+          "matching_contract_sha256": "a875dc809e4b7702785eb8386e8babeb929f5b3f2e259507f93194b54120bc31",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l025-b1.json",
+        "evidence_sha256": "871c19312bff3a3442089e58710bfa5c3f60e6cbbea157478b1bb82f8dbd5ecc"
+      },
+      {
+        "tag": "v3-r50-main-physical-l035-b0",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": 0.0,
+            "reference_BL_V": 0.0,
+            "D_V": 0.0
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T193504Z-v3-r50-main-physical-l035-b0-452f19dc",
+              "archive_sha256": "05ddecb639952c1e8c047eb169185249764b03c362b9c9c445759047bed71efc",
+              "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+              "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+            },
+            "signal": {
+              "run_id": "20261010T180745Z-v3-r50-main-control-l035-b0-ox5-s1-m1-24b2096c",
+              "archive_sha256": "6cbc42b80224639faadf476fb062e7b5f51e949d489b65603b8a21c6d61f04b0",
+              "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+              "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+            },
+            "neutral": {
+              "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+              "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+              "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+              "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+            }
+          },
+          "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l035-b0.json",
+        "evidence_sha256": "f2617afd295c0e692373067c2a60fec2f628d283b4b89889ef222bb8708bb962"
+      },
+      {
+        "tag": "v3-r50-main-physical-l035-b1",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": -9.992007221626409e-16,
+            "reference_BL_V": -5.995204332975845e-15,
+            "D_V": 4.9960036108132044e-15
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T194547Z-v3-r50-main-physical-l035-b1-99cc4918",
+              "archive_sha256": "36c1f62b5a200a8c2422524a3a51d3285e1d7f9d67ee1f7661ca1f9656127e47",
+              "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+              "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+            },
+            "signal": {
+              "run_id": "20261010T181403Z-v3-r50-main-control-l035-b1-ox5-s1-m1-204ce038",
+              "archive_sha256": "4b8fcaff94b663bbfb3f7ac6fe8dc2835efb02e430dafb31a1b4deb742061d23",
+              "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+              "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+            },
+            "neutral": {
+              "run_id": "20261010T182024Z-v3-r50-main-neutral-l035-ox5-s1-m1-25d5fb4b",
+              "archive_sha256": "eac268022e4b23ff2dc9cb7e2f17d5fc9c9d9de59eb2480fab1b6651c3cf74b0",
+              "mesh_sha256": "72a9a19974e882aa1caeece3a3867d97a21abe081cdc6567526daefc593f32cc",
+              "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9"
+            }
+          },
+          "matching_contract_sha256": "5b73d9ac96dff6e564c0435f879ae5f4c2fc527bbce363055fd8dd70067ee8e9",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l035-b1.json",
+        "evidence_sha256": "fb946daaf0da1d4c43b7576a4e2e7aaa326d6573da565b5d37677752ee0d741e"
+      },
+      {
+        "tag": "v3-r50-main-physical-l045-b0",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": -1.9984014443252818e-15,
+            "reference_BL_V": 9.992007221626409e-16,
+            "D_V": -2.9976021664879227e-15
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T195639Z-v3-r50-main-physical-l045-b0-ef1abc2a",
+              "archive_sha256": "a67808dbbb1462000974df551ca3b08eddb6d0ea3223d1210f50c9e6a220c450",
+              "mesh_sha256": "ec2301e48e58cd6217d47a3b4f4d6c459db26c071d5980e3b019f0da7394e223",
+              "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1"
+            },
+            "signal": {
+              "run_id": "20261010T182840Z-v3-r50-main-control-l045-b0-ox5-s1-m1-6a750c5d",
+              "archive_sha256": "e6253753140c17c3d7f3eb28d3e76e08b79148954e0a26db5aad7b4b8ef8f21e",
+              "mesh_sha256": "ec2301e48e58cd6217d47a3b4f4d6c459db26c071d5980e3b019f0da7394e223",
+              "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1"
+            },
+            "neutral": {
+              "run_id": "20261010T184202Z-v3-r50-main-neutral-l045-ox5-s1-m1-8a8a93c5",
+              "archive_sha256": "fa8a1059a67843ac632f28a8b5c29b578e5098f9923c745b8fa2f7561825b295",
+              "mesh_sha256": "ec2301e48e58cd6217d47a3b4f4d6c459db26c071d5980e3b019f0da7394e223",
+              "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1"
+            }
+          },
+          "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l045-b0.json",
+        "evidence_sha256": "4464d1aacd9ffc291133aee94d206d45c06d7d47ca32a860aa6eaaf3f02a12f6"
+      },
+      {
+        "tag": "v3-r50-main-physical-l045-b1",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": 9.992007221626409e-16,
+            "reference_BL_V": -1.9984014443252818e-15,
+            "D_V": 2.9976021664879227e-15
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T200734Z-v3-r50-main-physical-l045-b1-341c0690",
+              "archive_sha256": "53653ad744556cb165cd281e33c141370379339e69030cb433d69c9ffe6ce6e5",
+              "mesh_sha256": "ec2301e48e58cd6217d47a3b4f4d6c459db26c071d5980e3b019f0da7394e223",
+              "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1"
+            },
+            "signal": {
+              "run_id": "20261010T183541Z-v3-r50-main-control-l045-b1-ox5-s1-m1-dd36fd52",
+              "archive_sha256": "268bc41ca8428feaedc6c75e59a5d4235f2c5679e0a6a63d002bd62128987cb7",
+              "mesh_sha256": "ec2301e48e58cd6217d47a3b4f4d6c459db26c071d5980e3b019f0da7394e223",
+              "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1"
+            },
+            "neutral": {
+              "run_id": "20261010T184202Z-v3-r50-main-neutral-l045-ox5-s1-m1-8a8a93c5",
+              "archive_sha256": "fa8a1059a67843ac632f28a8b5c29b578e5098f9923c745b8fa2f7561825b295",
+              "mesh_sha256": "ec2301e48e58cd6217d47a3b4f4d6c459db26c071d5980e3b019f0da7394e223",
+              "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1"
+            }
+          },
+          "matching_contract_sha256": "7ca3213f98c5d23cf9f9de9517e9c207ce649a7afc0567aafa2ec79c5423c4a1",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-physical-l045-b1.json",
+        "evidence_sha256": "1fbc772415b8d8e5ed2570aba6cb995ef8dc4e62af11b4cdb0e6bc0b8f032a4a"
+      }
+    ]
+  },
+  "pilot": {
+    "state": "VERIFIED",
+    "planned_comparisons": 2,
+    "passed_comparisons": 2,
+    "cases": [
+      {
+        "tag": "v3-r50-main-isolation-alpha-a30-b1",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": 2.7834931093373427e-07,
+            "reference_BL_V": -6.994405055138486e-15,
+            "D_V": 2.7834931792813933e-07
+          },
+          "physical_classification": {
+            "0.0025": "criterion_logic_flip",
+            "0.005": "criterion_logic_flip",
+            "0.01": "critical"
+          },
+          "offline_classification": {
+            "0.0025": "criterion_logic_flip",
+            "0.005": "criterion_logic_flip",
+            "0.01": "critical"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T211307Z-v3-r50-main-isolation-alpha-a30-b1-1366ace1",
+              "archive_sha256": "1043cf515df61a341fc2f0d3daf83c49e1892f223917ddb3311be59e1b4f9a5e",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "signal": {
+              "run_id": "20261010T203923Z-v3-r50-main-l018-alpha-a30-s202610311-b1-babd5730",
+              "archive_sha256": "b89756459bc02820d956cce39fea414b0a4c17588d14636b3e0514e53462381d",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "neutral": {
+              "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+              "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            }
+          },
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-isolation-alpha-a30-b1.json",
+        "evidence_sha256": "0422ecd515ea241299e2b5c1f7f52597fb1a2353c02b6a8804b3f7487eaaab40"
+      },
+      {
+        "tag": "v3-r50-main-isolation-proton-a0-b0",
+        "state": "PASSED",
+        "recomputed": {
+          "schema": "dram-see-v3-r50-main-reference-validation",
+          "physical_revision": "r50-main-r1",
+          "status": "PASSED",
+          "passed": true,
+          "tolerance_V": 0.0001,
+          "differences_4ns": {
+            "signal_BL_V": 9.992007221626409e-16,
+            "reference_BL_V": -6.994405055138486e-15,
+            "D_V": 7.993605777301127e-15
+          },
+          "physical_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "offline_classification": {
+            "0.0025": "correct",
+            "0.005": "correct",
+            "0.01": "correct"
+          },
+          "classification_agreement": true,
+          "sources": {
+            "physical": {
+              "run_id": "20261010T212731Z-v3-r50-main-isolation-proton-a0-b0-d5d22b2f",
+              "archive_sha256": "1940ee47a58833085cd36b4761a0ede2be842965475e13c45a54f3983e30dd74",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "signal": {
+              "run_id": "20261010T204621Z-v3-r50-main-l018-proton-a0-s202610321-b0-1121afca",
+              "archive_sha256": "bcacf57630115610a7dc1b6f40a5880e63d5da323c36be3ea40f5f945ebd9907",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            },
+            "neutral": {
+              "run_id": "20261010T174125Z-v3-r50-main-neutral-l018-ox5-s1-m1-e46af4c7",
+              "archive_sha256": "5ecf72beab8b309a5c5432819772a33b4baa05cf227169e41904d86a2cbf46d2",
+              "mesh_sha256": "8d567c250e447c7122819227a5f5502a585b492d342f0e0dd52232e2369a587b",
+              "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb"
+            }
+          },
+          "matching_contract_sha256": "584d58a3ea6a226045acff2c6a38883b9e2dc8ea28cfe42452f396f1e0ef84cb",
+          "scope": "This matched bit/geometry/source only; no automatic whole-matrix validation"
+        },
+        "evidence": "experiments/dram-see-v3/r50-main/data/reference-validation/v3-r50-main-isolation-proton-a0-b0.json",
+        "evidence_sha256": "5ae9bf594fe18be4f781cd2ae019fc4208bb6fb02e357823c8b883c8ce030185"
+      }
+    ]
+  },
+  "numerical_preregistered": {
+    "state": "VERIFIED",
+    "continuous_passed": true,
+    "classification_stable": true,
+    "evidence": "experiments/dram-see-v3/r50-main/data/numerical/preregistered.json",
+    "evidence_sha256": "6ab7de5787dca9fb6954608071ca22439de316111c451a8e589837ff38bc2c04"
+  },
+  "train": {
+    "state": "VERIFIED",
+    "training_plan_sha256": "a114556a58798435500889a07812734ee7d2ada302cef09d72d5b8a0f30992b7",
+    "training_audit_sha256": "e0fa7df011905084187ca9689122da1e5bb69f2e8f63d2a655bee11b926951fd",
+    "responses": 64
+  },
+  "prediction_freeze": {
+    "state": "VERIFIED",
+    "sha256": "f0384066be6d42bb71dad6fd8e4e1a2f474e6f9f45d918da759ca0274a4cff9e",
+    "prediction_plan_sha256": "31a1429197043eb23ef80876fe940e59c97094b1372731cf1bb05e49a6e77177"
+  },
+  "test": {
+    "state": "VERIFIED",
+    "test_plan_sha256": "2b19a32059b95d782d9ddf100f225c9079e9d06c9fc9b4cfcf1bbff1704a10a1",
+    "test_result_sha256": "193850e14b73512008ceec3a3421d14b121dbeb14ffd5be25e3ad99fdf30d829",
+    "responses": 64
+  },
+  "oxide": {
+    "state": "VERIFIED"
+  },
+  "numerical_boundary": {
+    "state": "VERIFIED",
+    "classification_stable": false
+  },
+  "native": {
+    "state": "VERIFIED"
+  }
+}

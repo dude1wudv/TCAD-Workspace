@@ -39,6 +39,8 @@
 | `…virtual_machine.storage` | `total_bytes/used_bytes/available_bytes/used_percent`。`total_bytes` 为虚拟机分配空间（逻辑容量），`available_bytes` 为虚拟机剩余空间 |
 | `…virtual_machine.daemon_health` | `lmgrd`、`snpslmd` 各含 `alive/elapsed_seconds`，表示进程存活和运行时长 |
 | `simulation.scheduler` | 新增 `schema/label_en/layout_widths/active_groups/active_solvers`。`layout_widths` 为每个配置槽位的核数，缺配置时按实际绑定推导。`active_slots` 按绑定核心去重，`active_groups` 按任务目录计数，`active_solvers` 按求解进程计数 |
+| `simulation.dispatch_flow` | 可选。取自控制器私有观测的 `scheduler.flow`，沿用该观测的 `utc` 与有效期。两路输出均包含 `schema:"tcad-dispatch-flow-v1"/state/observed_at/fresh_max_age_seconds`，新鲜时附 `slots[{slot,threads,state,idle_reason,reason,backend}]/collection{pending,oldest_wait_seconds}`。`reason` 为兼容字段，`backend` 仅公开 `tcad`、`geant4` 或 `null`。`slot` 为逻辑槽号。过期或结构未知时省略槽位和积压数，旧观测省略整个字段 |
+| `simulation.planner` | 两路输出均从新鲜的 `scheduler.planner` 投影 `offline`（布尔值）、`status`（`offline/idle/online/running`）、`retry_after`（Unix 秒）和 `mode`（`repair_only_async`）。无观测或观测过期时省略。状态页在 `offline:true` 时显示 AI 修复规划器离线提示。 |
 | `…scheduler.slots[]` | 新增 `usage_percent/task_ids`。单一占用者时 `task_id` 和 `cluster` 均为任务 ID，同一多核任务的各核共享 `cluster`。重叠绑定时 `task_id` 为 `null`，`task_ids` 含全部占用者 |
 | `…scheduler.tasks[]` | 新增 `case_id/device/stored_bit/batch_label/batch_label_en/finished_at/health/collection_result`，以及任务级 `cpu_percent/rss_bytes/hwm_bytes/threads` 和 `processes[]`。每进程含 `engine/cpu_set/started_at/cpu_percent/rss_bytes/hwm_bytes/threads`，进程 CPU 百分比按单核为 100 |
 | `…tasks[].parameters` | v2 白名单为 `node_count/integrator/temperature_K/stored_bit/source_variant`，缺值时可省略 |
@@ -49,6 +51,8 @@
 | `health.freshness` | `state/scheduler_age_seconds/scheduler_threshold_seconds/scheduler_probe_ok/research_age_seconds/research_projection_state` |
 | `health.simulation` | `state/active_tasks/stalled_tasks/fine_step_tasks/uncollected_tasks/summary_zh/summary_en`；状态为 `progressing/slow_convergence/stalled/awaiting_collection/paused/idle/unknown` |
 | `activity_feed` | `mode(active/idle/stale)/live_items[]/recent_outcomes[]`。当前任务含引擎、阶段、物理时间或通用进度、CPU 集合、日志心跳和结构化诊断原因；近期结果按完成时间倒序 |
+
+调度器可在 `scheduler.flow.slots[]` 发送 `idle_reason`，也可沿用 `reason`。细分值为 `geant4_reservation`、`dependency_blocked`、`gate_blocked`、`guest_memory_below_reserve`、`host_disk_below_floor`、`guest_disk_below_floor`、`license_unavailable`、`slot_probe_pending`、`slot_probe_isolated`、`paused`。公开 `blocked_tasks` 取自 `scheduler.last_decision.blocked_breakdown` 的门禁及前置任务计数。收集积压来自 `flow.collection`。探针待核对和单槽隔离按逻辑槽号显示。
 
 三层存储空间分别采样，双层内存也分别采样。未知值以 `null` 表示，各层余量不合计。
 磁盘保留块可能使总容量大于已用量与可用量之和。
@@ -287,12 +291,12 @@ r0.6 用 `research.revision:"r0.6"` 及下列扩展字段表示：
 
 | 字段 | 精确含义 |
 | --- | --- |
-| `research.totals` | 全部正式槽位的 `planned/archived/solved/accepted/running/failed/remaining`；`planned=396`，`remaining=planned-accepted` |
-| `research.counts` | 同样七个计数字段，键按 `Z/T/S/R/HR/HP/AL`，`planned` 分别为 `26/68/150/12/28/30/82` |
+| `research.totals` | 全部正式槽位的 `planned/archived/solved/solver_finished/accepted/running/failed/remaining`。`planned=396`，`remaining=planned-accepted` |
+| `research.counts` | 键按 `Z/T/S/R/HR/HP/AL`，`planned` 分别为 `26/68/150/12/28/30/82`。`solver_finished` 计当前代表尝试已确认正常退出且待归档的案例，`archived` 计至少一次原归档核验通过的案例（含失败归档），`solved` 计成功归档，`accepted` 计有逐例验收证据的案例 |
 | `research.budget` | `total_cases:396`、`zero_cases:26`、`profile_count:13`、`radiation_count:10`、`statistics_intent_cases:214`、兼容静态字段 `statistics_eligible_cases:0`；新增 `manifest_eligible_cases` 为冻结清单中资格标志为 true 的数量，当前为 0 |
-| `research.blocks[]` | `id/sealed` 与七个计数字段；HR/HP 为 `sealed:true`，只公开此类安全汇总 |
-| `research.diagnostics.P0` | `planned/archived/solved/running/failed` 为 Runtime 中 `scope=p0_diagnostic` 的尝试计数，`count_basis:"runtime_intents"`、`included_in_formal_plan:false`；无科学通过字段 |
-| `research.cases[]` | 只含 Z/T/S/R/AL 的 338 个公开条目；字段为 `case_id/block/cohort/kind/profile_id/radiation_id/condition_id/stored_bit/primary_index/pair_id/state/attempts/statistics_intent/statistics_eligible` |
+| `research.blocks[]` | `id/sealed` 与正式槽位的计数字段。HR/HP 为 `sealed:true`，只公开汇总 |
+| `research.diagnostics.P0` | `planned/archived/solved/solver_finished/running/failed` 为 P0 尝试计数，`included_in_formal_plan:false` |
+| `research.cases[]` | Z/T/S/R/AL 的 338 个公开条目。`attempts` 与 `failed_attempts` 保留尝试计数，`archive_verified` 标记归档证据，`issue` 可标记缺匹配零源对照、待核对或单槽隔离 |
 | `research.profiles[]` | 13 个计划器件，字段 `id/sealed/parameters`；3 个留出器件只保留 ID 与空参数 |
 | `research.radiations[]` | 10 个计划辐照条件，字段 `id/sealed/parameters`；2 个留出辐照条件只保留 ID 与空参数 |
 | `research.conditions` | r0.6 无旧版复合工况列表，返回 `[]` |
@@ -301,7 +305,7 @@ r0.6 用 `research.revision:"r0.6"` 及下列扩展字段表示：
 | `research.statistics_basis` | `"external_qualified_snapshot_required"` |
 | `research.statistics_snapshot_status` | `"not_connected"`；尚未消费动态统计资格快照 |
 
-公共 `state` 仅为 `pending/running/failed/solved/accepted`，
+公共 `state` 为 `pending/running/solver_finished/failed/missing_data/under_review/solved/accepted`，
 `kind` 为 `control/response`，r0.6 的 `cohort` 与 `block` 相同，
 `condition_id` 为空；空 profile/radiation 表示 AL 尚未物化或 Z 无粒子。
 参数同时兼容旧版 `unit:"1", representation:"baseline_multiplier"`

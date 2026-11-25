@@ -138,6 +138,72 @@ class ResearchProjectionTests(unittest.TestCase):
         self.assertEqual(result["counts"]["core"]["planned"], 1)
         self.assertEqual(result["counts"]["core"]["solved"], 1)
         self.assertEqual(result["cases"][0]["attempts"], 2)
+        self.assertEqual(result["cases"][0]["failed_attempts"], 1)
+
+    def test_case_outcomes_keep_native_exit_archive_and_acceptance_separate(self):
+        zero = "m1-r05-zero"
+        expected = {"native": "solver_finished", "failure": "failed", "missing": "missing_data",
+                    "response": "solved", "isolated": "under_review"}
+        cases = [case(f"m1-r05-{key}", "core", run_ids=[key], control_case_id=zero) for key in expected]
+        cases.append(case(zero, "control", kind="control"))
+        manifests = {
+            "failure": self.successful_manifest("failure", state="FAILED_COLLECTED", remote_exit_code=3),
+            "missing": self.successful_manifest("missing", tool_exit_codes={}),
+            "response": self.successful_manifest("response"),
+        }
+        observation = {"utc": NOW.isoformat(), "runs": [
+            {"id": "native-task", "run_id": "native", "status": "reconciliation_pending", "remote_exit_code": 0},
+            {"run_id": "isolated", "slot": 3, "occupied": True},
+        ], "scheduler": {"tasks": {"native-task": {"remote_observation_fresh": True}},
+                          "flow": {"schema": "tcad-dispatch-flow-v1", "slots": [{"slot": 3, "idle_reason": "slot_probe_isolated"}]}}}
+        result = self.project(plan(cases), manifests, observation)
+        rows = {row["case_id"]: row for row in result["cases"]}
+        for key, state in expected.items():
+            self.assertEqual(rows[f"m1-r05-{key}"]["state"], state)
+        self.assertEqual(rows["m1-r05-response"]["issue"], "missing_zero_control")
+        self.assertEqual(rows["m1-r05-isolated"]["issue"], "slot_isolated")
+        counts = result["counts"]["core"]
+        for key, count in {"planned": 5, "archived": 3, "solver_finished": 1, "solved": 1,
+                           "failed": 1, "accepted": 0, "remaining": 5}.items():
+            self.assertEqual(counts[key], count)
+        observation["utc"] = "2020-01-01T00:00:00Z"
+        stale = self.project(plan(cases), manifests, observation)
+        self.assertEqual(stale["counts"]["core"]["solver_finished"], 0)
+        self.assertEqual(stale["counts"]["core"]["archived"], 3)
+
+    def test_case_waits_require_fresh_plan_bound_public_evidence(self):
+        text = "等待原运行完成。"
+        public, unsafe, sealed = ("m1-r05-public", "m1-r05-unsafe", "m1-r05-sealed")
+        cases = [case(public, "core"), case(unsafe, "core"), case(sealed, "core", sealed=True)]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "plan.json"
+            payload = json.dumps(plan(cases)).encode("utf-8")
+            path.write_bytes(payload)
+            snapshot = {
+                "schema": "tcad-r06-case-waits-v1",
+                "manifest_sha256": hashlib.sha256(payload).hexdigest(),
+                "observation_fresh": True,
+                "observation_utc": NOW.isoformat(),
+                "generated_at_utc": NOW.isoformat(),
+                "cases": [
+                    {"case_id": public, "public_wait_zh": text},
+                    {"case_id": unsafe, "public_wait_zh": "private wait detail"},
+                    {"case_id": sealed, "public_wait_zh": text},
+                ],
+            }
+            result = build_research(path, {}, {}, [], now=NOW, case_waits=snapshot)
+            self.assertEqual(
+                {row["case_id"]: row.get("public_wait_zh") for row in result["cases"]},
+                {public: text, unsafe: None},
+            )
+            self.assertEqual(result["case_waits_observed_at"], NOW.isoformat().replace("+00:00", "Z"))
+            for now, waits in (
+                (NOW + dt.timedelta(seconds=181), snapshot),
+                (NOW, dict(snapshot, manifest_sha256="0" * 64)),
+            ):
+                result = build_research(path, {}, {}, [], now=now, case_waits=waits)
+                self.assertNotIn("case_waits_observed_at", result)
+                self.assertTrue(all("public_wait_zh" not in row for row in result["cases"]))
 
     def test_collected_without_original_collection_and_tool_proof_is_not_solved(self):
         for manifest in (

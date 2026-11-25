@@ -1,0 +1,124 @@
+{
+  "schema": "tcad-r06-operations-receipt-v1",
+  "order_id": "r06-disk-gate-and-lhs03-refill-20261125-01",
+  "outcome": "partial",
+  "action_needed": "ACTION_NEEDED_USER_DISK_RELIEF",
+  "disk": {
+    "unit": "GiB",
+    "server_allocated_bytes": 181312401408,
+    "server_used_bytes_at_df_sample": 156036816896,
+    "df_sample_at_utc": "2026-11-25T01:49:34Z",
+    "allocated_categories": [
+      {"category": "虚拟机磁盘及配套文件", "bytes": 101720223744},
+      {"category": "科研工作区", "bytes": 30240174080},
+      {"category": "科研工作区内运行材料与结果等运行数据", "bytes": 29720973312, "subset_of": "科研工作区"},
+      {"category": "原调度器状态及账本", "bytes": 2831560704},
+      {"category": "系统日志（清理前）", "bytes": 534437888},
+      {"category": "系统包管理缓存（清理前）", "bytes": 41684992},
+      {"category": "系统临时区（含科研采样及恢复交接文件）", "bytes": 852914176},
+      {"category": "通用临时区（含科研测试、核验及发布交接）", "bytes": 136196096},
+      {"category": "系统恢复包", "bytes": 739680256}
+    ],
+    "category_method": "先做根文件系统顶两层同盘扫描，随后对重点类别按实际分配字节细查。分类在清理前后分时采样，工作区子项已标明从属关系。",
+    "maintenance": {
+      "actions": ["归档系统 journal 按 200 MiB 上限回收", "清理 DNF 包管理缓存"],
+      "journal_usage_before_mib_displayed": 378.8,
+      "journal_usage_after_mib_displayed": 174.4,
+      "free_bytes_before": 25030356992,
+      "free_bytes_immediately_after": 25284784128,
+      "net_immediate_recovered_bytes": 254427136,
+      "net_immediate_recovered_mib": 242.640625,
+      "selection": "仅选择已确认的包管理缓存和归档系统日志。系统日志目录顶层没有匹配的旧 gzip 日志，所查账号的常用目录没有可清理的 pip/npm 缓存。临时区的大项涉及科研采样、恢复或核验，系统恢复包和发布回滚目录均保留。"
+    },
+    "admission": {
+      "server_floor_gib": 20,
+      "output_reserve_per_intent_gib": 0.5,
+      "candidate_submit_reserve_gib": 0.5,
+      "submit_existing_reservations": 9,
+      "submit_existing_reserve_gib": 4.5,
+      "collection_existing_reservations_at_transfer_check": 10,
+      "collection_existing_reserve_gib": 5,
+      "collection_min_reserve_per_transfer_gib": 1,
+      "pending_archive_bytes": [963235840, 676014080],
+      "submit_required_server_free_gib": 25,
+      "collection_required_server_free_gib": 26,
+      "basis": "原调度器逐条复核 intent。两份输运在同一轮各自检查传输时，九条在途输出之外还有一条历史未启动 intent 尚未轮到复核。九条在途合计 4.5 GiB，传输检查时合计 5 GiB。传输预留按单份取 1 GiB 与实际封存包体积的较大值，两份均取 1 GiB。新启动检查在该轮复核之后进行。",
+      "before_cleanup": {"server_free_gib": 23.311337, "submit_deficit_gib": 1.688663, "collection_deficit_gib": 2.688663},
+      "immediately_after_cleanup": {"server_free_gib": 23.548290, "submit_deficit_gib": 1.451710, "collection_deficit_gib": 2.451710},
+      "final": {
+        "observed_at_utc": "2026-11-25T01:50:58.034951Z",
+        "server_free_bytes": 25275473920,
+        "server_free_gib": 23.539619,
+        "submit_deficit_gib": 1.460381,
+        "collection_deficit_gib": 2.460381,
+        "virtual_machine_free_gib": 28.357555,
+        "server_vm_disk_growth_allowance_gib": 13.052879
+      },
+      "capacity_recommendation": "当前快照下，若要容纳两份封存包落盘和 16 项同时运行的输出预留，服务器需约 29.53 GiB 可用空间，较末次实测多约 6.0 GiB。建议增加至少 8 GiB 服务器可用空间，以覆盖传输暂存和输出增长。以上为当前快照的空间预算，实际启动仍按原调度器的其他资源检查执行。"
+    }
+  },
+  "scheduler": {
+    "before": {
+      "observed_at_utc": "2026-11-25T01:42:56.842597Z",
+      "running": 9,
+      "free": 7,
+      "ready": 30,
+      "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 11, "other": 0},
+      "transport_collection_pending": 2
+    },
+    "after": {
+      "observed_at_utc": "2026-11-25T01:50:47.244782Z",
+      "explain_observation_fresh": true,
+      "running": 9,
+      "free": 7,
+      "ready": 30,
+      "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 11, "other": 0},
+      "transport_collection_pending": 2,
+      "ready_admission_reasons": {"server_disk": 18, "telemetry": 12},
+      "collection_admission_reasons": {"server_disk": 2}
+    },
+    "new_transport_collections": 0,
+    "new_transport_starts": 0
+  },
+  "scientific_review": {
+    "criterion": {"rule": "r06-step-tol-v2", "terminal_ns": 35, "readout_ns": 31.9, "revised_difference_limit_uv": 500.0, "historical_difference_limit_uv": 101.56},
+    "lhs03": {
+      "b0_h4_h8_difference_uv": 342.456937659,
+      "b0_h8_archive_state": "collected",
+      "b1_h4_archive_state": "collected",
+      "b1_h8_state": "running",
+      "b1_h8_native_progress_ns": 32.058,
+      "b1_h8_difference_uv": null,
+      "new_p0_qualifications": 0,
+      "new_z_bindings": 0,
+      "new_case_acceptances": 0,
+      "pending_transport_pools": 8,
+      "next_evidence": "先由原调度器收集 b1 h/8。随后使用原读出器和上一工单的签发工具复核 35 ns 终点、三个零源积分、写保持极性和 31.9 ns 同态步长差，并按每态实测记录原 101.56 µV 判定。配方已有预置资格入口，8 个输运池的导航证据已匹配。"
+    },
+    "new_response_archives_to_accept": 0,
+    "response_runs": [
+      {"case": "LHS02 A ×3", "state": "running", "native_progress_ns": 2.0285},
+      {"case": "LHS02 B ×3", "state": "running", "native_progress_ns": 2.0285},
+      {"case": "D1 A ×30", "state": "running", "native_progress_ns": 30.217}
+    ],
+    "previous_d1_a_x10": {"state": "accepted", "readout_margin_mv_at_31_9_ns": 25.567, "readout_error": 0, "evidence_reference_note": "逐案原验收及证据 SHA-256 匹配。收据中的绝对证据引用在通用相对路径校验器中被拒绝。"},
+    "approved_supply_batches_published": 0
+  },
+  "response_supply": {
+    "observed_at_utc": "2026-11-25T01:49:55.352569Z",
+    "last_oneshot_success_at_utc": "2026-11-25T01:50:00Z",
+    "response_timer": "active",
+    "research_review_timer": "inactive",
+    "pool_counts": {"succeeded": 8, "collection_pending": 2, "not_submitted": 38},
+    "intake_errors": 0,
+    "material_view": [
+      {"cells": 8, "actual_state": "LHS02 的 8 个输运和响应投影已就绪。逐案视图已有 5 个正式 S 验收和 10 个经验证的零源复用，通用配方当前仍将这 8 个单元列入缺料。"},
+      {"cells": 2, "actual_state": "LHS01 已封存，等待原调度器收集。"},
+      {"cells": 30, "actual_state": "LHS01 余下 6 项与 LHS04/05/06 各 8 项已备齐输运输入，等待原调度器启动并收集。"},
+      {"cells": 8, "actual_state": "LHS03 等待双态资格及输运执行与收集。"}
+    ],
+    "approved_intake": "现有验签批次接口可消费具有真实物化上下文、冻结抽样和源投影的新增响应材料。两份输运尚未落盘，本轮没有新增可发布的条目。",
+    "lhs02_zero_reuse_scope_check": {"tested": 10, "accepted_by_generic_validator": 0, "rejected_by_generic_validator": 10, "reason": "zero-reuse receipt plan or evidence scope differs", "detail": "将原收据引用加入内存中的现有配方字段后，读取器看到了全部收据。通用校验的部署名单未涵盖 LHS02。现行独立响应供料器已有经验证的逐案记录。"}
+  },
+  "validation": {"command": "python -m compileall -q tcad-research-training/automation/local-director", "exit_code": 0}
+}

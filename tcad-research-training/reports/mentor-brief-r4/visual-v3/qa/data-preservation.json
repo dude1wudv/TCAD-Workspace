@@ -1,0 +1,18 @@
+{
+  "utc": "2026-10-12T02:09:08.554290+00:00",
+  "checks": {
+    "plot_coordinates_unchanged": true,
+    "plot_coordinate_block_count": 22,
+    "source_csv_and_frozen_manifest_hashes_unchanged": true,
+    "score_rows_unchanged": true,
+    "plotting_and_scoring_code_unchanged": true,
+    "previous_pdf_unchanged": true,
+    "previous_tex_unchanged": true,
+    "current_sources_match_binding": true,
+    "latex_layout_and_font_warnings": []
+  },
+  "source_sha256": "00d45757bb31204d687a260b2b9460f2d728eece291cc8ef84f068363a3210ca",
+  "builtin_compiler": "success; final source checked",
+  "pdf_sha256": "5c20559da2c27b9661a8d250310b85328a132c25261256c079c16a8b2741bd73",
+  "command_receipt": "qa/r2/commands.json"
+}

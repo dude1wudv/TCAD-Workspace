@@ -1,0 +1,27 @@
+{
+  "state": "PASSED",
+  "utc": "2026-10-11T13:09:34.345317+00:00",
+  "generator_sha256": "1df88d881040b1a07ec3abbbc403e8896914bf63c95dabea0eae2d4c737bb461",
+  "command": [
+    "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\vdmos-analysis-venv\\Scripts\\python.exe",
+    "-B",
+    "reports/final/prepare_evidence.py"
+  ],
+  "exit_code": 0,
+  "rebuild_reused_fixed_snapshot": true,
+  "fixed_user_snapshot": "2026-10-11T05:02:41.895085-08:00",
+  "compared_preexisting_output_files": 68,
+  "changed_output_hashes": [],
+  "output_hash_mismatches": [],
+  "source_count": 33,
+  "source_categories": {
+    "immutable_input": 32,
+    "live_observation": 1
+  },
+  "historical_sources_added": 11,
+  "chapter_mappings_present": 33,
+  "scientific_artifacts_byte_identical_after_history_extension": 24,
+  "visual_review_performed_by_this_agent": false,
+  "raw_archives_reaudited": false,
+  "live_ledger_rechecked": false
+}

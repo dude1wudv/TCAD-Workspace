@@ -100,3 +100,49 @@ python -B automation/server-codex/package.py --output <新的源代码包路径>
 包记录逐文件SHA，包含实现、空提案示例、新研究计划和YAML；不包含实际work-items提案、.git、local_runtime、VM、许可、密钥、原始数据和结果。它不是完整研究状态迁移。安装器拒绝覆盖未归属工作区或已改源码，保留既有配置和状态；v1会先备份再迁成禁用v2。新快照建立有明确来源标记的本地Git元数据供原runner读取；既有repo只验证HEAD，不改其index和提交。安装器校验/刷新unit并init，绝不enable/start。
 
 完整安装仍用 `install.py --bundle <包> --sha256 <包SHA> --release <UTC版本>`；已有独立CPython3.11+保留，缺少时使用prepare_python.py的固定版本/SHA流程，不替换系统Python。源码、离线编排验证、真实服务沙箱/API联通、真实9并发及科研验证是不同验收层。当前范围与未做项以VALIDATION记录为准。
+
+
+## 共享池异步调度（兼容 v2 策略）
+
+`SchedulerEngine` 继续使用原 `Runtime` 的科学准入、输入校验、repair 谱系和原提交意图。每轮只做一次有界只读 SSH 采样；原提交、取消和收集共用一个后台串行通道，保留全局 owner、gate、槽锁和原租约。原运行器验证归档并确认释放后才能补槽。未确认启动的原 ID 继续保留预约；只有原运行器出具、校验通过的未启动证明才可解除预约。
+
+新策略示例见 `policy.example.json`。默认心跳 5 秒；内存估算只预留未被实测 RSS 覆盖的部分。服务器剩余空间、虚拟机剩余空间与服务器上虚拟机磁盘文件可增长空间分别准入，不能相加。实际配置要求磁盘文件增长核验时，设置独立的 `resources.backing_disk_path` 和 `require_backing_disk=true`。许可守护进程只影响 TCAD，席位数未知时保留原运行器验证。首版 `collect_concurrency` 必须为 1。
+
+`planner_mode=disabled` 不启动模型，不要求模型二进制或配置；`on_demand_async` 保留原按需 Sol/Astra 规划，在后台去重运行，不持有原运行器所有者锁。自动排空受最短驻留和最长就绪等待控制；人工排空持久化到重启后，直至完成目标预约或明确撤销。隔离槽保留原证据与租约，并允许其它合格旧剖面空槽继续补位。看门狗始终只告警，兼容读取旧 `auto_stop` 也不会自动发信号。
+
+```bash
+python3 controller.py --policy <POLICY> reconcile --read-only
+python3 controller.py --policy <POLICY> explain
+python3 controller.py --policy <POLICY> cancel <ORIGINAL_TASK_OR_RUN_ID> --reason '<operator reason>'
+python3 controller.py --policy <POLICY> drain --to geant4 --reason '<operator reason>'
+python3 controller.py --policy <POLICY> drain --cancel
+```
+
+人工命令交给唯一服务消费；不会另起求解调度者。取消由原运行器验证 PID、boot、脚本及原身份，记录真实信号和最终静止证据；缺失的原始退出码仍为 null，派生退出码单列。旧 wrapper 只能沿独立验证过的原生进程取消，不能猜测作业组。
+
+诊断仅扩展 `observation.json.scheduler`：池状态、资源阻塞、任务状态、单轮原因及真实累计指标；没有样本的平均耗时为 null。`metrics.jsonl` 有界轮转。公开状态检查器继续读取原字段，不能转发私有 scheduler 诊断。
+
+发布必须同时交付新增 `scheduler_*.py` 与 `scripts/runner_termination.py`，并与两套原运行器版本绑定。先核验空闲池、全量原租约、内核锁和未登记求解器；使用原 SHA 清单和安装器暂存版本，备份原配置及受影响源码，再切换版本。验证只用 `check` 与 `reconcile --read-only`，`serve --once` 仍可能提交任务。回滚保留期间新增的原账本和失败证据，不恢复旧状态文件。
+
+只读对账显式禁用旧存储维护与云盘侧车。已完整校验的原归档在私有 `verified-archives.json` 中保存有界缓存；复用必须同时匹配原 SHA、路径、设备/inode、大小、mtime 与 ctime。缺失或变化仍须完整复核，首次核验由独立维护步骤完成；只读路径本身不写缓存，也不以收集状态代替校验。
+
+### Geant4 原始归档回收与恢复
+
+先保留经原流水线核对的逐 primary 硅电离沉积表、审计收据和选中事件的源包。原始归档在私有 Drive 目录保留无损副本，`operation.json`、抽样身份、运行退出与失败证据留在原目录。终态已释放的成功操作可以使用 `geant4_archive_release.py` 核对原文件、沉积表和云盘回执后回收 `results.tar` 与 `collected/steps.csv`。未给 `--commit` 时仅核对。控制器已支持同一操作的本地冷归档收据，轮询无需下载原包。
+
+```text
+python3 -B geant4_archive_backup.py <原操作目录> --ledger <逐事件沉积表目录> --receipt-out <新备份收据>
+python3 -B geant4_archive_release.py <原操作目录> --backup-receipt <已核验备份收据> --ledger <逐事件沉积表目录>
+python3 -B geant4_archive.py restore <原操作目录> --floor-gib 20
+```
+
+线上连续抽样遇到已冷存的 Geant4 池时，只在需要重建抽样产物时下载并校验原包。冻结工具从原路径读取，退出后清理本次临时原包。待供料或待准入的池须核对调度依赖后再执行回收。需要独立读取原步进表时，用上面的 `restore` 命令恢复原包和步进表。恢复会预留峰值写入空间并校验原始 SHA。读者结束后可复用备份收据再次回收。
+
+`resources.backing_disk_path` 指向实际挂载点，挂载消失或不可读取时报告未知。启用该层准入后，空间不足会等待新提交或需要虚拟机写盘的封存，已经封存的传输仍按服务器可用空间准入。
+
+新增归档的完整校验与缓存写入也在唯一后台收集通道内完成；校验期间不在主循环重复散列。观察既有 intent 时不新增空诊断字段，保留原未启动回执的不可变身份校验。
+## r0.6 已验签批次入队
+
+在现用连续供料版本上，已验签的 TCAD 批次可通过 `month_one_supply.py --policy <policy> <workspace-relative-batch> <batch-sha256>` 发布。批次使用 `tcad-r06-approved-supply-v1`，包含当前 `manifest_sha256` 和 `entries`。每条入料使用现有的 `proposal`、`admission` 与 `evidence` 哈希引用。
+
+发布在原调度器的私有状态目录中新增一份不可覆盖的收据。原供料器读取收据后在后台验证输入和科学准入，并向原队列投递。重复发布同一收据或原队列已存在该任务时，按原任务身份去重。输运池继续使用冻结的输运配方。LHS 输运还需 P2 收据中的 `lhs_native_navigation` 引用、对应组的 P0 资格和对应池的原始输入哈希。

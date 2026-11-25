@@ -1,0 +1,87 @@
+{
+  "schema_version": 2,
+  "title": "AI辅助下的DRAM存储器单粒子效应评估研究",
+  "stage": "DRAFTING",
+  "last_sprint_utc": "2026-11-24T16:50:00+00:00",
+  "last_build_ok": true,
+  "last_build_utc": "2026-11-24T16:54:04+00:00",
+  "chapters": [
+    {
+      "id": "ch01",
+      "file": "sections/01-introduction.tex",
+      "title": "绪论",
+      "status": "EVIDENCE_BOUND",
+      "required_assets": [
+        "q-literature-bib-audit-01",
+        "r06-simulation-baseline-audit-20261124",
+        "r06-predictor-contract-readiness-20261124"
+      ],
+      "notes": "Day-1 Daily Thesis Sprint 已完成绪论从零起草，绑定 18 条核验 BibTeX 文献并显式标出 M01-M06 与在途 r0.6/训练留白；待 Codex 执行 build.ps1 编译验错。"
+    },
+    {
+      "id": "ch02",
+      "file": "sections/02-physical-modeling.tex",
+      "title": "DRAM单粒子效应物理建模与多尺度仿真方法",
+      "status": "SKELETON",
+      "required_assets": [
+        "q-literature-bib-audit-01",
+        "v3-v4-r04-r06-evidence-metrics-20261124",
+        "v3-v4-historical-evidence-table",
+        "v3-read-window-outcomes",
+        "v4-a1-center-window-error"
+      ],
+      "notes": "按真实 r0.6/v3-v4 器件与输运-TCAD 耦合工况编写，纳入已登记历史证据图表与保留失败项。"
+    },
+    {
+      "id": "ch03",
+      "file": "sections/03-dataset-and-qualification.tex",
+      "title": "仿真矩阵设计、数值准入与数据集构建",
+      "status": "SKELETON",
+      "required_assets": [
+        "r06-simulation-baseline-audit-20261124",
+        "r06-p0-repair-and-supply-proposal-20261124",
+        "r04-proton-positive-deposition",
+        "r04-transport-snapshot-table",
+        "r06-formal-acceptance-20261124",
+        "r06-formal-progress-20261124-table"
+      ],
+      "notes": "如实记录 13 构型/396 槽位抽样设计、P0 准入诊断、H1/H2 导出精度排查及任何已登记判据修订。"
+    },
+    {
+      "id": "ch04",
+      "file": "sections/04-surrogate-model.tex",
+      "title": "物理约束的 R→A→F 代理预测模型",
+      "status": "SKELETON",
+      "required_assets": [
+        "q-literature-bib-audit-01",
+        "r06-predictor-contract-readiness-20261124"
+      ],
+      "notes": "随 predictor r0.6 数据合同、折外聚合与后续实证训练交叉验证逐步填充。"
+    },
+    {
+      "id": "ch05",
+      "file": "sections/05-results-and-validation.tex",
+      "title": "仿真结果、模型评估与实验对比分析",
+      "status": "SKELETON",
+      "required_assets": [
+        "v3-v4-r04-r06-evidence-metrics-20261124",
+        "r06-formal-acceptance-20261124",
+        "r06-formal-progress-20261124-table",
+        "r06-predictor-contract-readiness-20261124"
+      ],
+      "notes": "严格绑定 asset-registry.jsonl 真实提取数据，未完成正式训练与外部 DDR5 对比保持显式留白。"
+    },
+    {
+      "id": "ch06",
+      "file": "sections/06-discussion-and-conclusion.tex",
+      "title": "误差分析、适用边界与总结展望",
+      "status": "SKELETON",
+      "required_assets": [
+        "r06-simulation-baseline-audit-20261124",
+        "r06-p0-repair-and-supply-proposal-20261124",
+        "r06-predictor-contract-readiness-20261124"
+      ],
+      "notes": "如实讨论数值/物理局限、外部验证缺口与后续工作。"
+    }
+  ]
+}

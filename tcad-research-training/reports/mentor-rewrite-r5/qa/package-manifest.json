@@ -1,0 +1,936 @@
+{
+  "utc": "2026-10-12T02:51:32.954486+00:00",
+  "destination": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11",
+  "file_count": 173,
+  "bytes": 70608558,
+  "copies_this_step": [
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\course-report.pdf",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\02_课程报告.pdf",
+      "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\research-paper.pdf",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\03_研究论文.pdf",
+      "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\output\\dram-see-v3-mentor-r4.pptx",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\04_汇报演示.pptx",
+      "sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\course-report.tex",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\documents\\course-report.tex",
+      "sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\research-paper.tex",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\documents\\research-paper.tex",
+      "sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\style.tex",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\documents\\style.tex",
+      "sha256": "65968169014d23dcbce2c7b0079f21c8611898a6c62349099ae2ecf7129bb4ac"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\documents\\score-table.tex",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\documents\\score-table.tex",
+      "sha256": "000662bd4c49c4cc41a25647998ab413801e328792fe0a409c433b92735203d1"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\build_deck.mjs",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\slides\\build_deck.mjs",
+      "sha256": "ef05c5f3dd64f7182f97205c1e79cb9ff698b505c789713d022b9cecbe619482"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\source-deck-reference.json",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\slides\\source-deck-reference.json",
+      "sha256": "04db564174f0518900cd5ca0d5a20664df478c127f980572bc9a2c24416f79f0"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\qa\\verify_delivery.py",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\slides\\qa\\verify_delivery.py",
+      "sha256": "810c6d384827edd643ad14076f73720b3ed8ff1cc1ecf4ff220ba790936da63e"
+    },
+    {
+      "source": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\slides-text-r4.json",
+      "target": "E:\\TCAD-Workspace\\导师交付材料_DRAM_SEE_2026-10-11\\07_可编辑源文件\\slides\\slides-text-r4.json",
+      "sha256": "b9fce48dcbf8aab2cd816144e710e8d4e00043e8eadb1965d1d2022323ecba65"
+    }
+  ],
+  "files": [
+    {
+      "path": "00_阅读说明.txt",
+      "bytes": 872,
+      "sha256": "cabfc5131401fdda655fdf7a3e86f81657240b8b0d23c1e11988db575bc41ffa"
+    },
+    {
+      "path": "01_项目简报.pdf",
+      "bytes": 186598,
+      "sha256": "62e8bc979f44ba2baf92fe1930a5c267c15c510dfaee909cc7412ebbfeb39047"
+    },
+    {
+      "path": "02_课程报告.pdf",
+      "bytes": 2051585,
+      "sha256": "6184305978bca9c56a6e044c5710a7ee0cde96f66743a62311dbdaf64a3a241f"
+    },
+    {
+      "path": "03_研究论文.pdf",
+      "bytes": 1363062,
+      "sha256": "114d51e022c814c72cb132528cc4d0253a99c03ba5f39f56fc23af44b8250ace"
+    },
+    {
+      "path": "04_汇报演示.pptx",
+      "bytes": 563770,
+      "sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025"
+    },
+    {
+      "path": "05_课程配套材料.pdf",
+      "bytes": 221197,
+      "sha256": "6259c1568d970aed35da40d3c54d534788dc3afd62be9c017f4e18364cf4845a"
+    },
+    {
+      "path": "06_数据与图表/图表/d1-reference-comparison.png",
+      "bytes": 77961,
+      "sha256": "384e43e034496d875930484c97358fcd1918afd7d4e322452bf850751b0fe523"
+    },
+    {
+      "path": "06_数据与图表/图表/d1-reference-comparison.sources.json",
+      "bytes": 1892,
+      "sha256": "9b12ac5a296bb37a33b39b26d9f9f1d077bff571667d6a098ecdd5cc6c1f419a"
+    },
+    {
+      "path": "06_数据与图表/图表/initial-state.png",
+      "bytes": 89673,
+      "sha256": "230e96f54bb9918fe8c743162253cc29e6069d5ec955b6155ae25357cc6d9378"
+    },
+    {
+      "path": "06_数据与图表/图表/initial-state.sources.json",
+      "bytes": 370356,
+      "sha256": "1c9df5b0f7e60e20a174572e66108e14855a9c05a2b2a193f56e95a89978e26f"
+    },
+    {
+      "path": "06_数据与图表/图表/native-event-window.png",
+      "bytes": 261476,
+      "sha256": "b561a9c81fa63fc69b1956bcfaf667f0026c790d8cb5d46aafa910a707f8c846"
+    },
+    {
+      "path": "06_数据与图表/图表/native-physical-window.png",
+      "bytes": 256811,
+      "sha256": "3c488a1571a23b36fa456db88639fb8c30d181c7d2c0d465c85176b79a454a98"
+    },
+    {
+      "path": "06_数据与图表/图表/oxide-sensitivity.png",
+      "bytes": 107037,
+      "sha256": "04685bff4db663a697ae3be29bb48c00c9d6af281cbe1f8e471f98db7ce842fa"
+    },
+    {
+      "path": "06_数据与图表/图表/oxide-sensitivity.sources.json",
+      "bytes": 370387,
+      "sha256": "8661f3346032850a9e6a60403416d0729cb0fe6cc1dc0d1ede63a20ad388ebc3"
+    },
+    {
+      "path": "06_数据与图表/图表/prediction-residuals.png",
+      "bytes": 173753,
+      "sha256": "ca4938aad715d2574f6b5238ec16bd2c898d3d8ee27fd43d39c6078d961b1a8e"
+    },
+    {
+      "path": "06_数据与图表/图表/prediction-residuals.sources.json",
+      "bytes": 370417,
+      "sha256": "de8b3c0d0501bc1c0f7c71b5f73ff31d7bf23b4d119633a1909660bef7235d78"
+    },
+    {
+      "path": "06_数据与图表/图表/r50-precharge.png",
+      "bytes": 82770,
+      "sha256": "71ba3701800c5ea47b0b7eb7aaec29bc6f1635779d3d2e35f2d2b58a0c08a213"
+    },
+    {
+      "path": "06_数据与图表/图表/r50-precharge.sources.json",
+      "bytes": 1276,
+      "sha256": "e14590e458ad40771f56d5dda418949751b2f1d3dc1590427ccb7911b47532ba"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l018.png",
+      "bytes": 275216,
+      "sha256": "82ec7398e005e2f67f2f9801f838b9bd1afcd42f13bed7e6574a4bde3f1052c7"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l018.sources.json",
+      "bytes": 350470,
+      "sha256": "0a52af8802d9bf79773795408c35bf5780261e168430d54cf1833feb6553d6b3"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l025.png",
+      "bytes": 272463,
+      "sha256": "a9f4ce31a172e0f04362a1aeaea5419557e8503ad527ae87a33d1d6a20eea0bc"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l025.sources.json",
+      "bytes": 350497,
+      "sha256": "e753eba5b7e8d9c720618ef28e81f64960bc9b8409a9ad81b1b9228a402b6329"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l035.png",
+      "bytes": 271468,
+      "sha256": "c4ad8a5b25414550f9d21b4ab82a71e723e978f127c9ac7c05166201a4d3dde2"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l035.sources.json",
+      "bytes": 350479,
+      "sha256": "160f4cca1dbddb55c37bd81101721f4a0b468c7ab93b386d2a423f72968c2eb0"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l045.png",
+      "bytes": 283994,
+      "sha256": "dde9ccc2bd27d568aa2fc12dad94f075a54910cfce5de91386cb3e6b6660611c"
+    },
+    {
+      "path": "06_数据与图表/图表/readout-l045.sources.json",
+      "bytes": 350470,
+      "sha256": "984defcb3b3c5aafb8d4e53e2d99a435e5ae3e600e425e8f3edfa00929d5ec3c"
+    },
+    {
+      "path": "06_数据与图表/图表/stratum-counts.png",
+      "bytes": 164926,
+      "sha256": "82f4fc314f5d8b9818c9f6186f28f8a699ef0670144dad2111c5ab700ed83fe9"
+    },
+    {
+      "path": "06_数据与图表/图表/stratum-counts.sources.json",
+      "bytes": 370373,
+      "sha256": "7f58ba33b4fc7e4b9da409e84991204f3cf3b2b9d857dabb111f22a8936e3c1b"
+    },
+    {
+      "path": "06_数据与图表/图表/stratum-intervals.png",
+      "bytes": 155583,
+      "sha256": "69e1bdc39cd929c29ca5aedeec1504b0bc6b1f68f0a0377d4baeb990377af1fa"
+    },
+    {
+      "path": "06_数据与图表/图表/stratum-intervals.sources.json",
+      "bytes": 370396,
+      "sha256": "63f511f0aa657132ad15e3dfefc1fe520409c86fa06c724a7d7a699bdf759569"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l018.png",
+      "bytes": 97871,
+      "sha256": "47c3ef2a1b8c376b8084b6b559360acc87f0fe5e28714c46a64bc99869d042ea"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l018.sources.json",
+      "bytes": 350207,
+      "sha256": "b2a7db1c710cfd24be24a568947f59acb387e80fe80b4f14cc4388db52405f56"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l025.png",
+      "bytes": 97126,
+      "sha256": "b8c495d5c65cf1332d81b4e03c422f04f1c378540961cd69f4d81ddcae8a03b4"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l025.sources.json",
+      "bytes": 350234,
+      "sha256": "6531856e40b7800da1cb9cf7e41e96f6b51ebb0700a4ced8ae68c668d83fa056"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l035.png",
+      "bytes": 97525,
+      "sha256": "56d23e60baa7961cafa31822b2c85d8210eba5883b1a3ff91ae5b5b6d32b7c7e"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l035.sources.json",
+      "bytes": 350216,
+      "sha256": "927a6f24ca065a18a8ef8523dfe45ba6689e6dfed9650159e33e144732f920fd"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l045.png",
+      "bytes": 98931,
+      "sha256": "be372eca7923f532dff3e00021b5136399b06d054c9b82c26bb93130eafe5ce5"
+    },
+    {
+      "path": "06_数据与图表/图表/threshold-window-l045.sources.json",
+      "bytes": 350207,
+      "sha256": "605eaaef00444e1aa5a29dbbb77abfc1fff0d5f7da19513d8f33352c7d48b248"
+    },
+    {
+      "path": "06_数据与图表/数据/evidence-index.csv",
+      "bytes": 11700,
+      "sha256": "3e9b4a3cb218e712d7da0265065673f133ce0877bbba7e550f5133cd6631d074"
+    },
+    {
+      "path": "06_数据与图表/数据/extension-cases.csv",
+      "bytes": 3593,
+      "sha256": "c6b40b11dcc9144586b43e5e7f24272a2e4962767be6ebc65b6ad182bb4381f6"
+    },
+    {
+      "path": "06_数据与图表/数据/final-numerical-prediction-scores.json",
+      "bytes": 112081,
+      "sha256": "06def52e5412a20434c67e929c6b1ddf83a5e10da9fcf64d4c00d117efaa6ea8"
+    },
+    {
+      "path": "06_数据与图表/数据/frozen-models.json",
+      "bytes": 281362,
+      "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383"
+    },
+    {
+      "path": "06_数据与图表/数据/original-failures.json",
+      "bytes": 190978,
+      "sha256": "6cca5c2e0737dce3478baadc3cf40221992f7462f474d2d56afef627f8580a39"
+    },
+    {
+      "path": "06_数据与图表/数据/original-r4-prediction-scores.json",
+      "bytes": 112081,
+      "sha256": "06def52e5412a20434c67e929c6b1ddf83a5e10da9fcf64d4c00d117efaa6ea8"
+    },
+    {
+      "path": "06_数据与图表/数据/prediction-residuals.csv",
+      "bytes": 34451,
+      "sha256": "dfae2a762a4f7019b503532ca8dfe8ca865157a48ecd668971692437fcac6d93"
+    },
+    {
+      "path": "06_数据与图表/数据/prediction-scores.csv",
+      "bytes": 1726,
+      "sha256": "3bac7ba9fb7603112d924b886fdea1ac6338054490b1e338eb281d812680e251"
+    },
+    {
+      "path": "06_数据与图表/数据/raw-submission-index.json",
+      "bytes": 28774,
+      "sha256": "95dae7db22cb3a2d505c4c46936d52ca3840853781559b5f5efcc81cb66a6b56"
+    },
+    {
+      "path": "06_数据与图表/数据/response-sources.json",
+      "bytes": 262719,
+      "sha256": "107219b48f7b40c4f11f87edd6cfb25d43220807a95afb79af94b0a6ad2c9aa4"
+    },
+    {
+      "path": "06_数据与图表/数据/responses.csv",
+      "bytes": 557254,
+      "sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36"
+    },
+    {
+      "path": "06_数据与图表/数据/statistics.csv",
+      "bytes": 42750,
+      "sha256": "43074a82c61e03f2f875bd07af938b066da68c6c19bb48da134811ae23148bb9"
+    },
+    {
+      "path": "06_数据与图表/数据/summary.json",
+      "bytes": 20811450,
+      "sha256": "6fda8113e80160b957634e77d492d38e951961107c1ac4cd25f6257153522c80"
+    },
+    {
+      "path": "06_数据与图表/数据/writing-results.json",
+      "bytes": 1401,
+      "sha256": "26e85ef02296ed34553fc089b631d71ca5cc9a66d58a1e580b34731af0d9fa5c"
+    },
+    {
+      "path": "06_数据与图表/数据说明.txt",
+      "bytes": 1841,
+      "sha256": "dbcf306a03898de32cb0b1f0733416a2705120a99f408de4cc82688e062a473b"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/data-plot-visual-review.json",
+      "bytes": 9787,
+      "sha256": "f4682b735d347b6ad69e63253c0952272db177aaa4950daf389ae71bf45ad2c5"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/delivery-root-acceptance.json",
+      "bytes": 3130,
+      "sha256": "e306c743baf297251d9de9d31c470c85cb4f1d3f81ccab067d941833b24a2856"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/frozen-models.json",
+      "bytes": 281362,
+      "sha256": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/native-visual-review.json",
+      "bytes": 4563,
+      "sha256": "8678e261287a28c882082918e1cdc214fd232c25788fc8dd48b94fa60d9bab2f"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/preparation-result.json",
+      "bytes": 278,
+      "sha256": "fc77ec7eeb99a9e4ca7a3b7ac09659435a771d6f2a71dfec47d29f3ff187ab8f"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/extension-cases.csv",
+      "bytes": 3593,
+      "sha256": "c6b40b11dcc9144586b43e5e7f24272a2e4962767be6ebc65b6ad182bb4381f6"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figure-review-required.json",
+      "bytes": 10882,
+      "sha256": "614ac805ae7bd317de944afc30649ed478e9e45a9a01d7aac99ec08e595c9515"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/index.json",
+      "bytes": 7586,
+      "sha256": "afda1f0c93c52b3c607f4b17d7bbe1443be2d5960cb3b347efb14171f1af2ec0"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/initial-state.png",
+      "bytes": 89673,
+      "sha256": "230e96f54bb9918fe8c743162253cc29e6069d5ec955b6155ae25357cc6d9378"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/initial-state.sources.json",
+      "bytes": 370356,
+      "sha256": "1c9df5b0f7e60e20a174572e66108e14855a9c05a2b2a193f56e95a89978e26f"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/initial-state.svg",
+      "bytes": 79728,
+      "sha256": "3b952acd61a05cd2b5cbb72e63394dfda275488d24b30cb0112d9d8e4cbc9cbb"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/oxide-sensitivity.png",
+      "bytes": 107037,
+      "sha256": "04685bff4db663a697ae3be29bb48c00c9d6af281cbe1f8e471f98db7ce842fa"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/oxide-sensitivity.sources.json",
+      "bytes": 370387,
+      "sha256": "8661f3346032850a9e6a60403416d0729cb0fe6cc1dc0d1ede63a20ad388ebc3"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/oxide-sensitivity.svg",
+      "bytes": 25602,
+      "sha256": "37d02cc74ec9bbd91c1f16088556f6b1bbf812dbf9eb9419a897ef6187377ffb"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/prediction-residuals.png",
+      "bytes": 173753,
+      "sha256": "ca4938aad715d2574f6b5238ec16bd2c898d3d8ee27fd43d39c6078d961b1a8e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/prediction-residuals.sources.json",
+      "bytes": 370417,
+      "sha256": "de8b3c0d0501bc1c0f7c71b5f73ff31d7bf23b4d119633a1909660bef7235d78"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/prediction-residuals.svg",
+      "bytes": 83965,
+      "sha256": "70b9f9144ed5d57ac7a9d12e1972e9e014a85e71777cdd851980163ab0c22086"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l018.png",
+      "bytes": 275216,
+      "sha256": "82ec7398e005e2f67f2f9801f838b9bd1afcd42f13bed7e6574a4bde3f1052c7"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l018.sources.json",
+      "bytes": 350470,
+      "sha256": "0a52af8802d9bf79773795408c35bf5780261e168430d54cf1833feb6553d6b3"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l018.svg",
+      "bytes": 115651,
+      "sha256": "06da5233af8a5276a5ac1d77531ad8b66d96f01a6c9310fe23fbdcac5b472720"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l025.png",
+      "bytes": 272463,
+      "sha256": "a9f4ce31a172e0f04362a1aeaea5419557e8503ad527ae87a33d1d6a20eea0bc"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l025.sources.json",
+      "bytes": 350497,
+      "sha256": "e753eba5b7e8d9c720618ef28e81f64960bc9b8409a9ad81b1b9228a402b6329"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l025.svg",
+      "bytes": 116529,
+      "sha256": "a9e7f9f2bae5282cec6131fb77ae5f98f0b4771eb1c0cba84eb96c7c2175f7d9"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l035.png",
+      "bytes": 271468,
+      "sha256": "c4ad8a5b25414550f9d21b4ab82a71e723e978f127c9ac7c05166201a4d3dde2"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l035.sources.json",
+      "bytes": 350479,
+      "sha256": "160f4cca1dbddb55c37bd81101721f4a0b468c7ab93b386d2a423f72968c2eb0"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l035.svg",
+      "bytes": 118860,
+      "sha256": "b845c5bb21f0874eba130767d7c6090bcd5592c746756f183d69ca0e91d2c3c4"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l045.png",
+      "bytes": 283994,
+      "sha256": "dde9ccc2bd27d568aa2fc12dad94f075a54910cfce5de91386cb3e6b6660611c"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l045.sources.json",
+      "bytes": 350470,
+      "sha256": "984defcb3b3c5aafb8d4e53e2d99a435e5ae3e600e425e8f3edfa00929d5ec3c"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/readout-l045.svg",
+      "bytes": 121806,
+      "sha256": "e05ecf055e46bfc95a3555d655872a2c1b34f98dfa8b25b0445c4e110b2f4a86"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/stratum-counts.png",
+      "bytes": 164926,
+      "sha256": "82f4fc314f5d8b9818c9f6186f28f8a699ef0670144dad2111c5ab700ed83fe9"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/stratum-counts.sources.json",
+      "bytes": 370373,
+      "sha256": "7f58ba33b4fc7e4b9da409e84991204f3cf3b2b9d857dabb111f22a8936e3c1b"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/stratum-counts.svg",
+      "bytes": 57756,
+      "sha256": "6b66f86278f42522e974ecb43892a724baad8f34a416c0121955836d813deef1"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/stratum-intervals.png",
+      "bytes": 155583,
+      "sha256": "69e1bdc39cd929c29ca5aedeec1504b0bc6b1f68f0a0377d4baeb990377af1fa"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/stratum-intervals.sources.json",
+      "bytes": 370396,
+      "sha256": "63f511f0aa657132ad15e3dfefc1fe520409c86fa06c724a7d7a699bdf759569"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/stratum-intervals.svg",
+      "bytes": 32167,
+      "sha256": "d8a1d86233ce90961ec202f78acf261b132d5958de547086ed3c0f6583b0e46a"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l018.png",
+      "bytes": 97871,
+      "sha256": "47c3ef2a1b8c376b8084b6b559360acc87f0fe5e28714c46a64bc99869d042ea"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l018.sources.json",
+      "bytes": 350207,
+      "sha256": "b2a7db1c710cfd24be24a568947f59acb387e80fe80b4f14cc4388db52405f56"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l018.svg",
+      "bytes": 68040,
+      "sha256": "69ea185379b161251665ceb566deac16628c255011b710011ecb5d7d135eee5a"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l025.png",
+      "bytes": 97126,
+      "sha256": "b8c495d5c65cf1332d81b4e03c422f04f1c378540961cd69f4d81ddcae8a03b4"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l025.sources.json",
+      "bytes": 350234,
+      "sha256": "6531856e40b7800da1cb9cf7e41e96f6b51ebb0700a4ced8ae68c668d83fa056"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l025.svg",
+      "bytes": 68014,
+      "sha256": "af1794c89b4c906c0867b1fefe298c6d2a34af723982f5b6adce95f7864f6873"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l035.png",
+      "bytes": 97525,
+      "sha256": "56d23e60baa7961cafa31822b2c85d8210eba5883b1a3ff91ae5b5b6d32b7c7e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l035.sources.json",
+      "bytes": 350216,
+      "sha256": "927a6f24ca065a18a8ef8523dfe45ba6689e6dfed9650159e33e144732f920fd"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l035.svg",
+      "bytes": 68105,
+      "sha256": "3c7c0c605ebfc7b4147a2f07e865c78c07a3a0f5c2c7f37208361c59f9719ce7"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l045.png",
+      "bytes": 98931,
+      "sha256": "be372eca7923f532dff3e00021b5136399b06d054c9b82c26bb93130eafe5ce5"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l045.sources.json",
+      "bytes": 350207,
+      "sha256": "605eaaef00444e1aa5a29dbbb77abfc1fff0d5f7da19513d8f33352c7d48b248"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/figures/threshold-window-l045.svg",
+      "bytes": 68140,
+      "sha256": "5a1f96c581177e7001ab695f69a6c7698e886e4f8e406bafd1037c1ca926777b"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/final-numerical-prediction-scores.json",
+      "bytes": 112081,
+      "sha256": "06def52e5412a20434c67e929c6b1ddf83a5e10da9fcf64d4c00d117efaa6ea8"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/ledger-snapshot.json",
+      "bytes": 2444196,
+      "sha256": "cdc95affb4538be9e552bde2bea724b11b3f411abb3aef12f95958554d0fecc0"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/defense-outline.md",
+      "bytes": 883,
+      "sha256": "4ff71067cd30ef81de3e5583ffc69d7f4b746f7eb765a77586df62991b162f9e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/demonstration.md",
+      "bytes": 1085,
+      "sha256": "5176426623d6b9e7df7235b26556f5284df2aefb101b4bae32e837238d441abb"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/design-and-steps.md",
+      "bytes": 831,
+      "sha256": "93c0eff3b045cba92042165c4bcd16567459f5f2e216be94c7ba6d1ff023dbf9"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/feasibility.md",
+      "bytes": 756,
+      "sha256": "e3eef2131e056bdca11d7b89d713943135c44ee6796a90ad25232fe9e266bd01"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/handoff.md",
+      "bytes": 890,
+      "sha256": "b9204fe6e1cd6b108410e9a40a4f18eff6c18997109d1b010e38390534f30ace"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/index.json",
+      "bytes": 918,
+      "sha256": "2b6795a920fd24b2b56418a0123273d8998661f19b22476d9aee7b14724b020e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/index.md",
+      "bytes": 372,
+      "sha256": "20997e003164bf5355603f5001cebb1e89a062f06e930f8be3b6ed4d3aa8a61f"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/materials/methods-and-ai.md",
+      "bytes": 1133,
+      "sha256": "ffca71c1bb8bc5c880691f2002aba31470b945f4a18cb93536c23d24b49b26cf"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/original-failures.json",
+      "bytes": 190978,
+      "sha256": "6cca5c2e0737dce3478baadc3cf40221992f7462f474d2d56afef627f8580a39"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/original-r4-prediction-scores.json",
+      "bytes": 112081,
+      "sha256": "06def52e5412a20434c67e929c6b1ddf83a5e10da9fcf64d4c00d117efaa6ea8"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/prediction-residuals.csv",
+      "bytes": 34451,
+      "sha256": "dfae2a762a4f7019b503532ca8dfe8ca865157a48ecd668971692437fcac6d93"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/prediction-scores.csv",
+      "bytes": 1726,
+      "sha256": "3bac7ba9fb7603112d924b886fdea1ac6338054490b1e338eb281d812680e251"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/raw-submission-index.json",
+      "bytes": 28774,
+      "sha256": "95dae7db22cb3a2d505c4c46936d52ca3840853781559b5f5efcc81cb66a6b56"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/report.md",
+      "bytes": 4293,
+      "sha256": "4b83645a75e282fcd194817b765c7968cf6e96478ca1a23d8d9d5bff4761c290"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/response-sources.json",
+      "bytes": 262719,
+      "sha256": "107219b48f7b40c4f11f87edd6cfb25d43220807a95afb79af94b0a6ad2c9aa4"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/responses.csv",
+      "bytes": 557254,
+      "sha256": "b95185ee3e4e3de5e0e4802bf1dbf91b90ecdab16074db38bbf56315d4ba1f36"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/snapshot-manifest.json",
+      "bytes": 7016,
+      "sha256": "58650c6a934c81b07bf03e7aca5917f73b499307baf5c6c276debd47c8ef7ca3"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/sources.json",
+      "bytes": 377460,
+      "sha256": "a8a18ede940efdb927a24bafcaf2c7e83f115d33f7a7d8232b788695588ef20e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/stage-verification.json",
+      "bytes": 27479,
+      "sha256": "39233b0a7d5b3fbe437f5e1b79a03f1b450909527aba3111c0810136abf1575a"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/statistics.csv",
+      "bytes": 42750,
+      "sha256": "43074a82c61e03f2f875bd07af938b066da68c6c19bb48da134811ae23148bb9"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot/summary.json",
+      "bytes": 20811450,
+      "sha256": "6fda8113e80160b957634e77d492d38e951961107c1ac4cd25f6257153522c80"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/snapshot-binding.json",
+      "bytes": 13641,
+      "sha256": "9c99e37e3ac2c2749fe1e41d790129ab0844e4f2e3da81a756a4190fd3037cde"
+    },
+    {
+      "path": "07_可编辑源文件/assets/data/writing-results.json",
+      "bytes": 1401,
+      "sha256": "26e85ef02296ed34553fc089b631d71ca5cc9a66d58a1e580b34731af0d9fa5c"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/d1-reference-comparison.pdf",
+      "bytes": 14419,
+      "sha256": "b46dc336565bb1bc8b9696238a35b00181d557ad328e4d5067ff5a0cbeb45977"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/d1-reference-comparison.png",
+      "bytes": 77961,
+      "sha256": "384e43e034496d875930484c97358fcd1918afd7d4e322452bf850751b0fe523"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/d1-reference-comparison.sources.json",
+      "bytes": 1892,
+      "sha256": "9b12ac5a296bb37a33b39b26d9f9f1d077bff571667d6a098ecdd5cc6c1f419a"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/initial-state.png",
+      "bytes": 89673,
+      "sha256": "230e96f54bb9918fe8c743162253cc29e6069d5ec955b6155ae25357cc6d9378"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/native-event-window.png",
+      "bytes": 261476,
+      "sha256": "b561a9c81fa63fc69b1956bcfaf667f0026c790d8cb5d46aafa910a707f8c846"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/native-physical-window.png",
+      "bytes": 256811,
+      "sha256": "3c488a1571a23b36fa456db88639fb8c30d181c7d2c0d465c85176b79a454a98"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/oxide-sensitivity.png",
+      "bytes": 107037,
+      "sha256": "04685bff4db663a697ae3be29bb48c00c9d6af281cbe1f8e471f98db7ce842fa"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/prediction-residuals.png",
+      "bytes": 173753,
+      "sha256": "ca4938aad715d2574f6b5238ec16bd2c898d3d8ee27fd43d39c6078d961b1a8e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/r50-precharge.pdf",
+      "bytes": 14771,
+      "sha256": "07f01769eb806ff274f98976057cbe79853775da3f915298589874fc15d1a4ec"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/r50-precharge.png",
+      "bytes": 82770,
+      "sha256": "71ba3701800c5ea47b0b7eb7aaec29bc6f1635779d3d2e35f2d2b58a0c08a213"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/r50-precharge.sources.json",
+      "bytes": 1276,
+      "sha256": "e14590e458ad40771f56d5dda418949751b2f1d3dc1590427ccb7911b47532ba"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/readout-l018.png",
+      "bytes": 275216,
+      "sha256": "82ec7398e005e2f67f2f9801f838b9bd1afcd42f13bed7e6574a4bde3f1052c7"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/readout-l025.png",
+      "bytes": 272463,
+      "sha256": "a9f4ce31a172e0f04362a1aeaea5419557e8503ad527ae87a33d1d6a20eea0bc"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/readout-l035.png",
+      "bytes": 271468,
+      "sha256": "c4ad8a5b25414550f9d21b4ab82a71e723e978f127c9ac7c05166201a4d3dde2"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/readout-l045.png",
+      "bytes": 283994,
+      "sha256": "dde9ccc2bd27d568aa2fc12dad94f075a54910cfce5de91386cb3e6b6660611c"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/stratum-counts.png",
+      "bytes": 164926,
+      "sha256": "82f4fc314f5d8b9818c9f6186f28f8a699ef0670144dad2111c5ab700ed83fe9"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/stratum-intervals.png",
+      "bytes": 155583,
+      "sha256": "69e1bdc39cd929c29ca5aedeec1504b0bc6b1f68f0a0377d4baeb990377af1fa"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/threshold-window-l018.png",
+      "bytes": 97871,
+      "sha256": "47c3ef2a1b8c376b8084b6b559360acc87f0fe5e28714c46a64bc99869d042ea"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/threshold-window-l025.png",
+      "bytes": 97126,
+      "sha256": "b8c495d5c65cf1332d81b4e03c422f04f1c378540961cd69f4d81ddcae8a03b4"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/threshold-window-l035.png",
+      "bytes": 97525,
+      "sha256": "56d23e60baa7961cafa31822b2c85d8210eba5883b1a3ff91ae5b5b6d32b7c7e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/threshold-window-l045.png",
+      "bytes": 98931,
+      "sha256": "be372eca7923f532dff3e00021b5136399b06d054c9b82c26bb93130eafe5ce5"
+    },
+    {
+      "path": "07_可编辑源文件/assets/figures/workflow.tex",
+      "bytes": 1372,
+      "sha256": "80f1813c5619f3ff6e229d948030571bf5288669dc17266bf0e57c9a13c9d5c5"
+    },
+    {
+      "path": "07_可编辑源文件/assets/references.bib",
+      "bytes": 3012,
+      "sha256": "53812202a6deccb7bc614e09e8988cbd3aead90b1fae5262e40fc9704ffdea54"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/boundary.tex",
+      "bytes": 435,
+      "sha256": "bdb92fe4180d2d8085d2a65823c93d9d62157b15d21f391565cbba002468915e"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/failed-aliases.tex",
+      "bytes": 372,
+      "sha256": "0016e0eeb1559be53a0443ba3a4cc7b1f3888e8e2520a101c4b04244b9459db4"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/numerical-status.tex",
+      "bytes": 215,
+      "sha256": "baf8123157516098ab974ddb8a2d467f51f83eebedc1ac58c1a2dd15a1e2f710"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/oxide.tex",
+      "bytes": 564,
+      "sha256": "61451f699b7f7d60d348487eb7468efbfab7e9afc898c2891ddb5bc5ba147ae0"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/prediction-dm.tex",
+      "bytes": 753,
+      "sha256": "c8740c666e1478bc36ec672f4769040abb0f0c5cd00099c19f45c723715b5519"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/prediction-dq.tex",
+      "bytes": 741,
+      "sha256": "6fa37fd79e719dad4c764c5d88bff19ebe43729d4eeb16c6ce7974a1abb6d933"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/progress.tex",
+      "bytes": 258,
+      "sha256": "232517ae0edadbb897b8fd9235ff5785a3c0fcfa89fe50998642d5f78834ba63"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/provenance-short.tex",
+      "bytes": 655,
+      "sha256": "84bce05251c36d26a0905c4fd77ee22a9131786bf9b84f79c3fe4c00bfb803fb"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/response-ranges.tex",
+      "bytes": 1364,
+      "sha256": "bf6e006ff462f79c6189066e433c6a62b9f347598c7dcdf963740190272d8275"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/snapshot.tex",
+      "bytes": 53,
+      "sha256": "a633d7fdde29844c75818e09e99123ab43d54f71b9dffa4cbc04d1c11e3ad375"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/thresholds.tex",
+      "bytes": 252,
+      "sha256": "266d5d39835be0001dbfc8aea60ad423701ea60d98c031c33c397a1af617893f"
+    },
+    {
+      "path": "07_可编辑源文件/assets/tables/training-cv.tex",
+      "bytes": 333,
+      "sha256": "d852d39c1cd8016102a4289a1230487ea9f09592b6c75dfe8f0d349399ad8df7"
+    },
+    {
+      "path": "07_可编辑源文件/brief/project-brief.tex",
+      "bytes": 17265,
+      "sha256": "0033a73c8d0ebe9f42355b68b3b6e7aac90354f1e859793d35a96e880820f1be"
+    },
+    {
+      "path": "07_可编辑源文件/documents/course-report.tex",
+      "bytes": 14100,
+      "sha256": "59a2f4f61668379c1d8fc5c0ff291b8c0c89cc07e72592d829f64631ddee1953"
+    },
+    {
+      "path": "07_可编辑源文件/documents/research-paper.tex",
+      "bytes": 10079,
+      "sha256": "ee41ba0c0637edc528199056da707ab796d63b0e0ca3716d0d4ddfb097e68379"
+    },
+    {
+      "path": "07_可编辑源文件/documents/score-table.tex",
+      "bytes": 674,
+      "sha256": "000662bd4c49c4cc41a25647998ab413801e328792fe0a409c433b92735203d1"
+    },
+    {
+      "path": "07_可编辑源文件/documents/style.tex",
+      "bytes": 4460,
+      "sha256": "65968169014d23dcbce2c7b0079f21c8611898a6c62349099ae2ecf7129bb4ac"
+    },
+    {
+      "path": "07_可编辑源文件/documents/编译说明.txt",
+      "bytes": 709,
+      "sha256": "3489c068eb9664cea17aaed45bfa0004b8a7b985ee3bdf0d79e8a95ef5099fd7"
+    },
+    {
+      "path": "07_可编辑源文件/materials/course-materials.tex",
+      "bytes": 8497,
+      "sha256": "a279aeedf62ad503817c5fa0ed3889a7165cd238d34258a6044f363b3629678a"
+    },
+    {
+      "path": "07_可编辑源文件/slides/build_deck.mjs",
+      "bytes": 26031,
+      "sha256": "ef05c5f3dd64f7182f97205c1e79cb9ff698b505c789713d022b9cecbe619482"
+    },
+    {
+      "path": "07_可编辑源文件/slides/qa/verify_delivery.py",
+      "bytes": 6393,
+      "sha256": "810c6d384827edd643ad14076f73720b3ed8ff1cc1ecf4ff220ba790936da63e"
+    },
+    {
+      "path": "07_可编辑源文件/slides/slides-text-r4.json",
+      "bytes": 25330,
+      "sha256": "b9fce48dcbf8aab2cd816144e710e8d4e00043e8eadb1965d1d2022323ecba65"
+    },
+    {
+      "path": "07_可编辑源文件/slides/source-deck-reference.json",
+      "bytes": 303,
+      "sha256": "04db564174f0518900cd5ca0d5a20664df478c127f980572bc9a2c24416f79f0"
+    },
+    {
+      "path": "07_可编辑源文件/slides/源文件说明.txt",
+      "bytes": 692,
+      "sha256": "aabe5cdcbd96477fdd1a512f6e1a6d759675b56bb80c34c8f3e4ef76d14ae322"
+    },
+    {
+      "path": "07_可编辑源文件/源文件说明.txt",
+      "bytes": 561,
+      "sha256": "a7df1f6a6235bf2aa8cef7e8d9239e599c832c3ae89459d42e87f83c6f9afdda"
+    }
+  ],
+  "prior_copy_receipts": [
+    "data-copy-receipt.json",
+    "source-assets-copy-receipt.json"
+  ],
+  "external_upload_performed": false,
+  "status": "COPIED_AWAITING_FINAL_CONTENT_VALIDATION"
+}

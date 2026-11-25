@@ -1,0 +1,7 @@
+model,role,run_id,scope,time_s,BL_error_uV,REF_error_uV,tolerance_uV,precharge_passed,complete_raw_audit_state
+R100,control,20261010T020746Z-v2-base-l018-b0-7fc642c3,R100_diagnostic_only,3e-09,-3.8122143120045138,0.0,10,True,PASSED
+R100,neutral,20261010T095534Z-v3-neutral-l018-ox5-s1-m1-2af21f7f,R100_diagnostic_only,3e-09,-3.811080025006852,0.0,10,True,PASSED
+R100,event,20261010T145140Z-v3-l018-alpha-a0-s202610303-b0-294913e5,R100_diagnostic_only,3e-09,-13.297362170983096,0.0,10,False,FAILED
+R50,control,20261010T170012Z-v3-r50-probe-r1-control-76080d17,R50_independent_probe_only,3e-09,-0.000332064986618974,0.0,10,True,PASSED
+R50,neutral,20261010T170952Z-v3-r50-probe-r1-neutral-4cce7011,R50_independent_probe_only,3e-09,-0.00033125902021424736,0.0,10,True,PASSED
+R50,event,20261010T171616Z-v3-r50-probe-r1-event-15cbbb61,R50_independent_probe_only,3e-09,-4.731203623986602,0.0,10,True,PASSED

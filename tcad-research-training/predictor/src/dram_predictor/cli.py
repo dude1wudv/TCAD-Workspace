@@ -12,7 +12,7 @@ from .data import DataError, Snapshot, read_json, write_json
 
 def parser():
     result = argparse.ArgumentParser(prog="dram-predictor",
-        description="Offline r0.4 DRAM R/A/F pipeline. No solver, SSH, service or queue control.")
+        description="Offline r0.4/r0.6 DRAM R/A/F pipeline.")
     commands = result.add_subparsers(dest="command", required=True)
     for name in ("inspect", "prepare", "ingest", "import-r04"):
         command = commands.add_parser(name)

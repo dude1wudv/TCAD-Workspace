@@ -1,0 +1,311 @@
+{
+  "path": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\dram-see-v3-r4-r4.pptx",
+  "sha256": "4b3487f325afdb86cee64f7fe04de5c319cb536e1a32e9273523f5c8713730fd",
+  "slides": 16,
+  "inspected_now": true,
+  "inspection": {
+    "recordCount": 23,
+    "records": [
+      {
+        "kind": "layout",
+        "id": "ly/atofqts7",
+        "editable": false,
+        "name": "Master",
+        "type": "master"
+      },
+      {
+        "kind": "layout",
+        "id": "ly/ux4ruhcv",
+        "editable": false,
+        "name": "Title Slide",
+        "type": "title",
+        "placeholders": [
+          {
+            "name": "title",
+            "type": "title"
+          },
+          {
+            "name": "subtitle",
+            "type": "subtitle"
+          }
+        ]
+      },
+      {
+        "kind": "layout",
+        "id": "ly/p83mt83u",
+        "editable": false,
+        "name": "Section Header",
+        "type": "",
+        "placeholders": [
+          {
+            "name": "title",
+            "type": "title"
+          }
+        ]
+      },
+      {
+        "kind": "layout",
+        "id": "ly/4v2ps7ql",
+        "editable": false,
+        "name": "Title and Body",
+        "type": "",
+        "placeholders": [
+          {
+            "name": "title",
+            "type": "title"
+          },
+          {
+            "name": "body",
+            "type": "body"
+          }
+        ]
+      },
+      {
+        "kind": "layout",
+        "id": "ly/3yt8jipk",
+        "editable": false,
+        "name": "Title and Two Column",
+        "type": "",
+        "placeholders": [
+          {
+            "name": "title",
+            "type": "title"
+          },
+          {
+            "name": "Left column",
+            "type": "body"
+          },
+          {
+            "name": "Right column",
+            "type": "body"
+          }
+        ]
+      },
+      {
+        "kind": "layout",
+        "id": "ly/elwrupwj",
+        "editable": false,
+        "name": "Title and One Column",
+        "type": "",
+        "placeholders": [
+          {
+            "name": "title",
+            "type": "title"
+          },
+          {
+            "name": "body",
+            "type": "body"
+          }
+        ]
+      },
+      {
+        "kind": "layout",
+        "id": "ly/14ra9krq",
+        "editable": false,
+        "name": "Blank",
+        "type": "blank"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/y90nupkv",
+        "slideIndex": 0,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "从粒子沉积到读出判据",
+        "textShapes": 15,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/hwbqtkby",
+        "slideIndex": 1,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "研究问题：沉积电荷怎样改变读出裕量？",
+        "textShapes": 10,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/ofy9wn61",
+        "slideIndex": 2,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "证据链：从输入约束到独立评分",
+        "textShapes": 14,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/jyx0ra1s",
+        "slideIndex": 3,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "实验矩阵保持原分母",
+        "textShapes": 7,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/i107q5of",
+        "slideIndex": 4,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "初始化与读出必须有匹配参照",
+        "textShapes": 9,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/x8f69ofe",
+        "slideIndex": 5,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "真实 SVisual 场图：保留完整原生窗口",
+        "textShapes": 4,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/gnmp4jqx",
+        "slideIndex": 6,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "全 128 响应：结果依赖判据阈值",
+        "textShapes": 7,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/fu1gfa1s",
+        "slideIndex": 7,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "冻结模型在独立测试上优于均值基线",
+        "textShapes": 5,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/udsvah03",
+        "slideIndex": 8,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "氧化层敏感性：固定入口下幅度较小",
+        "textShapes": 8,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/m90b6t0r",
+        "slideIndex": 9,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "连续量通过，跨界类别仍不确定",
+        "textShapes": 6,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/jetc3ut0",
+        "slideIndex": 10,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "失败、重试与成本完整保全",
+        "textShapes": 5,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/8f2psfyx",
+        "slideIndex": 11,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "结论与课程交付边界",
+        "textShapes": 9,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/hgzapcr6",
+        "slideIndex": 12,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "备份：冻结岭回归的分区误差",
+        "textShapes": 4,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/6lsnupw7",
+        "slideIndex": 13,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "备份：真实事件场图的完整窗口",
+        "textShapes": 4,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/vaxsvy10",
+        "slideIndex": 14,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "备份：适用范围与可核查文献",
+        "textShapes": 9,
+        "backgroundColor": "rgba(255,255,255,1)"
+      },
+      {
+        "kind": "slide",
+        "id": "sl/gny5sjyp",
+        "slideIndex": 15,
+        "layout": {
+          "id": "ly/14ra9krq",
+          "name": "Blank"
+        },
+        "title": "备份：只读演示与人工活动登记",
+        "textShapes": 5,
+        "backgroundColor": "rgba(255,255,255,1)"
+      }
+    ],
+    "truncated": false,
+    "metadata": {
+      "target": {
+        "id": "pr/j0fexu"
+      },
+      "omittedRecords": 0,
+      "abbreviatedRecords": 0,
+      "notices": []
+    }
+  }
+}

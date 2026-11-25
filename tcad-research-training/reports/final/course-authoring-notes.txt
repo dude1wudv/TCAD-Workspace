@@ -1,0 +1,77 @@
+课程报告写作交接
+
+状态：完整阶段正文已写，交由主代理统一编译与视觉验收。
+写入范围严格限于 course-report.tex、sections/course/*.tex、本备注。
+没有修改共享导言、参考文献、表格、图件、任何实验文件或旧报告。
+未运行求解器、SSH、控制器、安装命令或Git提交；未派发子代理。
+
+篇幅与结构
+- 7个编号正文章，以Unicode CJK区间U+4E00–U+9FFF逐字符统计为7138字。
+- 统计包含七章内表格文字及图注，不含摘要、封面、目录或附录。
+- 主tex另含摘要和封面；附录含课程要求映射、真实成员/教师登记、
+  已发生阶段进度、限定自然语言只读演示及来源入口。
+- 标题为《AI辅助下的多特征尺寸DRAM单粒子效应评估》；
+  封面、摘要明确“阶段成果整理稿”，学生作者留空；李洋仅按课程大纲列导师。
+
+章节文件
+01-objectives.tex：任务、DRAM/SEE原理、可行性、真实Windows+Linux VM平台及设计过程。
+02-model.tex：2D 1T1C、来源层级、假设表、受控初态与中性参考。
+03-platform.tex：AI角色、限定模板preview/audit/locate、传递公式、等效源、来源链。
+04-design.tex：64独立事件/128响应、符号指标、8工况LOCO、四岭模型、冻结与验证。
+05-results.tex：共享快照进度；v1/v2历史结果；D1；R100失败和R50 probe；
+                R50参考、训练响应、训练CV及尚未完成的测试评分。
+06-discussion.tex：工程/科学判断、参考与电荷解释、代理用途、失败和后续。
+07-conclusion.tex：阶段结论，保留未完成测试/扩展/课程活动。
+
+科学口径
+- R50数字只来自主代理任务输入和固定模型/预测冻结材料，不读滚动ledger自行填数。
+- 进度只依赖tables/snapshot.tex给定宏以及progress.tex，不写死在途/完成值；
+  明示在途是快照账本记录，不代表重新检查实时进程。
+- 有符号ΔQ=Cstore(SN_event−SN_control)于2.8ns；
+  D=BL_signal−BL_neutral，M=(2b−1)D，ΔM=Mcontrol−Mevent于4ns。
+- 四个训练模型λ=0.1；LOCO RMSE为两电荷0.102888/0.112903fC、
+  两裕量0.955160/1.012491mV；明确不是独立测试评分。
+- 训练64行48correct/10criterion_error/4critical/2numerically_uncertain；
+  不是64独立粒子，更不称持久SEU率。
+- D1只用于历史诊断，不改判v2；R50 probe不补主矩阵；
+  100Ω预充失败仍为失败，50Ω是物理修订，不称数值收敛。
+- 氧化4/6nm、主矩阵边界新细化和R50原生图未写成完成。
+- 质子EM-only不解释核反冲，栅长不称商业工艺节点，二维等效源不称3D忠实映射。
+
+图表接口（已按数据代理实际说明修正文案）
+- d1-reference-comparison.pdf：D1三参考方式D(4ns)/mV。
+- r50-precharge.pdf：同一固定事件3ns预充误差绝对值/μV，R100 FAILED对独立R50 probe；
+  图注明确绝对值及10μV上限，未误写为有符号多角色曲线。
+- r50-reference.pdf：12无粒子/中性基准粒子前SN/V及L=.18三初态3–4ns BL/V；
+  图注未误写为双支路差分一致性图。
+- r50-training-response.pdf：32独立事件64响应，ΔQ@2.8ns/fC及ΔM@4ns/mV，
+  Qdep为横轴；未混入测试点。
+- r50-training-cv.pdf与training-cv.tex：训练LOCO，不声称域外验证通过。
+- workflow.tex：流程示意，置于本稿figure环境中。
+
+参考文献
+已使用全部8个共享允许key：course、keeth2001、label1996、g4em、
+chen2011、ryder2021、xu2021、project。
+Chen用于SRAM的TCAD/Geant4联合方法先例；
+Ryder用于硅二极管不同电荷产生方式对照背景，未写作DRAM校准来源；
+Xu用于SET回归代理方法背景，不声称其数据验证了当前DRAM。
+
+已做验证
+1. 只读读取实际课程大纲、本人已盘点v1/v2/D1证据；
+   新读取R50固定计划、reporting/demo契约、models.json与freeze.json；
+   不加载控制器、不扫描敏感配置。
+2. Python -B静态检查：所有input与5个PDF图件存在；
+   begin/end环境配对、label/ref、bib引用key无缺失或重复；
+   命令退出0，static_problems=[]。
+3. 读取共享preamble，确认只使用其已声明package和宏；
+   七章正文CJK字数7138，满足6000–8000要求。
+4. 阶段日期展示为UTC−08:00，run ID原UTC保留；当前截止日期使用EvidenceDate。
+
+尚未验证
+- 按主代理安排未编译LaTeX、未检查PDF分页/图件字号/引用解析及字体嵌入。
+- 未进行新的数值仿真、原始PLT/tar全量重审或测试集评分。
+- 共享数据包仍由数据代理维护；本稿不直接重建其表图。
+
+文件所有权
+本人交接后停止写入。主代理可接管上述course文件进行整合、
+编译修复和视觉排版；若需我返修，请明确重新指派避免双写。

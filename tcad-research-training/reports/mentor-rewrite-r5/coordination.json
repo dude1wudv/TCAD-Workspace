@@ -1,0 +1,24 @@
+{
+  "active_request": "Rewrite reports and related materials in plain Chinese, deliver a new local folder",
+  "delivery_folder": "E:/TCAD-Workspace/导师交付材料_DRAM_SEE_2026-10-11",
+  "owners": {
+    "documents": "downstream_delivery",
+    "slides": "downstream_audit",
+    "materials_and_brief_and_package": "root",
+    "validation": "validation_worker"
+  },
+  "source_package": "reports/final-r4",
+  "frozen_manifest_sha256": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e",
+  "brief_coordinate_blocks_unchanged": true,
+  "runtime_and_heartbeat": "No simulation, model refitting or heartbeat changes; documentation revision only",
+  "writing_skills": [
+    "qu-ai-wei",
+    "avoid-ai-writing-zh"
+  ],
+  "writing_mode": "Embedded in document authoring; preserve facts/figures and remove slogans, awkward wording and repeated process disclaimers",
+  "sources_must_remain_read_only": [
+    "reports/final-r4",
+    "experiments/dram-see-v3",
+    "local_runtime/dram-see-v3/physical-revisions"
+  ]
+}

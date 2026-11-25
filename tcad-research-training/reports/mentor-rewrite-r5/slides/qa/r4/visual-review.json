@@ -1,0 +1,32 @@
+{
+  "schema": "mentor-slides-visual-review.v1",
+  "state": "PASS",
+  "reviewed_at_utc": "2026-10-12T02:47:45.8885904Z",
+  "final": "output/dram-see-v3-mentor-r4.pptx",
+  "final_sha256": "6ce8d1fd95a1b20b81620bcfa0c869835225ed92c7b72872a73dde0ee9a52025",
+  "rendered_page_count": 14,
+  "revised_page": 10,
+  "revised_page_opened_with": "view_image",
+  "revised_page_finding": "末句已按要求改写，单行完整显示，无裁切或重叠。备注已明确区分主实验响应与四次细化计算。",
+  "unchanged_pages": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11,
+    12,
+    13,
+    14
+  ],
+  "unchanged_pages_review_basis": "与已经逐页目视通过的r3 PNG逐字节相同，完整文字、表格、图表、备注也相同。",
+  "comparison_evidence": "revision-comparison.json",
+  "prior_visual_review": "../r3/visual-review.json",
+  "native_powerpoint_execution_tested": false,
+  "scientific_data_changed": false,
+  "new_solver_calls": 0
+}

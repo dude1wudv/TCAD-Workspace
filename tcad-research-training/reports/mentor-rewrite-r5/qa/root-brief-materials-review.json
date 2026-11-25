@@ -1,0 +1,24 @@
+{
+  "files": [
+    {
+      "artifact": "brief",
+      "pages": 3,
+      "source": "reports/mentor-brief-r4/visual-v3/project-brief.tex",
+      "build": "qa/brief-r2"
+    },
+    {
+      "artifact": "materials",
+      "pages": 4,
+      "source": "reports/mentor-rewrite-r5/materials/course-materials.tex",
+      "build": "qa/materials-r1"
+    }
+  ],
+  "root_visual_review": "All 7 final pages inspected individually: Chinese text, figures, tables, units, headers and footers readable with no clipping/overlap.",
+  "builtin_compiler": "both sources success",
+  "fact_review": "qa/validation/material-fact-validation.json",
+  "post_validation_edit": "Brief final deliverable sentence changed to 数据表、图件和来源索引; no numeric, chart, method or result edits.",
+  "source_sha256": {
+    "project-brief.tex": "0033a73c8d0ebe9f42355b68b3b6e7aac90354f1e859793d35a96e880820f1be",
+    "course-materials.tex": "a279aeedf62ad503817c5fa0ed3889a7165cd238d34258a6044f363b3629678a"
+  }
+}

@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from research_projection import build_research
+from research_projection import build_research, private_evidence_verified
 from test_r06_projection import NOW, RESULT_HASH, r06_plan, solved
 
 
@@ -142,6 +142,50 @@ class R06ExternalAcceptanceTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.project()
 
+    def test_workspace_relative_evidence_is_bounded_to_historical_cases(self):
+        relative = "local_runtime/server-codex/historical-observation.json"
+        proof = self.workspace / relative
+        proof.parent.mkdir(parents=True)
+        content = b"x" * (4 * 1024 * 1024 + 1)
+        proof.write_bytes(content)
+        references = [{"path": relative, "sha256": hashlib.sha256(content).hexdigest()}]
+        historical = "r06-s-d0-nominal-p09-b1"
+        self.assertTrue(private_evidence_verified(references, self.plan_path, "Test", historical))
+        self.assertFalse(private_evidence_verified(references, self.plan_path, "Test", self.case_id))
+        proof.write_bytes(content + b"changed")
+        self.assertFalse(private_evidence_verified(references, self.plan_path, "Test", historical))
+        with proof.open("ab") as stream:
+            stream.truncate(20 * 1024 * 1024 + 1)
+        with self.assertRaises(ValueError):
+            private_evidence_verified(references, self.plan_path, "Test", historical)
+        traversal = [dict(references[0], path="local_runtime/server-codex/../outside.json")]
+        with self.assertRaises(ValueError):
+            private_evidence_verified(traversal, self.plan_path, "Test", historical)
+
+    def test_workspace_relative_threshold_evidence_matches_original_manifest(self):
+        identity = "r06-t-d2-narrow-fin-shape-b-x10-b1"
+        plan = json.loads(self.original_plan)
+        threshold = next(case for case in plan["cases"] if case["block"] == "T")
+        threshold["case_id"] = identity
+        self.plan_path.write_text(json.dumps(plan), encoding="utf-8")
+        self.original_plan = self.plan_path.read_bytes()
+        self.runtime["intents"]["private-task"]["scientific_admission"]["case_id"] = identity
+        self.record_path = self.record_path.with_name(identity + ".json")
+        manifest = "local_runtime/cloud-benchmark/centos79-guest-20261116/runs/private-run/manifest.json"
+        readout = "local_runtime/server-codex/team-readout/private-run/pair.json"
+        references = []
+        for relative in (manifest, readout):
+            proof = self.workspace / relative
+            proof.parent.mkdir(parents=True)
+            proof.write_bytes(b"synthetic test evidence")
+            references.append({"path": relative, "sha256": hashlib.sha256(proof.read_bytes()).hexdigest()})
+        self.write_record(dict(self.record, case_id=identity, evidence=references))
+        report = self.project()
+        self.assertEqual(report["counts"]["T"]["accepted"], 1)
+        self.assertNotIn(manifest, json.dumps(report))
+        (self.workspace / manifest).write_bytes(b"changed")
+        self.assertEqual(self.project()["counts"]["T"]["accepted"], 0)
+
     def test_nonfinite_constants_and_duplicate_json_keys_are_rejected(self):
         self.record_path.write_text(
             '{"schema":"tcad-r06-case-acceptance-v1","schema":"duplicate"}',
@@ -246,6 +290,65 @@ class R06ExternalAcceptanceTests(unittest.TestCase):
             self.skipTest("directory symlink creation is unavailable on this system")
         with self.assertRaises(ValueError):
             self.project()
+
+
+class R06ZeroSourceReuseAcceptanceTests(unittest.TestCase):
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.workspace = Path(directory.name)
+        self.plan_path = self.workspace / "plans/dram/plan.json"
+        self.plan_path.parent.mkdir(parents=True)
+        plan = r06_plan()
+        self.case = next(row for row in plan["cases"] if row["block"] == "S")
+        self.case.update(case_id="r06-s-lhs02-development-p00-b0", profile_id="LHS02-development",
+                         radiation_id="G0", stored_bit=0)
+        self.plan_path.write_text(json.dumps(plan), encoding="utf-8")
+        self.plan_sha256 = hashlib.sha256(self.plan_path.read_bytes()).hexdigest()
+        self.receipt_path = self.workspace / "local_runtime/server-codex/verified-zero-reuse.json"
+        self.receipt_path.parent.mkdir(parents=True)
+        self.receipt = {
+            "schema": "tcad-r06-deferred-zero-reuse-v1", "manifest_sha256": self.plan_sha256,
+            "block": "S", "condition": {"profile_id": "LHS02-development", "radiation_id": "G0"},
+            "formal_statistics_eligible": False, "training_eligible": False,
+            "zero_result_sha256": "1" * 64, "transport_archive_sha256": "2" * 64,
+            "cases": [{"event_run_id": None, "training_eligible": False,
+                       "label": {"case_id": self.case["case_id"], "accepted": True,
+                                 "y": 0, "stored_bit": 0}}],
+        }
+        self.receipt_path.write_text(json.dumps(self.receipt), encoding="utf-8")
+        evidence = [{"path": self.receipt_path.relative_to(self.workspace).as_posix(),
+                     "sha256": hashlib.sha256(self.receipt_path.read_bytes()).hexdigest(),
+                     "kind": "zero_source_reuse"}]
+        acceptance = {
+            "schema": "tcad-r06-zero-source-reuse-acceptance-v1", "status": "accepted",
+            "case_id": self.case["case_id"], "plan_sha256": self.plan_sha256,
+            "event_run_id": None, "formal_statistics_eligible": False,
+            "training_eligible": False, "evidence": evidence,
+        }
+        path = self.plan_path.parent / "r06-gate/results/case-acceptance" / (self.case["case_id"] + ".json")
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(acceptance), encoding="utf-8")
+
+    def project(self):
+        return build_research(self.plan_path, {}, {}, [], now=NOW)
+
+    def test_verified_reuse_is_accepted_without_counting_a_solve_or_attempt(self):
+        report = self.project()
+        row = next(item for item in report["cases"] if item["case_id"] == self.case["case_id"])
+        self.assertEqual(report["totals"]["accepted"], 1)
+        self.assertEqual(report["totals"]["solved"], 0)
+        self.assertEqual(report["totals"]["archived"], 0)
+        self.assertEqual(row["state"], "accepted")
+        self.assertEqual(row["attempts"], 0)
+        self.assertTrue(row["zero_source_reused"])
+        self.assertEqual(report["budget"]["statistics_eligible_cases"], 0)
+
+    def test_reuse_must_match_plan_case_and_receipt_hash(self):
+        self.receipt["cases"][0]["label"]["stored_bit"] = 1
+        self.receipt_path.write_text(json.dumps(self.receipt), encoding="utf-8")
+        report = self.project()
+        self.assertEqual(report["totals"]["accepted"], 0)
 
 
 if __name__ == "__main__":

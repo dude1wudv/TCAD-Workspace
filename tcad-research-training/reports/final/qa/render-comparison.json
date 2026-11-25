@@ -1,0 +1,152 @@
+[
+  {
+    "page": "course-report\\page-01.png",
+    "final_sha256": "CE0B88AD1C1DFD4D4B21B3E9207BEBCFB0BF1A40A4A1F6B75232C460B8FF5B57",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-02.png",
+    "final_sha256": "3F05F14C2924E71FF2CB867FF3639FE6AF3EDB73E10362B959D137871BEAB9FF",
+    "same_as_initial": false
+  },
+  {
+    "page": "course-report\\page-03.png",
+    "final_sha256": "F8857E7CCCAF965C937057AC02C1A5B9931E2311DAA2D715F0F0FB3A0B6306B3",
+    "same_as_initial": false
+  },
+  {
+    "page": "course-report\\page-04.png",
+    "final_sha256": "E536382929DC18DC526EA466EB1E143BCE9803CF2725F65ED29733131752A35B",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-05.png",
+    "final_sha256": "0469B1E94B0FE151395AA52769481F89834A44581CCF5BE5824CC37B190A6EED",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-06.png",
+    "final_sha256": "C5DC318D4E6DFB09C03D43E05DBF641ACCE33FD1B12CF859CDD08BC0C771ADB9",
+    "same_as_initial": false
+  },
+  {
+    "page": "course-report\\page-07.png",
+    "final_sha256": "C7D8D42EF9233B5CD69BAB3C746B1E69D03C3A48E41FD0366622250A0FD06130",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-08.png",
+    "final_sha256": "224DD6EE299D14AB8C454C71A3EDB3020DDE53E168857A43DB8F4FEB696B8B4F",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-09.png",
+    "final_sha256": "563D5D392E17574A054A5D72DA437DD8DEC7AFE9DF56A6B136D2CB7F6290C447",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-10.png",
+    "final_sha256": "2CCA9F7944EF44888F0B6D96853E54024A1B4FE66B24F17639B878D78335A321",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-11.png",
+    "final_sha256": "B963DC166B17416ECDB7A952D284901B58F5DCAA19B0B3CBE16A51EEF99214E5",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-12.png",
+    "final_sha256": "A9F429B8566E5B63E6116E9290CEE71137C1211D2584EE8905D5F832FD5B3C98",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-13.png",
+    "final_sha256": "2B4348E3FB0F403908EC85638AA180797980E62D9D450E7DFB24F87F0C75B9F5",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-14.png",
+    "final_sha256": "41C6ECA252653282641A4505BAED7322F71DD3F530168604D0C5AA22A60921B1",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-15.png",
+    "final_sha256": "39C1EEE0B6ED4664CF9722B06D728135BEC80F9063DC689B18F4313E7A59C711",
+    "same_as_initial": true
+  },
+  {
+    "page": "course-report\\page-16.png",
+    "final_sha256": "E9CBAF25405ACA32C20DCD809819D56EAE7F8720404EC8EBFEFB5B77787FE298",
+    "same_as_initial": false
+  },
+  {
+    "page": "course-report\\page-17.png",
+    "final_sha256": "C5C1B2CCA2C992D7E3F6794AB3CD79A9B01C49F743CD7CF7FF5B14FB41600652",
+    "same_as_initial": false
+  },
+  {
+    "page": "course-report\\page-18.png",
+    "final_sha256": "00327D4D0DE7877B6201BBF8CC8572BB7FEA85BBE81FC619BB37D0FCBAEB1A64",
+    "same_as_initial": false
+  },
+  {
+    "page": "research-paper\\page-01.png",
+    "final_sha256": "393ED5D8942227DE3D23E21C34F2ECAF567D7C832CE1114945AA98FB9B79E0AB",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-02.png",
+    "final_sha256": "36A9A768D8B0A8C3EE81338785E00FED2758AB5A86EEC27017D9FF9CF2C3112B",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-03.png",
+    "final_sha256": "DD847BFD60ABA664904F02047D2936E7576E32F7BC582AD60AF2789CCA98EA34",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-04.png",
+    "final_sha256": "9BCEE8FC7D899AE64725A956FF2C6D062BBB3DB6A86C50E86407D5F05D67C1A0",
+    "same_as_initial": false
+  },
+  {
+    "page": "research-paper\\page-05.png",
+    "final_sha256": "D1A68EF70D652FE952758BC81DD19DA32C6A765FAF082FCC4581A609F4302768",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-06.png",
+    "final_sha256": "4A464687EB29DCA81A1B33D39289122185971D23EAF5A08CB4C6FABE69B1652A",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-07.png",
+    "final_sha256": "AF204AD481C6F452337A103072D82CDE469C405CB1E6F5201B275973BCB9F657",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-08.png",
+    "final_sha256": "E48EC2B302120C1CDED1B8B9F3822F3CD7FE53E055AC47180251AB6B559C80C8",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-09.png",
+    "final_sha256": "13F42E790042951CE6C3426C92BA3B736C0E2B361F2D0E87A0D494312CBE90B0",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-10.png",
+    "final_sha256": "8BBBCE068585FED4B870F3B6403EF02D5294F1AEB42902540A525F5156866361",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-11.png",
+    "final_sha256": "F645C6D46FADC42892D6FE23882F124358256FD4466A75BA50AE155A2D0EB696",
+    "same_as_initial": true
+  },
+  {
+    "page": "research-paper\\page-12.png",
+    "final_sha256": "93C8BBE2EC60B50B859E29330D1312960DC94E2BD3ED69107BB84DB0DFDE47A2",
+    "same_as_initial": false
+  }
+]

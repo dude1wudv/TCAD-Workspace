@@ -28,9 +28,13 @@ RUNTIME = ("controller.py", "task.md", "report.schema.json", "policy.example.jso
            "runtime.py", "watchdog.py", "test_runtime.py", "test_watchdog.py", "work-items.example.json", "test_controller.py",
            "test_integration.py", "test_deployment.py", "install.py", "package.py", "README.md",
            "advisor.py", "astra_advisor.toml", "test_advisor.py", "verify_advisor.py", "ADVISOR.md",
-           "retention.py", "result_maintenance.py", "gdrive_offload.py",
-           "test_retention.py", "test_result_maintenance.py", "test_gdrive_offload.py",
-           "r06_gate.py", "intent_reconciliation.py")
+           "retention.py", "result_maintenance.py", "gdrive_offload.py", "geant4_archive.py",
+           "geant4_archive_backup.py", "geant4_archive_release.py",
+           "test_retention.py", "test_result_maintenance.py", "test_gdrive_offload.py", "test_geant4_archive.py",
+           "r06_gate.py", "intent_reconciliation.py",
+           "scheduler_pool.py", "scheduler_probe.py", "scheduler_collector.py",
+           "scheduler_admission.py", "scheduler_engine.py", "scheduler_planner.py",
+           "test_scheduler.py", "test_scheduler_pool.py")
 
 
 def package(destination, runtime_only=False):

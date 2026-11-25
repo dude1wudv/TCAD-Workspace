@@ -1,0 +1,145 @@
+{
+  "schema": "tcad-r06-modeling-parameters-v1",
+  "revision": "r0.6",
+  "status": "frozen_design",
+  "research_scope": "基于 L08 的 saddle-fin DRAM 文献代表结构及其几何、掺杂扰动。首月冻结辐照矩阵覆盖质子。DDR5 外部实验、重离子和中子属于更广的课题范围。",
+  "evidence_scope": "13 个构型和 10 个入射组合来自冻结计划。网格记录、历史求解 deck 与正式准入要求各自标注适用范围。本文档不提供运行进度、科学验收、校准截面或错误率。",
+  "sources": {
+    "manifest": "tcad-research-training/plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json",
+    "budget": "tcad-research-training/plans/dram-se-ddr5-lpddr5/BUDGET-REVISION-r06-20261117.md",
+    "brief": "tcad-research-training/shared/research-brief.md",
+    "design": "tcad-research-training/plans/dram-se-ddr5-lpddr5/FIRST-BATCH-DESIGN.md",
+    "mapping": "tcad-research-training/plans/dram-se-ddr5-lpddr5/PLAN.md",
+    "qualification": "tcad-research-training/plans/dram-se-ddr5-lpddr5/EXECUTION-AUTHORIZATION-r06-20261117.md",
+    "readout": "tcad-research-training/plans/dram-se-ddr5-lpddr5/DESIGN-REVIEW-20261117.md",
+    "transport_preflight": "tcad-research-training/plans/dram-se-ddr5-lpddr5/P0-CLOSEOUT-AND-D0-D3-FIRST-WAVE-PREP-r06-20261120.md",
+    "gate": "tcad-research-training/automation/server-codex/r06_gate.py",
+    "transport_binding": "tcad-research-training/automation/server-codex/month_one_transport.py",
+    "d2_mesh_crosscheck": "tcad-research-training/docs/sources/r04-start/L08-D2-crosscheck-20261118.md",
+    "nodal_source": "tcad-research-training/experiments/dram-se-r06/p0-bootstrap-r1/source/pmi_r04_nodal.C",
+    "reference_deck": "tcad-research-training/experiments/dram-se-r06/p0-bootstrap-r1/evidence/original-device.cmd",
+    "r04_transport_environment": "tcad-research-training/plans/dram-se-ddr5-lpddr5/EXECUTION.md"
+  },
+  "device": {
+    "source_refs": ["manifest", "budget", "design", "d2_mesh_crosscheck"],
+    "parameter_definitions": {
+      "Lg": {"unit": "1", "meaning": "几何栅长相对基准的倍率"},
+      "Wfin": {"unit": "1", "meaning": "鳍宽相对基准的倍率"},
+      "Tox": {"unit": "1", "meaning": "栅氧厚度相对基准的倍率"},
+      "Hjc": {"unit": "nm", "meaning": "顶部结段的几何高度"},
+      "NA": {"unit": "1", "meaning": "受主掺杂相对基准剖面的倍率"},
+      "ND": {"unit": "1", "meaning": "施主掺杂相对基准剖面的倍率"}
+    },
+    "reference_geometry_nm": {"Lg": 14, "Wfin": 8, "Tox": 6, "Hjc": 82, "Hfin": 35, "Lsn": 20, "Lbl": 20},
+    "model_box_nm": {"x": 154, "y": 40, "z": 250},
+    "effective_channel_length_nm": null,
+    "absolute_doping_profiles_cm3": null,
+    "absolute_parameter_note": "基准几何见 L08 表 1 与 D2 交叉核对。几何栅长和有效沟道长度分别定义。冻结清单中的绝对掺杂剖面和有效沟道长度为空。",
+    "development_lhs": {
+      "method": "anchor_aware_maximin_lhs",
+      "seed": 20261117,
+      "candidate_designs": 10000,
+      "bounds": {"Lg": [0.8, 1.1], "Wfin": [0.8, 1.2], "Tox": [0.8, 1.2], "Hjc": [82, 92], "NA": [0.5, 2.0], "ND": [0.5, 2.0]},
+      "log_sampled_axes": ["NA", "ND"]
+    },
+    "split_note": "D0–D3 为开发锚点，LHS01–LHS06 为开发填充点。H0 用于长栅长外推。H1/H2 各参数落在开发集的逐轴范围内，联合凸包内插资格未验证。H0–H2 封存至验证阶段。",
+    "profiles": [
+      {"id": "D0-nominal", "partition": "development", "origin": "anchor", "parameters": {"Lg": 1.0, "Wfin": 1.0, "Tox": 1.0, "Hjc": 82.0, "NA": 1.0, "ND": 1.0}},
+      {"id": "D1-short-channel", "partition": "development", "origin": "anchor", "parameters": {"Lg": 0.8, "Wfin": 1.0, "Tox": 1.0, "Hjc": 82.0, "NA": 1.0, "ND": 1.0}},
+      {"id": "D2-narrow-fin", "partition": "development", "origin": "anchor", "parameters": {"Lg": 1.0, "Wfin": 0.8, "Tox": 1.0, "Hjc": 82.0, "NA": 1.0, "ND": 1.0}},
+      {"id": "D3-low-acceptor", "partition": "development", "origin": "anchor", "parameters": {"Lg": 1.0, "Wfin": 1.0, "Tox": 1.0, "Hjc": 82.0, "NA": 0.5, "ND": 1.0}},
+      {"id": "LHS01-development", "partition": "development", "origin": "anchor_aware_maximin_lhs", "parameters": {"Lg": 1.05987027, "Wfin": 1.17072299, "Tox": 0.87141864, "Hjc": 85.51729513, "NA": 0.97559932, "ND": 1.86913809}},
+      {"id": "LHS02-development", "partition": "development", "origin": "anchor_aware_maximin_lhs", "parameters": {"Lg": 0.91367269, "Wfin": 1.04491461, "Tox": 0.99168723, "Hjc": 88.05939548, "NA": 1.78908584, "ND": 0.86113515}},
+      {"id": "LHS03-development", "partition": "development", "origin": "anchor_aware_maximin_lhs", "parameters": {"Lg": 0.96119859, "Wfin": 0.97928101, "Tox": 1.13371195, "Hjc": 89.75108095, "NA": 0.65907349, "ND": 1.06861529}},
+      {"id": "LHS04-development", "partition": "development", "origin": "anchor_aware_maximin_lhs", "parameters": {"Lg": 1.01495102, "Wfin": 0.87425674, "Tox": 1.06181045, "Hjc": 91.81166715, "NA": 1.53160722, "ND": 1.47822027}},
+      {"id": "LHS05-development", "partition": "development", "origin": "anchor_aware_maximin_lhs", "parameters": {"Lg": 0.82559392, "Wfin": 0.83336028, "Tox": 0.82591675, "Hjc": 85.29068177, "NA": 1.23081766, "ND": 0.67187291}},
+      {"id": "LHS06-development", "partition": "development", "origin": "anchor_aware_maximin_lhs", "parameters": {"Lg": 0.86109264, "Wfin": 1.0923254, "Tox": 1.1253006, "Hjc": 82.13544999, "NA": 0.58674877, "ND": 0.54102673}},
+      {"id": "H0-long-channel", "partition": "profile_holdout", "origin": "extrapolation", "parameters": {"Lg": 1.2, "Wfin": 1.0, "Tox": 1.0, "Hjc": 82.0, "NA": 1.0, "ND": 1.0}},
+      {"id": "H1-lhs-holdout-a", "partition": "profile_holdout", "origin": "axiswise_interior_sparse_holdout", "parameters": {"Lg": 0.83482929, "Wfin": 0.84603376, "Tox": 0.89437912, "Hjc": 87.03973794, "NA": 0.56681586, "ND": 1.28130966}},
+      {"id": "H2-lhs-holdout-b", "partition": "profile_holdout", "origin": "axiswise_interior_sparse_holdout", "parameters": {"Lg": 1.00466722, "Wfin": 1.13875002, "Tox": 0.89056367, "Hjc": 89.87346597, "NA": 0.605283, "ND": 0.67323892}}
+    ],
+    "mesh_evidence": {
+      "common_mesh_spacing_nm": null,
+      "d2_only": {
+        "vertex_count": 28827,
+        "element_count": 148145,
+        "region_count": 40,
+        "status": "passed_limited_mesh_prerequisite",
+        "scope": "D2 原生网格的有限前置核对。独立参考坐标矩阵未取得，未验证网格收敛。"
+      }
+    }
+  },
+  "radiation": {
+    "source_refs": ["manifest", "budget", "design", "transport_preflight", "transport_binding"],
+    "particle": "proton",
+    "angle_convention": "极角相对器件表面法向，方位角 0° 与 90° 为正交方位。正入射时方位角不改变入射方向。",
+    "conditions": [
+      {"id": "G0", "energy_MeV": 1.0, "theta_deg": 0.0, "phi_deg": 0.0, "role": "development"},
+      {"id": "G1", "energy_MeV": 5.0, "theta_deg": 30.0, "phi_deg": 0.0, "role": "development"},
+      {"id": "G2", "energy_MeV": 20.0, "theta_deg": 60.0, "phi_deg": 90.0, "role": "development"},
+      {"id": "G3", "energy_MeV": 58.0, "theta_deg": 0.0, "phi_deg": 0.0, "role": "development"},
+      {"id": "G4", "energy_MeV": 98.0, "theta_deg": 30.0, "phi_deg": 90.0, "role": "development"},
+      {"id": "G5", "energy_MeV": 120.0, "theta_deg": 60.0, "phi_deg": 0.0, "role": "development"},
+      {"id": "C0", "energy_MeV": 5.0, "theta_deg": 0.0, "phi_deg": 0.0, "role": "development"},
+      {"id": "C1", "energy_MeV": 58.0, "theta_deg": 30.0, "phi_deg": 0.0, "role": "development"},
+      {"id": "C2", "energy_MeV": 20.0, "theta_deg": 45.0, "phi_deg": 90.0, "role": "radiation_holdout"},
+      {"id": "C3", "energy_MeV": 150.0, "theta_deg": 60.0, "phi_deg": 90.0, "role": "radiation_holdout"}
+    ],
+    "transport_pool_plan": {
+      "distinct_pool_count": 97,
+      "initial_primaries_per_pool": 100000,
+      "expanded_primaries_per_pool": 1000000,
+      "expansion_condition": "有可审计的统计缺口",
+      "source_sampling": "在垂直于束流的发射面上均匀采样。每池绑定正的源面积 A_src（cm²）与整数随机种子，保留零沉积初级事件。",
+      "shared_transport_profiles": ["D0-nominal", "D3-low-acceptor"],
+      "sharing_scope": "D0 与 D3 仅受主掺杂倍率不同，几何和材料相同，按入射条件复用输运。其余构型各用独立组。"
+    },
+    "geant4_configuration": {
+      "r06_per_pool_fields": ["software_version", "physics_list", "production_cut", "charged_step_limit", "source_area_cm2", "seed", "geometry_hash"],
+      "verification_scope": "冻结总表未给出各池的具体输运配置。软件版本、物理列表、产生阈值、带电步长上限和源面积按各池原生证据引用。",
+      "r04_environment_reference": {"version": "10.7.3", "source_ref": "r04_transport_environment"}
+    }
+  },
+  "coupling": {
+    "source_refs": ["manifest", "mapping", "qualification", "readout", "transport_preflight", "gate", "nodal_source"],
+    "transport_to_tcad": {
+      "direction": "Geant4 → Sentaurus SDevice",
+      "method": "保留逐步材料、坐标、时间和沉积量。按版本化坐标变换对齐 TCAD 网格，区分电离与非电离沉积。用材料成对能换算电子–空穴对，并在空间网格和时间窗内分配生成率；同一初级事件的次级轨迹使用同一事件时钟。",
+      "nodal_pmi": "r0.6 O2 节点源代码使用三维硅网格坐标与求解器瞬态时间步，将载流子生成率经 PMI QuantumYield 接入 SDevice。",
+      "generation_rate_unit": "cm^-3 s^-1",
+      "nonzero_source_integral_relative_error_max_exclusive": 1e-9,
+      "mesh_binding": "源文件与器件网格、输入和时序版本逐例绑定。"
+    },
+    "timing": {
+      "deck_timing_version": "r06-hold-window-v1",
+      "hold_window_ns": [18.2, 30.0],
+      "planned_source_time_ns": 22.0,
+      "manifest_source_time_status": "candidate_pending_p0_evidence",
+      "readout_sample_ns": 31.9,
+      "readout_reference_V": 0.6,
+      "readout_margin": {"b0": "0.6 V - V_BL", "b1": "V_BL - 0.6 V"},
+      "matched_zero": {"stored_bits": [0, 1], "source_time_ns": null, "plan_slots": 26},
+      "match_requirements": ["profile", "stored_bit", "mesh", "deck_timing_version", "numerical_settings"],
+      "scope": "22 ns 为冻结清单中的计划值。正式响应准入要求 P0 时序证据及与清单一致的时刻。18.2 ns 标记驱动预充斜坡结束，位线稳定性需由波形核对。"
+    },
+    "threshold_probe": {
+      "template_pool": {"shape-a": "G0", "shape-b": "C1"},
+      "initial_scale_suggestions": [3, 10, 30],
+      "scale_factor_min_exclusive": 1.0,
+      "statistics_eligible": false,
+      "scope": "真实参考事件按构型选取，实际倍率提交前逐例确定。该类缩放响应服务于阈值试探。"
+    },
+    "reference_deck_context": {
+      "source_ref": "reference_deck",
+      "scope": "r0.6 O2 所用的旧版 r0.4 短前缀参考 deck，仅提供已有电学模型和混合模式参数依据。正式 r0.6 工况的同类配置以逐例输入为准。",
+      "temperature_K": 300,
+      "physics": ["Fermi", "OldSlotboom", "Mobility(DopingDep HighFieldSaturation Enormal)", "Recombination(SRH(DopingDep) Auger)"],
+      "coupled_equations": ["Poisson", "Electron", "Hole", "Contact", "Circuit"],
+      "time_integrator": "Backward Euler",
+      "storage_capacitance_per_node_F": 2e-14,
+      "bitline_capacitance_F": 2e-13,
+      "bitline_driver_resistance_ohm": 1000,
+      "plate_voltage_V": 0.6
+    }
+  }
+}

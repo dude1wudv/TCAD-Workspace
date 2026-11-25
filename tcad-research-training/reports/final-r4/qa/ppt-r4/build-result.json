@@ -1,0 +1,9 @@
+{
+  "state": "FINALIZED_AND_RENDERED_VISUAL_REVIEW_PENDING",
+  "final": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\dram-see-v3-r4-r4.pptx",
+  "render": "E:\\TCAD-Workspace\\tcad-research-training\\local_runtime\\dram-see-v3\\final-r4-document-build\\deck-r4\\slides",
+  "slides": 16,
+  "core_slides": 12,
+  "backup_slides": 4,
+  "new_solver_calls": 0
+}

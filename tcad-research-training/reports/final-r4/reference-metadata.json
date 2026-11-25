@@ -1,0 +1,1250 @@
+{
+  "crossref": [
+    {
+      "key": "chen2011",
+      "source": "https://api.crossref.org/works/10.11728/cjss2011.04.498",
+      "metadata": {
+        "indexed": {
+          "date-parts": [
+            [
+              2023,
+              10,
+              31
+            ]
+          ],
+          "date-time": "2023-10-31T04:38:55Z",
+          "timestamp": 1698727135383
+        },
+        "reference-count": 0,
+        "publisher": "National Space Science Center, Chinese Academy of Sciences",
+        "issue": "4",
+        "content-domain": {
+          "domain": [],
+          "crossmark-restriction": false
+        },
+        "short-container-title": [
+          "kjkxxb"
+        ],
+        "published-print": {
+          "date-parts": [
+            [
+              2011
+            ]
+          ]
+        },
+        "DOI": "10.11728/cjss2011.04.498",
+        "type": "journal-article",
+        "created": {
+          "date-parts": [
+            [
+              2023,
+              2,
+              16
+            ]
+          ],
+          "date-time": "2023-02-16T00:37:26Z",
+          "timestamp": 1676507846000
+        },
+        "page": "498",
+        "source": "Crossref",
+        "is-referenced-by-count": 0,
+        "title": [
+          "Assessing single-event-upsets in SRAM based on TCAD and Geant 4"
+        ],
+        "prefix": "10.11728",
+        "volume": "31",
+        "author": [
+          {
+            "given": "Shanqiang",
+            "family": "Chen",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "given": "Liqin",
+            "family": "Shi",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          }
+        ],
+        "member": "37668",
+        "container-title": [
+          "Chinese Journal of Space Science"
+        ],
+        "original-title": [],
+        "deposited": {
+          "date-parts": [
+            [
+              2023,
+              10,
+              31
+            ]
+          ],
+          "date-time": "2023-10-31T00:53:54Z",
+          "timestamp": 1698713634000
+        },
+        "score": 1,
+        "resource": {
+          "primary": {
+            "URL": "https://www.sciengine.com/doi/10.11728/cjss2011.04.498"
+          }
+        },
+        "subtitle": [],
+        "short-title": [],
+        "issued": {
+          "date-parts": [
+            [
+              2011
+            ]
+          ]
+        },
+        "references-count": 0,
+        "journal-issue": {
+          "issue": "4",
+          "published-print": {
+            "date-parts": [
+              [
+                2011
+              ]
+            ]
+          }
+        },
+        "alternative-id": [
+          "2011-04-11"
+        ],
+        "URL": "https://doi.org/10.11728/cjss2011.04.498",
+        "relation": {},
+        "ISSN": [
+          "0254-6124",
+          "0254-6124"
+        ],
+        "issn-type": [
+          {
+            "value": "0254-6124",
+            "type": "print"
+          },
+          {
+            "value": "0254-6124",
+            "type": "electronic"
+          }
+        ],
+        "subject": [],
+        "published": {
+          "date-parts": [
+            [
+              2011
+            ]
+          ]
+        }
+      },
+      "original_bibtex": " @article{Chen_2011, title={Assessing single-event-upsets in SRAM based on TCAD and Geant 4}, volume={31}, ISSN={0254-6124}, url={http://dx.doi.org/10.11728/cjss2011.04.498}, DOI={10.11728/cjss2011.04.498}, number={4}, journal={Chinese Journal of Space Science}, publisher={National Space Science Center, Chinese Academy of Sciences}, author={Chen, Shanqiang and Shi, Liqin}, year={2011}, pages={498} }\n"
+    },
+    {
+      "key": "xu2021",
+      "source": "https://api.crossref.org/works/10.1109/TED.2021.3113884",
+      "metadata": {
+        "indexed": {
+          "date-parts": [
+            [
+              2026,
+              9,
+              22
+            ]
+          ],
+          "date-time": "2026-09-22T15:28:27Z",
+          "timestamp": 1790090907081,
+          "version": "4.0.1"
+        },
+        "reference-count": 18,
+        "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+        "issue": "11",
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  11,
+                  1
+                ]
+              ],
+              "date-time": "2021-11-01T00:00:00Z",
+              "timestamp": 1635724800000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "https://ieeexplore.ieee.org/Xplorehelp/downloads/license-information/IEEE.html"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  11,
+                  1
+                ]
+              ],
+              "date-time": "2021-11-01T00:00:00Z",
+              "timestamp": 1635724800000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-029"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  11,
+                  1
+                ]
+              ],
+              "date-time": "2021-11-01T00:00:00Z",
+              "timestamp": 1635724800000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-037"
+          }
+        ],
+        "funder": [
+          {
+            "DOI": "10.13039/501100012226",
+            "name": "Fundamental Research Funds for the Central Universities",
+            "doi-asserted-by": "publisher",
+            "id": [
+              {
+                "id": "10.13039/501100012226",
+                "id-type": "DOI",
+                "asserted-by": "publisher"
+              }
+            ]
+          },
+          {
+            "name": "Industry-University-Academy Cooperation Program of Xidian University-Chongqing IC Innovation Research Institute",
+            "award": [
+              "CQIRI-2021CXY-Z01"
+            ],
+            "award-info": [
+              {
+                "award-number": [
+                  "CQIRI-2021CXY-Z01"
+                ]
+              }
+            ]
+          },
+          {
+            "name": "Equipment Pre-research Project of China",
+            "award": [
+              "41424050607"
+            ],
+            "award-info": [
+              {
+                "award-number": [
+                  "41424050607"
+                ]
+              }
+            ]
+          }
+        ],
+        "content-domain": {
+          "domain": [],
+          "crossmark-restriction": false
+        },
+        "short-container-title": [
+          "IEEE Trans. Electron Devices"
+        ],
+        "published-print": {
+          "date-parts": [
+            [
+              2021,
+              11
+            ]
+          ]
+        },
+        "DOI": "10.1109/ted.2021.3113884",
+        "type": "journal-article",
+        "created": {
+          "date-parts": [
+            [
+              2021,
+              10,
+              2
+            ]
+          ],
+          "date-time": "2021-10-02T01:31:27Z",
+          "timestamp": 1633138287000
+        },
+        "page": "5758-5764",
+        "source": "Crossref",
+        "is-referenced-by-count": 36,
+        "title": [
+          "Machine Learning Regression-Based Single-Event Transient Modeling Method for Circuit-Level Simulation"
+        ],
+        "prefix": "10.1109",
+        "volume": "68",
+        "author": [
+          {
+            "ORCID": "https://orcid.org/0000-0002-3827-8820",
+            "authenticated-orcid": false,
+            "given": "Changqing",
+            "family": "Xu",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yi",
+            "family": "Liu",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0003-0735-5106",
+            "authenticated-orcid": false,
+            "given": "Xinfang",
+            "family": "Liao",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Jialiang",
+            "family": "Cheng",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          },
+          {
+            "given": "Yintang",
+            "family": "Yang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "vocabulary": "crossref",
+                "role": "author"
+              }
+            ]
+          }
+        ],
+        "member": "263",
+        "reference": [
+          {
+            "key": "ref10",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2005.852319"
+          },
+          {
+            "key": "ref11",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2019.2904716"
+          },
+          {
+            "key": "ref12",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TED.2019.2926883"
+          },
+          {
+            "key": "ref13",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TDMR.2020.3023285"
+          },
+          {
+            "key": "ref14",
+            "year": "2021",
+            "journal-title": "Cogenda Visual TCAD 1 9 2"
+          },
+          {
+            "key": "ref15",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2009.2033798"
+          },
+          {
+            "key": "ref16",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2007.910863"
+          },
+          {
+            "key": "ref17",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2018.2796622"
+          },
+          {
+            "key": "ref18",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.1982.4336490"
+          },
+          {
+            "key": "ref4",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2015.2443116"
+          },
+          {
+            "key": "ref3",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2013.2255624"
+          },
+          {
+            "key": "ref6",
+            "first-page": "1",
+            "article-title": "Single event transient pulses fault injection model based on LET for circuit-level simulation",
+            "author": "xu",
+            "year": "2020",
+            "journal-title": "Proc IEEE 15th Int Conf Solid-State Integr Circuit Technol (ICSICT)"
+          },
+          {
+            "key": "ref5",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/IRPS.2014.6861092"
+          },
+          {
+            "key": "ref8",
+            "doi-asserted-by": "crossref",
+            "first-page": "119",
+            "DOI": "10.1147/rd.401.0119",
+            "article-title": "Critical charge calculations for a bipolar SRAM array",
+            "volume": "40",
+            "author": "freeman",
+            "year": "1996",
+            "journal-title": "IBM J Res Develop"
+          },
+          {
+            "key": "ref7",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1049/iet-cds:20050210"
+          },
+          {
+            "key": "ref2",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2015.2432271"
+          },
+          {
+            "key": "ref1",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/MIEL.2017.8190065"
+          },
+          {
+            "key": "ref9",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/EDL.1982.25467"
+          }
+        ],
+        "container-title": [
+          "IEEE Transactions on Electron Devices"
+        ],
+        "original-title": [],
+        "link": [
+          {
+            "URL": "http://xplorestaging.ieee.org/ielx7/16/9583611/09555928.pdf?arnumber=9555928",
+            "content-type": "unspecified",
+            "content-version": "vor",
+            "intended-application": "similarity-checking"
+          }
+        ],
+        "deposited": {
+          "date-parts": [
+            [
+              2022,
+              5,
+              10
+            ]
+          ],
+          "date-time": "2022-05-10T14:54:41Z",
+          "timestamp": 1652194481000
+        },
+        "score": 1,
+        "resource": {
+          "primary": {
+            "URL": "https://ieeexplore.ieee.org/document/9555928/"
+          }
+        },
+        "subtitle": [],
+        "short-title": [],
+        "issued": {
+          "date-parts": [
+            [
+              2021,
+              11
+            ]
+          ]
+        },
+        "references-count": 18,
+        "journal-issue": {
+          "issue": "11"
+        },
+        "URL": "https://doi.org/10.1109/ted.2021.3113884",
+        "relation": {},
+        "ISSN": [
+          "0018-9383",
+          "1557-9646"
+        ],
+        "issn-type": [
+          {
+            "value": "0018-9383",
+            "type": "print"
+          },
+          {
+            "value": "1557-9646",
+            "type": "electronic"
+          }
+        ],
+        "subject": [],
+        "published": {
+          "date-parts": [
+            [
+              2021,
+              11
+            ]
+          ]
+        }
+      },
+      "original_bibtex": " @article{Xu_2021, title={Machine Learning Regression-Based Single-Event Transient Modeling Method for Circuit-Level Simulation}, volume={68}, ISSN={1557-9646}, url={http://dx.doi.org/10.1109/TED.2021.3113884}, DOI={10.1109/ted.2021.3113884}, number={11}, journal={IEEE Transactions on Electron Devices}, publisher={Institute of Electrical and Electronics Engineers (IEEE)}, author={Xu, Changqing and Liu, Yi and Liao, Xinfang and Cheng, Jialiang and Yang, Yintang}, year={2021}, month=Nov, pages={5758–5764} }\n"
+    },
+    {
+      "key": "ryder2021",
+      "source": "https://api.crossref.org/works/10.1109/TNS.2021.3060339",
+      "metadata": {
+        "indexed": {
+          "date-parts": [
+            [
+              2026,
+              5,
+              1
+            ]
+          ],
+          "date-time": "2026-05-01T16:06:00Z",
+          "timestamp": 1777651560706,
+          "version": "3.51.4"
+        },
+        "reference-count": 35,
+        "publisher": "Institute of Electrical and Electronics Engineers (IEEE)",
+        "issue": "5",
+        "license": [
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2021-05-01T00:00:00Z",
+              "timestamp": 1619827200000
+            },
+            "content-version": "vor",
+            "delay-in-days": 0,
+            "URL": "https://ieeexplore.ieee.org/Xplorehelp/downloads/license-information/IEEE.html"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2021-05-01T00:00:00Z",
+              "timestamp": 1619827200000
+            },
+            "content-version": "am",
+            "delay-in-days": 0,
+            "URL": "https://ieeexplore.ieee.org/Xplorehelp/downloads/license-information/IEEE.html"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2021-05-01T00:00:00Z",
+              "timestamp": 1619827200000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-029"
+          },
+          {
+            "start": {
+              "date-parts": [
+                [
+                  2021,
+                  5,
+                  1
+                ]
+              ],
+              "date-time": "2021-05-01T00:00:00Z",
+              "timestamp": 1619827200000
+            },
+            "content-version": "stm-asf",
+            "delay-in-days": 0,
+            "URL": "https://doi.org/10.15223/policy-037"
+          }
+        ],
+        "funder": [
+          {
+            "DOI": "10.13039/100000104",
+            "name": "National Aeronautics and Space Administration",
+            "doi-asserted-by": "publisher",
+            "award": [
+              "80NSSC20K0424"
+            ],
+            "award-info": [
+              {
+                "award-number": [
+                  "80NSSC20K0424"
+                ]
+              }
+            ],
+            "id": [
+              {
+                "id": "10.13039/100000104",
+                "id-type": "DOI",
+                "asserted-by": "publisher"
+              }
+            ]
+          },
+          {
+            "DOI": "10.13039/100000774",
+            "name": "Defense Threat Reduction Agency",
+            "doi-asserted-by": "publisher",
+            "award": [
+              "HDTRA1-16-1-0007"
+            ],
+            "award-info": [
+              {
+                "award-number": [
+                  "HDTRA1-16-1-0007"
+                ]
+              }
+            ],
+            "id": [
+              {
+                "id": "10.13039/100000774",
+                "id-type": "DOI",
+                "asserted-by": "publisher"
+              }
+            ]
+          },
+          {
+            "DOI": "10.13039/100006234",
+            "name": "Sandia National Laboratories",
+            "doi-asserted-by": "publisher",
+            "award": [
+              "LDRD program"
+            ],
+            "award-info": [
+              {
+                "award-number": [
+                  "LDRD program"
+                ]
+              }
+            ],
+            "id": [
+              {
+                "id": "10.13039/100006234",
+                "id-type": "DOI",
+                "asserted-by": "publisher"
+              }
+            ]
+          }
+        ],
+        "content-domain": {
+          "domain": [],
+          "crossmark-restriction": false
+        },
+        "short-container-title": [
+          "IEEE Trans. Nucl. Sci."
+        ],
+        "published-print": {
+          "date-parts": [
+            [
+              2021,
+              5
+            ]
+          ]
+        },
+        "DOI": "10.1109/tns.2021.3060339",
+        "type": "journal-article",
+        "created": {
+          "date-parts": [
+            [
+              2021,
+              2,
+              20
+            ]
+          ],
+          "date-time": "2021-02-20T10:30:36Z",
+          "timestamp": 1613817036000
+        },
+        "page": "626-633",
+        "source": "Crossref",
+        "is-referenced-by-count": 9,
+        "title": [
+          "Comparison of Single-Event Transients in an Epitaxial Silicon Diode Resulting From Heavy-Ion-, Focused X-Ray-, and Pulsed Laser-Induced Charge Generation"
+        ],
+        "prefix": "10.1109",
+        "volume": "68",
+        "author": [
+          {
+            "ORCID": "https://orcid.org/0000-0002-2014-3637",
+            "authenticated-orcid": false,
+            "given": "Kaitlyn L.",
+            "family": "Ryder",
+            "sequence": "first",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-9293-6070",
+            "authenticated-orcid": false,
+            "given": "Landen D.",
+            "family": "Ryder",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-1116-8509",
+            "authenticated-orcid": false,
+            "given": "Andrew L.",
+            "family": "Sternberg",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "given": "John A.",
+            "family": "Kozub",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-8021-2411",
+            "authenticated-orcid": false,
+            "given": "En Xia",
+            "family": "Zhang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-8104-0666",
+            "authenticated-orcid": false,
+            "given": "Stephen D.",
+            "family": "LaLumondiere",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-8031-9382",
+            "authenticated-orcid": false,
+            "given": "Daniele M.",
+            "family": "Monahan",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "given": "Jeremy P.",
+            "family": "Bonsall",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-5330-8688",
+            "authenticated-orcid": false,
+            "given": "Ani",
+            "family": "Khachatrian",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-2161-5640",
+            "authenticated-orcid": false,
+            "given": "Stephen P.",
+            "family": "Buchner",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "given": "Dale",
+            "family": "McMorrow",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0003-0598-3280",
+            "authenticated-orcid": false,
+            "given": "Joel M.",
+            "family": "Hales",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "given": "Yuanfu",
+            "family": "Zhao",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-0061-5502",
+            "authenticated-orcid": false,
+            "given": "Liang",
+            "family": "Wang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "given": "Chuanmin",
+            "family": "Wang",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0002-2280-219X",
+            "authenticated-orcid": false,
+            "given": "Robert A.",
+            "family": "Weller",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0001-7419-2701",
+            "authenticated-orcid": false,
+            "given": "Ronald D.",
+            "family": "Schrimpf",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0003-2252-3104",
+            "authenticated-orcid": false,
+            "given": "Sharon M.",
+            "family": "Weiss",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          },
+          {
+            "ORCID": "https://orcid.org/0000-0001-9303-9980",
+            "authenticated-orcid": false,
+            "given": "Robert A.",
+            "family": "Reed",
+            "sequence": "additional",
+            "affiliation": [],
+            "role": [
+              {
+                "role": "author",
+                "vocabulary": "crossref"
+              }
+            ]
+          }
+        ],
+        "member": "263",
+        "reference": [
+          {
+            "key": "ref33",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/23.340618"
+          },
+          {
+            "key": "ref32",
+            "author": "ziegler",
+            "year": "2021",
+            "journal-title": "SRIM&#x2014;The Stopping and Range of Ions in Matter"
+          },
+          {
+            "key": "ref31",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2003.813129"
+          },
+          {
+            "key": "ref30",
+            "article-title": "SEU modeling and prediction techniques",
+            "author": "massengill",
+            "year": "1993",
+            "journal-title": "Proc IEEE Nucl Space Radiat Effects Conf"
+          },
+          {
+            "key": "ref35",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/23.273464"
+          },
+          {
+            "key": "ref34",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.1982.4336489"
+          },
+          {
+            "key": "ref10",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2013.2255312"
+          },
+          {
+            "key": "ref11",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2019.2950864"
+          },
+          {
+            "key": "ref12",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2004.839261"
+          },
+          {
+            "key": "ref13",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2005.860721"
+          },
+          {
+            "key": "ref14",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2008.2009450"
+          },
+          {
+            "key": "ref15",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2016.2627940"
+          },
+          {
+            "key": "ref16",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2019.2950431"
+          },
+          {
+            "key": "ref17",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1016/S0092-640X(70)80026-2"
+          },
+          {
+            "key": "ref18",
+            "year": "2021",
+            "journal-title": "88-Inch Cyclotron Berkeley Accelerator Space Effects"
+          },
+          {
+            "key": "ref19",
+            "year": "2021",
+            "journal-title": "RADiation Effects Facility-University of Jyvaskyla"
+          },
+          {
+            "key": "ref28",
+            "article-title": "The current status and future prospects for pulsed X-ray SEE testing",
+            "author": "lalumondiere",
+            "year": "2019",
+            "journal-title": "Proc IEEE Nucl Space Radiat Effects Conf"
+          },
+          {
+            "key": "ref4",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2003.820742"
+          },
+          {
+            "key": "ref27",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2014.2369006"
+          },
+          {
+            "key": "ref3",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2002.805346"
+          },
+          {
+            "key": "ref6",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2017.2778640"
+          },
+          {
+            "key": "ref29",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.1982.4336490"
+          },
+          {
+            "key": "ref5",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2012.2201956"
+          },
+          {
+            "key": "ref8",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2012.2224130"
+          },
+          {
+            "key": "ref7",
+            "first-page": "472",
+            "article-title": "Development of a system for producing tightly focused X-ray pulsed to generate single event effects in microelectronic devices",
+            "author": "moss",
+            "year": "1998",
+            "journal-title": "Proc 11th Biennial Single-Event Effects (SEE) Symp"
+          },
+          {
+            "key": "ref2",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/23.25490"
+          },
+          {
+            "key": "ref9",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2015.2498100"
+          },
+          {
+            "key": "ref1",
+            "year": "2018",
+            "journal-title": "Testing at the Speed of Light The State of US Electronic Parts Space Radiation Testing Infrastructure"
+          },
+          {
+            "key": "ref20",
+            "year": "2021",
+            "journal-title": "Texas A&M University Cyclotron Institute Texas A&M University"
+          },
+          {
+            "key": "ref22",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2019.2956911"
+          },
+          {
+            "key": "ref21",
+            "year": "2021",
+            "journal-title": "Cyclotron Resource Centre Universit&#x00E9; Catholique de Louvain"
+          },
+          {
+            "key": "ref24",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2013.2289383"
+          },
+          {
+            "key": "ref23",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2019.2943472"
+          },
+          {
+            "key": "ref26",
+            "author": "johnson",
+            "year": "2021",
+            "journal-title": "Cocktails and Ions FTP"
+          },
+          {
+            "key": "ref25",
+            "doi-asserted-by": "publisher",
+            "DOI": "10.1109/TNS.2009.2034158"
+          }
+        ],
+        "container-title": [
+          "IEEE Transactions on Nuclear Science"
+        ],
+        "original-title": [],
+        "link": [
+          {
+            "URL": "https://ieeexplore.ieee.org/ielam/23/9434988/9356799-aam.pdf",
+            "content-type": "application/pdf",
+            "content-version": "am",
+            "intended-application": "syndication"
+          },
+          {
+            "URL": "http://xplorestaging.ieee.org/ielx7/23/9434988/09356799.pdf?arnumber=9356799",
+            "content-type": "unspecified",
+            "content-version": "vor",
+            "intended-application": "similarity-checking"
+          }
+        ],
+        "deposited": {
+          "date-parts": [
+            [
+              2022,
+              5,
+              10
+            ]
+          ],
+          "date-time": "2022-05-10T14:48:26Z",
+          "timestamp": 1652194106000
+        },
+        "score": 1,
+        "resource": {
+          "primary": {
+            "URL": "https://ieeexplore.ieee.org/document/9356799/"
+          }
+        },
+        "subtitle": [],
+        "short-title": [],
+        "issued": {
+          "date-parts": [
+            [
+              2021,
+              5
+            ]
+          ]
+        },
+        "references-count": 35,
+        "journal-issue": {
+          "issue": "5"
+        },
+        "URL": "https://doi.org/10.1109/tns.2021.3060339",
+        "relation": {},
+        "ISSN": [
+          "0018-9499",
+          "1558-1578"
+        ],
+        "issn-type": [
+          {
+            "value": "0018-9499",
+            "type": "print"
+          },
+          {
+            "value": "1558-1578",
+            "type": "electronic"
+          }
+        ],
+        "subject": [],
+        "published": {
+          "date-parts": [
+            [
+              2021,
+              5
+            ]
+          ]
+        }
+      },
+      "original_bibtex": " @article{Ryder_2021, title={Comparison of Single-Event Transients in an Epitaxial Silicon Diode Resulting From Heavy-Ion-, Focused X-Ray-, and Pulsed Laser-Induced Charge Generation}, volume={68}, ISSN={1558-1578}, url={http://dx.doi.org/10.1109/TNS.2021.3060339}, DOI={10.1109/tns.2021.3060339}, number={5}, journal={IEEE Transactions on Nuclear Science}, publisher={Institute of Electrical and Electronics Engineers (IEEE)}, author={Ryder, Kaitlyn L. and Ryder, Landen D. and Sternberg, Andrew L. and Kozub, John A. and Zhang, En Xia and LaLumondiere, Stephen D. and Monahan, Daniele M. and Bonsall, Jeremy P. and Khachatrian, Ani and Buchner, Stephen P. and McMorrow, Dale and Hales, Joel M. and Zhao, Yuanfu and Wang, Liang and Wang, Chuanmin and Weller, Robert A. and Schrimpf, Ronald D. and Weiss, Sharon M. and Reed, Robert A.}, year={2021}, month=May, pages={626–633} }\n"
+    }
+  ]
+}

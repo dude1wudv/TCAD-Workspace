@@ -50,8 +50,7 @@ class AdmissionTests(unittest.TestCase):
         (self.root / "authority.md").write_text("Approved research authority", encoding="utf-8")
         self.contract = dict(self.envelope, schema="tcad-r06-scientific-gate-contract-v1",
                              manifest=self.ref("manifest.json"), authority=self.ref("authority.md"),
-                             p0_admissions_dir="p0", production_admissions_dir="production",
-                             max_p0_tasks=64, max_p0_particle_tasks=12)
+                             p0_admissions_dir="p0", production_admissions_dir="production")
         self.save("contract.json", self.contract)
         self.policy = {"scientific_gate": {
             "schema": "tcad-r06-scientific-gate-policy-v1", "contract": self.ref("contract.json"),
@@ -313,14 +312,28 @@ class AdmissionTests(unittest.TestCase):
         with self.assertRaises(gate.Pending):
             self.verify()
 
-    def test_p0_budget_counts_durable_intents_not_unsubmitted_drafts(self):
-        for index in range(65):
-            self.save("p0/draft-" + str(index) + ".json", {})
-        self.assertEqual(self.verify()["scope"], "p0_diagnostic")
-        intents = {str(index): {"scientific_admission": {
-            "scope": "p0_diagnostic", "recipe_id": "zero_whr"}} for index in range(64)}
-        with self.assertRaises(gate.Pending):
-            gate.verify(self.root, self.policy, self.task, intents=intents)
+    def test_p0_particle_admitted_after_65_total_and_13_particle_intents(self):
+        recipe = "logging_short_probe"
+        project = self.root / self.task["project"]
+        (project / "nodal-source.dat").write_text("R04_NODAL_SOURCE 1 1 1 1\n", encoding="utf-8")
+        self.save("event.json", {"event_id": "fixture-primary"})
+        plan = gate.read(self.root / "diagnostic.json")
+        self.save("diagnostic.json", dict(plan, recipe_id=recipe, independent_primary_count=1,
+                                          event_provenance=[self.ref("event.json")]))
+        self.task["id"] = "r06-p0-particle-v1"
+        self.admission.update(task_id=self.task["id"], recipe_id=recipe,
+                              input_sha256=gate.input_hashes(project),
+                              diagnostic_plan=self.ref("diagnostic.json"))
+        self.save("p0/" + self.task["id"] + ".json", self.admission)
+        intents = {f"r06-p0-prior-{index}": {"scientific_admission": {
+            "scope": "p0_diagnostic", "recipe_id": recipe if index < 13 else "zero_whr"}}
+            for index in range(65)}
+        for obsolete_fields in ({}, {"max_p0_tasks": 64, "max_p0_particle_tasks": 12}):
+            with self.subTest(obsolete_fields=obsolete_fields):
+                self.save("contract.json", dict(self.contract, **obsolete_fields))
+                self.policy["scientific_gate"]["contract"] = self.ref("contract.json")
+                result = gate.verify(self.root, self.policy, self.task, intents=intents)
+                self.assertEqual((result["scope"], result["recipe_id"]), ("p0_diagnostic", recipe))
 
     def test_pmi_build_uses_exact_frozen_compile_only_recipe(self):
         project = self.root / "inputs/build"

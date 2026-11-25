@@ -21,6 +21,13 @@ import uuid
 _watchdog_spec = importlib.util.spec_from_file_location("tcad_progress_watchdog", Path(__file__).with_name("watchdog.py"))
 watchdog = importlib.util.module_from_spec(_watchdog_spec)
 _watchdog_spec.loader.exec_module(watchdog)
+_pool_spec = importlib.util.spec_from_file_location("tcad_scheduler_pool", Path(__file__).with_name("scheduler_pool.py"))
+scheduler_pool = importlib.util.module_from_spec(_pool_spec)
+_pool_spec.loader.exec_module(scheduler_pool)
+_archive_spec = importlib.util.spec_from_file_location(
+    "tcad_geant4_archive", Path(__file__).with_name("geant4_archive.py"))
+geant4_archive = importlib.util.module_from_spec(_archive_spec)
+_archive_spec.loader.exec_module(geant4_archive)
 
 
 QUEUE_SCHEMA = "tcad-work-items-v1"
@@ -168,7 +175,11 @@ def write_json(path, value):
             stream.write("\n")
             stream.flush()
             os.fsync(stream.fileno())
-        os.replace(temporary, path)
+        for attempt in range(10):
+            try:os.replace(temporary,path);break
+            except PermissionError as exc:
+                if os.name!='nt' or getattr(exc,'winerror',None) not in (5,32) or attempt==9:raise
+                time.sleep(.001*(attempt+1))
         if os.name != "nt":
             descriptor = os.open(str(path.parent), os.O_RDONLY)
             try:
@@ -340,6 +351,10 @@ class Runtime:
                 task.update(depends_on=deps, requires=requires, repair_of=parent,
                             repair_reason=reason, adopt_run_id=adopted)
                 task["project"] = project.relative_to(self.workspace).as_posix()
+                if "priority" in proposal:
+                    if type(proposal["priority"]) is not int:
+                        raise ValueError("priority must be an integer; smaller values run first")
+                    task["priority"] = proposal["priority"]
                 tasks[task_id] = task
             except (ValueError, TypeError) as exc:
                 errors.append({"id": task_id, "reason": "invalid_task", "detail": str(exc)})
@@ -466,6 +481,8 @@ class Runtime:
         if not expected or path.is_symlink():
             return False
         if not path.is_file():
+            if intent["backend"] == "geant4" and not path.exists():
+                return geant4_archive.verify_cold(original, record)
             if intent["backend"] != "tcad":
                 return False
             try:
@@ -475,7 +492,22 @@ class Runtime:
         stat = path.stat()
         key = (str(path), stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns, expected)
         if key not in self._archive_cache:
-            self._archive_cache[key] = file_digest(path) == expected
+            stamp=(str(path),stat.st_dev,stat.st_ino,stat.st_size,stat.st_mtime_ns,stat.st_ctime_ns,expected)
+            token=digest(stamp);memo_path=self.state_dir/'verified-archives.json'
+            try:memo=read_json(memo_path) if memo_path.is_file() and not memo_path.is_symlink() else {}
+            except (OSError,ValueError):memo={}
+            entries=memo.get('verified',{}) if isinstance(memo,dict) and memo.get('schema')=='tcad-verified-archives-v1' else {}
+            if not isinstance(entries,dict):entries={}
+            if entries.get(token)==expected:
+                self._archive_cache[key]=True
+            else:
+                verified=file_digest(path)==expected
+                after=path.stat()
+                verified=verified and stamp[1:6]==(after.st_dev,after.st_ino,after.st_size,after.st_mtime_ns,after.st_ctime_ns)
+                self._archive_cache[key]=verified
+                if verified and not getattr(self,'read_only',False):
+                    entries[token]=expected
+                    write_json(memo_path,{'schema':'tcad-verified-archives-v1','verified':dict(list(entries.items())[-4096:])})
         return self._archive_cache[key]
 
     def _unlaunched(self, backend, record, path, cfg):
@@ -1078,7 +1110,18 @@ class Runtime:
         events.append({"type": "adopted_original_run", "id": task["id"], "run_id": run_id})
         return intent
 
+    def _ready(self, task):
+        pass
+
+    def _admission(self, task, slot):
+        """Compatibility runtime; the production engine adds live resource checks."""
+        return {"allowed": True}
+
+    def _switch_ready(self, task, live):
+        return True
+
     def tick(self, allow_submit=True):
+        idle_validated=set()
         self._profile()
         tasks, blocked = self._load_tasks()
         dependency_errors = self._dependency_errors(tasks)
@@ -1149,19 +1192,29 @@ class Runtime:
                     if any(views.get(key, {}).get("occupied") for key in self.intents if self._lineage(key) == root):
                         pending.append({"id": task_id, "reason": "repair_lineage_active"})
                         continue
+                # Invalid frozen inputs must not start a global profile drain.
+                self._eligible_slots(task)
+                schema=self.profiles[task['backend']]['resources']['schema']
+                if (not live and schema not in idle_validated) or (phase and schema!=phase):
+                    self._inputs(task);idle_validated.add(schema)
+                if phase and schema!=phase:
+                    if not self._switch_ready(task,live):
+                        pending.append({"id":task_id,"reason":"drain_target_resources_unavailable"})
+                        continue
+                self._ready(task)
                 candidates.append(task)
             except (OSError, ValueError, TypeError, KeyError) as exc:
                 blocked.append({"id": task_id, "reason": "task_requires_revision", "detail": str(exc)})
-        # Stop filling the current phase when another backend is ready, then
-        # alternate at the idle boundary. This preference owns no remote state.
-        draining = bool(self.transport and live and any(
-            self.profiles[task["backend"]]["resources"]["schema"] != phase for task in candidates))
-        if self.transport and not live:
-            last = self.state.get("last_submission_schema")
-            if last is None and self.intents:
-                latest = max(self.intents.values(), key=lambda item: item.get("submission_intent_at", 0))
-                last = latest.get("requested_resources", {}).get("schema")
-            candidates.sort(key=lambda task: self.profiles[task["backend"]]["resources"]["schema"] == last)
+        pool = scheduler_pool.PoolStateMachine(self.state.setdefault("pool_state", {}),
+                                               self.policy.get("pool_switching"))
+        ready_profiles = [{"id": task["id"],
+                           "profile": self.profiles[task["backend"]]["resources"]["schema"],
+                           "priority": task.get("priority", 100),
+                           "repair": bool(task["repair_of"]), "order": index}
+                          for index, task in enumerate(candidates)]
+        _, selected = pool.reconcile(live, ready_profiles, time.time())
+        draining = pool.state["state"] == "DRAINING"
+        candidates.sort(key=lambda task: (task.get("priority", 100), not bool(task["repair_of"])))
         for task in candidates:
             task_id, parent = task["id"], task["repair_of"]
             profile = self.profiles[task["backend"]]
@@ -1171,7 +1224,7 @@ class Runtime:
                     pending.append({"id": task_id, "reason": "submission_not_authorized"})
                 elif uncertain:
                     pending.append({"id": task_id, "reason": "original_pool_discovery_uncertain"})
-                elif self.transport and (draining or (phase is not None and phase != target)):
+                elif draining or (selected is not None and selected != target):
                     pending.append({"id": task_id, "reason": "pool_profile_waiting_for_idle",
                                     "current_schema": phase, "requested_schema": target,
                                     "detail": "Wait for verified collection and lease release; keep original task/run identities"})
@@ -1196,6 +1249,11 @@ class Runtime:
                         if any(v.get("input_digest") == input_digest or v.get("input_sha256") == inputs
                                for v in relatives):
                             raise ValueError("Repair repeats unchanged inputs from this lineage")
+                    verdict = self._admission(task, free)
+                    if not verdict["allowed"]:
+                        pending.append({"id": task_id, "reason": "admission_" + verdict["blocking_dimension"],
+                                        "detail": verdict["detail"]})
+                        continue
                     intent = self._submit(task, free, inputs, input_digest, events)
                     if intent is None:
                         reason = "preflight_rejected" if any(
@@ -1204,6 +1262,8 @@ class Runtime:
                         pending.append({"id": task_id, "reason": reason})
                         continue
                     phase = target
+                    selected = target
+                    pool.submitted(target, time.time())
                     views[task_id] = self._observe(task_id, intent, events, probe=False)
                     if views[task_id]["occupied"]:
                         occupied.add(free)
@@ -1243,11 +1303,13 @@ class Runtime:
                   "pool_phase": {"schema": phase, "draining": draining},
                   "repair_requests": repair_requests, "discovery_uncertain": uncertain,
                   "submission_allowed": bool(allow_submit and self.ready.get("new_jobs_authorized") is True)}
+        if self.intents or pool.state.get("target"):
+            self._save()
         self._maintain_results(views)
         self._offload_results(views)
         # Raw progress changes each poll; watchdog alerts still change the event fingerprint.
         fingerprint = dict(stable, runs=[{key: value for key, value in view.items()
-                                         if key not in {"progress", "watchdog_stop"}}
+                                         if key not in {"progress", "watchdog_stop", "remote_observed_at"}}
                                          for view in stable["runs"]])
         return {"fingerprint": digest(fingerprint), "events": events,
                 "active_count": active_count, "running_count": sum(v["status"] == "running" for v in views.values()),

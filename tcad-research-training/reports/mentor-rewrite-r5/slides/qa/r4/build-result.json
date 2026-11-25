@@ -1,0 +1,9 @@
+{
+  "state": "FINALIZED_AND_RENDERED_AWAITING_VISUAL_REVIEW",
+  "final": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\output\\dram-see-v3-mentor-r4.pptx",
+  "render": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\qa\\r4\\render",
+  "slides": 14,
+  "main_slides": 11,
+  "backup_slides": 3,
+  "new_solver_calls": 0
+}

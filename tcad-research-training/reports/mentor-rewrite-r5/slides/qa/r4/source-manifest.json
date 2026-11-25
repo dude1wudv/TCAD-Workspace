@@ -1,0 +1,31 @@
+{
+  "builder_sha256": "ef05c5f3dd64f7182f97205c1e79cb9ff698b505c789713d022b9cecbe619482",
+  "source_deck": {
+    "path": "E:\\TCAD-Workspace\\tcad-research-training\\reports\\final-r4\\dram-see-v3-r4-r4.pptx",
+    "sha256": "4b3487f325afdb86cee64f7fe04de5c319cb536e1a32e9273523f5c8713730fd",
+    "inspected_now": true
+  },
+  "files": {
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\assets\\data\\snapshot\\summary.json": "6fda8113e80160b957634e77d492d38e951961107c1ac4cd25f6257153522c80",
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\assets\\data\\writing-results.json": "26e85ef02296ed34553fc089b631d71ca5cc9a66d58a1e580b34731af0d9fa5c",
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\assets\\data\\snapshot\\original-failures.json": "6cca5c2e0737dce3478baadc3cf40221992f7462f474d2d56afef627f8580a39",
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\assets\\data\\snapshot-binding.json": "9c99e37e3ac2c2749fe1e41d790129ab0844e4f2e3da81a756a4190fd3037cde",
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\slides\\source-deck-reference.json": "04db564174f0518900cd5ca0d5a20664df478c127f980572bc9a2c24416f79f0",
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\assets\\figures\\native-event-window.png": "b561a9c81fa63fc69b1956bcfaf667f0026c790d8cb5d46aafa910a707f8c846",
+    "E:\\TCAD-Workspace\\tcad-research-training\\reports\\mentor-rewrite-r5\\assets\\figures\\native-physical-window.png": "3c488a1571a23b36fa456db88639fb8c30d181c7d2c0d465c85176b79a454a98"
+  },
+  "native_table_slides": [
+    3,
+    4,
+    7,
+    8,
+    10,
+    12,
+    13
+  ],
+  "native_chart_slides": [
+    5,
+    8,
+    9
+  ]
+}

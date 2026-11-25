@@ -1,0 +1,43 @@
+{
+  "summary_sentence": "在5~mV主阈值下，128个响应中96项正确、20项判据误读、8项临界、4项数值不确定，失败和缺失各为0与0项。",
+  "score_sentence": "域内留出的存储0/1岭回归RMSE分别为0.088294/0.094644~fC（电荷）和0.798415/0.838043~mV（裕量损失）。尺寸外推的存储0/1岭回归RMSE分别为0.068049/0.067155~fC（电荷）和0.519434/0.504929~mV（裕量损失）。",
+  "threshold_counts": {
+    "2.5": {
+      "correct": 96,
+      "criterion_error": 27,
+      "critical": 4,
+      "numerically_uncertain": 1
+    },
+    "5.0": {
+      "correct": 96,
+      "criterion_error": 20,
+      "numerically_uncertain": 4,
+      "critical": 8
+    },
+    "10.0": {
+      "correct": 96,
+      "critical": 26,
+      "criterion_error": 5,
+      "numerically_uncertain": 1
+    }
+  },
+  "main_threshold_counts": {
+    "correct": 96,
+    "criterion_error": 20,
+    "critical": 8,
+    "numerically_uncertain": 4,
+    "failed": 0,
+    "missing": 0
+  },
+  "numerical_status_counts": {
+    "OUTSIDE_BAND_UNREFINED": 370,
+    "PENDING_NEAR_BOUNDARY": 5,
+    "CONFIRMED_STABLE": 8,
+    "CROSSING": 1
+  },
+  "scores_unchanged_after_numerical_review": true,
+  "snapshot_generated_utc": "2026-10-12T00:34:06.043138+00:00",
+  "global_solver_s": 100022.06999999989,
+  "core_slide_count": 12,
+  "backup_slide_count": 4
+}

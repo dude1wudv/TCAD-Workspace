@@ -104,6 +104,35 @@ PARAMETERS = {
 }
 ACCEPTANCE_RECORD_MAX_BYTES = 1024 * 1024
 ACCEPTANCE_EVIDENCE_MAX_BYTES = 4 * 1024 * 1024
+R06_HISTORICAL_EVIDENCE_MAX_BYTES = 20 * 1024 * 1024
+R06_HISTORICAL_EVIDENCE_CASES = frozenset({
+    "r06-s-lhs02-development-p00-b0",
+    "r06-s-lhs02-development-p00-b1",
+    "r06-s-lhs02-development-p01-b0",
+    "r06-s-lhs02-development-p01-b1",
+    "r06-s-lhs02-development-p02-b1",
+    "r06-s-lhs02-development-p03-b1",
+    "r06-s-lhs02-development-p04-b1",
+    "r06-s-lhs02-development-p09-b1",
+    "r06-s-lhs02-development-p10-b1",
+    "r06-s-lhs02-development-p11-b1",
+    "r06-s-d0-nominal-p09-b1",
+    "r06-t-d0-nominal-shape-a-x30-b1",
+    "r06-t-d0-nominal-shape-b-x10-b1",
+    "r06-t-d0-nominal-shape-b-x30-b1",
+    "r06-t-d1-short-channel-shape-b-x10-b1",
+    "r06-t-d2-narrow-fin-shape-a-x30-b1",
+    "r06-t-d2-narrow-fin-shape-b-x10-b1",
+    "r06-t-d3-low-acceptor-shape-b-x30-b1",
+    "r06-z-d2-narrow-fin-b0",
+    "r06-z-d2-narrow-fin-b1",
+})
+R06_HISTORICAL_EVIDENCE_PREFIXES = (
+    "local_runtime/cloud-benchmark/centos79-guest-20261116/runs/",
+    "local_runtime/server-codex/",
+    "plans/dram-se-ddr5-lpddr5/",
+    "experiments/dram-se-r06/p0-z-reuse-review-r1/",
+)
 ACCEPTANCE_MAX_EVIDENCE = 16
 RESEARCH_CACHE_MAX_BYTES = 8 * 1024 * 1024
 _PARAMETER_KEY = re.compile(r"[A-Za-z][A-Za-z0-9_]{0,40}\Z")
@@ -223,7 +252,7 @@ def failed_unlaunched(observation):
 
 
 def execution(manifest, observation, fresh):
-    """Only original collection proof can establish completion."""
+    """Separate native exit, original collection proof and incomplete evidence."""
     collected = is_archived(manifest)
     tools = manifest.get("tool_exit_codes")
     solved = (
@@ -236,12 +265,28 @@ def execution(manifest, observation, fresh):
     if solved:
         return "solved"
     if collected:
-        return "failed"
+        codes = [manifest.get("remote_exit_code"), *(tools.values() if isinstance(tools, dict) else ())]
+        return "failed" if any(type(code) is int and code != 0 for code in codes) else "missing_data"
     if failed_unlaunched(observation):
         return "failed"
+    if manifest.get("collection_verified") is True and manifest.get("state") == "INTERRUPTED_COLLECTED":
+        return "under_review"
     if fresh and str(observation.get("status")).lower() == "running":
         return "running"
+    if fresh and (observation.get("status") == "collection_pending" or
+                  observation.get("remote_observation_fresh") is True):
+        outcome = solver_exit_state(observation.get("remote_exit_code"))
+        if outcome is not None:
+            return outcome
+    if manifest.get("state") in {"EXECUTED", "COLLECTED", "FAILED_COLLECTED"}:
+        return solver_exit_state(manifest.get("remote_exit_code")) or "missing_data"
     return "pending"
+
+
+def solver_exit_state(exit_code):
+    if type(exit_code) is int:
+        return "solver_finished" if exit_code == 0 else "failed"
+    return None
 
 
 def acceptance_verified(case, linked, manifests, plan_path):
@@ -263,8 +308,8 @@ def acceptance_verified(case, linked, manifests, plan_path):
                and record[field] == manifest.get(field) for field in ("input_sha256", "results_sha256"))
 
 
-def private_evidence_path(reference, plan_path):
-    """Allow native absolute workspace paths or plan-relative paths, without links."""
+def private_evidence_path(reference, plan_path, *, workspace_relative=False):
+    """Resolve private evidence within the workspace, without links."""
     if not isinstance(reference, str) or not reference or "\x00" in reference or ".." in re.split(r"[/\\]", reference):
         raise ValueError("Invalid private acceptance path")
     plan_directory = plan_path.absolute().parent
@@ -274,7 +319,7 @@ def private_evidence_path(reference, plan_path):
         # A Windows drive is not a relative path on a POSIX deployment.
         if re.match(r"^[A-Za-z]:|^\\\\", reference) and path.anchor == "":
             raise ValueError("Invalid private acceptance path")
-        path = plan_directory / path
+        path = (workspace if workspace_relative else plan_directory) / path
     path = path.absolute()
     try:
         path.relative_to(workspace)
@@ -387,14 +432,66 @@ def gate_acceptance_verified(case, linked, manifests, plan_path, gate_dir):
         or not valid_sha256(digest) or digest != manifest.get("results_sha256")
     ):
         return False
-    return private_evidence_verified(record.get("evidence"), plan_path, "Private acceptance")
+    return private_evidence_verified(record.get("evidence"), plan_path, "Private acceptance", identity)
+
+
+def zero_source_reuse_acceptance_verified(case, plan_path, plan_sha256, gate_dir):
+    """Verify a signed zero-deposition reuse without claiming an event run."""
+    identity = case["case_id"]
+    record_path = private_evidence_path(
+        "{}/case-acceptance/{}.json".format(gate_dir, identity), plan_path,
+    )
+    try:
+        record = read_bounded_json(record_path, ACCEPTANCE_RECORD_MAX_BYTES)
+    except FileNotFoundError:
+        return False
+    except ValueError:
+        raise ValueError("Invalid private acceptance record") from None
+    if (
+        not isinstance(record, dict)
+        or record.get("schema") != "tcad-r06-zero-source-reuse-acceptance-v1"
+        or record.get("status") != "accepted" or record.get("case_id") != identity
+        or record.get("plan_sha256") != plan_sha256
+        or record.get("event_run_id") is not None
+        or record.get("formal_statistics_eligible") is not False
+        or record.get("training_eligible") is not False
+    ):
+        return False
+    evidence = record.get("evidence")
+    if not private_evidence_verified(evidence, plan_path, "Private acceptance", identity):
+        return False
+    receipt_reference = next((item for item in evidence if item.get("kind") == "zero_source_reuse"), None)
+    if receipt_reference is None:
+        return False
+    receipt_path = private_evidence_path(receipt_reference["path"], plan_path, workspace_relative=True)
+    receipt = read_bounded_json(receipt_path, ACCEPTANCE_RECORD_MAX_BYTES)
+    rows = receipt.get("cases") if isinstance(receipt, dict) else None
+    if not isinstance(rows, list) or len(rows) != 1:
+        return False
+    row = rows[0]
+    label = row.get("label", {})
+    return (
+        receipt.get("schema") == "tcad-r06-deferred-zero-reuse-v1"
+        and receipt.get("manifest_sha256") == plan_sha256
+        and receipt.get("block") == case.get("block") == "S"
+        and receipt.get("condition", {}).get("profile_id") == case.get("profile_id") == "LHS02-development"
+        and receipt.get("condition", {}).get("radiation_id") == case.get("radiation_id")
+        and label.get("case_id") == identity and label.get("accepted") is True
+        and type(label.get("y")) is int and label["y"] == 0
+        and label.get("stored_bit") == case.get("stored_bit")
+        and row.get("event_run_id") is None and row.get("training_eligible") is False
+        and receipt.get("formal_statistics_eligible") is False
+        and receipt.get("training_eligible") is False
+        and valid_sha256(receipt.get("zero_result_sha256"))
+        and valid_sha256(receipt.get("transport_archive_sha256"))
+    )
 
 
 def valid_sha256(value):
     return isinstance(value, str) and re.fullmatch(r"[0-9a-fA-F]{64}", value) is not None
 
 
-def private_evidence_verified(evidence, plan_path, label):
+def private_evidence_verified(evidence, plan_path, label, case_id):
     if not isinstance(evidence, list) or not evidence:
         return False
     if len(evidence) > ACCEPTANCE_MAX_EVIDENCE:
@@ -405,10 +502,16 @@ def private_evidence_verified(evidence, plan_path, label):
             or not isinstance(reference.get("path"), str) or not reference["path"]
         ):
             return False
-        path = private_evidence_path(reference["path"], plan_path)
+        raw_path = reference["path"]
+        historical = (
+            case_id in R06_HISTORICAL_EVIDENCE_CASES
+            and raw_path.startswith(R06_HISTORICAL_EVIDENCE_PREFIXES)
+        )
+        path = private_evidence_path(raw_path, plan_path, workspace_relative=historical)
         if not path.exists():
             return False
-        actual = hash_bounded_file(path, ACCEPTANCE_EVIDENCE_MAX_BYTES)
+        limit = R06_HISTORICAL_EVIDENCE_MAX_BYTES if historical else ACCEPTANCE_EVIDENCE_MAX_BYTES
+        actual = hash_bounded_file(path, limit)
         if actual.lower() != reference["sha256"].lower():
             return False
     return True
@@ -488,15 +591,40 @@ def z_baseline_reuse_verified(case, manifests, p0_admissions, plan_path, plan_sh
         or digest != manifest.get("results_sha256")
     ):
         return None
-    if not private_evidence_verified(record.get("evidence"), plan_path, "Private Z reuse"):
+    if not private_evidence_verified(record.get("evidence"), plan_path, "Private Z reuse", identity):
         return None
     return run_id
 
 
-COUNT_FIELDS = ("planned", "archived", "solved", "accepted", "running", "failed", "remaining")
+COUNT_FIELDS = ("planned", "archived", "solved", "solver_finished", "accepted", "running", "failed", "remaining")
 LEGACY_COHORTS = ("core", "reserve", "control")
 LEGACY_CASE_PREFIXES = ("m1-r05-", "r05-", "R05-")
 SEALED_BLOCKS = {"HR", "HP"}
+CASE_WAIT_FRESH_SECONDS = 180
+# Fixed public copy from case_waits.py, excluding the sealed holdout messages.
+PUBLIC_CASE_WAITS = {
+    "等待 P1 证据审阅和 P2 放行。",
+    "等待该结构两种存储状态的数值资格验收。",
+    "等待对应存储状态的匹配零源验收记录。",
+    "等待该工况的输运输入冻结。",
+    "等待该工况的输运完成并核验收集。",
+    "等待冻结入选事件并生成对应的粒子源。",
+    "等待同结构、同存储状态的匹配零源。",
+    "等待真实参考事件、匹配零源和初次阈值试探决定。",
+    "等待同工况初次阈值试探的配对读出验收。",
+    "等待根据已验收读出确定下一次试探倍率或记录停止决定。",
+    "等待确认阈值试探的下一分支及未使用计划位。",
+    "等待输入核验和原调度器准入。",
+    "等待已审阅输入进入原调度队列。",
+    "等待原调度器分配运行资源。",
+    "等待原运行的状态回读。",
+    "等待原运行完成。",
+    "等待核验并收集原运行结果。",
+    "等待原运行结果的科学验收。",
+    "等待复核已有运行并决定修复或结案。",
+    "等待核对该项证据和原任务身份。",
+    "等待开发数据快照、候选模型和分批选点决定冻结。",
+}
 NON_FORMAL_KINDS = {"benchmark", "performance_probe", "diagnostic", "p0_diagnostic"}
 DIAGNOSTIC_SCOPE = "p0_diagnostic"
 
@@ -508,10 +636,9 @@ def empty_counts():
 def add_state(count, state, accepted=False, archived=False):
     count["planned"] += 1
     count["archived"] += int(archived)
-    count["solved"] += int(state == "solved")
+    if state in ("solved", "solver_finished", "running", "failed"):
+        count[state] += 1
     count["accepted"] += int(accepted)
-    count["running"] += int(state == "running")
-    count["failed"] += int(state == "failed")
     count["remaining"] += int(not accepted)
 
 
@@ -558,11 +685,11 @@ def plan_blocks(plan, cases):
         explicit.update({block: True for block in specified})
     sealed_blocks = {
         block for block, members in blocks.items()
-        if explicit.get(block, all(case_is_sealed(case) for case in members) or block in SEALED_BLOCKS)
+        if block in SEALED_BLOCKS or explicit.get(block, all(case_is_sealed(case) for case in members))
     }
     sealed_ids = {
         case["case_id"] for block, members in blocks.items() for case in members
-        if block in sealed_blocks or case_is_sealed(case)
+        if block in sealed_blocks or case_is_sealed(case) or sealed_case_id(case["case_id"])
     }
     return blocks, sealed_blocks, sealed_ids
 
@@ -606,8 +733,78 @@ def diagnostic_scope(scope):
     return isinstance(scope, str) and scope.endswith("_diagnostic")
 
 
+def public_case_wait(row, case):
+    # Match producer variants against complete sentences built from frozen coordinates.
+    text = row.get("public_wait_zh")
+    if not isinstance(text, str):
+        return None
+    if text in PUBLIC_CASE_WAITS:
+        return text
+
+    wait = row.get("wait")
+    code = wait.get("code") if isinstance(wait, dict) else None
+    profile = case.get("profile_id")
+    group = profile.split("-", 1)[0] if isinstance(profile, str) else ""
+    if not re.fullmatch(r"D[0-3]|LHS0[1-6]", group):
+        return None
+    if code == "dual_state_qualification" and group.startswith("LHS"):
+        expected = f"等待 {group} 的 b0、b1 数值资格验收。"
+        return expected if text == expected else None
+
+    radiation, bit, scale = (case.get(key) for key in ("radiation_id", "stored_bit", "scale_factor"))
+    if (case.get("block") != "T" or radiation not in ("G0", "C1")
+            or type(bit) is not int or bit not in (0, 1)
+            or type(scale) not in (int, float) or scale not in (3, 30)):
+        return None
+    coordinate = f"{group}/{radiation} b{bit}"
+    if code == "threshold_feedback":
+        expected = f"等待 {coordinate} ×10 试探的配对读出验收。"
+        if text == expected:
+            return expected
+        if profile == "LHS02-development" and bit == 1 and scale == 3:
+            expected = f"{coordinate} ×3 等待同工况 ×30 的配对读出验收和分支决定。"
+            return expected if text == expected else None
+    elif code == "matched_zero" and (profile, radiation, bit) == ("D1-short-channel", "G0", 1):
+        expected = f"{coordinate} ×{scale:g} 等待同一套输入的零源运行完成并核验。"
+        return expected if text == expected else None
+    elif code == "threshold_branch_hold" and profile == "D2-narrow-fin" and bit == 1 and scale == 3:
+        expected = f"{coordinate} ×30 仍未翻转，保留 ×3 分支，等待独立的新试探决定。"
+        return expected if text == expected else None
+    return None
+
+
+def project_case_waits(snapshot, plan_sha256, public_cases, now):
+    cases = snapshot.get("cases")
+    observed = timestamp(snapshot.get("observation_utc"))
+    generated = timestamp(snapshot.get("generated_at_utc"))
+    if (snapshot.get("schema") != "tcad-r06-case-waits-v1" or plan_sha256 is None
+            or snapshot.get("manifest_sha256") != plan_sha256
+            or snapshot.get("observation_fresh") is not True
+            or observed is None or generated is None or not isinstance(cases, list)):
+        return {}, None
+    now = now or dt.datetime.now(dt.timezone.utc)
+    observed_at, generated_at = (dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+                                 for value in (observed, generated))
+    if not (observed_at <= generated_at <= now
+            and (now - observed_at).total_seconds() <= CASE_WAIT_FRESH_SECONDS):
+        return {}, None
+
+    waits, seen = {}, set()
+    for row in cases:
+        identity = row.get("case_id") if isinstance(row, dict) else None
+        if not isinstance(identity, str) or identity not in public_cases:
+            continue
+        if identity in seen:
+            return {}, None
+        seen.add(identity)
+        reason = public_case_wait(row, public_cases[identity])
+        if reason is not None:
+            waits[identity] = reason
+    return waits, observed
+
+
 def build_research(plan_path: Path, manifests: dict, observation: dict, progress: list, now=None,
-                   runtime=None, work_items=None, scheduler=None, stats_snapshot=None):
+                   runtime=None, work_items=None, scheduler=None, stats_snapshot=None, case_waits=None):
     plan = read_object(plan_path)
     if not plan:
         return {"schema_version": 1, "available": False, "progress": [], "cases": [], "conditions": [], "profiles": []}
@@ -684,11 +881,17 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
     timing_contract = plan.get("timing_contract")
     stats_snapshot = stats_snapshot if isinstance(stats_snapshot, dict) else None
     plan_sha256 = None
-    if stats_snapshot or (p0_admissions and isinstance(timing_contract, dict)):
+    has_lhs02_responses = any(
+        case.get("block") == "S" and case.get("profile_id") == "LHS02-development"
+        for case in cases
+    )
+    if case_waits or stats_snapshot or has_lhs02_responses or (p0_admissions and isinstance(timing_contract, dict)):
         plan_sha256 = hashlib.sha256(plan_path.read_bytes()).hexdigest()
     if stats_snapshot and str(stats_snapshot.get("plan_sha256")).lower() != plan_sha256:
         stats_snapshot = None
     budget, statistics_snapshot_status = plan_budget(plan, blocks, cases, profiles, radiations, stats_snapshot)
+    public_plan_cases = {identity: case for identity, (_, case) in seen.items() if identity not in sealed_ids}
+    waits, waits_observed_at = project_case_waits(case_waits or {}, plan_sha256, public_plan_cases, now)
     if p0_admissions and isinstance(timing_contract, dict):
         for identity, (_, case) in seen.items():
             if not is_zero(case):
@@ -717,6 +920,7 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
     scheduler_runs = {item["_scheduler_task_id"]: run_id for run_id, item in manifests.items()
                       if isinstance(item.get("_scheduler_task_id"), str)}
     running = set()
+    task_results = {}
     diagnostics_from_scheduler = set()
     for task in (scheduler or {}).get("tasks", []):
         if not isinstance(task, dict) or task.get("kind") in {"sealed", "unmatched", "benchmark", "performance_probe"}:
@@ -751,6 +955,10 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
                                 task_state or scheduler_state)
         elif task_running and identity in seen and run_id not in excluded_runs:
             running.add(identity)
+        elif (not scheduler.get("observation_stale") and identity in seen and run_id is not None
+              and run_id not in excluded_runs and task.get("execution_result") in {"solver_finished", "failed", "under_review"}):
+            bindings.setdefault(identity, set()).add(run_id)
+            task_results[run_id] = task["execution_result"]
 
     public_diagnostics = {"P0": {key: 0 for key in COUNT_FIELDS if key not in {"accepted", "remaining"}}}
     for bucket, run_id, scheduler_running, scheduler_state in diagnostics.values():
@@ -764,24 +972,60 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             diagnostics_from_scheduler.add(bucket)
         count["planned"] += 1
         count["archived"] += int(archived)
-        if state in ("running", "solved", "failed"):
+        if state in ("running", "solved", "solver_finished", "failed"):
             count[state] += 1
 
+    def baseline_key(case):
+        profile, bit, timing = (case.get(key) for key in ("profile_id", "stored_bit", "deck_timing_version"))
+        if isinstance(profile, str) and type(bit) is int and bit in (0, 1) and isinstance(timing, str):
+            return profile, bit, timing
+        return None
+
+    zero_by_key = {}
+    for identity, (_, case) in seen.items():
+        if is_zero(case) and (key := baseline_key(case)) is not None:
+            zero_by_key.setdefault(key, []).append(identity)
+    controller = observation.get("scheduler") or {}
+    controller_tasks = controller.get("tasks") or {}
+    flow = controller.get("flow") or {}
+    isolated_slots = {row["slot"] for row in flow.get("slots", []) if isinstance(row, dict)
+                      and type(row.get("slot")) is int and row.get("idle_reason", row.get("reason")) == "slot_probe_isolated"}
+    solved_cases = set()
     public_cases = []
     for identity, (block, case) in seen.items():
         linked = (set(case_run_ids(case)) | bindings.get(identity, set())) - excluded_runs
         linked = {key for key in linked if (
             reuse_run_cases[key] == identity if key in reuse_run_cases else runtime_identities.get(key, identity) == identity
         )}
-        states = [execution(manifests.get(key, {}), runs.get(key, {}), fresh) for key in linked]
-        state = next((value for value in ("solved", "running", "failed") if value in states
+        states, isolated = [], False
+        for key in linked:
+            run = runs.get(key, {})
+            diagnostic = controller_tasks.get(run.get("id"), {})
+            if diagnostic.get("remote_observation_fresh") is True:
+                run = dict(run, remote_observation_fresh=True)
+            attempt_state = execution(manifests.get(key, {}), run, fresh)
+            if attempt_state in ("pending", "running") and key in task_results:
+                attempt_state = task_results[key]
+            if attempt_state == "pending" and fresh and diagnostic.get("task_state") == "QUARANTINED":
+                attempt_state = "under_review"
+            if fresh and run.get("occupied") is True and run.get("slot") in isolated_slots:
+                isolated = True
+                if attempt_state == "pending":
+                    attempt_state = "under_review"
+            states.append(attempt_state)
+        state = next((value for value in ("solved", "running", "solver_finished", "under_review", "missing_data", "failed") if value in states
                       or value == "running" and identity in running), "pending")
-        accepted = state == "solved" and (
+        reused = (block == "S" and case.get("profile_id") == "LHS02-development"
+                  and plan_sha256 is not None
+                  and zero_source_reuse_acceptance_verified(case, plan_path, plan_sha256, gate_dir))
+        accepted = reused or state == "solved" and (
             gate_acceptance_verified(case, linked, manifests, plan_path, gate_dir)
             or legacy and acceptance_verified(case, linked, manifests, plan_path)
         )
-        add_state(counts[block], state, accepted,
-                  archived=any(is_archived(manifests.get(key, {})) for key in linked))
+        archived = any(is_archived(manifests.get(key, {})) for key in linked)
+        if state == "solved":
+            solved_cases.add(identity)
+        add_state(counts[block], state, accepted, archived=archived)
         if identity in sealed_ids:
             continue
         kind = "control" if is_zero(case) or case.get("kind") == "control" else "response"
@@ -796,11 +1040,29 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             "primary_index": primary_index if type(primary_index) is int else None,
             "pair_id": pair, "state": "accepted" if accepted else state,
             "attempts": max(len(states), int(identity in running)),
+            "failed_attempts": states.count("failed"), "archive_verified": archived,
         }
+        if reused:
+            row["zero_source_reused"] = True
+        if isolated and state in ("running", "solver_finished", "under_review"):
+            row["issue"] = "slot_isolated"
         if not legacy:
             row.update(block=block, radiation_id=short_id(case.get("radiation_id")),
                        statistics_intent=case.get("statistics_intent") is True, statistics_eligible=False)
+        if identity in waits and not accepted:
+            row["public_wait_zh"] = waits[identity]
         public_cases.append(row)
+
+    for row in public_cases:
+        if row["state"] != "solved":
+            continue
+        _, case = seen[row["case_id"]]
+        control = public_id(case.get("control_case_id"))
+        if not isinstance(control, str) and not legacy and row["kind"] == "response":
+            matches = zero_by_key.get(baseline_key(case), [])
+            control = matches[0] if len(matches) == 1 else None
+        row["issue"] = "missing_zero_control" if (row["kind"] == "response" and
+            isinstance(control, str) and control not in solved_cases) else "under_review"
 
     private_profiles = {item["id"] for item in profiles if case_is_sealed(item)
                         or item.get("partition") in ("profile_holdout", "holdout", "sealed")}
@@ -834,6 +1096,8 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             "cohort": cohort if cohort in counts else None,
             "parameters": parameters({**item, **(nested if isinstance(nested, dict) else {})}, plan=True),
             "planned": len(selected), "solved": sum(case["state"] in {"solved", "accepted"} for case in selected),
+            "solver_finished": sum(case["state"] == "solver_finished" for case in selected),
+            "archived": sum(case["archive_verified"] for case in selected),
             "accepted": sum(case["state"] == "accepted" for case in selected),
             "running": sum(case["state"] == "running" for case in selected),
         })
@@ -849,6 +1113,9 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
         "counts": counts, "conditions": public_conditions, "profiles": public_profiles, "cases": public_cases,
         "progress": public_progress, "acceptance_basis": "original_collection_and_scientific_evidence",
     }
+    if any("public_wait_zh" in case for case in public_cases):
+        result["case_waits_observed_at"] = waits_observed_at
+        result["case_waits_max_age_seconds"] = CASE_WAIT_FRESH_SECONDS
     if legacy:
         for block in counts:
             counts[block]["pairs"] = len(pairs[block])

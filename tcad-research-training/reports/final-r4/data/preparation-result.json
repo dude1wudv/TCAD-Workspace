@@ -1,0 +1,8 @@
+{
+  "state": "COMPLETE_SNAPSHOT_BOUND_TEXT_AND_TABLES_GENERATED",
+  "generated_utc": "2026-10-12T00:43:29.027475+00:00",
+  "main_responses": 128,
+  "independent_events": 64,
+  "no_fitting_or_solver_calls": true,
+  "visual_document_review": "PENDING_AFTER_COMPILATION"
+}

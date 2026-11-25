@@ -123,3 +123,10 @@ coverage/
 *.pptx
 *.xls
 *.xlsx
+
+# Local auto-director runtime & private secrets
+/local_runtime/
+secrets.env
+
+# Thesis draft build output
+/论文草稿/build/

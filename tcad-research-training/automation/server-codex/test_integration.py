@@ -34,6 +34,12 @@ class ControllerRuntimeIntegrationTests(unittest.TestCase):
         r.tasks, r.calls, r.behavior, r.collect_failures = [], [], {}, set()
         r.queue_tasks()
 
+        # Keep legacy Runtime contract scenarios synchronous; the scheduler
+        # engine and its asynchronous process boundary have separate tests.
+        factory=mock.patch.object(c,'create_runtime',side_effect=lambda policy,ready:runtime_fixtures.runtime.Runtime(policy,ready))
+        factory.start();self.addCleanup(factory.stop)
+        h.policy['pool_switching']={'min_profile_dwell_seconds':0,'max_profile_ready_wait_seconds':0}
+        h.save_policy()
         self.model_actions = []
         self.raw_reports = {}
         self.children = []
@@ -73,8 +79,7 @@ class ControllerRuntimeIntegrationTests(unittest.TestCase):
         return child
 
     def serve_once(self, now):
-        # create_runtime is deliberately not patched: each invocation imports
-        # and constructs the production Runtime, reopening its durable state.
+        # Reopen the original Runtime ledger for compatibility scenarios.
         with mock.patch.object(c.time, "time", return_value=now):
             c.serve(self.harness.policy_path, once=True)
         error = self.harness.state / "runtime-error.json"

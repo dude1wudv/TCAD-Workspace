@@ -1,0 +1,20 @@
+{
+  "generated_utc": "2026-10-12T01:28:23.094441+00:00",
+  "purpose": "Advisor project brief derived only from accepted frozen project evidence",
+  "source_sha256": {
+    "reports/final-r4/README.md": "6c5ff4f3bf13608530e3c0f549cc69e337bebb04b762717cc6b99e232cdff3fd",
+    "reports/final-r4/data/frozen-models.json": "9b60343bb714eae3df285d23b67fa9a7b034743011f6a405f6f9ee098743a383",
+    "reports/final-r4/data/snapshot/prediction-scores.csv": "3bac7ba9fb7603112d924b886fdea1ac6338054490b1e338eb281d812680e251",
+    "reports/final-r4/sections/course/03-platform.tex": "b975468714fac6f6e71bc56808b0a6fe8e315444c345b5adbaf6678ceb186730",
+    "reports/final-r4/sections/course/04-design.tex": "e70aa25b3c254d00dad00902762318b585dbdb2e3094dee8fff06bcd9211e4c9",
+    "reports/final-r4/sections/paper/05-prediction-discussion.tex": "28f518d85971e451fc2dc430207346a8531049e99c9cad78830bdf6ccb0c8633",
+    "reports/final-r4/delivery-manifest.json": "6736d751c7a5b9b1f1bcdaa897eaef29f4810600603fc31faa74bf2c57930c9e"
+  },
+  "output_sha256": "601af6f8bca56eb23ae1a1b78b88176afde9f8c4c7ecc718a9ae88e0e1c16a3e",
+  "authoring_source_sha256": "f811c005d50eaa5aa96777a2cf0151e924c43aae5ee2d5fe86525c7ac0e2c1d2",
+  "original_package_modified": false,
+  "new_simulation_or_training": false,
+  "human_activity_claimed": false,
+  "status": "CONTENT_AND_TWO_PAGE_VISUAL_REVIEW_PASSED",
+  "visual_review_sha256": "18941c0e6683b0588707ae678f7322358beb9db0b634646c96b8bce5b4d0415f"
+}

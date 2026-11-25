@@ -1,6 +1,23 @@
-# r0.4 显式输入协议
+# r0.4 / r0.6 显式输入协议
 
 这是软件数据协议，不是新的仿真方法或参数依据。结构、材料、粒子源、Geant4→TCAD 映射、读出判据及适用标记须沿用已核对的模型与文献。软件不通过猜测补齐它们。
+
+## r0.6 接入
+
+`ingest`、`inspect` 和 `prepare` 接收从已核验证据显式导出的五表清单。以下是 r0.6 相对后文 r0.4 协议的变化。原始计划槽位、状态页进度及求解收据需要先经过数据导出和科学审阅，才能提供模型监督。
+
+| 位置 | r0.6 字段与规则 |
+|---|---|
+| 清单 | `simulation_revision:"0.6"`，五张表均有 `files_sha256`（包括空表），指定冻结的 `deck_timing_version`、`source_time_ns` 和以注入为原点的 `sample_times_ns`。纯输运快照可省略时序，`sample_times_ns` 可为 `null`。 |
+| 工况 | `cohort` 为 `development`、`radiation_holdout` 或 `profile_holdout`。保留冻结 `radiation_id`，如附带 `split/holdout`，须与分区一致。C2/C3 归辐照留出，H0 长栅长与 H1/H2 逐轴范围内稀疏组合均归 profile 留出。分组沿用实际 `profile_id`、原始 primary 和对照来源。 |
+| 原始 primary | `source_primary_id` 和 `source_hash` 保留实际输运身份，`pool_member` 必须显式给出。`source_features` 保存未缩放的映射特征，映射未知的未监督事件可保留 `null`。这里的 `sampling` 如有，仅作为事件附加信息。 |
+| 响应 | 每条响应指定实际的 `state`、原始 `run_id`、`source_hash`、原生 `input_sha256` 文件映射、`radiation_id`、`source_shape_id`、`source_time_ns`、`deck_timing_version`、`scale_factor`、`selection_mechanism` 和 `statistics_eligible`。自然抽样可提供物化后的标量 `inclusion_probability`，取值 `(0,1]`。只有纳入概率、全池成员身份及已接受的显式二元标签齐备时，才允许带入统计资格声明。 |
+| 无粒子对照 | Z 在开发表中表示为 `selection_mechanism:"no_particle_control"`，`source_time_ns:null`，保留同一 deck 时序、原始 run 和哈希。对照按其实际初态记录。 |
+
+- `simple_random`、`stratified_pi` 和 `active_learning` 的缩放为 `1`。`threshold_scaled` 的实际倍率须大于 `1`，与 `active_learning` 均可提供响应监督，纳入概率为空且无统计资格。R 将倍率应用于注入电荷一次，原生沉积能量与脉冲长度保留原定义。F 仍使用原 `features` 白名单。
+- b1 单独存在时就保存一条 `state:1` 的响应。原始波形提取仍需要同 profile、同初态、同读出协议和同 deck 版本的无粒子对照，`matching_control` 增加 `deck_timing_version`。同一事件的不同倍率是独立响应记录，共享输运来源以限制切分。同倍率的修复须保留原谱系与抽样设计。R/S 抽中同一自然事件且复用求解时，可在各自的抽样回执中引用同一物理响应。
+- r0.6 概率温度只使用符合条件的 `simple_random`；缺少两个类别或观测状态时，相应的概率输出保持待定。完整池模型代理需要池内全部映射输入，可输出单个已训练状态，另一状态在 F 的输入中保持 `null`。
+- `dram_predictor.aggregation.estimate_r06_cross_section` 处理直接统计。调用方提供已重放核验的冻结选样回执、对应 `case_draw_map`、独立验签的 `expected_selection_sha256`、源面积归一化已验证声明及该 `stored_bit` 对应的已验收标签。每次只估计一个 R/S/HR/HP 单元和一个状态，使用 `A_src/N × Σ(y/π)`，b0 权重计入匹配子集概率。方差自由度不足时保留原因。此函数的结果独立报告，当前 F 训练仍接收自身支持的原生计数或折外模型代理。
 
 ## Manifest
 

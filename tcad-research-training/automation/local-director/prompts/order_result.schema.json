@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CodexWorkOrderResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "order_id",
+    "outcome",
+    "summary",
+    "changed_files",
+    "commands_run",
+    "artifacts_produced",
+    "blockers",
+    "next_recommendation"
+  ],
+  "properties": {
+    "order_id": { "type": "string", "minLength": 1 },
+    "outcome": {
+      "type": "string",
+      "enum": ["completed", "partial", "blocked", "failed"]
+    },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 1200 },
+    "changed_files": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "commands_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["command", "exit_code", "summary"],
+        "properties": {
+          "command": { "type": "string" },
+          "exit_code": { "type": "integer" },
+          "summary": { "type": "string", "maxLength": 400 }
+        }
+      }
+    },
+    "artifacts_produced": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "blockers": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "next_recommendation": { "type": "string", "maxLength": 500 }
+  }
+}

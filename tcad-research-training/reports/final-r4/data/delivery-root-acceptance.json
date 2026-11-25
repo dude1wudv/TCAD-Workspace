@@ -1,0 +1,48 @@
+{
+  "utc": "2026-10-12T00:41:13.922487+00:00",
+  "state": "FULL_R4_DATA_DELIVERY_ACCEPTED_PENDING_DOCUMENTS",
+  "reviewer": "root",
+  "snapshot": "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full",
+  "evidence_sha256": {
+    "local_runtime/dram-see-v3/downstream-r4-completion/20261012T0020Z/delivery-exit.json": "a74e1c4544d0f8feca2b463af874a46e1ebf4710c6f3a4b31a89947afd0cd79c",
+    "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/snapshot-manifest.json": "58650c6a934c81b07bf03e7aca5917f73b499307baf5c6c276debd47c8ef7ca3",
+    "experiments/dram-see-v3/r50-main/data/delivery-r4/20261012T0033Z-full/summary.json": "6fda8113e80160b957634e77d492d38e951961107c1ac4cd25f6257153522c80",
+    "local_runtime/dram-see-v3/downstream-r4-independent-validation/actual-delivery-20261012T0033Z/result.json": "118bd5f0ff92350ecb42214af734cb3c631cd56d69ebcd9ef81278abaae52df7",
+    "local_runtime/dram-see-v3/downstream-r4-independent-validation/actual-delivery-20261012T0033Z/verification.json": "36cb1ac87ef59657065f8a25310843bedaba36e8069a3cb901f4d453f5a81e23",
+    "local_runtime/dram-see-v3/downstream-r4-independent-validation/actual-delivery-20261012T0033Z/review.md": "480f681d18253e8bb29d5462eb9bd2207ad30b078e81a65a543457f1f4b46f07",
+    "local_runtime/dram-see-v3/downstream-r4-independent-validation/actual-delivery-20261012T0033Z/exit.json": "70086392e1507ad816037287731786956b3d01a86ead4e9d2bd1bd8288207cd7",
+    "local_runtime/dram-see-v3/downstream-r4-completion/20261012T0020Z/native-visual-review.json": "8678e261287a28c882082918e1cdc214fd232c25788fc8dd48b94fa60d9bab2f",
+    "local_runtime/dram-see-v3/downstream-r4-completion/20261012T0020Z/data-plot-visual-review.json": "f4682b735d347b6ad69e63253c0952272db177aaa4950daf389ae71bf45ad2c5"
+  },
+  "output_files_verified": 64,
+  "source_manifest_files_independently_verified": 77,
+  "fixed_independent_events": 64,
+  "paired_responses": 128,
+  "independently_recomputed_strata": 96,
+  "n_per_stratum": 4,
+  "main_threshold_counts": {
+    "correct": 96,
+    "criterion_error": 20,
+    "critical": 8,
+    "failed": 0,
+    "missing": 0,
+    "numerically_uncertain": 4
+  },
+  "all_native_pngs_actually_viewed": 4,
+  "all_data_plot_pngs_actually_viewed": 13,
+  "global_ledger_unchanged": true,
+  "global_solver_s": 100022.07,
+  "all7_historical_failed_rows_retained": true,
+  "four_alias_original_runner_codes_remain_null": true,
+  "score_files_separate_and_byte_equal": true,
+  "new_solver_calls": 0,
+  "new_charges": 0,
+  "original_snapshots_remain_immutable": true,
+  "remaining": [
+    "final report/paper/PPT source/content/rendered-page acceptance",
+    "agent-authored course supporting materials final acceptance",
+    "heartbeat pause after full agent acceptance"
+  ],
+  "actual_student_teacher_defense_or_assessment_completed": false,
+  "scope": "All science/native/data-plot sources and independent output/statistical tests accepted. Immutable snapshot pending labels remain historical collection-time state; this external root acceptance supplies actual later visual review."
+}
