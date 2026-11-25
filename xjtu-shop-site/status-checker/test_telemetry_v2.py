@@ -607,13 +607,13 @@ class StatusProjectionTests(unittest.TestCase):
         overlay = self.root / 'overlay'
         with (
             patch.object(checker.os.path, 'ismount', side_effect=[True, False]) as ismount,
-            patch.object(checker, 'fs_space', side_effect=[space(169, 100, 19), space(69, 28, 39), space(169, 100, 19)]),
+            patch.object(checker, 'fs_space', side_effect=[space(169, 100, 4), space(69, 28, 39), space(169, 100, 4)]),
         ):
             available = checker.storage_metrics(overlay)
             missing = checker.storage_metrics(overlay)
         self.assertEqual(ismount.call_args.args, (overlay,))
         self.assertTrue(available['server_root']['low_space'])
-        self.assertEqual(available['server_root']['warning_below_bytes'], 20 * GIB)
+        self.assertEqual(available['server_root']['warning_below_bytes'], 5 * GIB)
         self.assertEqual(available['vm_disk_growth']['available_bytes'], 39 * GIB)
         self.assertIsNone(missing['vm_disk_growth']['available_bytes'])
 

@@ -78,7 +78,7 @@ RESEARCH_CACHE_PATH = Path(os.environ.get(
 ))
 STATS_SNAPSHOT_PATH = os.environ.get("TCAD_STATUS_STATS_SNAPSHOT")
 VM_OVERLAY_PATH = Path(os.environ.get("TCAD_STATUS_VM_OVERLAY", "/srv/tcad-isolated-vm/rocky9-20261116/overlay"))
-SERVER_STORAGE_WARNING_BYTES = 20 * 1024**3
+SERVER_STORAGE_WARNING_BYTES = 5 * 1024**3
 FRESHNESS_LIMIT_SECONDS = 180
 DISPATCH_FLOW_SCHEMA = "tcad-dispatch-flow-v1"
 DISPATCH_SLOT_STATES = {"running", "launching", "sealing", "quarantined", "free", "unknown"}

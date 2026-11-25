@@ -354,7 +354,7 @@ function renderKpis(payload, scheduler, flow, batch, research, services) {
   const swap = vm.swap || {};
   const swapUsed = swap.used_bytes ?? (finite(swap.total_bytes) && finite(swap.available_bytes) ? swap.total_bytes - swap.available_bytes : null);
   const belowThreshold = root?.low_space === true || (finite(root?.available_bytes) &&
-    root.available_bytes < (root.warning_below_bytes ?? 20 * 1024 ** 3));
+    root.available_bytes < (root.warning_below_bytes ?? 5 * 1024 ** 3));
   const plan = (key) => number(totals?.[key]);
   const hasSolverFinished = totals?.solver_finished != null;
   const planKeys = hasSolverFinished ? ['solver_finished', 'archived', 'accepted', 'planned'] : ['solved', 'accepted', 'planned'];
