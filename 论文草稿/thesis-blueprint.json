@@ -2,9 +2,9 @@
   "schema_version": 2,
   "title": "AI辅助下的DRAM存储器单粒子效应评估研究",
   "stage": "DRAFTING",
-  "last_sprint_utc": "2026-11-24T16:50:00+00:00",
+  "last_sprint_utc": "2026-11-25T14:05:00+00:00",
   "last_build_ok": true,
-  "last_build_utc": "2026-11-24T16:54:04+00:00",
+  "last_build_utc": "2026-11-25T14:13:20Z",
   "chapters": [
     {
       "id": "ch01",
@@ -22,15 +22,18 @@
       "id": "ch02",
       "file": "sections/02-physical-modeling.tex",
       "title": "DRAM单粒子效应物理建模与多尺度仿真方法",
-      "status": "SKELETON",
+      "status": "EVIDENCE_BOUND",
       "required_assets": [
         "q-literature-bib-audit-01",
+        "r06-modeling-parameters-20261125",
+        "r06-modeling-matrix-table",
         "v3-v4-r04-r06-evidence-metrics-20261124",
         "v3-v4-historical-evidence-table",
         "v3-read-window-outcomes",
-        "v4-a1-center-window-error"
+        "v4-a1-center-window-error",
+        "r06-sign-prep-fill-20261125-01"
       ],
-      "notes": "按真实 r0.6/v3-v4 器件与输运-TCAD 耦合工况编写，纳入已登记历史证据图表与保留失败项。"
+      "notes": "Day-2 Daily Thesis Sprint 已完成第 2 章从零起草，绑定 r0.6 冻结 13 构型/10 质子池/Geant4-TCAD 耦合三线表、v3/v4 历史证据图表与保留失败项，并显式标出绝对掺杂、三维网格收敛与逐池 Geant4 参数等留白；Codex 已执行 build.ps1 完成编译验错，最终日志无语法错误、未定义引用或严重溢界。"
     },
     {
       "id": "ch03",

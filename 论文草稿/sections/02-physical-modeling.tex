@@ -1,2 +1,99 @@
+% asset: q-literature-bib-audit-01
+% asset: r06-modeling-parameters-20261125
+% asset: r06-modeling-matrix-table
+% asset: v3-v4-r04-r06-evidence-metrics-20261124
+% asset: v3-v4-historical-evidence-table
+% asset: v3-read-window-outcomes
+% asset: v4-a1-center-window-error
+% asset: r06-sign-prep-fill-20261125-01
 \section{DRAM单粒子效应物理建模与多尺度仿真方法}
-\pendingdata{本章待绑定已核验的器件几何、物理模型、Geant4 核输运与 Sentaurus TCAD 耦合工况参数后起草。}
+\label{sec:ch02-modeling}
+
+单粒子效应多尺度仿真的结果高度依赖器件几何定义、半导体输运方程、读出时序窗口以及核输运到瞬态求解器的耦合口径。为避免不同阶段模型参数混用，本章给出现阶段 r0.6 冻结的 1T1C 鞍形鳍 DRAM 文献代表结构参数化定义、电学与混合模式电路模型、Geant4 质子输运与节点载流子注入接口，并汇总前期 v3 与 v4 阶段暴露的机制见证、空间离散误差及保留失败项。
+
+\subsection{面向 LPDDR5 研究的鞍形鳍 DRAM 器件几何与参数化定义}
+\label{subsec:ch02-device-geometry}
+
+器件机理线采用文献公开的 14\,nm 级鞍形鳍（saddle fin）DRAM 单元作为基准代表结构\cite{han2019saddlefin,ryu2025cryogenicdram}。正文统一将其界定为“面向 LPDDR5 研究的文献代表结构”，用于考察器件结构与掺杂扰动下的电荷收集和位翻转机理，不将其直接等同于商业 DDR5 或 LPDDR5 芯片的原生工艺。
+
+在基准构型 D0 下，三维器件建模盒尺寸为 $x=154\,\mathrm{nm}$、$y=40\,\mathrm{nm}$、$z=250\,\mathrm{nm}$，核心参考几何尺寸为：几何栅长 $L_{\mathrm{g}}=14\,\mathrm{nm}$、鳍宽 $W_{\mathrm{fin}}=8\,\mathrm{nm}$、栅氧厚度 $T_{\mathrm{ox}}=6\,\mathrm{nm}$、顶部结段几何高度 $H_{\mathrm{jc}}=82\,\mathrm{nm}$、鳍高 $H_{\mathrm{fin}}=35\,\mathrm{nm}$、存储节点侧长度 $L_{\mathrm{sn}}=20\,\mathrm{nm}$ 以及位线侧长度 $L_{\mathrm{bl}}=20\,\mathrm{nm}$。需要说明的是，几何栅长 $L_{\mathrm{g}}$ 与有效沟道长度在物理定义上彼此独立；当前 r0.6 冻结清单仅固定几何与相对倍率参数，未直接填入绝对掺杂浓度剖面（$\mathrm{cm}^{-3}$）及有效沟道长度的独立数值字段，相关绝对量以各构型原生器件建模输入为准。
+
+为在有限算力下覆盖关键工艺与结构变化，r0.6 选取六维扰动参数构建器件构型空间：其中 $L_{\mathrm{g}}$、$W_{\mathrm{fin}}$ 与 $T_{\mathrm{ox}}$ 为相对基准几何的无量纲倍率，$H_{\mathrm{jc}}$ 为顶部结段几何高度（单位 nm），$N_{\mathrm{A}}$ 与 $N_{\mathrm{D}}$ 分别为受主和施主掺杂剖面相对基准剖面的缩放倍率。开发集边界定义为 $L_{\mathrm{g}}\in[0.8, 1.1]$、$W_{\mathrm{fin}}\in[0.8, 1.2]$、$T_{\mathrm{ox}}\in[0.8, 1.2]$、$H_{\mathrm{jc}}\in[82, 92]\,\mathrm{nm}$、$N_{\mathrm{A}}\in[0.5, 2.0]$ 以及 $N_{\mathrm{D}}\in[0.5, 2.0]$，其中 $N_{\mathrm{A}}$ 与 $N_{\mathrm{D}}$ 在对数坐标轴上抽样以平衡量级跨度。
+
+基于上述定义，r0.6 共冻结 13 个器件构型（见表~\ref{tab:r06-modeling-profiles}）：
+\begin{itemize}
+  \item \textbf{开发锚点（D0--D3）}：包含基准构型 D0 及三组单因子极限扰动构型——短沟道 D1（$L_{\mathrm{g}}=0.8$）、窄鳍 D2（$W_{\mathrm{fin}}=0.8$）与低受主掺杂 D3（$N_{\mathrm{A}}=0.5$），用于锚定关键物理敏感轴。
+  \item \textbf{多参数开发填充点（LHS01--LHS06）}：采用锚点感知最大最小距离拉丁超立方方法（随机种子 \texttt{20261117}，自 $10{,}000$ 个候选设计中优选）生成，用于在六维联合空间内补充多参数交互样本。
+  \item \textbf{封存构型留出集（H0--H2）}：在模型开发阶段保持封存，仅用于最终构型泛化验证。其中 H0 将 $L_{\mathrm{g}}$ 推至 $1.2$ 以检验长栅外推能力；H1 与 H2 的各维参数均落在开发集逐轴上下界内，但二者在六维联合凸包内的严格内插归属尚未经过几何验证。
+\end{itemize}
+
+在空间离散层面，冻结总表未对全部 13 个构型规定统一的公共网格间距。目前仅窄鳍构型 D2 的原生三维网格通过了有限前置核对（包含 $28{,}827$ 个顶点、$148{,}145$ 个单元与 $40$ 个区域）；由于尚未取得独立参考坐标矩阵，跨构型的三维网格收敛性仍属未验证项。
+
+\subsection{器件电学物理模型、混合模式电路与保持窗读出判据}
+\label{subsec:ch02-electrical-timing}
+
+器件瞬态电学仿真基于 Sentaurus SDevice 的混合模式（mixed-mode）求解框架。r0.6 前期 O2 验证所沿用的 r0.4 短前缀参考 deck 提供了当前电学模型与外围电路的基础依据，但正式 r0.6 工况仍以逐例绑定输入为准。参考 deck 设定晶格温度为 $300\,\mathrm{K}$，载流子统计采用 \texttt{Fermi} 分布，禁带变窄采用 \texttt{OldSlotboom} 模型；迁移率模型联合计入掺杂散射、强电场速度饱和与横向界面散射（\texttt{DopingDep}、\texttt{HighFieldSaturation}、\texttt{Enormal}）；复合过程包含掺杂相关 Shockley--Read--Hall 复合（\texttt{SRH(DopingDep)}）与俄歇复合（\texttt{Auger}）。求解器采用全耦合方式联立求解 \texttt{Poisson}、\texttt{Electron}、\texttt{Hole}、\texttt{Contact} 与 \texttt{Circuit} 方程组，时间积分采用隐式后向欧拉法（Backward Euler）。在参考 deck 的 1T1C 单元电路连接中，单节点存储电容取 $C_{\mathrm{s}}=2\times 10^{-14}\,\mathrm{F}$（$20\,\mathrm{fF}$），位线电容取 $C_{\mathrm{BL}}=2\times 10^{-13}\,\mathrm{F}$（$200\,\mathrm{fF}$），位线驱动电阻取 $R_{\mathrm{drv}}=1000\,\Omega$，电容极板电位取 $V_{\mathrm{plate}}=0.6\,\mathrm{V}$。
+
+为统一不同构型与初态的翻转读出口径，r0.6 冻结了 \texttt{r06-hold-window-v1} 时序契约（表~\ref{tab:r06-modeling-coupling}）。写入释放之后至读出操作之前的保持窗设定为 $18.2\text{--}30.0\,\mathrm{ns}$，其中 $18.2\,\mathrm{ns}$ 对应位线预充斜坡结束时刻，实际位线电位稳定性须结合无源瞬态波形逐例核对。粒子源注入时刻在冻结清单中计划绑定为 $22.0\,\mathrm{ns}$，该时刻当前仍标记为待 P0 时序验收确认的候选值，正式响应准入要求实测时序与清单定义严格一致。读出采样固定于 $t_{\mathrm{read}}=31.9\,\mathrm{ns}$，以 $V_{\mathrm{ref}}=0.6\,\mathrm{V}$ 作为位线参考电位，分别定义存储逻辑 \texttt{0}（\texttt{b0}）与逻辑 \texttt{1}（\texttt{b1}）的读出裕量：
+\begin{equation}
+  \Delta V_{\mathrm{read}}(\mathrm{b0}) = 0.6\,\mathrm{V} - V_{\mathrm{BL}}(31.9\,\mathrm{ns}), \qquad
+  \Delta V_{\mathrm{read}}(\mathrm{b1}) = V_{\mathrm{BL}}(31.9\,\mathrm{ns}) - 0.6\,\mathrm{V}.
+  \label{eq:readout-margin}
+\end{equation}
+
+每组粒子注入仿真均须配备严格匹配的零源基线（Z 区块，规划 26 个槽位以覆盖 13 个构型的 \texttt{b0}/\texttt{b1} 双态）。零源对照关闭粒子产生项，并在器件构型、存储位、网格文件、时序版本与数值积分参数上与注入工况保持一一匹配。在前期零源时间步长收敛审查中，原冻结准入门槛要求相邻粗细步长在 $31.9\,\mathrm{ns}$ 的读出裕量均高于 $101.56\,\mu\mathrm{V}$ 且差值不超过 $101.56\,\mu\mathrm{V}$；针对部分多参数构型细化至 $h/8$ 后仍存在 $0.17\text{--}0.36\,\mathrm{mV}$ 残余偏差的情况，课题组随后通过不可篡改决策记录启用了修订判据 \texttt{r06-step-tol-v2}（将 $h/8$ 步长差值上限修订为 $500.0\,\mu\mathrm{V}$，并完整保留原超差记录），该修订的具体实测与不确定度核算将在第~3~章与第~6~章展开。
+
+需要界定本模型的物理适用范围：上述 1T1C 瞬态模型刻画的是单次入射诱发的即时电荷扰动与读出裕量损失，不包含位移损伤导致的结漏电增强与保持时间退化\cite{nguyen2018sdramleakage}，也不覆盖外围控制逻辑引发的单粒子功能中断（SEFI）\cite{jin2026dramrhbd}。
+
+\subsection{Geant4 质子核输运配置与三维沉积—TCAD 耦合接口}
+\label{subsec:ch02-geant4-coupling}
+
+首月冻结辐照矩阵聚焦质子入射（离散能量覆盖 $1\text{--}150\,\mathrm{MeV}$，归属课题 $1\text{--}200\,\mathrm{MeV}$ 质子建模范围；重离子与大气中子暂不纳入本冻结矩阵）。入射方向采用相对器件表面法向的极角 $\theta$ 与正交方位角 $\phi\in\{0^\circ, 90^\circ\}$ 表示；正入射（$\theta=0^\circ$）下方位角不改变入射轨迹方向。如表~\ref{tab:r06-modeling-proton-pools} 所示，r0.6 冻结了 10 组质子入射组合：其中 \texttt{G0}--\texttt{G5} 与 \texttt{C0}--\texttt{C1} 共 8 组用于模型开发与构型留出测试，覆盖 $1$、$5$、$20$、$58$、$98$、$120\,\mathrm{MeV}$ 能量档位与 $0^\circ$、$30^\circ$、$60^\circ$ 极角；\texttt{C2}（$20\,\mathrm{MeV}$、$\theta=45^\circ$、$\phi=90^\circ$）与 \texttt{C3}（$150\,\mathrm{MeV}$、$\theta=60^\circ$、$\phi=90^\circ$）封存为辐照条件留出集（HR），分别检验角度内插与高能外推。
+
+在输运池组织上，r0.6 共规划 97 个独立输运池。每个输运池在垂直于束流方向的发射面上均匀采样初级质子，逐池绑定正值发射面积 $A_{\mathrm{src}}$（$\mathrm{cm}^2$）与整数随机种子；初始样本量设为 $10^5$ 个初级质子，仅在存在可审计统计缺口时扩充至 $10^6$。与无偏截面估计要求一致，全部未在敏感硅区产生电离沉积的零沉积事件均保留在总分母中，不予丢弃\cite{luo2018flux,horvitz1952sampling}。由于开发锚点 D0 与 D3 仅受主掺杂倍率不同而三维几何与材料组成完全一致，二者在相同入射条件下共享输运池；其余 11 个构型均按独立输运组运行。需要指出的是，r0.6 冻结总表未在全局层面对所有输运池统一写死同一套 Geant4 参数，软件版本、物理列表（\texttt{physics\_list}）、次级产生阈值（\texttt{production\_cut}）、带电粒子步长上限（\texttt{charged\_step\_limit}）、发射面积、随机种子与几何哈希均随各池原生证据逐池绑定（前期 r0.4 输运环境参考版本为 Geant4~10.7.3）。
+
+输运结果向三维 TCAD 的单向耦合链路（$\mathrm{Geant4}\to\mathrm{Sentaurus\ SDevice}$，表~\ref{tab:r06-modeling-coupling}）按以下步骤执行：首先完整记录每步沉积所在材料、三维空间坐标、时间戳与能量沉积量，并严格区分电离沉积与非电离沉积；其次依据版本化坐标变换将硅区电离沉积对齐至目标 TCAD 网格，利用硅材料成对能换算为电子—空穴对数，在空间网格与瞬态时间窗内分配为体积载流子生成率（单位 $\mathrm{cm}^{-3}\,\mathrm{s}^{-1}$），且同一初级事件诱发的所有次级核反应轨迹共用同一事件时钟。在求解器接入端，r0.6 节点源代码（\texttt{pmi\_r04\_nodal.C}）读取三维硅网格坐标与瞬态求解时间步，通过 Sentaurus \texttt{PMI QuantumYield} 接口向 SDevice 注入载流子生成率。为保证电荷注入守恒，准入门禁强制要求非零粒子源的时空积分相对误差严格小于 $10^{-9}$，且源文件与器件网格、输入 deck 及 \texttt{r06-hold-window-v1} 时序版本逐例锁定。
+
+此外，为在不污染无偏截面统计的前提下快速界定各构型的临界翻转尺度，r0.6 设立了独立的阈值倍率试探机制：从模板池 \texttt{G0}（\texttt{shape-a}）与 \texttt{C1}（\texttt{shape-b}）中按构型选取真实沉积参考事件，对其沉积源施加大于 $1.0$ 的缩放倍率（初始建议档位为 $3\times$、$10\times$、$30\times$，实际倍率在提交前逐例确定）。所有缩放工况在数据合同中均标记为不具备统计截面资格，严禁与概率抽样结果混算。
+
+% asset: r06-modeling-matrix-table
+\input{tables/r06-modeling-matrix.tex}
+
+\subsection{前期阶段（v3/v4）模型接口验证、机制见证与保留失败项}
+\label{subsec:ch02-v3-v4-evidence}
+
+在确立 r0.6 三维多构型准入门槛前，前期 v3 与 v4 阶段已完成若干二维与离线三维基础核查，其通过项与保留失败记录（表~\ref{tab:v3-v4-historical-evidence}）直接决定了本章多项接口约束的设计依据。
+
+在 v3 阶段（历史复用审计日期 2026-11-16 UTC，已复核 64 项冻结快照哈希、211 项历史报告哈希及 16 组预测评分），课题组在未校准二维代表模型上针对固定 $5\,\mathrm{MeV}$ 质子、固定入射位置与两种入射方向开展了配对响应试验。64 个独立入射事件共产生 128 条 \texttt{bit0}/\texttt{bit1} 配对响应。在 $5\,\mathrm{mV}$ 主读窗判据下，128 条响应的分类结果为：96 条正确读出、20 条判据误读、8 条临界响应以及 4 条数值不确定响应（图~\ref{fig:v3-read-window-outcomes}）。该结果仅适用于冻结的二维代表工况，但已清楚暴露出两项方法学要求：其一，配对双态共享同一底层入射事件，统计聚合时必须按独立事件而非把两条响应当作独立样本处理；其二，临界与数值不确定样本合计占 12/128，工程数据表必须显式保留未决状态，不能强行归并为二值翻转标签。
+
+\begin{figure}[tbp]
+  \centering
+  % asset: v3-read-window-outcomes
+  \includegraphics[width=0.82\linewidth]{v3-read-window-outcomes.png}
+  \caption{v3 阶段未校准二维代表模型在 $5\,\mathrm{mV}$ 读窗判据下的 128 条配对响应四类结果分布（对应 64 个独立入射事件，固定 $5\,\mathrm{MeV}$ 质子工况）。}
+  \label{fig:v3-read-window-outcomes}
+\end{figure}
+
+在 v4 阶段（阶段收口日期 2026-10-13 UTC），核查重点转向核反应机制记录、三维源账本闭合与源场离散保真度。在厚硅诊断样本的 212 个初级质子事件中，输运程序记录到 9 个合格的质子非弹性核反应见证事件；同时，3 个三维源账本完成了离线积分闭合（但三维器件端直接注入资格在 v4 阶段尚未验证）。
+
+更具警示意义的是 v4 暴露的网格离散与时间步失败记录。在二维 A1 源场中心窗口生成量占比检查中（图~\ref{fig:v4-a1-center-window-error}），粗网格上的 5 帧抽查测得绝对误差为 $0.0595$（精确值 $0.0594972526$，即 $5.95$ 个百分点），超出 $0.05$（$5$ 个百分点）容差门槛，该空间离散失败按不可篡改原则原样保留。加密网格后，对 A1 全部 205 帧开展全窗口审计，中心窗口占比绝对误差降至 $0.0140$（精确值 $0.013989156$，即 $1.40$ 个百分点），低于 $0.05$ 容差；同阶段细网格 A0/A1 源检查以及各自采用同网格 A0 作对照的粗细网格比较均在二维连续响应检查范围内通过。
+
+\begin{figure}[tbp]
+  \centering
+  % asset: v4-a1-center-window-error
+  \includegraphics[width=0.82\linewidth]{v4-a1-center-window-error.png}
+  \caption{v4 阶段二维 A1 源场中心窗口生成量占比绝对误差对比：粗网格 5 帧抽查（$5.95$ 个百分点）超出 $5$ 个百分点容差，细网格 205 帧全窗口审计降至 $1.40$ 个百分点（原粗网格失败记录保留）。}
+  \label{fig:v4-a1-center-window-error}
+\end{figure}
+
+除空间网格外，v4 阶段还归档了三项旧数值与输出失败记录（表~\ref{tab:v3-v4-historical-evidence}）：（1）在旧时间步敏感性检查中，\texttt{bit1} 存储节点电位差达 $1.709\,\mathrm{mV}$、位线电位差达 $5.140\,\mathrm{mV}$，均超出 $1\,\mathrm{mV}$ 容差；尽管端口总电荷差为 $1.630\%$（低于 $2\%$ 容差），整项检查仍严格判为失败；（2）旧源输出审计记录了 322 次文件写入，但最终目录仅保留 2 个 TDR 文件，暴露出瞬态快照落盘截断风险；（3）旧 $\alpha$ 粒子试算的最大接受时间步达 $56.17\,\mathrm{fs}$，违反了 $40\,\mathrm{fs}$ 步长约束。上述历史失败记录直接促使 r0.6 在正式提交响应仿真前，引入强制性的零源粗细步长收敛检查、$10^{-9}$ 非零源积分守恒校验以及逐例输入哈希绑定。
+
+% asset: v3-v4-historical-evidence-table
+\input{tables/v3-v4-historical-evidence.tex}
+
+\subsection{本章建模边界与待补证据}
+\label{subsec:ch02-boundaries}
+
+综合上述几何定义、电学与核输运接口以及 v3/v4 历史复核，本章模型给出了 r0.6 阶段可复现、可审计的多尺度仿真基准，但其物理与数值适用边界同样明确：所有器件参数仅代表文献鞍形鳍结构及其六维扰动域，时间与空间离散误差受限于当前参考模型与单构型网格核对范围，且缩放试探工况严格独立于无偏截面统计链路。
+
+\pendingdata{本章尚待补齐或随在途证据更新的建模项：（1）r0.6 冻结清单中的绝对掺杂浓度剖面（$\mathrm{cm}^{-3}$）与有效沟道长度数值未在总表显式展开，且课题组原生 Geant4/TCAD 器件校准依据（M03、M04）尚未交接，当前模型不具备商业 DDR5/LPDDR5 工艺校准声明；（2）空间网格目前仅完成 D2 单构型的有限前置核对（缺独立参考坐标矩阵），跨 13 构型的公共网格间距口径与三维网格收敛性尚未验证；（3）各输运池的 Geant4 软件版本、物理列表、产生阈值、带电步长上限与发射面积须随各池归档证据逐项补齐，计划绑定的 $22.0\,\mathrm{ns}$ 粒子源时刻及 $18.2\,\mathrm{ns}$ 后位线稳定性亦须由各构型 P0 时序波形最终确认；（4）本章冻结辐照矩阵仅覆盖 $1\text{--}150\,\mathrm{MeV}$ 质子离散池，未纳入大气中子、重离子、位移损伤漏电退化及外围控制电路 SEFI 建模。}
