@@ -1,0 +1,118 @@
+{
+  "order_id": "r06-sign-prep-fill-20261125-01",
+  "status": "partial",
+  "scheduler": {
+    "capacity": 16,
+    "before": {
+      "observed_at_utc": "2026-11-25T01:01:52.513859Z",
+      "running": 4,
+      "free": 12,
+      "ready": 0,
+      "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 47, "other": 0}
+    },
+    "after": {
+      "observed_at_utc": "2026-11-25T01:14:44.599990Z",
+      "running": 8,
+      "free": 8,
+      "ready": 0,
+      "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 47, "other": 0}
+    }
+  },
+  "published_batch": {
+    "scope": "P0 step-size diagnostic",
+    "step": "h/16",
+    "profiles_and_bits": {"LHS01": [0, 1], "LHS04": [0, 1]},
+    "native_starts_verified": 4,
+    "formal_case_credit": 0,
+    "formal_case_credit_basis": "诊断使用同态零源、相同网格及物理输入。比较 h/8 与 h/16 的读出裕量时沿用 101.56 µV 限值。"
+  },
+  "zero_source_review": {
+    "read_sample_ns": 31.9,
+    "terminal_ns": 35,
+    "frozen_limit_uV": 101.56,
+    "criterion_revised": false,
+    "difference_h4_h8_uV": {
+      "LHS01": {"b0": 360.697007326, "b1": 280.151916},
+      "LHS03": {"b0": 342.456937659, "b1": null},
+      "LHS04": {"b0": 333.308762201, "b1": 165.842689285},
+      "LHS05": {"b0": 338.927326872, "b1": null},
+      "LHS06": {"b0": null, "b1": null}
+    },
+    "supplementary_observation": "LHS05 b1 的标准读取器拒绝 BE 步长与 PLT 打印精度边界的差异。只计入两个 PLT 时间戳各自的舍入区间后，补充分析得到 221.123247803 µV，仍高于限值。原拒绝记录保留。",
+    "pending": "LHS03 b1 与 LHS06 b0 的 h/8 尚在运行。LHS06 b1 已通过 h 对 h/2 的比较。",
+    "new_p0_qualifications": [],
+    "new_z_bindings": [],
+    "new_case_acceptances": [],
+    "reason": "具备完整双态标准读出的新组仍超限。待签的已归档 D2/G0、b0、×10 响应在源前时间网格一致性检查中未通过。"
+  },
+  "p2": {
+    "decision": "已复核原右删失放行。D2 的 G0、C1 两个 b1 分支均在同事件、同态零源和相同 deck 下验证 ×10 与 ×30 三路源积分，31.9 ns 读出均未观察到翻转。",
+    "threshold_bracket_observed": false,
+    "navigation_checks_passed": 48,
+    "lhs02_transport_pools_collected": 8
+  },
+  "repairs": {
+    "handling_plans_recorded": 2,
+    "D0_b0": "原运行所在虚拟机的启动身份已更换。已归档的双核结果用于原对照，单核结果仍缺失。",
+    "D0_b1": "原运行退出码为 143。终止信号发送方未确认，重试方案保留原失败记录和冻结诊断输入。"
+  },
+  "holdout": "H1 和 H2 共四份隔离零源输入已有草案，原几何验收仍未通过。",
+  "attempt_2": {
+    "criterion": {
+      "id": "r06-step-tol-v2",
+      "director_signed_at_utc": "2026-11-25T01:18:43Z",
+      "original_limit_uV": 101.56,
+      "revised_h4_h8_limit_uV": 500.0,
+      "read_sample_ns": 31.9,
+      "terminal_ns": 35,
+      "h4_h8_difference_uV": {
+        "LHS01": {"b0": 360.697007326, "b1": 280.151916},
+        "LHS04": {"b0": 333.308762201, "b1": 165.842689285},
+        "LHS05": {"b0": 338.927326872, "b1": 221.123247803},
+        "LHS06": {"b0": 305.011143627}
+      },
+      "unchanged_h_h2_comparison": {"case": "LHS06 b1", "difference_uV": 90.225455412, "result": "passed"},
+      "evidence": "核对原零源归档、35 ns 终点、三路零源积分、写入与保持极性，以及同网格和固定物理输入的 BE 步长细化。原 101.56 µV 超差记录保留。LHS05 b1 的原读出拒绝与 PLT 打印精度复核一起绑定。"
+    },
+    "p0_qualifications": ["LHS01-development", "LHS04-development", "LHS05-development", "LHS06-development"],
+    "z_bindings_and_case_acceptances": [
+      "r06-z-lhs01-development-b0",
+      "r06-z-lhs01-development-b1",
+      "r06-z-lhs04-development-b0",
+      "r06-z-lhs04-development-b1",
+      "r06-z-lhs05-development-b0",
+      "r06-z-lhs05-development-b1",
+      "r06-z-lhs06-development-b0",
+      "r06-z-lhs06-development-b1"
+    ],
+    "transport": {
+      "pools_released_by_profile": {"LHS01": 8, "LHS04": 8, "LHS05": 8, "LHS06": 8},
+      "publication": "原调度器读取连续配方预置位置的资格收据并发布 32 个原输运池。原 P2 右删失决定、清单及 48 个导航结果继续使用。",
+      "new_pools_started": 2,
+      "new_pools_queued": 30,
+      "new_pools_waiting_collection": 2
+    },
+    "response_approval_batches": [
+      {"case_id": "r06-t-lhs02-development-shape-a-x3-b1", "sha256": "4388a871d3fd87c0b0b8d2cd856e3799f93e273264605aeb770adfd59f8fdfab", "status": "running"},
+      {"case_id": "r06-t-lhs02-development-shape-b-x3-b1", "sha256": "0f9b616f646809f2f8617d870f22a4e0a8e5b917368b48ee788bb554e3f6e08f", "status": "running"}
+    ],
+    "reconciled_awaiting_acceptance": {
+      "before": {"transport_pools": 40, "dual_state_p0": 5, "al_acquisition": 1, "hr_hp_model_freeze": 1},
+      "cleared": {"transport_pools": 32, "dual_state_p0": 4},
+      "remaining": {"lhs03_transport_pools": 8, "lhs03_dual_state_p0": 1, "al_acquisition": 1, "hr_hp_model_freeze": 1},
+      "lhs03": "b0 读出已经复核，b1 的 h/8 仍在运行。",
+      "archived_responses": {
+        "lhs02": {"transport_collected": 8, "s_accepted": 5, "s_zero_reuse_verified": 10, "t_accepted": 4, "z_bound": 2},
+        "retained_hold": "D2 G0 b0 ×10 的源前时间网格未通过原可比性检查，保留原拒绝记录。",
+        "d1_lower_probe": "D1 A 分支的原备料器仍等待 ×10 和 ×30 的完整验收，未生成 ×3 批次。"
+      }
+    },
+    "scheduler": {
+      "before": {"observed_at_utc": "2026-11-25T01:19:15.845755Z", "running": 8, "free": 8, "ready": 0, "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 47, "other": 0}},
+      "after": {"observed_at_utc": "2026-11-25T01:35:09.663501Z", "running": 9, "free": 7, "ready": 30, "blocked_by_stage": {"missing_material": 48, "awaiting_acceptance": 11, "other": 0}},
+      "resource_gate": "服务器空余 23.31 GiB。配置要求扣除在途输出和收集预留后仍保有 20 GiB，因而两份已封存的输运输出仍待收集，后续输运启动也受限。",
+      "remaining_material": "控制器的 48 项计数对应六个 LHS 构型各八个 S 条件的连续配方材料视图。它未纳入响应供料服务已有的 LHS02 零沉积复用收据。新输运的实际事件源需等原归档收集后准备。"
+    }
+  },
+  "validation": "python -m compileall -q tcad-research-training/automation/local-director"
+}
