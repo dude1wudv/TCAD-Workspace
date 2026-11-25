@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#005cbb" />
-    <meta name="description" content="AI辅助下的DRAM存储器单粒子效应评估研究公开主页：涵盖服务器Agent自治调度架构、Geant4/TCAD多代次仿真成果与可追溯科学证据。" />
+    <meta name="description" content="Public research homepage for AI-assisted DRAM single-event-effects assessment: Geant4/TCAD multi-generation simulation results, server Agent autonomy, and traceable scientific evidence." />
     <link rel="canonical" href="https://tcad.xjtu.shop/" />
-    <title>DRAM 单粒子效应评估研究 · tcad.xjtu.shop</title>
+    <title>DRAM Single-Event Effects Research · tcad.xjtu.shop</title>
     <script>
       (function () {
         try {
@@ -16,7 +16,9 @@
           document.documentElement.dataset.theme = theme;
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', dark ? '#0e1520' : '#005cbb');
-          if (localStorage.getItem('xjtu-lang') === 'en') document.documentElement.lang = 'en';
+          var m = document.cookie.match(/(?:^|; )xjtu-lang=(en|zh)(?:;|$)/);
+          var lang = m ? m[1] : localStorage.getItem('xjtu-lang');
+          if (lang === 'zh') document.documentElement.lang = 'zh-CN';
         } catch (e) {}
       })();
     </script>

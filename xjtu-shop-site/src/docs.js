@@ -29,6 +29,7 @@ import {
   renderTopbar
 } from './shared/site-shell.js';
 import { icon } from './shared/icons.js';
+import { setLang, applyDocumentLang } from './shared/i18n.js';
 import { bindSlidingPill, syncSlidingThumb } from './shared/sliding-pill.js';
 import { docsContent } from './data/docs-content.js';
 import { docsArticles } from './data/docs-articles.js';
@@ -43,6 +44,16 @@ const CHAPTER_TO_ARTICLE_KEY = {
   'predictor': 'ai',
   'agent-autonomy': 'agent',
   'web-telemetry': 'web'
+};
+const PAGE_META = {
+  zh: {
+    title: '技术文档 · DRAM 单粒子效应评估研究 · tcad.xjtu.shop',
+    description: 'DRAM 单粒子效应评估研究全栈技术文档：Geant4 核非弹性输运、Sentaurus TCAD 与 C++ 原子 PMI、R→A→F 物理约束预测网络、server-codex-v2 自治调度与只读遥测架构。'
+  },
+  en: {
+    title: 'Technical Documentation · DRAM SEE Research · tcad.xjtu.shop',
+    description: 'Full-stack technical documentation for DRAM single-event-effects research: Geant4 inelastic transport, Sentaurus TCAD with atomic C++ PMI, R→A→F physics-constrained predictor, server-codex-v2 autonomy, and read-only telemetry.'
+  }
 };
 
 function getInitialChapter() {
@@ -719,7 +730,7 @@ function render() {
   const c = getCopy();
   const u = uiLabels[state.lang];
   const cheatOpenByDefault = window.innerWidth > 959;
-  document.documentElement.lang = state.lang === 'zh' ? 'zh-CN' : 'en';
+  applyDocumentLang(state.lang, PAGE_META[state.lang]);
 
   document.querySelector('#app').innerHTML = `
     ${renderTopbar({ activePage: 'docs', lang: state.lang, theme: state.theme })}
@@ -839,8 +850,7 @@ function render() {
 
   bindTopbar({
     onToggleLang: () => {
-      state.lang = state.lang === 'zh' ? 'en' : 'zh';
-      localStorage.setItem('xjtu-lang', state.lang);
+      state.lang = setLang(state.lang === 'zh' ? 'en' : 'zh');
       render();
     },
     onToggleTheme: () => {

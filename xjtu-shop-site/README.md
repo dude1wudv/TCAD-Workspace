@@ -53,15 +53,15 @@ collection delays and is summed across groups, rather than measured CPU time.
 
 ## Public routes
 
+- `www.xjtu.shop` — main research portal (project overview, key highlights, live health badge, and side-by-side entries to `tcad.xjtu.shop` and `status.xjtu.shop`)
+- `xjtu.shop` — apex domain permanently redirected (`308`) to `https://www.xjtu.shop`
 - `tcad.xjtu.shop` — research presentation homepage (architecture, verified simulation results, interactive SVG charts, and 4-tier evidence boundary)
 - `tcad.xjtu.shop/docs/` — technology documentation site (Geant4, Sentaurus TCAD + atomic C++ PMI, `R → A → F` physics-constrained predictor, `server-codex-v2` autonomy, and read-only telemetry stack)
 - `status.xjtu.shop` — public resources, simulation observations and service status
 
-Both `tcad.xjtu.shop` and `tcad.xjtu.shop/docs/` share Google Material 3 (`@material/web` 2.5.0) light/dark theme tokens, full Chinese/English switching, system fonts, and local SVG icons with zero external CDN dependencies.
+All public portals (`www.xjtu.shop`, `tcad.xjtu.shop`, `tcad.xjtu.shop/docs/`, and `status.xjtu.shop`) share Google Material 3 (`@material/web` 2.5.0) light/dark theme tokens, system fonts, local SVG icons with zero external CDN dependencies, and full English/Chinese switching. English (`en`) is the default language; the language choice is shared across `*.xjtu.shop` subdomains via the `xjtu-lang` cookie (`Domain=.xjtu.shop`).
 
-`xjtu.shop` is reserved for a future main portal. This deployment does not bind
-the apex domain. The previous preview route `status.xjtu.shop/research`
-redirects to `https://tcad.xjtu.shop/`.
+The previous preview route `status.xjtu.shop/research` redirects to `https://tcad.xjtu.shop/`.
 
 `api.xjtu.shop` and `lab.xjtu.shop` remain reserved for
 future controlled services.

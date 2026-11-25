@@ -7,7 +7,8 @@ export default defineConfig({
       input: {
         home: resolve(__dirname, 'index.html'),
         docs: resolve(__dirname, 'docs/index.html'),
-        status: resolve(__dirname, 'status.html')
+        status: resolve(__dirname, 'status.html'),
+        portal: resolve(__dirname, 'portal.html')
       }
     }
   }

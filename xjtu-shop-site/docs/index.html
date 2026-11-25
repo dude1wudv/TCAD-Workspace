@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#005cbb" />
-    <meta name="description" content="DRAM 单粒子效应评估研究全栈技术文档：Geant4 核非弹性输运、Sentaurus TCAD 与 C++ 原子 PMI、R→A→F 物理约束预测网络、server-codex-v2 自治调度与只读遥测架构。" />
+    <meta name="description" content="Full-stack technical documentation for DRAM single-event-effects research: Geant4 inelastic transport, Sentaurus TCAD with atomic C++ PMI, R→A→F physics-constrained predictor, server-codex-v2 autonomy, and read-only telemetry." />
     <link rel="canonical" href="https://tcad.xjtu.shop/docs/" />
-    <title>技术文档 · DRAM 单粒子效应评估研究 · tcad.xjtu.shop</title>
+    <title>Technical Documentation · DRAM SEE Research · tcad.xjtu.shop</title>
     <script>
       (function () {
         try {
@@ -16,7 +16,9 @@
           document.documentElement.dataset.theme = theme;
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', dark ? '#0e1520' : '#005cbb');
-          if (localStorage.getItem('xjtu-lang') === 'en') document.documentElement.lang = 'en';
+          var m = document.cookie.match(/(?:^|; )xjtu-lang=(en|zh)(?:;|$)/);
+          var lang = m ? m[1] : localStorage.getItem('xjtu-lang');
+          if (lang === 'zh') document.documentElement.lang = 'zh-CN';
         } catch (e) {}
       })();
     </script>

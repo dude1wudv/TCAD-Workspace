@@ -4,12 +4,13 @@ import '@material/web/button/filled-tonal-button.js';
 import '@material/web/iconbutton/icon-button.js';
 import '@material/web/ripple/ripple.js';
 import './status-dashboard.css';
+import { getLang, setLang, applyDocumentLang } from './shared/i18n.js';
 import { escapeHtml as esc, renderWhr, renderSparkline, renderTrends, bindTrendTooltips } from './components/telemetry-charts.js';
 import { renderResearch, bindResearch, parameterMarkup, sealedId, caseWaitsAreFresh, executionResult } from './research-dashboard.js';
 
 const app = document.getElementById('app');
 const state = {
-  lang: 'zh', window: '24h', runFilter: 'all', selectedTask: null,
+  lang: getLang(), window: '24h', runFilter: 'all', selectedTask: null,
   activeSection: 'overview', navDrawerOpen: false,
   live: null, full: null, fullHash: null, lastFullRequest: -Infinity,
   liveMode: 'loading', fullFailed: false, refreshing: false,
@@ -19,7 +20,6 @@ const state = {
   maintenanceFresh: false,
   taskMetrics: new Map(),
 };
-try { if (localStorage.getItem('xjtu-lang') === 'en') state.lang = 'en'; } catch {}
 
 const labels = {
   running: ['运行中', 'Running'], collecting: ['待收集', 'Collecting'],
@@ -722,7 +722,7 @@ const sections = [
 const regions = ['overview', 'kpis', 'schedule', 'tasks', 'trends', 'services', 'runs', 'research'];
 app.innerHTML = `<header class="topbar">
   <div class="topbar-inner">
-    <a class="brand" href="https://tcad.xjtu.shop/" aria-label="xjtu.shop"><span class="brand-mark" aria-hidden="true">X</span>xjtu.shop</a>
+    <a class="brand" href="https://www.xjtu.shop/" aria-label="xjtu.shop"><span class="brand-mark" aria-hidden="true">X</span>xjtu.shop</a>
     <div class="heartbeat neutral" id="heartbeat"><i aria-hidden="true"></i><span id="heartbeat-text" role="status"></span><span id="heartbeat-age"></span></div>
     <nav id="top-nav" class="top-nav" aria-label="Section navigation"></nav>
     <nav id="controls" class="topbar-controls" aria-label="Dashboard controls"></nav>
@@ -778,7 +778,7 @@ function renderControls() {
   update('controls', control('refresh', b('立即刷新', 'Refresh now'), refresh, `aria-busy="${state.refreshing}"`)
     + control('theme', dark ? b('切换浅色', 'Light mode') : b('切换深色', 'Dark mode'), theme)
     + control('language', b('Switch to English', '切换中文'), b('EN', '中'))
-    + `<a class="home-link" href="https://tcad.xjtu.shop/" aria-label="${b('返回研究首页', 'Back to research home')}"><md-ripple></md-ripple>${b('研究首页', 'Home')} <span aria-hidden="true">↗</span></a>`);
+    + `<a class="home-link" href="https://tcad.xjtu.shop/" aria-label="${b('前往研究主页', 'Go to Research')}"><md-ripple></md-ripple>${b('研究主页', 'Research')} <span aria-hidden="true">↗</span></a>`);
 }
 
 const sectionDivider = (num, tag) => `<div class="section-divider" aria-hidden="true"><span class="divider-line"></span><span class="divider-badge"><i class="divider-gem"></i>${num} · ${tag}</span><span class="divider-line"></span></div>`;
@@ -814,8 +814,10 @@ function updateResearch(payload, scheduler, research) {
 }
 
 function render() {
-  document.documentElement.lang = b('zh-CN', 'en');
-  document.title = b('仿真状态看板 · xjtu.shop', 'Simulation status · xjtu.shop');
+  applyDocumentLang(state.lang, {
+    title: b('仿真状态看板 · status.xjtu.shop', 'Simulation Status · status.xjtu.shop'),
+    description: b('DRAM 单粒子效应研究的公开仿真遥测、服务健康与科研计划进度。', 'Public simulation telemetry, service health, and research plan progress for the DRAM single-event-effects project.')
+  });
   renderControls();
   renderNavs();
   const payload = newestPayload() || {};
@@ -997,8 +999,7 @@ app.addEventListener('click', (event) => {
       return;
     }
     if (button.id === 'language') {
-      state.lang = b('en', 'zh');
-      try { localStorage.setItem('xjtu-lang', state.lang); } catch {}
+      state.lang = setLang(b('en', 'zh'));
       render();
       return;
     }
