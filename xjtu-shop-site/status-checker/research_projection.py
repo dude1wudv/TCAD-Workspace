@@ -771,7 +771,11 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
     timing_contract = plan.get("timing_contract")
     stats_snapshot = stats_snapshot if isinstance(stats_snapshot, dict) else None
     plan_sha256 = None
-    if stats_snapshot or (p0_admissions and isinstance(timing_contract, dict)):
+    has_lhs02_responses = any(
+        case.get("block") == "S" and case.get("profile_id") == "LHS02-development"
+        for case in cases
+    )
+    if stats_snapshot or has_lhs02_responses or (p0_admissions and isinstance(timing_contract, dict)):
         plan_sha256 = hashlib.sha256(plan_path.read_bytes()).hexdigest()
     if stats_snapshot and str(stats_snapshot.get("plan_sha256")).lower() != plan_sha256:
         stats_snapshot = None
@@ -863,7 +867,10 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
         states = [execution(manifests.get(key, {}), runs.get(key, {}), fresh) for key in linked]
         state = next((value for value in ("solved", "running", "failed") if value in states
                       or value == "running" and identity in running), "pending")
-        accepted = state == "solved" and (
+        reused = (block == "S" and case.get("profile_id") == "LHS02-development"
+                  and plan_sha256 is not None
+                  and zero_source_reuse_acceptance_verified(case, plan_path, plan_sha256, gate_dir))
+        accepted = reused or state == "solved" and (
             gate_acceptance_verified(case, linked, manifests, plan_path, gate_dir)
             or legacy and acceptance_verified(case, linked, manifests, plan_path)
         )
@@ -884,6 +891,8 @@ def build_research(plan_path: Path, manifests: dict, observation: dict, progress
             "pair_id": pair, "state": "accepted" if accepted else state,
             "attempts": max(len(states), int(identity in running)),
         }
+        if reused:
+            row["zero_source_reused"] = True
         if not legacy:
             row.update(block=block, radiation_id=short_id(case.get("radiation_id")),
                        statistics_intent=case.get("statistics_intent") is True, statistics_eligible=False)

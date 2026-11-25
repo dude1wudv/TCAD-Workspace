@@ -292,5 +292,64 @@ class R06ExternalAcceptanceTests(unittest.TestCase):
             self.project()
 
 
+class R06ZeroSourceReuseAcceptanceTests(unittest.TestCase):
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.workspace = Path(directory.name)
+        self.plan_path = self.workspace / "plans/dram/plan.json"
+        self.plan_path.parent.mkdir(parents=True)
+        plan = r06_plan()
+        self.case = next(row for row in plan["cases"] if row["block"] == "S")
+        self.case.update(case_id="r06-s-lhs02-development-p00-b0", profile_id="LHS02-development",
+                         radiation_id="G0", stored_bit=0)
+        self.plan_path.write_text(json.dumps(plan), encoding="utf-8")
+        self.plan_sha256 = hashlib.sha256(self.plan_path.read_bytes()).hexdigest()
+        self.receipt_path = self.workspace / "local_runtime/server-codex/verified-zero-reuse.json"
+        self.receipt_path.parent.mkdir(parents=True)
+        self.receipt = {
+            "schema": "tcad-r06-deferred-zero-reuse-v1", "manifest_sha256": self.plan_sha256,
+            "block": "S", "condition": {"profile_id": "LHS02-development", "radiation_id": "G0"},
+            "formal_statistics_eligible": False, "training_eligible": False,
+            "zero_result_sha256": "1" * 64, "transport_archive_sha256": "2" * 64,
+            "cases": [{"event_run_id": None, "training_eligible": False,
+                       "label": {"case_id": self.case["case_id"], "accepted": True,
+                                 "y": 0, "stored_bit": 0}}],
+        }
+        self.receipt_path.write_text(json.dumps(self.receipt), encoding="utf-8")
+        evidence = [{"path": self.receipt_path.relative_to(self.workspace).as_posix(),
+                     "sha256": hashlib.sha256(self.receipt_path.read_bytes()).hexdigest(),
+                     "kind": "zero_source_reuse"}]
+        acceptance = {
+            "schema": "tcad-r06-zero-source-reuse-acceptance-v1", "status": "accepted",
+            "case_id": self.case["case_id"], "plan_sha256": self.plan_sha256,
+            "event_run_id": None, "formal_statistics_eligible": False,
+            "training_eligible": False, "evidence": evidence,
+        }
+        path = self.plan_path.parent / "r06-gate/results/case-acceptance" / (self.case["case_id"] + ".json")
+        path.parent.mkdir(parents=True)
+        path.write_text(json.dumps(acceptance), encoding="utf-8")
+
+    def project(self):
+        return build_research(self.plan_path, {}, {}, [], now=NOW)
+
+    def test_verified_reuse_is_accepted_without_counting_a_solve_or_attempt(self):
+        report = self.project()
+        row = next(item for item in report["cases"] if item["case_id"] == self.case["case_id"])
+        self.assertEqual(report["totals"]["accepted"], 1)
+        self.assertEqual(report["totals"]["solved"], 0)
+        self.assertEqual(report["totals"]["archived"], 0)
+        self.assertEqual(row["state"], "accepted")
+        self.assertEqual(row["attempts"], 0)
+        self.assertTrue(row["zero_source_reused"])
+        self.assertEqual(report["budget"]["statistics_eligible_cases"], 0)
+
+    def test_reuse_must_match_plan_case_and_receipt_hash(self):
+        self.receipt["cases"][0]["label"]["stored_bit"] = 1
+        self.receipt_path.write_text(json.dumps(self.receipt), encoding="utf-8")
+        report = self.project()
+        self.assertEqual(report["totals"]["accepted"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
