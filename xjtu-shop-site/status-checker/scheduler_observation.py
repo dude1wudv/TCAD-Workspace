@@ -20,7 +20,7 @@ import sys
 import tarfile
 import time
 
-from research_projection import admission, execution, intent_case_id, runtime_intents, sealed_case_id, sealed_intent
+from research_projection import admission, execution, intent_case_id, runtime_intents, sealed_case_id, sealed_intent, solver_exit_state
 from telemetry_history import HEALTH_DETAILS, write_private_json
 
 
@@ -489,6 +489,7 @@ def guest_probe(candidates, storage_path='/home'):
             continue
         finish_path = root / 'finished-utc.txt'
         detail = {'native_finished': ended, 'collection_alive': directory in collection_directories,
+                  'native_exit_code': int(exit_code) if re.fullmatch(r'[0-9]{1,3}', exit_code) else None,
                   'finished_at': read_tail(finish_path, 128).strip() if ended else None,
                   'finished_mtime_at': (modified(finish_path) or modified(exit_path)) if ended else None}
         progress_path = root / 'progress.json'
@@ -873,12 +874,16 @@ def observed_task(path, manifest, intent, processes, cpus, detail, widths, obser
         progress['goal_time_ns'] = detail['goal_time_ns']
     if progress.get('simulation_time_ns') is None and state in ('completed', 'failed', 'collecting', 'uncollected'):
         progress['simulation_time_ns'] = finite(manifest.get('final_time_ns', manifest.get('simulation_time_ns')))
+    result = execution(manifest, {}, False)
+    if state in ('collecting', 'uncollected') and result == 'pending':
+        result = solver_exit_state(detail.get('native_exit_code')) or 'under_review'
     return {
         'id': public_identity(manifest, path), 'kind': kind, 'state': state, 'case_id': case,
         'device': device, 'stored_bit': bit, 'ordinal': ordinal, 'layout_widths': widths,
         'requested_threads': width, 'cpu_set': cpus, 'started_at': started, 'finished_at': end,
         'activity_at': end or iso(manifest.get('updated_utc')) or started,
         'parameters': parameters, 'progress': progress, 'processes': processes,
+        'execution_result': result,
         'collection_result': 'verified_interrupted' if manifest.get('state') == 'INTERRUPTED_COLLECTED' and state == 'failed'
                              else {'completed': 'verified_success', 'failed': 'verified_failure',
                                    'collecting': 'awaiting_collection', 'uncollected': 'awaiting_collection'}.get(state),
@@ -1202,6 +1207,11 @@ def project_task(row, observed, cores, legacy):
     collection = row.get('collection_result')
     if collection not in ('verified_success', 'verified_failure', 'verified_interrupted', 'awaiting_collection'):
         collection = None
+    result = row.get('execution_result')
+    if result not in ('solver_finished', 'failed', 'missing_data', 'under_review') or (
+        result == 'solver_finished' and state not in ('collecting', 'uncollected')
+    ):
+        result = None
     return {
         'id': identity, 'label': task_label(kind, case, device, bit, ordinal, parameters),
         'kind': kind, 'batch_label': batch, 'batch_label_en': batch_en, 'case_id': case,
@@ -1210,7 +1220,8 @@ def project_task(row, observed, cores, legacy):
         'requested_threads': integer(row.get('requested_threads'), 1, 64), 'cpu_set': cpus,
         'started_at': started.isoformat() if started else None,
         'finished_at': finished.isoformat() if finished else None, 'elapsed_seconds': elapsed,
-        'collection_result': collection, 'parameters': parameters, 'progress': progress, 'processes': processes,
+        'collection_result': collection, 'execution_result': result,
+        'parameters': parameters, 'progress': progress, 'processes': processes,
         'cpu_percent': cpu, 'rss_bytes': process_total('rss_bytes'),
         'hwm_bytes': process_total('hwm_bytes'), 'threads': process_total('threads'),
     }
@@ -1220,7 +1231,7 @@ def recent_summary(task):
     row = {key: task[key] for key in (
         'id', 'label', 'kind', 'batch_label', 'batch_label_en', 'case_id', 'device', 'stored_bit', 'state', 'health',
         'health_reason', 'health_detail_zh', 'health_detail_en',
-        'requested_threads', 'started_at', 'finished_at', 'elapsed_seconds', 'collection_result',
+        'requested_threads', 'started_at', 'finished_at', 'elapsed_seconds', 'collection_result', 'execution_result',
     )}
     physical = task['progress']['simulation_time_ns']
     row['simulation_time_ns'] = physical
@@ -1342,7 +1353,7 @@ def project_snapshot(source, now=None):
         'slot_count': cores, 'reserved_cpus': reserved, 'compute_cpu_count': compute_count,
         'active_slots': None if stale else len(active_cpus),
         'active_groups': None if stale else running_groups,
-        'active_solvers': None if stale else integer(guest.get('solver_count')) if 'solver_count' in guest else running_groups,
+        'active_solvers': None if stale else integer(guest.get('solver_count')),
         'started_at': started, 'elapsed_seconds': primary.get('elapsed_seconds'), 'tasks': tasks, 'slots': slots,
         'recent_runs': [recent_summary(task) for task in recent[:20]],
         'active_batch': dict(batch_counts, kind=kind if batch_label else None, label=batch_label or None,

@@ -296,6 +296,22 @@ process.stdout.write(JSON.stringify({card,html:app.innerHTML}));
         self.assertEqual(result.returncode, 0, result.stderr)
         return json.loads(result.stdout)
 
+    def test_planner_warning_tracks_explicit_offline_flag_and_freshness(self):
+        self.render_headline({}, language="en", checks=r"""
+const overview = document.getElementById('overview');
+const warning = 'AI repair planner offline';
+assert.ok(!overview.textContent.includes(warning));
+payload.simulation.planner = {status:'offline', offline:false};
+render();
+assert.ok(!overview.textContent.includes(warning));
+payload.simulation.planner.offline = true;
+render();
+assert.ok(overview.textContent.includes(warning));
+payload.generated_at = new Date(Date.now()-181000).toISOString();
+tick();
+assert.ok(!overview.textContent.includes(warning));
+""")
+
     def test_scheduler_uses_vm_cores_and_counts_tasks_with_maintenance_reason(self):
         self.render_headline({}, checks=r"""
 const scheduler = useScheduler();
@@ -447,10 +463,10 @@ assert.doesNotMatch(overview.textContent, /缺材料/);
 
     def test_r06_headline_percentage_uses_396_and_does_not_use_engineering_completion(self):
         result = self.render_headline({"revision": "r0.6", "totals": {
-            "planned": 396, "solved": 99, "accepted": 99,
-        }})
-        self.assertIn("99 / 99 / 396", result["card"])
-        self.assertIn("工程完成 / 科学验收 / 计划", result["card"])
+            "planned": 396, "solver_finished": 4, "archived": 113, "solved": 105, "accepted": 99,
+        }}, language="en")
+        self.assertIn("4 / 113 / 99 / 396", result["card"])
+        self.assertIn("Awaiting collection / Archive verified / Science accepted / Planned", result["card"])
         self.assertNotIn("25.0%", result["card"])
 
     def test_r05_headline_remains_compatible_and_maintenance_is_generic_in_english(self):

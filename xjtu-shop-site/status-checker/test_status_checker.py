@@ -11,7 +11,8 @@ from unittest.mock import patch
 
 from status_checker import (
     build_activity_feed, build_freshness_health, build_service_health, build_simulation_health,
-    build_status, main, overall_state, research_site_state, simulation_status, write_json_atomic,
+    build_live, build_status, check_public_payload, main, overall_state, project_dispatch_flow, project_planner,
+    research_site_state, simulation_status, write_json_atomic,
 )
 
 
@@ -27,6 +28,79 @@ def fake_runner(*args, **kwargs):
 
 
 class StatusCheckerTests(unittest.TestCase):
+    def test_dispatch_flow_is_whitelisted_in_both_public_payloads(self):
+        observation, runtime, runs, source = self.make_inputs()
+        source["utc"] = dt.datetime.now(UTC).isoformat()
+        source["scheduler"] = {"private": "/srv/private-scheduler", "last_decision": {"blocked_breakdown": {
+            "scientific_gate_pending": 2, "dependencies_pending": 1, "required_artifacts_pending": 3, "private-block": 14,
+        }}, "flow": {
+            "schema": "tcad-dispatch-flow-v1",
+            "slots": [
+                {"slot": 0, "threads": 4, "state": "running", "reason": None, "backend": "tcad", "run_id": "private-run", "pid": 420},
+                {"slot": 1, "threads": 2, "state": "free", "reason": "resource_wait", "path": "/srv/private-slot"},
+                {"slot": 2, "threads": 2, "state": "/srv/private-state", "reason": ["private-reason"], "backend": "private-backend"},
+                {"slot": 3, "threads": 1, "state": "quarantined", "reason": "unknown", "idle_reason": "slot_probe_isolated"},
+                {"slot": 4, "threads": 1, "state": "free", "idle_reason": "geant4_reservation", "backend": "geant4"},
+            ],
+            "collection": {"pending": 3, "oldest_wait_seconds": 123.5, "path": "/srv/private-collection"},
+            "detail": "/srv/private-flow",
+        }}
+        planner = {"mode": "repair_only_async", "status": "offline", "offline": True,
+                   "retry_after": dt.datetime.now(UTC).timestamp() + 60}
+        source["scheduler"]["planner"] = {**planner, "publication": {"detail": "/srv/private-planner"}}
+        observation.write_text(json.dumps(source), encoding="utf-8")
+        with patch("status_checker.system_metrics", return_value={}):
+            status = build_status(runner=fake_runner, observation_path=observation, runtime_path=runtime,
+                                  runs_root=runs, scheduler_path=observation.parent / "missing-scheduler.json",
+                                  mode="live")
+        flow = status["simulation"]["dispatch_flow"]
+        self.assertEqual(flow, {
+            "schema": "tcad-dispatch-flow-v1", "state": "fresh", "fresh_max_age_seconds": 180,
+            "observed_at": source["utc"].replace("+00:00", "Z"),
+            "slots": [
+                {"slot": 0, "threads": 4, "state": "running", "reason": None, "idle_reason": None, "backend": "tcad"},
+                {"slot": 1, "threads": 2, "state": "free", "reason": "resource_wait", "idle_reason": "resource_wait", "backend": None},
+                {"slot": 2, "threads": 2, "state": "unknown", "reason": "unknown", "idle_reason": "unknown", "backend": None},
+                {"slot": 3, "threads": 1, "state": "quarantined", "reason": "slot_probe_isolated", "idle_reason": "slot_probe_isolated", "backend": None},
+                {"slot": 4, "threads": 1, "state": "free", "reason": "geant4_reservation", "idle_reason": "geant4_reservation", "backend": "geant4"},
+            ],
+            "collection": {"pending": 3, "oldest_wait_seconds": 123.5},
+            "blocked_tasks": {"gate_blocked": 2, "dependency_blocked": 4},
+        })
+        self.assertEqual(status["schema_version"], 2)
+        live = build_live(status, {})
+        self.assertEqual(live["simulation"]["dispatch_flow"], flow)
+        for payload in (status, live):
+            self.assertEqual(payload["simulation"]["planner"], planner)
+            check_public_payload(payload)
+            self.assertNotIn("private-", json.dumps(payload))
+
+    def test_planner_omits_stale_observations_and_rejects_unknown_fields(self):
+        source = {"utc": SNAPSHOT.isoformat(), "fresh_max_age_seconds": 30, "scheduler": {"planner": {
+            "mode": "private-mode", "status": ["offline"], "offline": 1, "retry_after": float("inf"),
+        }}}
+        self.assertIsNone(project_planner({}, SNAPSHOT))
+        self.assertIsNone(project_planner(source, SNAPSHOT + dt.timedelta(seconds=31)))
+        self.assertEqual(project_planner(source, SNAPSHOT), dict.fromkeys(("mode", "status", "offline", "retry_after")))
+
+    def test_dispatch_flow_missing_expired_and_invalid(self):
+        self.assertIsNone(project_dispatch_flow({}, SNAPSHOT))
+        self.assertIsNone(project_dispatch_flow({"scheduler": {"slots": []}}, SNAPSHOT))
+        source = {"utc": SNAPSHOT.isoformat(), "fresh_max_age_seconds": 30, "scheduler": {"flow": {
+            "schema": "tcad-dispatch-flow-v1", "slots": [{"slot": 0, "threads": 4, "state": "free"}],
+            "collection": {"pending": True, "oldest_wait_seconds": float("inf")},
+        }}}
+        fresh = project_dispatch_flow(source, SNAPSHOT + dt.timedelta(seconds=30))
+        self.assertEqual(fresh["collection"], {"pending": None, "oldest_wait_seconds": None})
+        for offset in (30.5, -61):
+            with self.subTest(offset=offset):
+                stale = project_dispatch_flow(source, SNAPSHOT + dt.timedelta(seconds=offset))
+                self.assertEqual(stale["state"], "stale")
+                self.assertNotIn("slots", stale)
+                self.assertNotIn("collection", stale)
+        source["scheduler"]["flow"]["slots"] *= 2
+        self.assertEqual(project_dispatch_flow(source, SNAPSHOT)["state"], "unknown")
+
     def test_occupied_reconciliation_pending_does_not_claim_native_running(self):
         observation, runtime, runs, source = self.make_inputs()
         for status in ("reconciliation_pending", "pending", "unknown", None):

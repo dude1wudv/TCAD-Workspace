@@ -316,6 +316,8 @@ md-elevated-card.m3-card.research-panel:hover { transform: none; }
   color: var(--accent); background: var(--accent-bg); white-space: nowrap;
 }
 .kpi-tag { color: var(--muted); background: var(--inset); font-weight: 600; }
+.jobs-kpi .kpi-head { flex-wrap: wrap; }
+.jobs-kpi .topology-badge { white-space: normal; overflow-wrap: anywhere; }
 .kpi-lead { display: flex; align-items: baseline; flex-wrap: wrap; gap: 2px 8px; color: var(--muted); font-size: 12px; }
 .kpi-lead strong { color: var(--text); font-size: clamp(28px, 2.6vw, 38px); line-height: 1.05; font-weight: 800; letter-spacing: -0.03em; }
 .kpi-lead small { font-size: 0.48em; color: var(--muted); font-weight: 600; }
@@ -346,6 +348,15 @@ progress::-moz-progress-bar { background: currentColor; border-radius: 999px; }
 .empty { padding-block: 10px; }
 
 /* VM scheduling matrix */
+.dispatch-flow { margin-bottom: 14px; }
+.dispatch-flow .batch-bar { margin-bottom: 8px; }
+.dispatch-widths { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.dispatch-widths li {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px;
+  padding: 6px 10px; border-radius: var(--radius-sm); background: var(--inset);
+  color: var(--muted); font-size: 12px;
+}
+.dispatch-widths :is(strong, b) { color: var(--text); }
 .cpu-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
 .cpu-layout > :only-child { grid-column: 1 / -1; }
 .compute-cores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
@@ -641,6 +652,7 @@ summary { cursor: pointer; color: var(--accent); font-weight: 650; user-select: 
 .update-next span { flex: none; padding: 1px 6px; border-radius: 6px; background: var(--accent-bg); color: var(--accent); font-size: 10.5px; font-weight: 700; }
 .update-footer { margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border); color: var(--muted); font-size: 11px; }
 .case-row p, .case-row small { color: var(--muted); font-size: 11.5px; margin-top: 4px; display: block; }
+.case-row .case-wait { color: var(--text); line-height: 1.5; }
 
 .plan-drawers { margin-top: 12px; }
 .plan-details { border-top: 1px solid var(--border); padding-block: 10px; }

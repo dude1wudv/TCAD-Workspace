@@ -5,7 +5,7 @@ import '@material/web/iconbutton/icon-button.js';
 import '@material/web/ripple/ripple.js';
 import './status-dashboard.css';
 import { escapeHtml as esc, renderWhr, renderSparkline, renderTrends, bindTrendTooltips } from './components/telemetry-charts.js';
-import { renderResearch, bindResearch, parameterMarkup, sealedId } from './research-dashboard.js';
+import { renderResearch, bindResearch, parameterMarkup, sealedId, caseWaitsAreFresh, executionResult } from './research-dashboard.js';
 
 const app = document.getElementById('app');
 const state = {
@@ -13,13 +13,19 @@ const state = {
   activeSection: 'overview', navDrawerOpen: false,
   live: null, full: null, fullHash: null, lastFullRequest: -Infinity,
   liveMode: 'loading', fullFailed: false, refreshing: false,
+  dispatchFlowState: null,
+  plannerOffline: false,
+  caseWaitsFresh: false,
+  maintenanceFresh: false,
   taskMetrics: new Map(),
 };
 try { if (localStorage.getItem('xjtu-lang') === 'en') state.lang = 'en'; } catch {}
 
 const labels = {
   running: ['运行中', 'Running'], collecting: ['待收集', 'Collecting'],
-  completed: ['已完成', 'Completed'], failed: ['异常', 'Failed'],
+  completed: ['归档已核验', 'Archive verified'], failed: ['仿真失败', 'Simulation failed'],
+  solver_finished: ['求解结束 · 待收集', 'Solver finished · awaiting collection'],
+  missing_data: ['缺数据', 'Missing data'], under_review: ['待核对', 'Under review'],
   pending: ['待运行', 'Pending'], idle: ['空闲', 'Idle'], unknown: ['待观测', 'Unknown'],
   healthy: ['正常推进', 'Advancing'], fine_step: ['微步收敛', 'Fine steps'], stalled: ['停滞预警', 'Stalled'],
   operational: ['在线', 'Online'], maintenance: ['维护暂停', 'Maintenance pause'],
@@ -31,8 +37,8 @@ const labels = {
   slow_convergence: ['慢收敛', 'Slow convergence'], uncollected: ['已退出待收集', 'Exited, pending collection'],
   collection_overdue: ['收集超时', 'Collection overdue'],
   probe_error: ['探针异常', 'Probe error'], probe_failed: ['探针异常', 'Probe error'],
-  awaiting_collection: ['待收集', 'Collecting'], verified_success: ['已核验', 'Verified'],
-  verified_failure: ['核验失败', 'Failed'], verified_interrupted: ['已中断', 'Interrupted'],
+  awaiting_collection: ['待收集', 'Collecting'], verified_success: ['归档已核验', 'Archive verified'],
+  verified_failure: ['失败归档已核验', 'Failure archive verified'], verified_interrupted: ['已中断', 'Interrupted'],
   dc_init: ['直流初始化', 'DC init'], transient: ['瞬态求解', 'Transient'],
   mesh: ['网格生成', 'Meshing'], post: ['后处理', 'Post-processing'],
   setup: ['准备', 'Setup'], process: ['工艺仿真', 'Process simulation'],
@@ -58,9 +64,11 @@ const tone = {
   cached_stale: 'warn', stale: 'warn', probe_error: 'warn', probe_failed: 'warn',
   paused: 'warn', delayed: 'warn', slow_convergence: 'warn', uncollected: 'warn', awaiting_collection: 'warn', collection_overdue: 'warn',
   stalled: 'bad', failed: 'bad', offline: 'bad', unavailable: 'bad',
+  solver_finished: 'warn', missing_data: 'warn', under_review: 'warn', slot_probe_pending: 'warn', slot_probe_isolated: 'warn',
+  verified_success: 'good', verified_failure: 'warn', verified_interrupted: 'warn',
 };
 const b = (zh, en) => state.lang === 'zh' ? zh : en;
-const label = (key) => b(...(labels[key] || labels.unknown));
+const label = (key) => b(...(typeof key === 'string' && Object.hasOwn(labels, key) ? labels[key] : labels.unknown));
 const localized = (zh, en) => b(zh || en, en || zh);
 const finite = Number.isFinite;
 const number = (value, digits = 0) => finite(value) ? Number(value.toFixed(digits)).toString() : '—';
@@ -70,6 +78,7 @@ const date = (time) => finite(Date.parse(time))
   ? new Intl.DateTimeFormat(b('zh-CN', 'en-US'), { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(time)) : '—';
 const sampleThreshold = (payload) => payload?.health?.freshness?.scheduler_threshold_seconds ?? 180;
 function validSample(value, thresholdSeconds = 180) {
+  if (typeof value !== 'string' || !finite(thresholdSeconds) || thresholdSeconds < 0) return false;
   const elapsed = Date.now() - Date.parse(value);
   return elapsed >= -60_000 && elapsed <= thresholdSeconds * 1000;
 }
@@ -83,7 +92,8 @@ function duration(seconds) {
 }
 
 function pill(key, caption = label(key)) {
-  return `<span class="badge ${tone[key] || 'neutral'}"><i aria-hidden="true"></i>${esc(caption)}</span>`;
+  const color = typeof key === 'string' && Object.hasOwn(tone, key) ? tone[key] : 'neutral';
+  return `<span class="badge ${color}"><i aria-hidden="true"></i>${esc(caption)}</span>`;
 }
 
 function meter(value, total, title) {
@@ -128,6 +138,26 @@ function schedulerFor(simulation, threshold) {
   return { ...source, vm, observedAt, hasObservation, stale, tasks, slots, count, reserved_cpus };
 }
 
+function dispatchFlowFor(source) {
+  if (source?.schema !== 'tcad-dispatch-flow-v1') return null;
+  if (source.state === 'stale' ||
+      (source.state === 'fresh' && !validSample(source.observed_at, source.fresh_max_age_seconds))) {
+    return { state: 'stale' };
+  }
+  if (source.state !== 'fresh' || !Array.isArray(source.slots)) return { state: 'unknown' };
+  const states = ['running', 'launching', 'sealing', 'quarantined', 'free', 'unknown'];
+  const slots = [];
+  const seen = new Set();
+  for (const item of source.slots) {
+    if (!item || !Number.isSafeInteger(item.slot) || item.slot < 0 ||
+        !Number.isSafeInteger(item.threads) || item.threads < 1 || seen.has(item.slot)) return { state: 'unknown' };
+    seen.add(item.slot);
+    const state = states.includes(item.state) ? item.state : 'unknown';
+    slots.push({ slot: item.slot, threads: item.threads, state, reason: item.idle_reason ?? item.reason, backend: item.backend });
+  }
+  return { state: 'fresh', slots, collection: source.collection, blocked_tasks: source.blocked_tasks, supply: source.supply };
+}
+
 function progressReading(progress) {
   return {
     current: progress?.current ?? progress?.simulation_time_ns,
@@ -136,9 +166,10 @@ function progressReading(progress) {
   };
 }
 
-function topology(scheduler) {
-  const widths = scheduler.layout_widths;
-  if (!scheduler.stale && widths?.length) {
+function topology(scheduler, flow) {
+  const widths = flow?.state === 'fresh' ? flow.slots.map((slot) => slot.threads) :
+    scheduler.stale ? null : scheduler.layout_widths;
+  if (widths?.length) {
     const groups = new Map();
     for (const width of widths) groups.set(width, (groups.get(width) || 0) + 1);
     return [...groups].sort(([a], [c]) => a - c).map(([width, count]) => `${count}×${width}`).join('+');
@@ -198,6 +229,10 @@ function renderDirector(director) {
   </div></div>`;
 }
 
+function plannerOfflineFor(payload) {
+  return payload?.simulation?.planner?.offline === true && validSample(payload.generated_at);
+}
+
 function renderHealth(payload, scheduler, batch, research, services) {
   const health = payload.health || {};
   const freshness = health.freshness || {};
@@ -236,6 +271,7 @@ function renderHealth(payload, scheduler, batch, research, services) {
   ];
   const warnings = [
     paused && (localized(batch.pause?.reason_zh, batch.pause?.reason_en) || label('maintenance')),
+    state.plannerOffline && b('AI 修复规划器离线', 'AI repair planner offline'),
     (freshness.scheduler_probe_ok === false || ['probe_error', 'probe_failed'].includes(freshnessState)) && b('调度探针异常', 'Scheduler probe error'),
     projection === 'cached_stale' && b('科研投影待更新（展示上一份成功快照）', 'Research projection awaiting update (last successful snapshot shown)'),
   ].filter(Boolean);
@@ -253,7 +289,7 @@ function renderResponseSupply(supply) {
     return `<div class="overview-health"><div class="batch-bar"><strong>${title}</strong>
       <span>${stale ? b('供料登记待更新', 'Supply register awaiting an update') : b('供料登记暂不可用', 'Supply register unavailable')}</span></div></div>`;
   }
-  const c = supply.counts;
+  const c = supply.counts || {};
   const stages = [
     [b('缺材料', 'Missing materials'), c.missing_material],
     [b('待前置验收', 'Awaiting prerequisites'), c.awaiting_prerequisites],
@@ -262,9 +298,9 @@ function renderResponseSupply(supply) {
     [b('已核对零沉积复用', 'Verified zero-deposition reuse'), c.zero_reuse],
   ];
   const waits = [
-    [b('双态零源资格', 'Two-state zero-source qualification'), supply.prerequisites.p0],
-    [b('输运核验收集', 'Verified transport collection'), supply.prerequisites.transport],
-    [b('阈值前置证据', 'Threshold evidence'), supply.prerequisites.threshold],
+    [b('双态零源资格', 'Two-state zero-source qualification'), supply.prerequisites?.p0],
+    [b('输运核验收集', 'Verified transport collection'), supply.prerequisites?.transport],
+    [b('阈值前置证据', 'Threshold evidence'), supply.prerequisites?.threshold],
   ].filter(([, count]) => count > 0);
   return `<div class="overview-health" aria-label="${title}">
     <div class="batch-bar"><strong>${title}</strong><span>${number(supply.condition_count)} ${b('组条件', 'conditions')} · ${number(supply.case_count)} ${b('例响应', 'response cases')}</span></div>
@@ -273,6 +309,25 @@ function renderResponseSupply(supply) {
       ${waits.length ? `<span>${b('当前等待', 'Waiting for')} · ${waits.map(([name, count]) => `${name} ${number(count)}`).join(' · ')}</span>` : ''}
       <span>${b('已入队含在原队列等待及已有原运行记录的响应。', 'Entered queue includes cases waiting in the original queue and cases with an original run record.')}</span>
     </div></div>`;
+}
+
+function renderRefillTiming(timing) {
+  if (!['r06-threshold-followup', 'lhs02-threshold-x10-to-x30'].includes(timing?.scope)) return '';
+  const title = b('最新因果实测时延', 'Latest causal measured latency');
+  const scope = timing.scope === 'r06-threshold-followup'
+    ? b('前置阈值结果收集到账 → 对应正式后继原生启动', 'Prerequisite threshold result collected → corresponding formal follow-up native start')
+    : b('LHS02 阈值 ×10 结果收集到账 → 对应原生 ×30 启动', 'LHS02 threshold ×10 result collected → corresponding native ×30 start');
+  const started = timing.latest_started_at;
+  const measured = Number.isSafeInteger(timing.sample_count) && timing.sample_count > 0
+    && Number.isSafeInteger(timing.latest_seconds) && timing.latest_seconds >= 0
+    && typeof started === 'string' && /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$/.test(started) && finite(Date.parse(started));
+  const result = measured ? `${number(timing.latest_seconds)} ${b('秒', 's')}` : b('等待可核验样本', 'Awaiting a verifiable sample');
+  return `<div class="overview-health" aria-label="${title}">
+    <div class="batch-bar"><strong>${title}</strong><span>${result}</span></div>
+    <div class="batch-bar"><span>${scope}</span>${measured
+      ? `<span>${b('启动', 'Started')} <time datetime="${esc(started)}">${esc(started.replace('T', ' ').replace('Z', ' UTC'))}</time></span>` : ''}</div>
+    ${measured ? `<div class="batch-bar"><span>${b('完整证据样本', 'Complete evidence samples')} ${number(timing.sample_count)}</span></div>` : ''}
+  </div>`;
 }
 
 function resourceRow(title, resource, alert = false, hint = '') {
@@ -284,11 +339,16 @@ function resourceRow(title, resource, alert = false, hint = '') {
   </div>`;
 }
 
-function renderKpis(payload, scheduler, batch, research, services) {
+function renderKpis(payload, scheduler, flow, batch, research, services) {
   const vm = scheduler.vm;
   const system = payload.system || {};
   const totals = research?.totals;
-  const runningGroups = scheduler.stale ? null : scheduler.active_groups ?? scheduler.tasks.filter((task) => task.state === 'running').length;
+  const dispatchSlots = flow?.state === 'fresh' ? flow.slots : null;
+  const probePending = dispatchSlots?.some((slot) => slot.reason === 'slot_probe_pending');
+  const runningGroups = dispatchSlots ?
+    (dispatchSlots.some((slot) => slot.state === 'unknown' && slot.reason !== 'slot_probe_pending') ?
+      null : dispatchSlots.filter((slot) => slot.state === 'running').length) :
+    scheduler.stale ? null : scheduler.active_groups ?? scheduler.tasks.filter((task) => task.state === 'running').length;
   const bound = scheduler.stale ? null : scheduler.active_slots;
   const root = system.storage?.server_root;
   const swap = vm.swap || {};
@@ -296,10 +356,16 @@ function renderKpis(payload, scheduler, batch, research, services) {
   const belowThreshold = root?.low_space === true || (finite(root?.available_bytes) &&
     root.available_bytes < (root.warning_below_bytes ?? 20 * 1024 ** 3));
   const plan = (key) => number(totals?.[key]);
+  const hasSolverFinished = totals?.solver_finished != null;
+  const planKeys = hasSolverFinished ? ['solver_finished', 'archived', 'accepted', 'planned'] : ['solved', 'accepted', 'planned'];
+  const planCaption = hasSolverFinished ? b('求解结束待收集 / 归档已核验 / 科学验收 / 计划', 'Awaiting collection / Archive verified / Science accepted / Planned') :
+    b('工程完成 / 科学验收 / 计划', 'Engineering / Science / Planned');
   const independentTip = b('各层资源独立采样，余量不可相加', 'Each layer is sampled independently and cannot be summed');
-  return `<md-elevated-card class="m3-card"><article class="panel kpi">
-    <div class="kpi-head"><h2>${b('活动求解器', 'Active solvers')}</h2><span class="topology-badge">${esc(topology(scheduler))}</span></div>
-    <div class="kpi-lead"><strong>${number(runningGroups)}</strong><span>${b('项运行中', 'running')}</span></div>
+  return `<md-elevated-card class="m3-card"><article class="panel kpi jobs-kpi">
+    <div class="kpi-head"><h2>${dispatchSlots ? b('仿真任务', 'Simulation jobs') : b('活动求解器', 'Active solvers')}</h2><span class="topology-badge">${esc(topology(scheduler, flow))}</span></div>
+    <div class="kpi-lead"><strong>${number(runningGroups)}${dispatchSlots ? `<small> / ${number(dispatchSlots.length)}</small>` : ''}</strong>
+      <span>${dispatchSlots ? probePending ? b('已观测运行 / 槽位容量', 'Observed running / slot capacity') :
+        b('运行中 / 槽位容量', 'Running / slot capacity') : b('项运行中', 'running')}</span></div>
     <div class="kpi-meta">
       <span>${b('占用核心', 'Cores')} <b>${number(bound)} / ${number(scheduler.count || null)}</b></span>
       <span>${b('服务器 CPU / Load 1m', 'Server CPU / Load 1m')} <b>${unit(system.cpu?.usage_percent, '%', 1)} / ${number(system.cpu?.load_1m, 2)}</b></span>
@@ -314,8 +380,8 @@ function renderKpis(payload, scheduler, batch, research, services) {
     <div class="kpi-lead"><strong>${number(batch.collected)}<small> / ${number(batch.total)}</small></strong><span>${b('本批已收集', 'collected')}</span></div>
     ${meter(batch.collected, batch.total, b('本批已收集', 'Batch collected'))}
     <div class="kpi-meta">
-      <span title="${b('工程完成 / 科学验收 / 计划', 'Engineering / Science / Planned')}">${b('正式进度', 'Formal plan')} <b>${plan('solved')} / ${plan('accepted')} / ${plan('planned')}</b></span>
-      <span class="kpi-sub">${b('工程完成 / 科学验收 / 计划', 'Engineering / Science / Planned')}</span>
+      <span title="${planCaption}">${b('正式进度', 'Formal plan')} <b>${planKeys.map(plan).join(' / ')}</b></span>
+      <span class="kpi-sub">${planCaption}</span>
       <span>${b('近 24h 完成', '24h verified')} <b>${number(batch.completed_24h)}</b></span>
     </div>
   </article></md-elevated-card>
@@ -335,6 +401,66 @@ function renderKpis(payload, scheduler, batch, research, services) {
       ${resourceRow(b('虚拟机剩余 / 分配空间', 'VM remaining / allocated'), vm.storage, false, b('虚拟机剩余空间 / 虚拟机分配空间（逻辑容量）', 'VM remaining / allocated logical capacity'))}
     </div>
   </article></md-elevated-card>`;
+}
+
+function renderDispatchFlow(flow) {
+  if (!flow) return '';
+  const title = b('调度槽位', 'Dispatch slots');
+  if (flow.state !== 'fresh') return `<div class="dispatch-flow batch-bar"><strong>${title}</strong>${pill(flow.state)}</div>`;
+  const freeReasons = {
+    no_ready_task: b('暂无就绪任务', 'No ready task'), resource_wait: b('等待资源', 'Waiting for resources'),
+    backend_switch: b('后端切换', 'Switching backend'), paused: b('人工暂停', 'Paused by operator'),
+    geant4_reservation: b('为 Geant4 让位', 'Reserved for Geant4'),
+    dependency_blocked: b('前置任务阻塞', 'Dependency blocked'), gate_blocked: b('门禁阻塞', 'Gate blocked'),
+    guest_memory_below_reserve: b('虚拟机内存不足', 'VM memory below reserve'),
+    host_disk_below_floor: b('服务器磁盘余量不足', 'Server disk below floor'),
+    guest_disk_below_floor: b('虚拟机磁盘余量不足', 'VM disk below floor'),
+    backing_disk_below_floor: b('虚拟机磁盘可增长空间不足', 'VM disk growth space below floor'),
+    license_unavailable: b('许可不可用', 'License unavailable'),
+    slot_probe_pending: b('探针待核对', 'Probe check pending'), slot_probe_isolated: b('单槽隔离', 'Slot isolated'),
+    dispatch_pending: b('等待派发', 'Dispatch pending'), unknown: b('原因未知', 'Unknown reason'),
+  };
+  const probeReasons = new Set(['slot_probe_pending', 'slot_probe_isolated']);
+  const backendLabels = { tcad: 'TCAD', geant4: 'Geant4' };
+  const reasonOf = (slot) => typeof slot.reason === 'string' && Object.hasOwn(freeReasons, slot.reason) ? slot.reason : 'unknown';
+  const blocked = ['gate_blocked', 'dependency_blocked'].flatMap((reason) => {
+    const count = flow.blocked_tasks?.[reason];
+    return Number.isSafeInteger(count) && count > 0 ? [`${freeReasons[reason]} ${number(count)} ${b('项', 'tasks')}`] : [];
+  });
+  const groups = new Map();
+  for (const slot of flow.slots) {
+    if (!groups.has(slot.threads)) groups.set(slot.threads, []);
+    groups.get(slot.threads).push(slot);
+  }
+  const widths = [...groups].sort(([left], [right]) => left - right).map(([threads, slots]) => {
+    const free = slots.filter((slot) => slot.state === 'free');
+    const reasons = new Map();
+    for (const slot of free) {
+      const reason = reasonOf(slot);
+      if (probeReasons.has(reason)) continue;
+      const backend = typeof slot.backend === 'string' && Object.hasOwn(backendLabels, slot.backend) ? backendLabels[slot.backend] : null;
+      const caption = `${freeReasons[reason]}${backend && reason !== 'geant4_reservation' ? ` (${backend})` : ''}`;
+      reasons.set(caption, (reasons.get(caption) || 0) + 1);
+    }
+    const probes = slots.filter((slot) => probeReasons.has(reasonOf(slot))).map((slot) =>
+      pill(reasonOf(slot), `${b('槽', 'Slot')} ${number(slot.slot)} · ${freeReasons[reasonOf(slot)]}`));
+    const waiting = [
+      ['launching', b('启动中', 'Launching')], ['sealing', b('待封存', 'Awaiting seal')],
+      ['quarantined', b('隔离中', 'Quarantined')], ['unknown', label('unknown')],
+    ].flatMap(([state, caption]) => {
+      const count = slots.filter((slot) => slot.state === state && !probeReasons.has(reasonOf(slot))).length;
+      return count ? [`<span>${caption} <b>${count}</b></span>`] : [];
+    });
+    const captions = [...reasons].map(([caption, count]) => `${caption} ${count}`);
+    return `<li><strong>${b(`${threads} 线程槽位`, `${threads}-thread slots`)}</strong>
+      <span>${b('空闲', 'Free')} <b>${free.length}</b>${captions.length ? ` · ${captions.join(' · ')}` : ''}</span>${waiting.join('')}${probes.join('')}</li>`;
+  });
+  const repairs = flow.supply?.repair_waiting;
+  if (Number.isSafeInteger(repairs) && repairs >= 0) blocked.push(`${b('待修复', 'Awaiting repair')} ${number(repairs)}`);
+  const { pending, oldest_wait_seconds: oldest } = flow.collection ?? {};
+  return `<div class="dispatch-flow"><div class="batch-bar"><strong>${title}</strong>
+    <span>${blocked.length ? `${blocked.join(' · ')} · ` : ''}${b('待收集', 'Collection backlog')} <b>${number(pending)}</b> · ${b('最久等待', 'Oldest wait')} <b>${duration(oldest)}</b></span></div>
+    ${widths.length ? `<ul class="dispatch-widths">${widths.join('')}</ul>` : ''}</div>`;
 }
 
 function renderSlots(scheduler) {
@@ -432,11 +558,13 @@ function renderProcesses(processes) {
 function taskCard(task, scheduler, history) {
   const selected = state.selectedTask === task.id;
   const taskState = scheduler.stale ? 'unknown' : task.state;
-  const tags = [`<span class="badge neutral">${esc(cpuName(task.cpu_set))}</span>`, pill(scheduler.stale ? 'unknown' : task.health || taskState)];
+  const hidden = redacted(task);
+  const result = hidden ? taskState : executionResult(task.execution_result) || task.health || taskState;
+  const tags = [`<span class="badge neutral">${esc(cpuName(task.cpu_set))}</span>`, pill(scheduler.stale ? 'unknown' : result)];
   const id = esc(task.id);
   const clearBtn = selected ? `<button type="button" class="clear-selection" data-clear-selection="1" title="${b('取消选中 (Esc)', 'Clear selection (Esc)')}">${b('取消聚焦', 'Unfocus')} ×</button>` : '';
   const title = `<h3 tabindex="-1">${esc(taskName(task))}</h3>`;
-  if (redacted(task)) return `<md-elevated-card class="m3-card task-card-shell${selected ? ' selected' : ''}" data-key="task-${id}" data-task="${id}"><article class="panel task-card anonymous${selected ? ' selected' : ''}"><div class="task-heading"><div>${title}<div class="tag-line">${tags.join('')}</div></div>${clearBtn}</div></article></md-elevated-card>`;
+  if (hidden) return `<md-elevated-card class="m3-card task-card-shell${selected ? ' selected' : ''}" data-key="task-${id}" data-task="${id}"><article class="panel task-card anonymous${selected ? ' selected' : ''}"><div class="task-heading"><div>${title}<div class="tag-line">${tags.join('')}</div></div>${clearBtn}</div></article></md-elevated-card>`;
   const batch = localized(task.batch_label, task.batch_label_en);
   if (batch) tags.unshift(`<span class="badge accent">${esc(batch)}</span>`);
   const progress = task.progress || {};
@@ -494,17 +622,37 @@ function renderServices(services) {
   }).join('');
 }
 
+const maintenanceIsFresh = (summary) => summary?.state === 'fresh' && validSample(summary.observed_at);
+
+function renderMaintenance(summary) {
+  const title = b('科研归档维护', 'Research archive maintenance');
+  const c = summary?.counts;
+  if (!state.maintenanceFresh || !c) {
+    const stale = summary?.state === 'stale' || (summary?.state === 'fresh' && !state.maintenanceFresh);
+    return `<aside class="batch-bar"><strong>${title}</strong><span>${stale ? b('观测过期', 'Stale observation') : b('暂无有效观测', 'No valid observation')}${summary?.observed_at ? ` · ${date(summary.observed_at)}` : ''}</span></aside>`;
+  }
+  return `<aside class="batch-bar" aria-label="${title}"><strong>${title}</strong>
+    <span>${b('待查找或提取读出', 'Locate or extract readout')} <b>${number(c.find_or_extract_readout)}</b> · ${b('待核验备份收据', 'Backup receipts to inspect')} <b>${number(c.inspect_backup_receipt)}</b> · ${b('诊断或对账', 'Diagnose or reconcile')} <b>${number(c.diagnose_or_reconcile)}</b></span>
+    <span title="${b('归档大小仅供维护盘点', 'Archive size is for maintenance inventory')}">${b('待读出归档', 'Archives awaiting readout')} ${gib(summary.selected_archive_bytes, 2)} GiB · ${b('实测释放空间待统计', 'Reclaimed space awaiting measurement')} · ${date(summary.observed_at)}</span></aside>`;
+}
+
 function renderRuns(simulation, batch) {
   const title = localized(batch.label, batch.label_en) || b('等待批次观测', 'Awaiting batch samples');
   const totals = [['collected', b('已收集', 'Collected')], ...['running', 'collecting', 'failed', 'pending', 'unknown'].map((key) => [key, label(key)])];
   const headers = [b('任务', 'Task'), b('批次', 'Batch'), b('核数', 'Cores'), b('时长', 'Runtime'),
     b('物理时间', 'Time'), b('状态', 'Status'), b('完成时间', 'Finished')];
   const rows = (simulation.recent_runs || []).filter((run) => !redacted(run)).slice(0, 20).filter((run) =>
-    state.runFilter === 'all' || run.state === state.runFilter || (state.runFilter === 'running' && run.state === 'collecting'));
+    state.runFilter === 'all' || run.state === state.runFilter || executionResult(run.execution_result) === state.runFilter ||
+    (state.runFilter === 'running' && run.state === 'collecting'));
   const cells = rows.map((run) => {
+    const result = executionResult(run.execution_result);
+    const outcome = result || run.collection_result || run.state;
+    const archive = result && ['verified_failure', 'verified_interrupted'].includes(run.collection_result);
+    const badges = [pill(outcome),
+      archive && pill(run.collection_result), run.health && pill(run.health)].filter(Boolean).join(' ');
     const data = [`<strong>${esc(taskName(run))}</strong>`, esc(localized(run.batch_label, run.batch_label_en) || '—'),
       number(run.requested_threads), duration(run.elapsed_seconds), unit(run.final_time_ns ?? run.simulation_time_ns, ' ns', 4),
-      `${pill(run.state, run.collection_result ? label(run.collection_result) : label(run.state))}${run.health ? ` ${pill(run.health)}` : ''}`, date(run.finished_at)];
+      badges, date(run.finished_at)];
     return `<tr data-key="run-${esc(run.id)}">${data.map((value, i) =>
       `<td><span class="cell-label" aria-hidden="true">${headers[i]}</span><span>${value}</span></td>`).join('')}</tr>`;
   }).join('');
@@ -660,7 +808,9 @@ function researchActivity(payload, scheduler) {
 
 function updateResearch(payload, scheduler, research) {
   const projectionState = research?.projection_state ?? payload.health?.freshness?.research_projection_state;
-  update('research', sectionDivider('06', b('科研计划', 'Research')) + renderResearch({ ...research, projection_state: projectionState }, state.lang, researchActivity(payload, scheduler)));
+  const projection = { ...research, projection_state: projectionState };
+  state.caseWaitsFresh = caseWaitsAreFresh(projection);
+  update('research', sectionDivider('06', b('科研计划', 'Research')) + renderResearch(projection, state.lang, researchActivity(payload, scheduler)));
 }
 
 function render() {
@@ -671,6 +821,10 @@ function render() {
   const payload = newestPayload() || {};
   const simulation = payload.simulation || {};
   const scheduler = schedulerFor(simulation, sampleThreshold(payload));
+  const flow = dispatchFlowFor(simulation.dispatch_flow);
+  state.dispatchFlowState = flow?.state;
+  state.plannerOffline = plannerOfflineFor(payload);
+  state.maintenanceFresh = maintenanceIsFresh(payload.maintenance_summary);
   const batch = simulation.active_batch || {};
   const research = currentResearch();
   const history = state.live?.history;
@@ -680,12 +834,12 @@ function render() {
     (payload.generated_at ? b('等待调度态势摘要', 'Awaiting a scheduler summary') :
       state.fullFailed ? b('状态数据暂时不可用', 'Status data unavailable') : b('正在读取状态数据…', 'Loading status…'));
   update('overview', `<md-elevated-card class="m3-card overview-shell"><div class="overview-frame"><div class="overview"><div><h1>${b('仿真状态看板', 'Simulation status')}</h1>
-    <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}${renderResponseSupply(simulation.response_supply)}</div></md-elevated-card>`);
-  update('kpis', renderKpis(payload, scheduler, batch, research, services));
+    <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}${renderResponseSupply(simulation.response_supply)}${renderRefillTiming(simulation.refill_timing)}</div></md-elevated-card>`);
+  update('kpis', renderKpis(payload, scheduler, flow, batch, research, services));
   const sample = scheduler.hasObservation ? `${scheduler.stale ? b('观测快照', 'Snapshot') : b('采样', 'Sampled')} · ${date(scheduler.observedAt)}` : '';
   const matrixHint = state.selectedTask ? b('点击空白处或 Esc 取消选中', 'Click outside or press Esc to clear') : sample;
   update('schedule', heading(b('虚拟机调度矩阵', 'VM scheduling matrix'), matrixHint, '01', b('调度矩阵', 'Matrix'))
-    + `<md-elevated-card class="m3-card"><div class="panel matrix">${renderSlots(scheduler)}</div></md-elevated-card>`);
+    + `<md-elevated-card class="m3-card"><div class="panel matrix">${renderDispatchFlow(flow)}${renderSlots(scheduler)}</div></md-elevated-card>`);
   const tasks = scheduler.tasks.filter((task) => ['running', 'collecting', 'uncollected', 'unknown'].includes(task.state));
   const taskTitle = scheduler.stale && scheduler.hasObservation ? b('活动任务 · 快照', 'Active tasks · snapshot') : b('活动任务遥测', 'Active task telemetry');
   update('tasks', heading(taskTitle, '', '02', b('活动任务', 'Tasks')) + `<div class="task-grid">${tasks.map((task) => taskCard(task, scheduler, history)).join('') ||
@@ -694,7 +848,7 @@ function render() {
     ${['2h', '24h'].map((window) => `<button type="button" class="filter-chip" data-window="${window}" aria-pressed="${window === state.window}"><md-ripple></md-ripple>${window}</button>`).join('')}
     </div></div><div class="trend-grid">${renderTrends(history, state.window, state.lang)}</div>`);
   update('services', heading(b('服务健康', 'Service health'), '', '04', b('服务健康', 'Services')) + `<div class="service-grid">${renderServices(services)}</div>`);
-  update('runs', heading(b('近期执行流水', 'Recent runs'), '', '05', b('执行流水', 'Runs')) + `<md-elevated-card class="m3-card"><div class="panel runs-panel">${renderRuns(simulation, batch)}</div></md-elevated-card>`);
+  update('runs', heading(b('近期执行流水', 'Recent runs'), '', '05', b('执行流水', 'Runs')) + `<md-elevated-card class="m3-card"><div class="panel runs-panel">${renderMaintenance(payload.maintenance_summary)}${renderRuns(simulation, batch)}</div></md-elevated-card>`);
   updateResearch(payload, scheduler, research);
   update('footer', `<div class="scope"><details class="scope-details"><summary>${b('公开范围与数据口径', 'Public scope & definitions')}</summary>
     <p>${b('公开服务健康、资源摘要和已脱敏的仿真进度。服务器与虚拟机内存及三层存储空间独立采样、余量不相加；工程完成以原任务核验收集为准，科学验收另需逐例证据。',
@@ -715,6 +869,14 @@ function writeText(element, value) {
 function tick() {
   if (document.hidden) return;
   const payload = newestPayload();
+  const flow = payload?.simulation?.dispatch_flow;
+  const flowExpired = state.dispatchFlowState === 'fresh' && !validSample(flow?.observed_at, flow?.fresh_max_age_seconds);
+  const waitsExpired = state.caseWaitsFresh && !caseWaitsAreFresh(currentResearch());
+  if (flowExpired || waitsExpired || state.plannerOffline !== plannerOfflineFor(payload) ||
+      state.maintenanceFresh !== maintenanceIsFresh(payload?.maintenance_summary)) {
+    render();
+    return;
+  }
   const threshold = sampleThreshold(payload);
   const scheduler = payload?.simulation?.scheduler || payload?.simulation?.benchmark;
   const sample = scheduler?.observed_at || scheduler?.virtual_machine?.observed_at || payload?.generated_at;
