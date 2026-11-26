@@ -10,6 +10,7 @@ from pathlib import Path
 from urllib import request
 
 from config import Config, ssh_command
+from runtime import hidden_subprocess_kwargs
 from schemas import DirectorState, load_json, parse_time, read_json
 
 
@@ -20,8 +21,11 @@ _SSH_SECTIONS = (
     "__DIRECTOR_MAINTENANCE__",
     "__DIRECTOR_RESPONSE__",
 )
+_CASE_WAITS_SECTION = "__DIRECTOR_CASE_WAITS__"
+_DISK_SECTION = "__DIRECTOR_SERVER_DISK__"
 _MAINTENANCE_SUMMARY_PATH = "/var/lib/tcad-run-maintenance/summary.json"
 _RESPONSE_SUPPLY_PATH = "/home/tcad/course-workspace/local_runtime/server-codex/r06-lhs-response-supply-r1/response-status.json"
+_CASE_WAITS_PATH = "/home/tcad/course-workspace/local_runtime/server-codex/r06-case-reconciliation-r1/case-waits.json"
 _NOISE_KEYS = {
     "utc", "timestamp", "time", "source", "errors", "events", "progress", "metrics",
     "system", "resources", "virtual_machine", "activity_feed", "ready_since", "elapsed", "duration",
@@ -99,6 +103,10 @@ def _server_script(cfg: Config) -> str:
         f"cat -- {shlex.quote(_MAINTENANCE_SUMMARY_PATH)} 2>/dev/null || printf '{{}}'",
         f"printf '\\n%s\\n' {response_supply}",
         f"cat -- {shlex.quote(_RESPONSE_SUPPLY_PATH)} 2>/dev/null || printf '{{}}'",
+        f"printf '\\n%s\\n' {_CASE_WAITS_SECTION}",
+        f"cat -- {shlex.quote(_CASE_WAITS_PATH)} 2>/dev/null || printf '{{}}'",
+        f"printf '\\n%s\\n' {_DISK_SECTION}",
+        "df -B1 --output=avail / 2>/dev/null | tail -n 1 || true",
     ])
     return "\n".join(script)
 
@@ -181,15 +189,40 @@ def summarize_server(snapshot: dict) -> dict:
     maint_compact = {k: v for k, v in maint_counts.items() if type(v) is int and v > 0}
     resp_groups = len(resp.get("cases")) if isinstance(resp.get("cases"), list) else 0
 
+    case_waits = snapshot.get("case_waits") if isinstance(snapshot.get("case_waits"), dict) else {}
+    wait_cases = case_waits.get("cases") if isinstance(case_waits.get("cases"), list) else []
+    block_accepted: dict[str, int] = {}
+    decision_pending = 0
+    waiting_cases = 0
+    run_bound = 0
+    if wait_cases:
+        for block in ("Z", "T", "S", "R", "AL"):
+            block_accepted[block] = 0
+        for item in wait_cases:
+            if not isinstance(item, dict):
+                continue
+            block = item.get("block")
+            status = item.get("status")
+            if status == "decision_pending":
+                decision_pending += 1
+            elif status == "waiting":
+                waiting_cases += 1
+            elif status == "run_bound":
+                run_bound += 1
+            if block == "Z" and status in {"zero_baseline_reused", "acceptance_recorded"}:
+                block_accepted["Z"] += 1
+            elif block in {"T", "S", "R", "AL"} and status in {"acceptance_recorded", "zero_source_reused"}:
+                block_accepted[block] += 1
+
     starved = bool(
         snapshot.get("online")
         and snapshot.get("service_active") is not False
         and free_slots >= 2
         and ready == 0
-        and not preparing
-        and (blocked_count > 0 or awaiting_acceptance > 0 or missing_material > 0 or slots_total > 0)
+        and (not preparing or awaiting_acceptance > 0 or decision_pending > 0)
+        and (blocked_count > 0 or awaiting_acceptance > 0 or decision_pending > 0 or missing_material > 0 or slots_total > 0)
     )
-    return {
+    result = {
         "running": running,
         "free_slots": free_slots,
         "slots_total": slots_total,
@@ -200,6 +233,9 @@ def summarize_server(snapshot: dict) -> dict:
         "blocked_count": blocked_count,
         "missing_material": missing_material,
         "awaiting_acceptance": awaiting_acceptance,
+        "decision_pending": decision_pending,
+        "waiting_cases": waiting_cases,
+        "run_bound": run_bound,
         "top_blocked_reasons": top_reasons,
         "last_publication_utc": (supply.get("last_publication") or {}).get("utc") if isinstance(supply.get("last_publication"), dict) else None,
         "r06_released_runs": released,
@@ -214,6 +250,11 @@ def summarize_server(snapshot: dict) -> dict:
         "maintenance_counts": maint_compact,
         "response_supply_groups": resp_groups,
     }
+    if block_accepted:
+        result["block_accepted_counts"] = block_accepted
+    if type(snapshot.get("server_free_bytes")) is int and snapshot["server_free_bytes"] >= 0:
+        result["server_free_bytes"] = snapshot["server_free_bytes"]
+    return result
 
 
 def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
@@ -221,7 +262,7 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
     try:
         command = ssh_command(cfg, _server_script(cfg))
         result = subprocess.run(command, capture_output=True, text=True, encoding="utf-8",
-                                errors="replace", timeout=40, check=False)
+                                errors="replace", timeout=40, check=False, **hidden_subprocess_kwargs())
     except (OSError, ValueError, subprocess.TimeoutExpired) as error:
         errors.append(f"ssh: {type(error).__name__}")
         return False
@@ -236,8 +277,14 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
         errors.append("ssh: invalid probe response")
         return False
     explain, maint_marker, stream = stream.partition(f"\n{_SSH_SECTIONS[3]}\n")
-    maintenance, resp_marker, response_supply = stream.partition(f"\n{_SSH_SECTIONS[4]}\n") if maint_marker else ("", "", "")
+    maintenance, resp_marker, rest = stream.partition(f"\n{_SSH_SECTIONS[4]}\n") if maint_marker else ("", "", "")
+    response_supply, waits_marker, rest2 = rest.partition(f"\n{_CASE_WAITS_SECTION}\n") if resp_marker else ("", "", "")
+    case_waits_text, disk_marker, disk_text = rest2.partition(f"\n{_DISK_SECTION}\n") if waits_marker else ("", "", "")
     snapshot.update(online=True, source="ssh")
+    if disk_marker:
+        raw_avail = disk_text.strip().splitlines()[-1].strip() if disk_text.strip() else ""
+        if raw_avail.isdigit():
+            snapshot["server_free_bytes"] = int(raw_avail)
     service = service.strip()
     if service in {"active", "inactive", "failed", "activating", "deactivating", "reloading", "maintenance"}:
         snapshot["service_active"] = service in {"active", "reloading"}
@@ -255,7 +302,11 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
             errors.append(f"ssh: {key} unavailable or invalid")
         else:
             snapshot[key] = payload
-    for key, text, present in (("maintenance", maintenance, bool(maint_marker)), ("response_supply", response_supply, bool(resp_marker))):
+    for key, text, present in (
+        ("maintenance", maintenance, bool(maint_marker)),
+        ("response_supply", response_supply, bool(resp_marker)),
+        ("case_waits", case_waits_text, bool(waits_marker)),
+    ):
         if not present or not text.strip():
             continue
         try:

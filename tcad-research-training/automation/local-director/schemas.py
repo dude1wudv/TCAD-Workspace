@@ -143,7 +143,7 @@ class WorkOrder(JsonRecord):
         parse_time(self.created_at)
         if not all(text.strip() for text in (self.title, self.objective, self.created_by_turn)):
             raise ValueError("title, objective and created_by_turn must be nonempty")
-        if not 1 <= self.timeout_seconds <= 1500 or not 1 <= self.priority <= 5 or self.max_rejections < 1:
+        if not 1 <= self.timeout_seconds <= 3600 or not 1 <= self.priority <= 5 or self.max_rejections < 1:
             raise ValueError("invalid timeout_seconds, max_rejections or priority")
         for pattern in self.allowed_paths:
             path = pattern.replace("\\", "/").rstrip("/")

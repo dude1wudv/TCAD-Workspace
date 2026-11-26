@@ -143,7 +143,7 @@ def default_backlog() -> dict[str, Any]:
             "task": "export-r06-dev",
             "title": "导出无留出泄漏的开发快照",
             "category": "data_extract",
-            "phase": ["P2A_DEV_TRAIN_AL1"],
+            "phase": ["P1A_SIM_DEV", "P2A_DEV_TRAIN_AL1"],
             "prerequisites": ["campaign-fsm-supervisor", "local-archive-sync"],
             "allowed_paths": ["tcad-research-training/predictor"],
             "acceptance_checks": ["python -m unittest discover -s tcad-research-training/predictor/tests -p test_data_splits.py"],
@@ -161,7 +161,7 @@ def default_backlog() -> dict[str, Any]:
             "task": "tree-baselines",
             "title": "运行来源分组树模型基线",
             "category": "predictor",
-            "phase": ["P2A_DEV_TRAIN_AL1", "P2C_FINAL_TRAIN_FREEZE"],
+            "phase": ["P1A_SIM_DEV", "P2A_DEV_TRAIN_AL1", "P2C_FINAL_TRAIN_FREEZE"],
             "prerequisites": ["export-r06-dev"],
             "allowed_paths": ["tcad-research-training/predictor"],
             "acceptance_checks": ["python -m unittest discover -s tcad-research-training/predictor/tests -p test_baselines.py"],
@@ -206,8 +206,8 @@ def default_backlog() -> dict[str, Any]:
             "task": "desk-readonly-api",
             "title": "构建只读科研工作台 API",
             "category": "web_status",
-            "phase": ["P3_DESK_PROD_DEPLOY"],
-            "prerequisites": ["final-train-freeze"],
+            "phase": ["P1A_SIM_DEV", "P1B_SIM_AL1", "P1C_SIM_AL2_HOLDOUT", "P3_DESK_PROD_DEPLOY"],
+            "prerequisites": ["campaign-fsm-supervisor"],
             "allowed_paths": ["tcad-research-training/research-desk"],
             "acceptance_checks": ["python -m compileall tcad-research-training/research-desk"],
         },
@@ -215,7 +215,7 @@ def default_backlog() -> dict[str, Any]:
             "task": "desk-tool-calling-mock",
             "title": "完成外部 LLM 工具调用 Mock 适配层",
             "category": "web_status",
-            "phase": ["P3_DESK_PROD_DEPLOY"],
+            "phase": ["P1A_SIM_DEV", "P1B_SIM_AL1", "P1C_SIM_AL2_HOLDOUT", "P3_DESK_PROD_DEPLOY"],
             "prerequisites": ["desk-readonly-api"],
             "allowed_paths": ["tcad-research-training/research-desk"],
             "acceptance_checks": ["python -m unittest discover -s tcad-research-training/research-desk -p test_*.py"],
@@ -479,9 +479,10 @@ def apply_progress(state: dict[str, Any], progress: dict[str, Any] | None) -> No
 
 def recompute_gates(state: dict[str, Any]) -> dict[str, bool]:
     blocks = state["blocks"]
+    dev_targets = {"Z": 20, "T": BLOCK_TOTALS["T"], "S": BLOCK_TOTALS["S"], "R": BLOCK_TOTALS["R"]}
     development_ready = all(
-        type(blocks[key]["accepted"]) is int and blocks[key]["accepted"] >= BLOCK_TOTALS[key]
-        for key in ("Z", "T", "S", "R")
+        type(blocks[key]["accepted"]) is int and blocks[key]["accepted"] >= target
+        for key, target in dev_targets.items()
     )
     milestones = state["milestones"]
     state["gates"]["G1"] = development_ready
@@ -591,7 +592,107 @@ def assert_holdout_read_allowed(state: dict[str, Any]) -> None:
         raise PermissionError("holdout data is sealed until freeze_manifest.json is verified")
 
 
-def task_work_order(task: dict[str, Any], *, created_by_turn: str, timeout_seconds: int = 1500,
+OPERATIONAL_TASKS: dict[str, dict[str, Any]] = {
+    "sim-ops-refill": {
+        "task": "sim-ops-refill",
+        "title": "端到端验收已收集仿真并自动续料填满空槽",
+        "objective": (
+            "通过 SSH 接入服务器原生 Runtime（tcad-autonomy.service / review_collections.py / supply.py / "
+            "month_one_supply.py）：核验所有 awaiting_acceptance 与 decision_pending 算例，按既有判据与 "
+            "AUTO-DECISION-LOG 签署验收与后续倍率/抽样批次并发布入队，等待 15 秒后复查 explain --month-one "
+            "确认 running + ready 实际增加；必要时同步记录决策日志。严禁只写诊断报告而不真填槽。"
+        ),
+        "category": "sim_ops",
+        "allowed_paths": [
+            "tcad-research-training/plans/dram-se-ddr5-lpddr5",
+            "tcad-research-training/experiments/dram-se-r06",
+            "tcad-research-training/automation",
+        ],
+        "acceptance_checks": ["python -m compileall tcad-research-training/automation/local-director"],
+    },
+    "sim-repair": {
+        "task": "sim-repair",
+        "title": "排查并恢复服务器调度服务与求解运行态",
+        "objective": (
+            "通过 SSH 排查服务器 tcad-autonomy.service、tcad-r06-lhs-response.timer 与共享槽位健康状态，"
+            "在不杀在途正常仿真、不删活动锁的前提下恢复服务与续料链路，并复查服务状态与槽位计数。"
+        ),
+        "category": "sim_repair",
+        "allowed_paths": [
+            "tcad-research-training/plans/dram-se-ddr5-lpddr5",
+            "tcad-research-training/automation",
+        ],
+        "acceptance_checks": ["python -m compileall tcad-research-training/automation/local-director"],
+    },
+    "archive-remote-sync": {
+        "task": "archive-remote-sync",
+        "title": "同步核验冷归档至本地 E 盘并在空间吃紧时云盘备份卸载",
+        "objective": (
+            "将服务器已通过 retention.json 与 guest-reclaim.json 的运行拉取核验至仓库外 "
+            "E:\\TCAD-Archives\\dram-se-r06（HR/HP 隔离至 E:\\TCAD-Archives\\dram-se-r06-holdout-sealed），"
+            "更新 archive-summary.json 并写回 local-mirror-offload.json 收据；空间吃紧时执行双端校验后卸载或云盘兜底。"
+        ),
+        "category": "data_extract",
+        "allowed_paths": ["tcad-research-training/automation/local-director"],
+        "acceptance_checks": ["python -m compileall tcad-research-training/automation/local-director"],
+    },
+}
+
+
+def is_operational_task(task_id: str | None) -> bool:
+    return isinstance(task_id, str) and task_id in OPERATIONAL_TASKS
+
+
+def operational_tasks(phase: str, server: dict[str, Any] | None = None) -> list[str]:
+    if not isinstance(server, dict) or phase == "P0_BOOTSTRAP":
+        return []
+    summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
+    ready: list[str] = []
+    if server.get("online") is False or server.get("service_active") is False or summary.get("repair_requests", 0) > 0:
+        ready.append("sim-repair")
+    if phase in {"P1A_SIM_DEV", "P1B_SIM_AL1", "P1C_SIM_AL2_HOLDOUT"} and (
+        summary.get("starved")
+        or (summary.get("free_slots", 0) >= 2 and not summary.get("ready"))
+        or summary.get("awaiting_acceptance", 0) > 0
+        or summary.get("decision_pending", 0) > 0
+        or summary.get("missing_material", 0) > 0
+    ):
+        ready.append("sim-ops-refill")
+    disk = summary.get("server_free_bytes")
+    if disk is None and isinstance(server.get("disks"), dict):
+        disk = server["disks"].get("server_free_bytes")
+    if type(disk) is int and disk < 35 * 1024**3 and phase in {
+        "P1A_SIM_DEV", "P1B_SIM_AL1", "P1C_SIM_AL2_HOLDOUT", "P2A_DEV_TRAIN_AL1", "P2B_RETRAIN_AL2",
+    }:
+        ready.append("archive-remote-sync")
+    return ready
+
+
+def operational_work_order(task_id: str, *, created_by_turn: str, timeout_seconds: int = 1800,
+                           now: datetime | None = None) -> dict[str, Any]:
+    spec = OPERATIONAL_TASKS[task_id]
+    stamp = _stamp(now)
+    suffix = (now or _now()).astimezone(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    return {
+        "order_id": f"{task_id}-{suffix}",
+        "category": spec["category"],
+        "title": spec["title"],
+        "objective": spec["objective"],
+        "allowed_paths": spec["allowed_paths"],
+        "forbidden_actions": [
+            "do not read HR or HP data before freeze_manifest.json is verified",
+            "preserve the single server scheduler, active solvers, shared locks, existing run_id and failure ledgers; never push directly to main",
+        ],
+        "acceptance_checks": spec["acceptance_checks"],
+        "timeout_seconds": timeout_seconds,
+        "max_rejections": 3,
+        "priority": 1 if task_id in {"sim-repair", "sim-ops-refill"} else 2,
+        "created_by_turn": created_by_turn,
+        "created_at": stamp,
+    }
+
+
+def task_work_order(task: dict[str, Any], *, created_by_turn: str, timeout_seconds: int = 1800,
                     now: datetime | None = None) -> dict[str, Any]:
     order_id = task["task"]
     if task.get("attempts", 0):
@@ -604,7 +705,7 @@ def task_work_order(task: dict[str, Any], *, created_by_turn: str, timeout_secon
         "allowed_paths": task["allowed_paths"],
         "forbidden_actions": [
             "do not read HR or HP data before freeze_manifest.json is verified",
-            "do not run SSH, solver, deployment, cleanup, or external upload commands",
+            "preserve the single server scheduler, active solvers, shared locks, existing run_id and failure ledgers; never push directly to main",
         ],
         "acceptance_checks": task["acceptance_checks"],
         "timeout_seconds": timeout_seconds,

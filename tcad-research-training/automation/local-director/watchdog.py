@@ -15,7 +15,10 @@ from campaign_fsm import (
     advance_phase,
     assert_holdout_read_allowed,
     ensure_campaign_files,
+    is_operational_task,
     mark_task,
+    operational_work_order,
+    recompute_gates,
     register_blocked,
     save_backlog,
     save_campaign,
@@ -29,10 +32,12 @@ from runtime import (
     ParentWatcher,
     add_event,
     file_lock,
+    hidden_subprocess_kwargs,
     load_state,
     order_dir,
     reclaim_orphaned_watchdog,
     save_state,
+    silent_python_executable,
     state_lock,
 )
 from schemas import DeliveryReceipt, WorkOrder, append_jsonl, atomic_write, parse_time, read_json, write_json
@@ -216,7 +221,7 @@ def _write_briefing(cfg, state, event, server, thesis, now):
         f"- 最近决策 {state.last_decision}",
     ]
     if summary.get("free_slots") and not summary.get("ready"):
-        lines.append("- 严禁再派只读诊断工单。服务器提交仍由原 Runtime 按验签结果处理。")
+        lines.append("- 严禁再派只读诊断工单！立即派发 sim-ops-refill 端到端工单，通过原 Runtime 完成验收、备料、发布批次并复查填槽。")
     if active:
         order = active["order"]
         lines.append(f"- 工单 `{order['order_id']}` · `{order['category']}` · {active['status']} · 第 {active['attempt']} 次")
@@ -244,7 +249,10 @@ def _delivery(cfg, state):
         receipt = _receipt(cfg, active)
     except (OSError, ValueError):
         return {"passed": False}
-    return {"passed": receipt.precheck_passed and bool(receipt.git_changed_files),
+    task_id = active.get("campaign_task")
+    category = (active.get("order") or {}).get("category")
+    allow_no_diff = is_operational_task(task_id) or category in {"sim_ops", "sim_repair", "data_extract", "predictor"}
+    return {"passed": receipt.precheck_passed and (bool(receipt.git_changed_files) or allow_no_diff),
             "checks_passed": sum(check.get("passed") is True for check in receipt.verification_results)}
 
 
@@ -254,6 +262,8 @@ def _reject_campaign_task(cfg, state, campaign, backlog, reason):
     active = state.active_order
     task_id = active["campaign_task"]
     cancel(cfg, state, SimpleNamespace(order=active["order"]["order_id"], reason=reason))
+    if is_operational_task(task_id):
+        return
     task = mark_task(backlog, task_id, "pending", error=reason)
     if task["failures"] >= cfg.codex_max_task_failures:
         mark_task(backlog, task_id, "blocked")
@@ -275,6 +285,14 @@ def _execute_decision(cfg, state, campaign, backlog, decision, delivery, now, *,
     reason = decision["reason"]
     action = decision["action"]
     if action == "dispatch":
+        if is_operational_task(task_id):
+            order = WorkOrder.from_dict(operational_work_order(task_id, created_by_turn="campaign-supervisor",
+                                                               timeout_seconds=cfg.codex_default_timeout_seconds, now=now))
+            dispatch_args = {"campaign_task": task_id, "now": now}
+            if urgent:
+                dispatch_args["urgent"] = True
+            dispatch(cfg, state, order, **dispatch_args)
+            return True
         task = next(item for item in backlog["tasks"] if item["task"] == task_id)
         _check_campaign_dispatch(campaign, task_id)
         order = WorkOrder.from_dict(task_work_order(task, created_by_turn="campaign-supervisor",
@@ -291,10 +309,18 @@ def _execute_decision(cfg, state, campaign, backlog, decision, delivery, now, *,
                 mark_task(backlog, task_id, "running")
         return False
     if action == "accept":
+        if is_operational_task(task_id):
+            accept(cfg, state, SimpleNamespace(order=state.active_order["order"]["order_id"], note=reason,
+                                               commit_msg=None, push_pr=False, force=False))
+            return True
         result = accept(cfg, state, SimpleNamespace(order=state.active_order["order"]["order_id"], note=reason,
                                                    commit_msg=f"feat(campaign): {task_id}", push_pr=False, force=False))
         mark_task(backlog, task_id, "accepted")
-        return bool(result["commit"])
+        p0_tasks = [item for item in backlog["tasks"] if "P0_BOOTSTRAP" in item["phase"]]
+        if p0_tasks and all(item["status"] == "accepted" for item in p0_tasks):
+            campaign["milestones"]["bootstrap_ready"] = True
+            recompute_gates(campaign)
+        return bool(result["commit"]) or True
     if action == "reject":
         _reject_campaign_task(cfg, state, campaign, backlog, reason)
     elif action == "blocked":
@@ -423,6 +449,32 @@ def _pump_queued_orders(cfg) -> bool:
     with state_lock(cfg):
         state = load_state(cfg)
         active = state.active_order
+        if (not active or active.get("status") not in {"queued", "retry_queued", "running", "stalled", "awaiting_review"}):
+            queue_path = cfg.state_dir / "queue.json"
+            if queue_path.is_file():
+                try:
+                    raw_queue = read_json(queue_path)
+                except (OSError, ValueError):
+                    raw_queue = []
+                if isinstance(raw_queue, list) and raw_queue:
+                    queued_item = raw_queue.pop(0)
+                    write_json(queue_path, raw_queue)
+                    queued_order = WorkOrder.from_dict(queued_item["order"])
+                    now_utc = datetime.now(timezone.utc)
+                    if cfg.can_consume_codex(state, "urgent" if queued_order.priority <= 2 else "routine", cfg.local_time(now_utc).date()):
+                        directory = order_dir(cfg, queued_order.order_id)
+                        directory.mkdir(parents=True, exist_ok=True)
+                        active = {
+                            "order": queued_order.to_dict(),
+                            "status": "queued",
+                            "attempt": 1,
+                            "rejections": 0,
+                            "run_meta": None,
+                            "campaign_task": queued_order.order_id,
+                        }
+                        state.active_order = active
+                        state.daily_codex_used += 1
+                        save_state(cfg, state)
         if not active or active.get("status") not in {"queued", "retry_queued"}:
             return False
         order = WorkOrder.from_dict(active["order"])
@@ -470,7 +522,7 @@ def tick(cfg, *, dry_run=False, force_trigger=None, now=None, scheduled_pulse=Fa
 
 
 def _daemon_argv(cfg) -> list[str]:
-    argv = [sys.executable, "-B", str(Path(__file__).resolve())]
+    argv = [silent_python_executable(sys.executable), "-B", str(Path(__file__).resolve())]
     if cfg.config_path:
         argv.extend(["--config", str(cfg.config_path)])
     argv.append("--daemon")
@@ -484,10 +536,7 @@ def keepalive(cfg) -> dict:
     try:
         with file_lock(lock_path):
             argv = _daemon_argv(cfg)
-            detach = (
-                {"creationflags": subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP}
-                if os.name == "nt" else {"start_new_session": True}
-            )
+            detach = hidden_subprocess_kwargs(detached=True)
             with (cfg.state_dir / "watchdog.log").open("ab") as output:
                 process = subprocess.Popen(argv, cwd=cfg.repo_root, stdin=subprocess.DEVNULL,
                                            stdout=output, stderr=output, **detach)

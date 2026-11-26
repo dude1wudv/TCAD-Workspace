@@ -55,10 +55,17 @@ def make_retained_run(root, run_id="run-gd-1"):
         "parallel_slot_released": True,
         "results_sha256": raw_sha,
         "collected_bytes": len(raw_bytes),
+        "input_sha256": {"project.json": "a" * 64},
     }
     write_json(run / "manifest.json", manifest)
     retention.compact(run)
-    write_json(run / "guest-reclaim.json", {"schema": "tcad-result-guest-reclaim-v1", "run_id": run_id})
+    write_json(run / "guest-reclaim.json", {
+        "schema": "tcad-result-guest-reclaim-v1",
+        "run_id": run_id,
+        "original_archive_sha256": raw_sha,
+        "removed": [],
+        "removed_bytes": 0,
+    })
     return run, manifest, raw_bytes
 
 
@@ -79,6 +86,40 @@ class GDriveOffloadTests(unittest.TestCase):
             "folder_id": "parent-folder-1",
             "token_file": str(self.token_path),
         })
+        self.mirror, self.runtime_state, self.case_manifest = self.make_mirror()
+
+    def make_mirror(self):
+        mirror = self.root / "archive" / "runs" / self.run_dir.name
+        mirror.mkdir(parents=True)
+        record, _ = retention._json(self.run_dir / retention.RECEIPT)
+        for name in retention.mirror_inventory(record):
+            retention._copy_file(self.run_dir / name, mirror / name)
+        case = {
+            "block": "S", "case_id": "case", "profile_id": "profile",
+            "radiation_id": "radiation", "stored_bit": 1, "holdout": None,
+        }
+        case_manifest = self.root / "frozen.json"
+        write_json(case_manifest, {
+            "plan_id": "dram-se-ddr5-lpddr5", "revision": "r0.6",
+            "cases": [case], "profiles": [{"id": "profile", "partition": "development"}],
+            "radiations": [{"id": "radiation", "role": "development"}],
+        })
+        runtime_state = self.root / "runtime.json"
+        write_json(runtime_state, {
+            "schema": "tcad-autonomy-intents-v1",
+            "intents": {"fixture": {
+                "run_id": self.run_dir.name, "backend": "tcad",
+                "input_sha256": self.manifest["input_sha256"],
+                "scientific_admission": {
+                    "manifest_sha256": retention._sha(case_manifest),
+                    "case_id": "case", "scope": "development_production",
+                    "scientific_object": case,
+                },
+            }},
+        })
+        retention._write_record(mirror, retention.MIRROR_RECEIPT,
+                                retention.mirror_snapshot(mirror, "development"))
+        return mirror, runtime_state, case_manifest
 
     def test_mirror_offload_keeps_local_raw_and_passes_verify(self):
         cloud = {}
@@ -101,7 +142,10 @@ class GDriveOffloadTests(unittest.TestCase):
                 "uploaded": uploaded,
             }
 
-        res = maintenance.offload(self.run_dir, config_path=self.cfg_path, delete_local_raw=False, uploader=fake_uploader)
+        res = maintenance.offload(
+            self.run_dir, config_path=self.cfg_path, delete_local_raw=False, uploader=fake_uploader,
+            mirror_run=self.mirror, runtime_state=self.runtime_state, case_manifest=self.case_manifest,
+        )
         self.assertEqual(res["state"], "BACKED_UP")
         self.assertFalse(res["local_raw_deleted"])
         self.assertTrue((self.run_dir / "results.raw.tar.gz").is_file())
@@ -129,29 +173,22 @@ class GDriveOffloadTests(unittest.TestCase):
                 "uploaded": uploaded,
             }
 
-        res = maintenance.offload(self.run_dir, config_path=self.cfg_path, delete_local_raw=True, uploader=fake_uploader)
-        self.assertEqual(res["state"], "OFFLOADED")
+        res = maintenance.offload(
+            self.run_dir, config_path=self.cfg_path, delete_local_raw=True, uploader=fake_uploader,
+            mirror_run=self.mirror, runtime_state=self.runtime_state, case_manifest=self.case_manifest,
+        )
+        self.assertEqual(res["state"], "BACKED_UP")
         self.assertTrue(res["local_raw_deleted"])
         self.assertFalse((self.run_dir / "results.raw.tar.gz").exists())
         self.assertTrue(retention.verify_retained(self.run_dir, self.manifest))
 
-        def fake_fetcher(run, doc, dest_path):
-            proof = json.loads((Path(run) / doc["raw_backup_offload"]["evidence_file"]).read_text(encoding="utf-8"))
-            Path(dest_path).write_bytes(cloud[proof["drive_file_id"]])
-
-        restored = retention.restore(self.run_dir, fetcher=fake_fetcher)
+        restored = retention.restore(self.run_dir, mirror_run=self.mirror)
         self.assertTrue(restored["restored"])
-        self.assertTrue(restored["fetched_from_offload"])
         self.assertEqual((self.run_dir / "results.tar").read_bytes(), self.raw_bytes)
         retention.dematerialize(self.run_dir)
         self.assertFalse((self.run_dir / "results.tar").exists())
 
-        # Rehydrate permanently back to pure local retention
-        rehydrated = maintenance.rehydrate(self.run_dir, fetcher=fake_fetcher)
-        self.assertTrue(rehydrated["pulled"])
-        self.assertFalse(rehydrated["raw_backup_offloaded"])
-        self.assertTrue((self.run_dir / "results.raw.tar.gz").is_file())
-        self.assertTrue(retention.verify_retained(self.run_dir, self.manifest))
+        self.assertTrue((self.run_dir / retention.MIRROR_RECEIPT).is_file())
 
     def test_upload_failure_or_disabled_falls_back_to_local_without_touching_backup(self):
         raw_gz_before = (self.run_dir / "results.raw.tar.gz").read_bytes()

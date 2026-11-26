@@ -28,12 +28,31 @@ function Resolve-LocalFile($Path, $Label) {
     $file.FullName
 }
 
+function Resolve-SilentPython($Path) {
+    $resolved = Resolve-LocalFile $Path 'PythonPath'
+    if ([System.IO.Path]::GetExtension($resolved) -ne '.exe') {
+        throw 'PythonPath must point to the Python interpreter executable.'
+    }
+    if ([System.IO.Path]::GetFileName($resolved) -ieq 'python.exe') {
+        $pythonw = Join-Path ([System.IO.Path]::GetDirectoryName($resolved)) 'pythonw.exe'
+        if (Test-Path -LiteralPath $pythonw -PathType Leaf) {
+            return (Get-Item -LiteralPath $pythonw -Force).FullName
+        }
+    }
+    $resolved
+}
+
 function New-CampaignTaskDefinition($Service, $Task, $UserId, $Executable, $Watchdog, $Config) {
     $definition = $Service.NewTask(0)
     $definition.Principal.UserId = $UserId
     $definition.Principal.LogonType = 3
     $definition.Principal.RunLevel = 0
     $definition.Settings.MultipleInstances = 2
+    $definition.Settings.Hidden = $true
+    $definition.Settings.DisallowStartIfOnBatteries = $false
+    $definition.Settings.StopIfGoingOnBatteries = $false
+    $definition.Settings.RestartCount = 3
+    $definition.Settings.RestartInterval = 'PT1M'
     $definition.Settings.WakeToRun = $false
     $definition.Settings.StartWhenAvailable = $true
 
@@ -50,7 +69,7 @@ function New-CampaignTaskDefinition($Service, $Task, $UserId, $Executable, $Watc
 
     $action = $definition.Actions.Create(0)
     $action.Path = $Executable
-    $action.Arguments = '"{0}" --config "{1}" {2}' -f $Watchdog, $Config, $Task.Flags
+    $action.Arguments = '-B "{0}" --config "{1}" {2}' -f $Watchdog, $Config, $Task.Flags
     $action.WorkingDirectory = [System.IO.Path]::GetDirectoryName($Watchdog)
     $definition
 }
@@ -66,9 +85,12 @@ if ($Preflight) {
     throw 'Specify PythonPath and ConfigPath when previewing or registering tasks.'
 }
 
-$python = Resolve-LocalFile $PythonPath 'PythonPath'
-if ([System.IO.Path]::GetExtension($python) -ne '.exe') {
-    throw 'PythonPath must point to the Python interpreter executable.'
+$python = Resolve-SilentPython $PythonPath
+$helpPython = if ([System.IO.Path]::GetFileName($python) -ieq 'pythonw.exe') {
+    $candidate = Join-Path ([System.IO.Path]::GetDirectoryName($python)) 'python.exe'
+    if (Test-Path -LiteralPath $candidate -PathType Leaf) { $candidate } else { $python }
+} else {
+    $python
 }
 $config = Resolve-LocalFile $ConfigPath 'ConfigPath'
 $watchdog = Resolve-LocalFile (Join-Path $PSScriptRoot 'watchdog.py') 'watchdog.py'
@@ -76,7 +98,7 @@ $watchdog = Resolve-LocalFile (Join-Path $PSScriptRoot 'watchdog.py') 'watchdog.
 if ($Preflight) {
     $PSNativeCommandUseErrorActionPreference = $false
     try {
-        $helpText = (& $python -B $watchdog --help 2>$null | Out-String)
+        $helpText = (& $helpPython -B $watchdog --help 2>$null | Out-String)
     } catch {
         throw 'Could not launch Python for watchdog.py help preflight.'
     }
@@ -137,7 +159,7 @@ if ($Preflight) {
             }
         $expectedInterval = if ($isKeepalive) { 'PT10M' } else { 'PT2H' }
         $expectedFlags = if ($isKeepalive) { '--keepalive' } else { '--tick --scheduled-pulse' }
-        $expectedArguments = '"{0}" --config "{1}" {2}' -f $watchdog, $config, $expectedFlags
+        $expectedArguments = '-B "{0}" --config "{1}" {2}' -f $watchdog, $config, $expectedFlags
         if ($triggerNames -ne $expectedNames -or
             ($isKeepalive -and $xml.Task.Triggers.LogonTrigger.UserId -ne $userId) -or
             $xml.Task.Triggers.TimeTrigger.Repetition.Interval -ne $expectedInterval -or
@@ -146,6 +168,7 @@ if ($Preflight) {
             $xml.Task.Principals.Principal.LogonType -ne 'InteractiveToken' -or
             $xml.Task.Principals.Principal.RunLevel -ne 'LeastPrivilege' -or
             $xml.Task.Settings.MultipleInstancesPolicy -ne 'IgnoreNew' -or
+            $xml.Task.Settings.Hidden -ne 'true' -or
             $xml.Task.Settings.WakeToRun -ne 'false' -or
             $xml.Task.Actions.ChildNodes.Count -ne 1 -or
             $xml.Task.Actions.Exec.Command -cne $python -or

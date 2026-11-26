@@ -225,7 +225,7 @@ def _upload_resumable(opener, token, parent_id, local_path, remote_name, size, m
         raise ValueError("Google Drive upload finished without file metadata")
     remote_size = int(result.get("size") or -1)
     remote_md5 = (result.get("md5Checksum") or "").lower()
-    if remote_size != size or (remote_md5 and remote_md5 != md5_hex):
+    if remote_size != size or remote_md5 != md5_hex:
         raise ValueError(
             f"Google Drive upload verification mismatch: size={remote_size}/{size}, md5={remote_md5}/{md5_hex}"
         )
@@ -289,9 +289,9 @@ def _upload_via_cli(cfg, run_id, artifacts):
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=int(cfg.get("timeout_seconds", DEFAULT_TIMEOUT)),
         )
         info = json.loads(info_proc.stdout) if info_proc.returncode == 0 else match
-        r_size = int(info.get("size") or size)
+        r_size = int(info.get("size", -1))
         r_md5 = (info.get("md5Checksum") or "").lower()
-        if r_size != size or (r_md5 and r_md5 != md5_hex):
+        if r_size != size or r_md5 != md5_hex:
             raise ValueError(f"Drive CLI verification mismatch for {local_path.name}")
         uploaded[local_path.name] = {
             "drive_file_id": info["id"],

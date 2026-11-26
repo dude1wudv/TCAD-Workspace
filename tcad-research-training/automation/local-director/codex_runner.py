@@ -14,6 +14,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from config import BASE_DIR, Config
+from runtime import hidden_subprocess_kwargs, silent_python_executable
 from schemas import DeliveryReceipt, WorkOrder, atomic_write, parse_time, read_json, utc_now, write_json
 
 
@@ -29,6 +30,7 @@ def _git(root: Path, *args: str) -> str:
     result = subprocess.run(
         ["git", "--no-optional-locks", "--literal-pathspecs", "-c", "core.quotePath=false", *args],
         cwd=root, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=60,
+        **hidden_subprocess_kwargs(),
     )
     return result.stdout.decode("utf-8")
 
@@ -265,10 +267,9 @@ def launch_worker(
         atomic_write(Path(meta["pushback_path"]), feedback + "\n")
     atomic_write(prompt_path, prompt)
     write_json(run_path, {**meta, "argv": argv})
-    detach = ({"creationflags": subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP}
-              if os.name == "nt" else {"start_new_session": True})
+    detach = hidden_subprocess_kwargs(detached=True)
     supervisor = subprocess.Popen(
-        [sys.executable, "-B", str(Path(__file__).resolve()), "--supervise", str(run_path)],
+        [silent_python_executable(sys.executable), "-B", str(Path(__file__).resolve()), "--supervise", str(run_path)],
         cwd=BASE_DIR, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **detach,
     )
     threading.Thread(target=supervisor.wait, daemon=True).start()

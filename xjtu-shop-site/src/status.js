@@ -38,6 +38,7 @@ const labels = {
   setup: ['准备', 'Setup'], process: ['工艺仿真', 'Process simulation'],
   transport: ['粒子输运', 'Particle transport'], events: ['粒子输运', 'Particle transport'],
   run: ['运行', 'Running'], complete: ['完成', 'Complete'],
+  waiting: ['等待中', 'Waiting'], blocked: ['受阻', 'Blocked'],
   sealed: ['封存留出任务', 'Sealed holdout'], unmatched: ['未关联任务', 'Unmatched task'],
 };
 const tone = {
@@ -46,7 +47,31 @@ const tone = {
   cached_stale: 'warn', stale: 'warn', probe_error: 'warn', probe_failed: 'warn',
   paused: 'warn', delayed: 'warn', slow_convergence: 'warn', uncollected: 'warn', awaiting_collection: 'warn', collection_overdue: 'warn',
   stalled: 'bad', failed: 'bad', offline: 'bad', unavailable: 'bad',
+  blocked: 'warn',
 };
+const campaignPhases = {
+  P0_BOOTSTRAP: ['准备', 'Bootstrap'],
+  P1A_SIM_DEV: ['开发组仿真', 'Development simulations'],
+  P2A_DEV_TRAIN_AL1: ['开发组训练与 AL1 选样', 'Development training and AL1 selection'],
+  P1B_SIM_AL1: ['AL1 仿真', 'AL1 simulations'],
+  P2B_RETRAIN_AL2: ['重训与 AL2 选样', 'Retraining and AL2 selection'],
+  P1C_SIM_AL2_HOLDOUT: ['AL2 与留出组仿真', 'AL2 and holdout simulations'],
+  P2C_FINAL_TRAIN_FREEZE: ['最终训练与模型冻结', 'Final training and model freeze'],
+  P2D_HOLDOUT_BLIND_EVAL: ['留出组盲评', 'Blind holdout evaluation'],
+  P3_DESK_PROD_DEPLOY: ['研究台部署', 'Research desk deployment'],
+  P4_HANDOFF_AUDIT: ['交接审计', 'Handoff audit'],
+};
+const campaignReasons = {
+  candidate_failed: ['候选执行失败', 'Candidate failed'],
+  checks_failed: ['检查未通过', 'Checks failed'],
+  supervisor_failed: ['监督检查失败', 'Supervisor failed'],
+  receipt_invalid: ['回执无效', 'Invalid receipt'],
+  dependency_blocked: ['等待前置任务', 'Dependency blocked'],
+  disk_floor: ['磁盘余量低于下限', 'Below disk floor'],
+  holdout_sealed: ['留出样本仍封存', 'Holdout sealed'],
+  production_not_verified: ['生产环境待核验', 'Production not verified'],
+};
+const privateCampaignTask = /^(?:run-|auto-|r[0-9]{2,}-|m1-r[0-9]+-|dev-p[0-9]+-|bench-[0-9]|[a-f0-9]{12,}$)|(?:^|-)(?:hr[0-9]*|hp[0-9]*|d[0-9]+|lhs[0-9]+|event[0-9]+|ssh|pid)(?:-|$)/;
 const b = (zh, en) => state.lang === 'zh' ? zh : en;
 const label = (key) => b(...(labels[key] || labels.unknown));
 const localized = (zh, en) => b(zh || en, en || zh);
@@ -282,6 +307,55 @@ function renderKpis(payload, scheduler, batch, research, services) {
       ${resourceRow(b('虚拟机剩余 / 分配空间', 'VM remaining / allocated'), vm.storage, false, b('虚拟机剩余空间 / 虚拟机分配空间（逻辑容量）', 'VM remaining / allocated logical capacity'))}
     </div>
   </article></md-elevated-card>`;
+}
+
+function renderCampaign(campaign) {
+  const phase = campaign?.phase;
+  if (typeof phase !== 'string' || !Object.hasOwn(campaignPhases, phase)) return '';
+  const count = (value) => Number.isSafeInteger(value) && value >= 0;
+  const codex = campaign.codex;
+  const budget = ['used', 'cap', 'reserved'].every((key) => count(codex?.[key]))
+    ? `${codex.used} / ${codex.cap} · ${b('预留', 'Reserved')} ${codex.reserved}` : '—';
+  const states = ['waiting', 'running', 'ready', 'blocked'];
+  const status = (value) => pill(states.includes(value) ? value : 'unknown');
+  const archive = (value) => value === true ? b('已确认', 'Confirmed') : value === false
+    ? b('未确认', 'Not confirmed') : count(value) ? String(value) : '—';
+  const blocks = ['Z', 'T', 'S', 'R', 'AL', 'HR', 'HP'].map((key) => {
+    const { accepted, total } = campaign.blocks?.[key] || {};
+    return `<div><span>${key}</span><strong>${count(accepted) && count(total) && accepted <= total ? accepted : b('缺样本', 'No samples')} / ${count(total) ? total : '—'}</strong></div>`;
+  }).join('');
+  const disks = [
+    ['server_free_bytes', b('服务器剩余空间', 'Server free')],
+    ['vm_allocated_bytes', b('虚拟机磁盘分配容量', 'VM allocated capacity')],
+    ['vm_free_bytes', b('虚拟机磁盘剩余空间', 'VM free space')],
+    ['vm_growth_bytes', b('虚拟机磁盘可增长空间', 'VM disk growth space')],
+  ].map(([key, title]) => {
+    const bytes = campaign.disks?.[key];
+    return `<div><dt>${title}</dt><dd><strong>${count(bytes) ? `${gib(bytes)} GiB` : '—'}</strong></dd></div>`;
+  }).join('');
+  const blocked = (Array.isArray(campaign.blocked) ? campaign.blocked : []).flatMap((row) => {
+    const { task, reason } = row || {};
+    if (typeof task !== 'string' || !/^[a-z]/.test(task) || task.length > 40 || /[^a-z0-9-]/.test(task) ||
+        privateCampaignTask.test(task) || typeof reason !== 'string' || !Object.hasOwn(campaignReasons, reason)) return [];
+    return [`<li><code>${esc(task)}</code> · ${b(...campaignReasons[reason])}</li>`];
+  });
+  return `<md-elevated-card class="m3-card"><div class="panel campaign-panel">
+    <div class="kpi-head"><h2>${b('科研推进', 'Research campaign')}</h2><span class="kpi-tag">${b(...campaignPhases[phase])}</span></div>
+    <div class="budget-chips">
+      <span class="budget-chip">${b('Codex 已用 / 上限', 'Codex used / cap')} <strong>${budget}</strong></span>
+      <span class="budget-chip">${b('训练', 'Training')} ${status(campaign.training)}</span>
+      <span class="budget-chip">${b('研究台', 'Research desk')} ${status(campaign.desk)}</span>
+    </div>
+    <h3>${b('科研验收 / 计划', 'Scientific acceptance / planned')}</h3>
+    <div class="plan-stats campaign-blocks">${blocks}</div>
+    <h3>${b('磁盘空间（各项独立）', 'Disk space (independent readings)')}</h3>
+    <dl class="diagnostics">${disks}</dl>
+    <div class="kpi-meta">
+      <span>${b('归档镜像', 'Archive mirrored')} <b>${archive(campaign.archive?.mirrored)}</b></span>
+      <span>${b('云端归档核验', 'Cloud archive verified')} <b>${archive(campaign.archive?.cloud_verified)}</b></span>
+    </div>
+    ${blocked.length ? `<details class="plan-details" data-key="campaign-blocked"><summary>${b('受阻任务', 'Blocked tasks')} <span>${blocked.length}</span></summary><ul class="campaign-blocked">${blocked.join('')}</ul></details>` : ''}
+  </div></md-elevated-card>`;
 }
 
 function renderSlots(scheduler) {
@@ -534,6 +608,7 @@ app.innerHTML = `<header class="topbar">
     <main class="dashboard">
       <section id="overview" class="dashboard-anchor"></section>
       <section id="kpis" class="kpi-grid"></section>
+      <section id="campaign" class="dashboard-section"></section>
       ${regions.slice(2).map((id) => `<section class="dashboard-section dashboard-anchor" id="${id}"></section>`).join('')}
     </main>
     <footer class="dashboard" id="footer"></footer>
@@ -628,6 +703,7 @@ function render() {
   update('overview', `<md-elevated-card class="m3-card overview-shell"><div class="overview-frame"><div class="overview"><div><h1>${b('仿真状态看板', 'Simulation status')}</h1>
     <p>${esc(summary)}</p></div>${pill(payload.overall)}</div>${renderHealth(payload, scheduler, batch, research, services)}</div></md-elevated-card>`);
   update('kpis', renderKpis(payload, scheduler, batch, research, services));
+  update('campaign', renderCampaign(payload.auto_director?.campaign));
   const sample = scheduler.hasObservation ? `${scheduler.stale ? b('观测快照', 'Snapshot') : b('采样', 'Sampled')} · ${date(scheduler.observedAt)}` : '';
   const matrixHint = state.selectedTask ? b('点击空白处或 Esc 取消选中', 'Click outside or press Esc to clear') : sample;
   update('schedule', heading(b('虚拟机调度矩阵', 'VM scheduling matrix'), matrixHint, '01', b('调度矩阵', 'Matrix'))

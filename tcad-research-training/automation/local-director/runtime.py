@@ -2,11 +2,32 @@ import errno
 import os
 import signal
 import subprocess
+import sys
 import time
 from contextlib import contextmanager
 from pathlib import Path
 
 from schemas import DirectorState, check_id, read_json, utc_now, write_json
+
+
+def hidden_subprocess_kwargs(*, detached: bool = False) -> dict:
+    """Return platform kwargs that suppress visible console windows on Windows."""
+    if os.name == "nt":
+        flags = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        if detached:
+            flags |= getattr(subprocess, "CREATE_NEW_PROCESS_GROUP", 0)
+        return {"creationflags": flags} if flags else {}
+    return {"start_new_session": True} if detached else {}
+
+
+def silent_python_executable(python_exe: str | None = None) -> str:
+    """Prefer sibling pythonw.exe on Windows to prevent flashing foreground consoles."""
+    candidate = Path(python_exe or sys.executable)
+    if os.name == "nt" and candidate.name.lower() == "python.exe":
+        pythonw = candidate.with_name("pythonw.exe")
+        if pythonw.is_file():
+            return str(pythonw)
+    return str(candidate)
 
 
 class LockBusy(RuntimeError):
@@ -104,6 +125,7 @@ def _process_is_watchdog(pid: int) -> bool:
                     f"(Get-CimInstance Win32_Process -Filter 'ProcessId = {pid}' -ErrorAction SilentlyContinue).CommandLine",
                 ],
                 capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=8, check=False,
+                **hidden_subprocess_kwargs(),
             )
         except (OSError, subprocess.SubprocessError):
             return False
