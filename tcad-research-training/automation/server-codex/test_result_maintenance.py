@@ -77,6 +77,7 @@ class MaintenanceTests(unittest.TestCase):
             def restore(self, folder):
                 self.calls.append(("restore", folder))
                 (folder / "results.tar").write_bytes(b"exact original")
+                return {"restored": True}
 
             def dematerialize(self, folder):
                 self.calls.append(("dematerialize", folder))
@@ -115,7 +116,7 @@ class MaintenanceTests(unittest.TestCase):
                 maintenance.finalize(self.folder, proof)
         self.assertFalse((self.folder / "raw-backup-release.json").exists())
 
-    def test_completed_review_can_keep_only_verified_key_data(self):
+    def test_completed_review_retains_restorable_raw(self):
         raw = self.folder / "results.tar"
         with tarfile.open(raw, "w") as archive:
             payload = b"t,V\n0,1\n1,0\n"
@@ -138,13 +139,128 @@ class MaintenanceTests(unittest.TestCase):
             "scientific_review_complete": True, "release_original_archive": True,
             "key_evidence": [{"path": str(kept), "sha256": maintenance.sha(kept)}],
         })
-        self.assertTrue(maintenance.finalize(self.folder, proof)["key_data_only"])
-        self.assertFalse((self.folder / "results.raw.tar.gz").exists())
+        self.assertTrue(maintenance.finalize(self.folder, proof)["review_recorded"])
+        self.assertTrue((self.folder / "results.raw.tar.gz").exists())
         self.assertTrue((self.folder / "results.essential.tar.gz").is_file())
         self.assertTrue(module.verify_retained(self.folder, self.manifest))
         self.assertEqual((self.folder / "manifest.json").read_bytes(), manifest_bytes)
+        self.assertTrue(module.restore(self.folder)["restored"])
+
+
+class MirrorMaintenanceTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        root = Path(temporary.name).resolve()
+        self.folder = root / "host" / "runs" / "fixture"
+        self.mirror = root / "archive" / "runs" / self.folder.name
+        self.folder.mkdir(parents=True)
+        self.mirror.mkdir(parents=True)
+        self.ret = maintenance.retention()
+        self.ledger = root / "runtime.json"
+        self.plan = root / "frozen.json"
+        self.identity = dict(runtime_state=self.ledger, case_manifest=self.plan)
+        raw = self.folder / self.ret.RAW
+        with tarfile.open(raw, "w") as stream:
+            member = tarfile.TarInfo("results.plt")
+            member.size = 1
+            stream.addfile(member, io.BytesIO(b"1"))
+        self.original = raw.read_bytes()
+        self.manifest = dict(run_id=self.folder.name, remote_exit_code=0, state="COLLECTED",
+                             collection_verified=True, parallel_slot_released=True,
+                             results_sha256=maintenance.sha(raw), input_sha256={"project.json": "a" * 64})
+        self.save(self.folder / "manifest.json", self.manifest)
+        self.ret.compact(self.folder)
+        self.save(self.folder / self.ret.GUEST_RECEIPT, dict(
+            schema="tcad-result-guest-reclaim-v1", run_id=self.folder.name, removed=[], removed_bytes=0,
+            original_archive_sha256=self.manifest["results_sha256"]))
+        record, _ = self.ret._json(self.folder / self.ret.RECEIPT)
+        for name in self.ret.mirror_inventory(record):
+            self.ret._copy_file(self.folder / name, self.mirror / name)
+        self.build_identity()
+        self.ret._write_record(self.mirror, self.ret.MIRROR_RECEIPT,
+                               self.ret.mirror_snapshot(self.mirror, "development"))
+        self.backup = self.folder / self.ret.RAW_GZ
+
+    save = staticmethod(MaintenanceTests.save)
+
+    def build_identity(self, sealed=False):
+        case = dict(block="HR" if sealed else "S", case_id="case", profile_id="profile",
+                    radiation_id="radiation", stored_bit=1, holdout="radiation" if sealed else None)
+        self.save(self.plan, dict(plan_id="dram-se-ddr5-lpddr5", revision="r0.6", cases=[case],
+                                  profiles=[dict(id="profile", partition="development")],
+                                  radiations=[dict(id="radiation", role="radiation_holdout" if sealed else "development")]))
+        self.save(self.ledger, dict(schema="tcad-autonomy-intents-v1", intents={"fixture": dict(
+            run_id=self.folder.name, backend="tcad", input_sha256=self.manifest["input_sha256"],
+            scientific_admission=dict(manifest_sha256=maintenance.sha(self.plan), case_id="case",
+                                      scope="holdout_evaluation" if sealed else "development_production",
+                                      scientific_object=case))}))
+
+    def test_reclaims_only_raw_gzip_then_restores_original_exactly(self):
+        self.assertTrue(maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity)["raw_backup_removed"])
+        self.assertFalse(self.backup.exists())
+        self.assertTrue(self.ret.verify_retained(self.folder, self.manifest))
+        self.assertFalse(maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity)["raw_backup_removed"])
         with self.assertRaises(ValueError):
-            module.restore(self.folder)
+            self.ret.restore(self.folder)
+        self.assertTrue(self.ret.restore(self.folder, mirror_run=self.mirror)["restored"])
+        self.assertEqual((self.folder / self.ret.RAW).read_bytes(), self.original)
+        for name in (self.ret.ESSENTIAL, self.ret.WITNESS):
+            self.assertEqual((self.folder / name).read_bytes(), (self.mirror / name).read_bytes())
+
+    def test_unverified_mirror_or_second_verification_failure_keeps_original_package(self):
+        record = self.folder / self.ret.RECEIPT
+        before = (record.read_bytes(), self.backup.read_bytes())
+        receipt = self.mirror / self.ret.MIRROR_RECEIPT
+        proof = receipt.read_bytes()
+        receipt.write_text('{"verified": true}', encoding="utf-8")
+        with self.assertRaises((ValueError, KeyError)):
+            maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity)
+        receipt.write_bytes(proof)
+        with patch.object(maintenance, "retention", return_value=self.ret), \
+                patch.object(self.ret, "verify_retained", side_effect=[True, False]) as verify:
+            real_verify = self.ret._verify
+            def verify_once(folder, manifest, cache):
+                if verify.call_count == 1:
+                    real_verify(folder, manifest, cache)
+                    return True
+                return False
+            verify.side_effect = verify_once
+            with self.assertRaisesRegex(ValueError, "Second retention verification failed"):
+                maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity)
+            self.assertEqual(verify.call_count, 2)
+        self.assertEqual((record.read_bytes(), self.backup.read_bytes()), before)
+
+    def test_tampered_mirror_refuses_restore_without_publishing_raw(self):
+        maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity)
+        (self.mirror / self.ret.WITNESS).write_bytes(b"changed")
+        with self.assertRaises(ValueError):
+            self.ret.restore(self.folder, mirror_run=self.mirror)
+        self.assertFalse((self.folder / self.ret.RAW).exists())
+        self.assertTrue((self.folder / self.ret.ESSENTIAL).is_file())
+
+    def test_sealed_is_rechecked_and_cannot_be_relabelled(self):
+        self.build_identity(sealed=True)
+        with self.assertRaisesRegex(ValueError, "Sealed"):
+            maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity)
+        with self.assertRaisesRegex(ValueError, "partition differs"):
+            maintenance.reclaim_mirror(self.folder, self.mirror, **self.identity, allow_sealed=True)
+        self.assertTrue(self.backup.exists())
+
+    def test_incomplete_drive_upload_or_missing_mirror_preserves_gzip(self):
+        config = self.folder.parent.parent / "drive.json"
+        self.save(config, {"enabled": True, "folder_id": "fixture"})
+        before = self.backup.read_bytes()
+        with patch("builtins.open", wraps=open) as unused:
+            result = maintenance.offload(self.folder, config, True, mirror_run=self.mirror,
+                                         uploader=lambda *args, **kwargs: {"uploaded": {}}, **self.identity)
+        self.assertEqual(result["state"], "FAILED_FALLBACK_LOCAL")
+        self.assertIn("verification was incomplete", result["error"])
+        self.assertEqual(self.backup.read_bytes(), before)
+        self.assertFalse((self.folder / self.ret.OFFLOAD_RECEIPT).exists())
+        with patch.object(maintenance, "gdrive", wraps=maintenance.gdrive) as unused:
+            self.assertEqual(maintenance.offload(self.folder, config, True)["state"], "FAILED_FALLBACK_LOCAL")
+        self.assertEqual(self.backup.read_bytes(), before)
 
 
 if __name__ == "__main__":

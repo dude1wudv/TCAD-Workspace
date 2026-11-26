@@ -316,6 +316,39 @@ assert.ok(!document.getElementById('runs').textContent.includes('OLD-SNAPSHOT'))
 assert.ok(app.innerHTML.indexOf('id="schedule"') < app.innerHTML.indexOf('id="research"'));
 """)
 
+    def test_campaign_renders_public_counts_and_independent_disks(self):
+        self.render_headline({}, checks=r"""
+const section = document.getElementById('campaign');
+assert.equal(section.textContent,'');
+state.live.auto_director = {campaign:{
+  phase:'P0_BOOTSTRAP', codex:{used:2,cap:12,reserved:3}, training:'waiting', desk:'running',
+  blocks:{HR:{accepted:null,total:7,sample_id:'r06-hr-private'}, Z:{accepted:0,total:2}},
+  disks:{server_free_bytes:1024**3,vm_allocated_bytes:4*1024**3,vm_free_bytes:2*1024**3,vm_growth_bytes:null},
+  archive:{mirrored:true,cloud_verified:false},
+  blocked:[{task:'blind-eval',reason:'holdout_sealed',detail:'discard-this'},
+    {task:'r06-hr-private',reason:'holdout_sealed'}, {task:'run-aaaaaaaaaaaa',reason:'checks_failed'},
+    {task:'verify\n',reason:'checks_failed'}, {task:'unknown-reason',reason:'discard-this'}],
+}};
+render();
+assert.ok(section.textContent.includes('科研验收 / 计划'));
+assert.ok(section.textContent.includes('2 / 12 · 预留 3'));
+assert.ok(section.textContent.includes('HR缺样本 / 7'));
+assert.ok(section.textContent.includes('Z0 / 2'));
+assert.equal([...section.querySelectorAll('dd')].map(node=>node.textContent).join(','),'1 GiB,4 GiB,2 GiB,—');
+assert.equal(section.querySelectorAll('li').length,1);
+assert.ok(section.textContent.includes('blind-eval · 留出样本仍封存'));
+for (const secret of ['r06-hr-private','run-aaaaaaaaaaaa','discard-this','unknown-reason']) {
+  assert.ok(!section.innerHTML.includes(secret));
+}
+state.lang = 'en';
+render();
+assert.ok(section.textContent.includes('No samples / 7'));
+assert.ok(section.textContent.includes('Cloud archive verified'));
+state.live.auto_director.campaign.phase = 'unknown';
+render();
+assert.equal(section.textContent,'');
+""")
+
     def test_root_event_delegation_keeps_task_nodes_on_refresh(self):
         self.render_headline({}, checks=r"""
 const scheduler = useScheduler();

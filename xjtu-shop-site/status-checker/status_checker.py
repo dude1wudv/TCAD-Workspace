@@ -24,7 +24,7 @@ from pathlib import Path
 from typing import Callable, Iterable
 from research_projection import (
     admission, build_research, development_alias, execution, failed_unlaunched, intent_case_id, parameters,
-    load_cached_research, load_stats_snapshot, public_id as safe_public_id, runtime_intents,
+    load_cached_research, load_stats_snapshot, public_id as safe_public_id, read_bounded_json, runtime_intents,
     save_cached_research, sealed_case_id, sealed_intent,
 )
 from progress_store import load_public_progress
@@ -42,6 +42,7 @@ WEB_OBSERVATION_PATH = Path(os.environ.get("TCAD_STATUS_WEB_OBSERVATION", "/var/
 PAUSE_PATH = Path(os.environ.get("TCAD_STATUS_PAUSE", "/var/lib/tcad-autonomy/pause.json"))
 PLAN_PATH = Path(os.environ.get("TCAD_STATUS_PLAN", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/month-one-cases-r06.json"))
 PROGRESS_PATH = Path(os.environ.get("TCAD_STATUS_PROGRESS_DB", "/var/lib/xjtu-shop-status/progress.sqlite3"))
+AUTO_DIRECTOR_PATH = Path(os.environ.get("TCAD_STATUS_AUTO_DIRECTOR", "/var/lib/xjtu-shop-status/auto-director.json"))
 WORK_ITEMS_PATH = Path(os.environ.get("TCAD_STATUS_WORK_ITEMS", "/home/tcad/course-workspace/plans/dram-se-ddr5-lpddr5/work-items.json"))
 POOL_ROOT = Path(os.environ.get("TCAD_STATUS_POOL_ROOT", "/home/tcad/course-workspace/local_runtime/cloud-benchmark"))
 RUNS_ROOT = Path(os.environ.get(
@@ -58,6 +59,23 @@ SERVER_STORAGE_WARNING_BYTES = 20 * 1024**3
 FRESHNESS_LIMIT_SECONDS = 180
 PUBLIC_REDACTION = re.compile(
     r"/(?:home|srv|var)/|(?<![a-z0-9])(?:run_id|pid|ssh|lm_license_file)(?![a-z0-9])", re.I,
+)
+CAMPAIGN_PHASES = {
+    "P0_BOOTSTRAP", "P1A_SIM_DEV", "P2A_DEV_TRAIN_AL1", "P1B_SIM_AL1", "P2B_RETRAIN_AL2",
+    "P1C_SIM_AL2_HOLDOUT", "P2C_FINAL_TRAIN_FREEZE", "P2D_HOLDOUT_BLIND_EVAL",
+    "P3_DESK_PROD_DEPLOY", "P4_HANDOFF_AUDIT",
+}
+CAMPAIGN_BLOCKS = ("Z", "T", "S", "R", "AL", "HR", "HP")
+CAMPAIGN_DISKS = ("server_free_bytes", "vm_allocated_bytes", "vm_free_bytes", "vm_growth_bytes")
+CAMPAIGN_STATES = {"waiting", "running", "ready", "blocked"}
+CAMPAIGN_REASONS = {
+    "candidate_failed", "checks_failed", "supervisor_failed", "receipt_invalid",
+    "dependency_blocked", "disk_floor", "holdout_sealed", "production_not_verified",
+}
+CAMPAIGN_TASK = re.compile(r"[a-z][a-z0-9-]{0,39}")
+CAMPAIGN_TASK_PRIVATE = re.compile(
+    r"^(?:run-|auto-|r[0-9]{2,}-|m1-r[0-9]+-|dev-p[0-9]+-|bench-[0-9]|[a-f0-9]{12,}$)"
+    r"|(?:^|-)(?:hr[0-9]*|hp[0-9]*|d[0-9]+|lhs[0-9]+|event[0-9]+|ssh|pid)(?:-|$)"
 )
 
 
@@ -148,6 +166,66 @@ def read_json(path: Path) -> dict:
     if not isinstance(value, dict):
         raise ValueError("Invalid status input")
     return value
+
+
+def project_campaign(source: object) -> dict | None:
+    def section(value):
+        return value if isinstance(value, dict) else {}
+
+    def count(value):
+        return value if type(value) is int and 0 <= value <= 2**53 - 1 else None
+
+    source = section(source)
+    phase = source.get("phase")
+    if not isinstance(phase, str) or phase not in CAMPAIGN_PHASES:
+        return None
+    campaign = {"phase": phase}
+    codex = section(source.get("codex"))
+    counts = {key: count(codex.get(key)) for key in ("used", "cap", "reserved")}
+    if all(value is not None for value in counts.values()):
+        campaign["codex"] = counts
+
+    blocks = section(source.get("blocks"))
+    accepted_blocks = {}
+    for name in CAMPAIGN_BLOCKS:
+        block = section(blocks.get(name))
+        total, accepted = count(block.get("total")), count(block.get("accepted"))
+        if total is not None:
+            accepted_blocks[name] = {"accepted": accepted if accepted is not None and accepted <= total else None,
+                                     "total": total}
+    campaign["blocks"] = accepted_blocks
+
+    disks = section(source.get("disks"))
+    campaign["disks"] = {key: count(disks.get(key)) for key in CAMPAIGN_DISKS}
+    archive = section(source.get("archive"))
+    campaign["archive"] = {
+        key: value for key in ("mirrored", "cloud_verified")
+        if type(value := archive.get(key)) is bool or count(value) is not None
+    }
+    for key in ("training", "desk"):
+        value = source.get(key)
+        if isinstance(value, str) and value in CAMPAIGN_STATES:
+            campaign[key] = value
+
+    blocked = []
+    rows = source.get("blocked")
+    if isinstance(rows, list):
+        for row in rows:
+            row = section(row)
+            task, reason = row.get("task"), row.get("reason")
+            if (isinstance(task, str) and CAMPAIGN_TASK.fullmatch(task) and not CAMPAIGN_TASK_PRIVATE.search(task)
+                    and isinstance(reason, str) and reason in CAMPAIGN_REASONS):
+                blocked.append({"task": task, "reason": reason})
+    campaign["blocked"] = blocked
+    return campaign
+
+
+def load_campaign(path: Path) -> dict | None:
+    try:
+        snapshot = read_bounded_json(path, 64 * 1024)
+    except (OSError, ValueError, RecursionError):
+        return None
+    return project_campaign(snapshot.get("campaign")) if isinstance(snapshot, dict) else None
 
 
 def parse_time(value: object) -> dt.datetime | None:
@@ -671,6 +749,7 @@ def build_status(
     research: dict | None = None,
     research_state: str | None = None,
     research_cache_path: Path = RESEARCH_CACHE_PATH,
+    auto_director_path: Path = AUTO_DIRECTOR_PATH,
 ) -> dict:
     runs_root = Path(runs_root or discover_runs_root())
     checked_at = now_iso()
@@ -759,6 +838,7 @@ def build_status(
         "freshness": build_freshness_health(scheduler, research, current),
         "simulation": build_simulation_health(scheduler, simulation),
     }
+    campaign = load_campaign(auto_director_path)
     return {
         "schema_version": 2,
         "generated_at": checked_at,
@@ -770,6 +850,7 @@ def build_status(
         "activity_feed": build_activity_feed(scheduler, simulation, current),
         "research": research,
         "maintenance": maintenance,
+        **({"auto_director": {"campaign": campaign}} if campaign is not None else {}),
     }
 
 

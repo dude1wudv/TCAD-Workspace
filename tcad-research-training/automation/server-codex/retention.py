@@ -14,13 +14,19 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import stat
 import tarfile
 import tempfile
+import zlib
 
 SCHEMA = "tcad-result-retention-v1"
 OFFLOAD_SCHEMA = "tcad-result-gdrive-offload-v1"
 OFFLOAD_RECEIPT = "gdrive-offload.json"
+MIRROR_SCHEMA = "tcad-result-local-mirror-offload-v1"
+MIRROR_RECEIPT = "local-mirror-offload.json"
+GUEST_RECEIPT = "guest-reclaim.json"
+MIRROR_METADATA = ("manifest.json", "retention.json", GUEST_RECEIPT)
 LOCK_NAME = ".retention.lock"
 RAW = "results.tar"
 RAW_GZ = "results.raw.tar.gz"
@@ -201,6 +207,171 @@ def _artifact_path(run, name):
     return run / name
 
 
+def _file_record(path):
+    return dict(bytes=_not_link(path).st_size, sha256=_sha(path))
+
+
+def _copy_file(source, target):
+    with _open(source) as stream, _open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL, "wb") as output:
+        signature = _signature(os.fstat(stream.fileno()))
+        shutil.copyfileobj(stream, output, BLOCK)
+        output.flush()
+        os.fsync(output.fileno())
+        _unchanged(source, signature)
+
+
+def _guest_sha(run, doc, manifest):
+    proof, sha = _json(run / GUEST_RECEIPT)
+    need(isinstance(proof, dict) and proof.get("schema") == "tcad-result-guest-reclaim-v1"
+         and proof.get("run_id") == run.name
+         and proof.get("original_archive_sha256") == doc["original_archive_sha256"],
+         "Guest reclaim identity differs")
+    removed = proof.get("removed")
+    need(isinstance(removed, list) and type(proof.get("removed_bytes")) is int,
+         "Guest reclaim inventory is missing")
+    allowed = {row["name"]: (row["size"], row["sha256"]) for row in doc["original_members"]
+               if row["policy"] == "projected_log"}
+    allowed[".collection/results.tar"] = (doc["original_archive_bytes"], manifest["results_sha256"])
+    seen, size = set(), 0
+    for row in removed:
+        name = _safe_name(row["name"])
+        need(name not in seen and type(row["size"]) is int
+             and allowed.get(name) == (row["size"], row["sha256"]), "Guest reclaim inventory differs")
+        seen.add(name)
+        size += row["size"]
+    need(size == proof["removed_bytes"], "Guest reclaim byte count differs")
+    return sha
+
+
+def _unique(rows, key, value):
+    matches = [row for row in rows if row[key] == value]
+    need(len(matches) == 1, "Missing or ambiguous frozen identity")
+    return matches[0]
+
+
+def archive_partition(manifest, runtime_state, case_manifest):
+    """Use the trusted pre-launch intent and its pinned r0.6 plan, not the run name."""
+    state, _ = _json(_checked_path(runtime_state))
+    plan, plan_sha = _json(_checked_path(case_manifest))
+    need(state.get("schema") == "tcad-autonomy-intents-v1"
+         and plan.get("plan_id") == "dram-se-ddr5-lpddr5" and plan.get("revision") == "r0.6",
+         "Unknown Runtime ledger or frozen plan")
+    intent = _unique(state["intents"].values(), "run_id", manifest["run_id"])
+    inputs = intent["input_sha256"]
+    need(intent.get("backend") == "tcad" and isinstance(inputs, dict) and inputs
+         and all(HEX.fullmatch(value) and manifest["input_sha256"].get(name) == value
+                 for name, value in inputs.items()), "Original input identity differs from the intent")
+    admission = intent["scientific_admission"]
+    need(admission.get("manifest_sha256") == plan_sha, "Frozen plan hash differs from the intent")
+    identity = admission["scientific_object"]
+    scope = admission["scope"]
+    profile = _unique(plan["profiles"], "id", identity["profile_id"])
+    partition = profile["partition"]
+    need(partition in ("development", "profile_holdout"), "Unknown profile partition")
+    if scope == "p0_diagnostic":
+        need(identity.get("scope") == scope and admission["recipe_id"] == identity["recipe_id"],
+             "Frozen diagnostic identity differs")
+        return "sealed" if partition != "development" else "development"
+
+    need(scope in ("development_production", "holdout_evaluation")
+         and admission["case_id"] == identity["case_id"], "Unknown frozen case identity")
+    case = _unique(plan["cases"], "case_id", identity["case_id"])
+    need(case["block"] in ("Z", "T", "S", "R", "HR", "HP", "AL")
+         and identity["block"] == case["block"] and type(identity["stored_bit"]) is int
+         and identity["stored_bit"] == case["stored_bit"], "Frozen case coordinates differ")
+    if case["block"] != "AL":
+        need(all(identity[key] == case[key] for key in ("profile_id", "radiation_id")),
+             "Frozen case coordinates differ")
+    radiation = identity["radiation_id"]
+    role = None if radiation is None else _unique(plan["radiations"], "id", radiation)["role"]
+    need((radiation is None and case["block"] == "Z")
+         or role in ("development", "radiation_holdout"), "Unknown radiation partition")
+    need(case["holdout"] in (None, "profile", "radiation"), "Unknown holdout partition")
+    sealed = (case["block"] in ("HR", "HP") or case["holdout"] is not None
+              or partition == "profile_holdout" or role == "radiation_holdout")
+    need(scope == ("holdout_evaluation" if sealed else "development_production"),
+         "Frozen case scope disagrees with its partition")
+    return "sealed" if sealed else "development"
+
+
+def mirror_inventory(doc):
+    names = tuple(doc["artifacts"]) + MIRROR_METADATA
+    for name in names:
+        _artifact_path(Path(), name)
+        need(not name.endswith((".", " ")) and not any(char in name for char in '<>"|?*')
+             and not re.fullmatch(r"CON|PRN|AUX|NUL|COM[1-9¹²³]|LPT[1-9¹²³]",
+                                  name.split(".", 1)[0], re.IGNORECASE), "Nonportable mirror filename")
+    need(len({name.casefold() for name in (*names, MIRROR_RECEIPT)}) == len(names) + 1,
+         "Mirror inventory has conflicting names")
+    return names
+
+
+def _mirror_proof(doc, retention_sha, guest_sha, partition):
+    need(partition in ("development", "sealed"), "Unknown mirror partition")
+    return dict(schema=MIRROR_SCHEMA, verified=True, partition=partition,
+                manifest_sha256=doc["manifest_sha256"], retention_sha256=retention_sha,
+                guest_reclaim_sha256=guest_sha, original_archive_sha256=doc["original_archive_sha256"],
+                raw_backup_sha256=doc["artifacts"][RAW_GZ]["sha256"],
+                raw_backup_bytes=doc["artifacts"][RAW_GZ]["bytes"])
+
+
+def mirror_snapshot(mirror_run, partition=None, *, inflate=True):
+    """Verify a complete on-disk bundle. With partition set, build its receipt."""
+    mirror = _run_path(mirror_run)
+    manifest, _ = _manifest(mirror)
+    doc, retention_sha = _json(mirror / RECEIPT)
+    need(doc.get("raw_backup_retired") is False and not doc.get("raw_backup_offloaded")
+         and "raw_backup_local_mirror" not in doc, "Mirror must carry the pre-offload retention record")
+    names = set(mirror_inventory(doc))
+    if partition is None:
+        proof, _ = _json(mirror / MIRROR_RECEIPT)
+        partition = proof["partition"]
+        names.add(MIRROR_RECEIPT)
+    else:
+        proof = None
+    need({path.name for path in mirror.iterdir()} == names, "Mirror file set differs")
+    need(_verify(mirror, manifest) == doc, "Mirror retention record changed")
+    guest_sha = _guest_sha(mirror, doc, manifest)
+    expected = _mirror_proof(doc, retention_sha, guest_sha, partition)
+    if proof is not None:
+        need(proof == expected and type(proof.get("raw_backup_bytes")) is int
+             and proof.get("verified") is True, "Mirror receipt differs")
+    if inflate:
+        _verify_raw_backup(mirror / RAW_GZ, manifest["results_sha256"], doc["original_archive_bytes"])
+    need(_sha(mirror / RECEIPT) == retention_sha, "Mirror retention record changed")
+    return expected
+
+
+def _mirror_valid(run, doc):
+    pointer = doc.get("raw_backup_local_mirror")
+    need(isinstance(pointer, dict) and set(pointer) == {"sha256"}, "Missing mirror pointer")
+    proof, sha = _json(run / MIRROR_RECEIPT)
+    manifest, _ = _manifest(run)
+    expected = _mirror_proof(doc, proof["retention_sha256"], _guest_sha(run, doc, manifest), proof["partition"])
+    need(sha == pointer["sha256"] and proof == expected and proof.get("verified") is True
+         and isinstance(proof["retention_sha256"], str) and HEX.fullmatch(proof["retention_sha256"]),
+         "Local mirror receipt changed")
+    return proof
+
+
+def _match_mirror(run, doc, mirror_run, *, inflate=True):
+    mirror = _run_path(mirror_run)
+    need(not mirror.samefile(run), "Mirror must be a separate run directory")
+    proof = mirror_snapshot(mirror, inflate=inflate)
+    if "raw_backup_local_mirror" in doc:
+        need(proof == _mirror_valid(run, doc)
+             and _sha(mirror / MIRROR_RECEIPT) == doc["raw_backup_local_mirror"]["sha256"],
+             "Mirror receipt differs from pinned copy")
+        snapshot, _ = _json(mirror / RECEIPT)
+        need(snapshot == {key: value for key, value in doc.items() if key != "raw_backup_local_mirror"},
+             "Retention inventory differs from the pinned mirror")
+    else:
+        manifest, _ = _manifest(run)
+        need(proof == _mirror_proof(doc, _sha(run / RECEIPT), _guest_sha(run, doc, manifest),
+                                    proof["partition"]), "Mirror does not match this retention snapshot")
+    return proof
+
+
 def _release_valid(run, doc):
     release = doc.get("raw_backup_release")
     need(isinstance(release, dict) and HEX.fullmatch(release.get("sha256", "")), "Missing release evidence")
@@ -262,6 +433,10 @@ def _verify(run, manifest, cache=None):
     need(type(offloaded) is bool, "Invalid offload flag")
     if offloaded:
         _offload_valid(run, doc)
+    mirrored = "raw_backup_local_mirror" in doc
+    if mirrored:
+        need(not retired, "A mirrored backup must remain restorable")
+        _mirror_valid(run, doc)
     artifacts = doc["artifacts"]
     need(isinstance(artifacts, dict) and {RAW_GZ, ESSENTIAL, WITNESS} <= set(artifacts),
          "Missing required artifact inventory")
@@ -269,7 +444,7 @@ def _verify(run, manifest, cache=None):
         path = _artifact_path(run, name)
         need(isinstance(entry, dict) and HEX.fullmatch(entry.get("sha256", ""))
              and type(entry.get("bytes")) is int and entry["bytes"] > 0, "Invalid artifact record")
-        if name == RAW_GZ and (retired or (offloaded and not _exists(path))):
+        if name == RAW_GZ and (retired or ((offloaded or mirrored) and not _exists(path))):
             continue
         need(_not_link(path).st_size == entry["bytes"] and _sha(path, cache) == entry["sha256"],
              "Artifact missing/changed: " + name)
@@ -305,7 +480,7 @@ def verify_retained(run_dir, manifest, cache=None):
     try:
         _verify(_run_path(run_dir), manifest, cache)
         return True
-    except (OSError, ValueError, KeyError, TypeError, EOFError):
+    except (OSError, ValueError, KeyError, TypeError, AttributeError, EOFError):
         return False
 
 
@@ -331,12 +506,23 @@ def _raw_backup(raw, target, expected):
     return signature
 
 
-def _verify_raw_backup(path, expected):
-    digest = hashlib.sha256()
-    with _open(path) as stream, gzip.GzipFile(fileobj=stream, mode="rb") as source:
-        for block in iter(lambda: source.read(BLOCK), b""):
-            digest.update(block)
-    need(digest.hexdigest() == expected, "Raw gzip does not restore the original archive SHA")
+def _verify_raw_backup(path, expected, expected_bytes=None, target=None):
+    digest, size = hashlib.sha256(), 0
+    with _open(path) as stream:
+        signature = _signature(os.fstat(stream.fileno()))
+        try:
+            with gzip.GzipFile(fileobj=stream, mode="rb") as source:
+                for block in iter(lambda: source.read(BLOCK), b""):
+                    digest.update(block)
+                    size += len(block)
+                    need(expected_bytes is None or size <= expected_bytes, "Raw gzip exceeds original size")
+                    if target is not None:
+                        target.write(block)
+        except (OSError, EOFError, zlib.error) as exc:
+            raise ValueError("Unreadable raw gzip backup") from exc
+        _unchanged(path, signature)
+    need(digest.hexdigest() == expected and (expected_bytes is None or size == expected_bytes),
+         "Raw gzip does not restore the original archive SHA/size")
 
 
 def _emit(stream, value):
@@ -471,6 +657,64 @@ def _same_manifest(run, manifest_sha):
     need(current_sha == manifest_sha, "Original manifest changed")
 
 
+def _write_record(run, name, record=None, source=None):
+    pending = []
+    temp = _temp(run, pending)
+    try:
+        with _open(temp, os.O_WRONLY | os.O_TRUNC, "wb") as stream:
+            if source is None:
+                _emit(stream, record)
+            else:
+                stream.write(source)
+            stream.flush()
+            os.fsync(stream.fileno())
+        _publish(temp, run / name)
+    finally:
+        temp.unlink(missing_ok=True)
+
+
+def reclaim_mirror(run_dir, mirror_run, *, runtime_state, case_manifest, allow_sealed=False):
+    """Reclaim only the raw gzip, using a verified separate mirror bundle."""
+    run = _run_path(run_dir)
+    with _lock(run):
+        manifest, _ = _manifest(run)
+        partition = archive_partition(manifest, runtime_state, case_manifest)
+        need(partition == "development" or allow_sealed is True, "Sealed result requires the archive operator")
+        cache = {}
+        need(verify_retained(run, manifest, cache), "Retention verification failed before mirror reclaim")
+        doc, retention_sha = _json(run / RECEIPT)
+        need(not doc["raw_backup_retired"] and not doc.get("raw_backup_offloaded"),
+             "Run already uses a different backup policy")
+        proof = _match_mirror(run, doc, mirror_run)
+        need(proof["partition"] == partition, "Mirror partition differs from the frozen identity")
+        backup = run / RAW_GZ
+        if not _exists(backup):
+            need("raw_backup_local_mirror" in doc, "Local raw gzip is missing")
+            return {"mirrored": 1, "raw_backup_removed": False}
+        signature = cache[str(backup)][0]
+        with _open(run / RECEIPT) as stream:
+            before = stream.read()
+        need(hashlib.sha256(before).hexdigest() == retention_sha, "Retention record changed")
+        if _exists(run / MIRROR_RECEIPT):
+            need(_json(run / MIRROR_RECEIPT)[0] == proof, "Conflicting mirror receipt")
+        else:
+            _write_record(run, MIRROR_RECEIPT, proof)
+        proof_sha = _sha(run / MIRROR_RECEIPT)
+        need(proof_sha == _sha(_run_path(mirror_run) / MIRROR_RECEIPT), "Mirror receipt bytes differ")
+        doc["raw_backup_local_mirror"] = {"sha256": proof_sha}
+        try:
+            _write_record(run, RECEIPT, doc)
+            need(verify_retained(run, manifest, cache), "Second retention verification failed; local backup kept")
+            _unchanged(backup, signature)
+            backup.unlink()
+        except (OSError, ValueError, TypeError, KeyError):
+            if _exists(backup) and _sha(run / RECEIPT) != retention_sha:
+                _write_record(run, RECEIPT, source=before)
+            raise
+        _sync_dir(run)
+        return {"mirrored": 1, "raw_backup_removed": True}
+
+
 def _dematerialize(run, manifest):
     cache = {}
     doc = _verify(run, manifest, cache)
@@ -541,12 +785,25 @@ def compact(run_dir, keep_raw_backup=True):
                 path.unlink(missing_ok=True)
 
 
-def restore(run_dir, fetcher=None):
+def _fetch_mirror(run, doc, mirror_run, target, allow_sealed):
+    proof = _mirror_valid(run, doc)
+    need(proof["partition"] == "development" or allow_sealed is True, "Sealed result requires the archive operator")
+    need(mirror_run is not None, "Explicit verified mirror directory is required for restore")
+    _match_mirror(run, doc, mirror_run, inflate=False)
+    target.unlink()
+    _copy_file(_run_path(mirror_run) / RAW_GZ, target)
+
+
+def restore(run_dir, fetcher=None, *, mirror_run=None, allow_sealed=False):
     """Restore exact original bytes under the same lock; never overwrite a different raw."""
     run = _run_path(run_dir)
     with _lock(run):
         manifest, _ = _manifest(run)
         doc = _verify(run, manifest)
+        mirrored = "raw_backup_local_mirror" in doc
+        if mirrored:
+            need(_mirror_valid(run, doc)["partition"] == "development" or allow_sealed is True,
+                 "Sealed result requires the archive operator")
         raw = run / RAW
         if _exists(raw):
             return dict(run_id=run.name, action="restore", restored=False, already_materialized=True)
@@ -554,27 +811,23 @@ def restore(run_dir, fetcher=None):
         pending = []
         try:
             temp = _temp(run, pending)
-            digest, size = hashlib.sha256(), 0
             backup = run / RAW_GZ
             fetched = False
-            if not _exists(backup) and doc.get("raw_backup_offloaded") is True:
+            if not _exists(backup) and (mirrored or doc.get("raw_backup_offloaded") is True):
                 backup = _temp(run, pending)
-                (fetcher or _default_fetcher)(run, doc, backup)
+                if mirrored:
+                    _fetch_mirror(run, doc, mirror_run, backup, allow_sealed)
+                else:
+                    (fetcher or _default_fetcher)(run, doc, backup)
                 raw_entry = doc["artifacts"][RAW_GZ]
-                need(_not_link(backup).st_size == raw_entry["bytes"] and _sha(backup) == raw_entry["sha256"],
+                need(_file_record(backup) == raw_entry,
                      "Fetched raw gzip backup SHA/size differs")
                 fetched = True
             backup_signature = _signature(_not_link(backup))
-            with _open(backup) as source, gzip.GzipFile(fileobj=source, mode="rb") as zipped, _open(
-                    temp, os.O_WRONLY | os.O_TRUNC, "wb") as target:
-                for block in iter(lambda: zipped.read(BLOCK), b""):
-                    digest.update(block)
-                    size += len(block)
-                    target.write(block)
+            with _open(temp, os.O_WRONLY | os.O_TRUNC, "wb") as target:
+                _verify_raw_backup(backup, manifest["results_sha256"], doc["original_archive_bytes"], target)
                 target.flush()
                 os.fsync(target.fileno())
-            need(digest.hexdigest() == manifest["results_sha256"]
-                 and size == doc["original_archive_bytes"], "Restored archive SHA/size differs")
             _unchanged(backup, backup_signature)
             _same_manifest(run, doc["manifest_sha256"])
             # A hard-link install is atomic and exclusive; unlike replace it
@@ -607,6 +860,7 @@ def rehydrate(run_dir, fetcher=None):
                 (fetcher or _default_fetcher)(run, doc, temp_gz)
                 need(_not_link(temp_gz).st_size == raw_entry["bytes"] and _sha(temp_gz) == raw_entry["sha256"],
                      "Fetched raw gzip backup SHA/size differs")
+                _verify_raw_backup(temp_gz, manifest["results_sha256"], doc["original_archive_bytes"])
                 _publish(temp_gz, backup)
                 pending.remove(temp_gz)
                 pulled = True
@@ -639,6 +893,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", choices=("compact", "restore", "verify", "dematerialize", "rehydrate"))
     parser.add_argument("run", type=Path)
+    parser.add_argument("--mirror-run", type=Path)
+    parser.add_argument("--allow-sealed", action="store_true", help="Archive operator only")
     args = parser.parse_args()
     try:
         if args.action == "verify":
@@ -646,7 +902,10 @@ def main():
             result = dict(verified=verify_retained(args.run, manifest))
             print(json.dumps(result))
             return 0 if result["verified"] else 1
-        result = globals()[args.action](args.run)
+        if args.action == "restore":
+            result = restore(args.run, mirror_run=args.mirror_run, allow_sealed=args.allow_sealed)
+        else:
+            result = globals()[args.action](args.run)
         print(json.dumps(result, ensure_ascii=True))
         return 0
     except (OSError, ValueError, KeyError, TypeError, EOFError, tarfile.TarError) as exc:
