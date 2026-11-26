@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "action",
+    "task",
+    "phase",
+    "reason",
+    "next_check_seconds",
+    "blocked_reason"
+  ],
+  "properties": {
+    "action": {
+      "type": "string",
+      "enum": [
+        "noop",
+        "dispatch",
+        "accept",
+        "reject",
+        "advance",
+        "blocked",
+        "cooldown",
+        "log"
+      ]
+    },
+    "task": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[a-z][a-z0-9-]{0,39}$"
+    },
+    "phase": {
+      "type": "string",
+      "enum": [
+        "P0_BOOTSTRAP",
+        "P1A_SIM_DEV",
+        "P2A_DEV_TRAIN_AL1",
+        "P1B_SIM_AL1",
+        "P2B_RETRAIN_AL2",
+        "P1C_SIM_AL2_HOLDOUT",
+        "P2C_FINAL_TRAIN_FREEZE",
+        "P2D_HOLDOUT_BLIND_EVAL",
+        "P3_DESK_PROD_DEPLOY",
+        "P4_HANDOFF_AUDIT"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500
+    },
+    "next_check_seconds": {
+      "type": "integer",
+      "minimum": 60,
+      "maximum": 43200
+    },
+    "blocked_reason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        null,
+        "candidate_failed",
+        "checks_failed",
+        "supervisor_failed",
+        "receipt_invalid",
+        "dependency_blocked",
+        "disk_floor",
+        "holdout_sealed",
+        "production_not_verified"
+      ]
+    }
+  }
+}
