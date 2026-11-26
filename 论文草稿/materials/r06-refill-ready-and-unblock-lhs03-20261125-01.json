@@ -1,0 +1,413 @@
+{
+  "schema": "tcad-r06-refill-ready-and-unblock-receipt-v1",
+  "order_id": "r06-refill-ready-and-unblock-lhs03-20261125-01",
+  "generated_at": "2026-11-25T19:31:13Z",
+  "outcome": "completed",
+  "blockers": [],
+  "scope": {
+    "local_allowed_path_used": "论文草稿/materials/",
+    "local_worktree_preserved": true,
+    "existing_asset_registry_modified": false,
+    "existing_uncommitted_files_modified": false,
+    "server_scheduler": "existing tcad-autonomy.service only",
+    "new_solver_pool_started": false,
+    "original_runs_ledgers_and_failure_records_preserved": true,
+    "server_write_identity": "tcad"
+  },
+  "before": {
+    "observed_at": "2026-11-25T19:10:28Z",
+    "source": "local director milestone briefing",
+    "running": 16,
+    "free": 0,
+    "ready": 6,
+    "blocked_by_stage": {
+      "missing_material": 47,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "r06_released_runs": 248,
+    "lhs_transport_collected": 48,
+    "response_supply_groups": 48,
+    "last_publication_utc": "2026-11-25T19:06:47.954535Z",
+    "repair_requests": 2
+  },
+  "after": {
+    "observed_at": "2026-11-25T19:31:13Z",
+    "source": "fresh controller.py explain --month-one",
+    "running": 16,
+    "free": 0,
+    "ready": 7,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "last_publication_utc": "2026-11-25T19:15:22.570892Z",
+    "last_publication_tasks": [
+      "r06-s-lhs03-development-p04-b1-supply-r1",
+      "r06-s-lhs03-development-p04-b0-supply-r1"
+    ],
+    "observation_fresh": true,
+    "director_milestones_latest": {
+      "r06_released_runs": 249,
+      "lhs_transport_collected": 48,
+      "response_supply_groups": 48
+    },
+    "delta_from_before": {
+      "running": 0,
+      "free": 0,
+      "ready": 1,
+      "missing_material": -1,
+      "awaiting_acceptance": 0,
+      "other": 0
+    }
+  },
+  "milestones": {
+    "released_runs_transition": {
+      "from": 237,
+      "to": 248,
+      "delta": 11,
+      "exact_batch_list": null,
+      "exact_batch_list_status": "not_exposed_by_current_authoritative_status_objects",
+      "observed_release_records": [
+        "r06-s-lhs04-development-p04-b1",
+        "r06-s-lhs04-development-p06-b0",
+        "r06-s-lhs04-development-p11-b1",
+        "r06-s-lhs04-development-p06-b1"
+      ],
+      "evidence_boundary": "The four names are release-visible records observed in the current public recent-activity projection. They are not presented as the complete eleven-item list."
+    },
+    "transport_collection_transition": {
+      "from": 40,
+      "to": 48,
+      "delta": 8,
+      "exact_new_batches": [
+        "r06-lhs03-c0-proton-r1",
+        "r06-lhs03-c1-proton-r1",
+        "r06-lhs03-g0-proton-r1",
+        "r06-lhs03-g1-proton-r1",
+        "r06-lhs03-g2-proton-r1",
+        "r06-lhs03-g3-proton-r1",
+        "r06-lhs03-g4-proton-r1",
+        "r06-lhs03-g5-proton-r1"
+      ],
+      "response_supply_groups": 48
+    }
+  },
+  "resources": {
+    "unit": "GiB",
+    "server_remaining_space": 52.07758331298828,
+    "virtual_machine_filesystem_free_space": 60.49830627441406,
+    "server_virtual_disk_growth_space": 45.00380325317383,
+    "measurement_note": "服务器剩余空间、虚拟机文件系统剩余空间和服务器上虚拟机磁盘文件可增长空间分别记录，不相加。"
+  },
+  "supply_actions": {
+    "decision": "read_only_closeout",
+    "reason": "复查期间 16 个槽全部运行，ready=7，响应材料虽已具备 48 个成功池记录，40 项仍等待 pinned response context 与 profile source adapter。当前没有满足原验签发布条件且能安全新增的批次。",
+    "lhs03_transport_pools": [
+      {
+        "radiation": "C0",
+        "pool_task": "r06-lhs03-c0-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "C1",
+        "pool_task": "r06-lhs03-c1-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "G0",
+        "pool_task": "r06-lhs03-g0-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "G1",
+        "pool_task": "r06-lhs03-g1-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "G2",
+        "pool_task": "r06-lhs03-g2-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "G3",
+        "pool_task": "r06-lhs03-g3-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "G4",
+        "pool_task": "r06-lhs03-g4-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      },
+      {
+        "radiation": "G5",
+        "pool_task": "r06-lhs03-g5-proton-r1",
+        "pool_status": "succeeded",
+        "qualification_status": "referenced"
+      }
+    ],
+    "response_service": {
+      "service_state": "inactive_after_successful_run",
+      "timer_state": "active",
+      "current_response_status_counts": {
+        "succeeded": 48
+      },
+      "current_response_status_not_submitted_field": null,
+      "historical_service_log_view": {
+        "succeeded": 8,
+        "not_submitted": 40,
+        "not_submitted_configuration_scope": "40-item adapter/context view, with LHS03 C0/C1/G0-G5 among the affected configurations"
+      },
+      "interpretation": "The live response-status object has advanced to 48 succeeded. The earlier 40 succeeded/8 not_submitted split is retained as historical service evidence and is not substituted for the live object."
+    },
+    "new_month_one_supply_publications": 0,
+    "new_case_acceptances_signed": 0,
+    "repair_action": {
+      "checked_once_read_only": true,
+      "items": [
+        {
+          "id": "r06-p0-d0-hold22-b0-event4-h2-single-r1",
+          "task_state": "INTERRUPTED",
+          "repair_request_reason": "original_run_failed_collected",
+          "attempts_remaining": 2,
+          "published_or_retried": false
+        },
+        {
+          "id": "r06-p0-d0-hold22-b1-event4-h2-single-r1",
+          "task_state": "FAILED",
+          "repair_request_reason": "original_run_failed_collected",
+          "attempts_remaining": 2,
+          "published_or_retried": false
+        }
+      ]
+    }
+  },
+  "acceptance_review": {
+    "d1_short_channel_g0_shape_a_x30_b1": {
+      "case_state": "claimed",
+      "attempt_state": "succeeded",
+      "official_reader_status": "refused_for_signing",
+      "terminal_35ns": null,
+      "zero_source_integrals": null,
+      "write_hold_polarity": null,
+      "mevent_V": null,
+      "mzero_V": null,
+      "deltaM_V": null,
+      "refusal_condition": "The frozen resource declaration is single-threaded while the device command declares Number_Of_Threads=4. The fresh official reader did not expose an eligible signed readout record under this mismatch.",
+      "case_acceptance_signed": false
+    },
+    "d2_narrow_fin_g0_shape_a_x10_b0": {
+      "case_state": "claimed",
+      "attempt_state": "succeeded",
+      "event_time_grid_points": null,
+      "zero_time_grid_points": null,
+      "readout_window_timestamp_delta_ns": null,
+      "mevent_V": 0.044010104122456,
+      "mzero_V": 0.04354187345977,
+      "deltaM_V": 0.000468230662686,
+      "official_reader_status": "not_comparable_time_grid",
+      "official_refusal_rule": "The event run and zero-source baseline must provide comparable time grids for the 31.9 ns readout-window comparison. The recorded numerics_v1 status is not_comparable_time_grid, so the readout comparison is not eligible for case-acceptance.",
+      "case_acceptance_signed": false
+    }
+  },
+  "adapter_set_comparison": {
+    "adapter_blocker_reason": "awaiting pinned response context and profile source adapter",
+    "adapter_blocker_count": 40,
+    "response_status_live_pool_count": 48,
+    "intersection_count": 40,
+    "intersection": [
+      "LHS01-development/C0/S",
+      "LHS01-development/C1/S",
+      "LHS01-development/G0/S",
+      "LHS01-development/G1/S",
+      "LHS01-development/G2/S",
+      "LHS01-development/G3/S",
+      "LHS01-development/G5/S",
+      "LHS02-development/C0/S",
+      "LHS02-development/C1/S",
+      "LHS02-development/G0/S",
+      "LHS02-development/G1/S",
+      "LHS02-development/G2/S",
+      "LHS02-development/G3/S",
+      "LHS02-development/G4/S",
+      "LHS02-development/G5/S",
+      "LHS03-development/C0/S",
+      "LHS03-development/C1/S",
+      "LHS03-development/G0/S",
+      "LHS03-development/G1/S",
+      "LHS03-development/G2/S",
+      "LHS03-development/G3/S",
+      "LHS03-development/G5/S",
+      "LHS04-development/C0/S",
+      "LHS04-development/C1/S",
+      "LHS04-development/G0/S",
+      "LHS04-development/G1/S",
+      "LHS04-development/G2/S",
+      "LHS04-development/G3/S",
+      "LHS04-development/G4/S",
+      "LHS04-development/G5/S",
+      "LHS05-development/C0/S",
+      "LHS05-development/C1/S",
+      "LHS05-development/G0/S",
+      "LHS05-development/G1/S",
+      "LHS05-development/G2/S",
+      "LHS05-development/G3/S",
+      "LHS05-development/G4/S",
+      "LHS05-development/G5/S",
+      "LHS06-development/C0/S",
+      "LHS06-development/C1/S"
+    ],
+    "adapter_only": [],
+    "response_only": [
+      "LHS01-development/G4/S",
+      "LHS03-development/G4/S",
+      "LHS06-development/G0/S",
+      "LHS06-development/G1/S",
+      "LHS06-development/G2/S",
+      "LHS06-development/G3/S",
+      "LHS06-development/G4/S",
+      "LHS06-development/G5/S"
+    ],
+    "profile_p0_gate_configurations": [
+      {
+        "profile": "LHS01-development",
+        "radiation": "C0",
+        "pool_task": "r06-lhs01-c0-proton-r1",
+        "qualification_reference": "lhs01-development-p0.json"
+      },
+      {
+        "profile": "LHS02-development",
+        "radiation": "C0",
+        "pool_task": "r06-lhs02-c0-proton-r1",
+        "qualification_reference": "lhs02-development-p0.json"
+      },
+      {
+        "profile": "LHS03-development",
+        "radiation": "C0",
+        "pool_task": "r06-lhs03-c0-proton-r1",
+        "qualification_reference": "lhs03-development-p0.json"
+      },
+      {
+        "profile": "LHS04-development",
+        "radiation": "C0",
+        "pool_task": "r06-lhs04-c0-proton-r1",
+        "qualification_reference": "lhs04-development-p0.json"
+      },
+      {
+        "profile": "LHS05-development",
+        "radiation": "C0",
+        "pool_task": "r06-lhs05-c0-proton-r1",
+        "qualification_reference": "lhs05-development-p0.json"
+      }
+    ],
+    "missing_authoritative_fields": [
+      "r06_released_runs exact batch ledger for the full 237-to-248 interval",
+      "response-status.json not_submitted count in the current live object",
+      "event_time_grid_points for the D2 event and zero-source pair",
+      "readout_window_timestamp_delta_ns for the D2 event and zero-source pair",
+      "D1 signed Mevent/Mzero/deltaM record under the four-thread mismatch"
+    ]
+  },
+  "t_followup_review": {
+    "d1_short_channel_shape_a_x30_b1": {
+      "state": "claimed",
+      "observed_status": "succeeded",
+      "case_acceptance": false
+    },
+    "d2_narrow_fin_shape_a_x10_b0": {
+      "state": "claimed",
+      "observed_status": "succeeded",
+      "case_acceptance": false
+    },
+    "lhs03_shape_a_and_shape_b_followups": "not_bound in the current explain snapshot"
+  },
+  "director_decisions_needed": [
+    {
+      "id": "D1-THREAD-MISMATCH",
+      "decision": "Choose whether the frozen single-thread declaration may be reconciled with the archived device command declaring Number_Of_Threads=4.",
+      "evidence_needed": "The official reader's native archive record with terminal point, three zero-source integrals, write/hold polarity, and 31.9 ns Mevent/Mzero/deltaM."
+    },
+    {
+      "id": "D2-TIME-GRID-BRIDGE",
+      "decision": "Provide an isolated comparison package with comparable event and zero-source time grids, or keep the case rejected under not_comparable_time_grid.",
+      "evidence_needed": "Event grid point count, zero-source grid point count, both 31.9 ns timestamps, and their absolute timestamp difference."
+    },
+    {
+      "id": "RELEASE-LEDGER-BRIDGE",
+      "decision": "Expose the exact eleven released batch records between r06_released_runs 237 and 248 in the authoritative milestone bridge.",
+      "evidence_needed": "A count-bound list keyed by original run identity, release timestamp, and collection state."
+    },
+    {
+      "id": "LIVE-RESPONSE-COUNT-BRIDGE",
+      "decision": "Reconcile the live response-status object showing 48 succeeded with the historical service result showing 8 succeeded and 40 not_submitted.",
+      "evidence_needed": "A single observation with a status schema version, per-pool state, and a stable observation timestamp."
+    },
+    {
+      "id": "P0-PROFILE-BRIDGE",
+      "decision": "Confirm the five profile P0 gate records are the C0 references listed in adapter_set_comparison.profile_p0_gate_configurations.",
+      "evidence_needed": "The profile gate status and qualified_bits from the authoritative recipe/status object."
+    }
+  ],
+  "evidence_boundary": {
+    "verified": [
+      "Fresh controller.py explain --month-one before/after slot and blocked-stage counts",
+      "15-second post-check with no new publication performed by this order",
+      "LHS03 C0/C1/G0/G1/G2/G3/G4/G5 transport pools reported succeeded",
+      "Current response-status live pool count of 48 succeeded",
+      "Exact 40-item adapter intersection, zero adapter-only items, and eight response-only items",
+      "Five C0 profile P0 gate candidate configurations",
+      "Two repair requests checked once without retry or publication",
+      "D2 Mevent, Mzero, deltaM values and official not_comparable_time_grid status",
+      "Separate server, virtual machine filesystem, and virtual disk growth space measurements"
+    ],
+    "not_verified": [
+      "D1 numeric readout values under the four-thread archive mismatch",
+      "D2 event and zero-source time-grid point counts and timestamp delta",
+      "A complete exact list of the eleven release records in the 237-to-248 interval",
+      "A new month_one_supply publication or running-plus-ready increase caused by this order",
+      "New case-acceptance receipts for the two specified cases"
+    ]
+  },
+  "commands_run": [
+    {
+      "command": "controller.py explain --month-one",
+      "exit_code": 0,
+      "summary": "Fresh before and after scheduler snapshots."
+    },
+    {
+      "command": "response-status.json read and Python set comparison",
+      "exit_code": 0,
+      "summary": "Computed the 40-item intersection and eight response-only items."
+    },
+    {
+      "command": "read-only repair request inspection",
+      "exit_code": 0,
+      "summary": "Checked the two specified repair requests once."
+    },
+    {
+      "command": "public status projection read",
+      "exit_code": 0,
+      "summary": "Read separate server and virtual machine storage projections."
+    },
+    {
+      "command": "python -m json.tool 论文草稿/materials/r06-refill-ready-and-unblock-lhs03-20261125-01.json",
+      "exit_code": 0,
+      "summary": "Acceptance check passed."
+    }
+  ],
+  "acceptance_checks": [
+    {
+      "command": "python -m json.tool 论文草稿/materials/r06-refill-ready-and-unblock-lhs03-20261125-01.json",
+      "exit_code": 0,
+      "passed": true
+    }
+  ]
+}

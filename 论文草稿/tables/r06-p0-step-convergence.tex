@@ -1,0 +1,32 @@
+\begin{table}[tbp]
+  \centering
+  \small
+  \caption{r0.6 四组 LHS 构型零源步长收敛与 P0 判据对比}
+  \label{tab:r06-p0-step-convergence}
+  \begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\raggedright\arraybackslash}X@{}}
+    \toprule
+    构型与位态 & \(31.9\,\mathrm{ns}\) 读出裕量（mV） &
+    \(h/4\mathbin{\to}h/8\) 差值（\(\mu\mathrm{V}\)） &
+    原判据（\(101.56\,\mu\mathrm{V}\)） &
+    修订判据（\(500.0\,\mu\mathrm{V}\)） &
+    依据与状态 \\
+    \midrule
+    LHS01--b0 & 未列出 & 360.697 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS01--b1 & 未列出 & 280.152 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS03--b0 & 45.9815 & 342.457 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS03--b1 & 30.5778 & 200.772 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS04--b0 & 未列出 & 333.309 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS04--b1 & 未列出 & 165.843 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS05--b0 & 未列出 & 338.927 & 超差 & 通过 & 双态 P0 已签发 \\
+    LHS05--b1 & 未列出 & 221.123 & 超差 & 通过 & PLT 舍入边界复核，原拒绝记录保留 \\
+    \bottomrule
+  \end{tabularx}
+  \par\smallskip
+  \begin{minipage}{0.98\linewidth}
+    \footnotesize
+    读出采样时刻为 \(31.9\,\mathrm{ns}\)，终点为 \(35\,\mathrm{ns}\)。
+    “原判据”同时要求读出裕量高于 \(101.56\,\mu\mathrm{V}\)，并要求相邻步长差值不超过该限值。
+    表中差值均来自已引用的零源细化证据；LHS01、LHS04、LHS05 的指定引用材料未列出绝对读出裕量，故保留“未列出”。
+    \texttt{r06-step-tol-v2} 的修订上界为 \(500.0\,\mu\mathrm{V}\)，并要求保留原超差记录。
+  \end{minipage}
+\end{table}

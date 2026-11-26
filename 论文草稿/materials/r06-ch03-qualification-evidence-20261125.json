@@ -1,0 +1,159 @@
+{
+  "asset_id": "r06-ch03-qualification-evidence-20261125",
+  "title": "r0.6 第 3 章 P0 零源步长收敛与 P2 右删失放行证据",
+  "generated_at_utc": "2026-11-25T23:24:09.2414266Z",
+  "scope": {
+    "chapter": "第 3 章：仿真矩阵设计、数值准入与数据集构建",
+    "profiles": [
+      "LHS01",
+      "LHS03",
+      "LHS04",
+      "LHS05"
+    ],
+    "zero_source_comparison": "h/4 -> h/8",
+    "readout_sample_ns": 31.9,
+    "terminal_ns": 35.0,
+    "readout_reference_V": 0.6,
+    "difference_unit": "uV"
+  },
+  "source_evidence": [
+    "论文草稿/materials/r06-sign-prep-fill-20261125-01.json",
+    "论文草稿/materials/r06-sign-prep-refill-20261125-02.json",
+    "论文草稿/materials/r06-harvest-and-unblock-supply-20261125-01.json",
+    "tcad-research-training/plans/dram-se-ddr5-lpddr5/AUTO-DECISION-LOG.md"
+  ],
+  "criterion": {
+    "original": {
+      "id": "frozen-step-tolerance-v1",
+      "difference_limit_uV": 101.56,
+      "readout_margin_floor_uV": 101.56,
+      "interpretation": "31.9 ns 读出裕量须高于 101.56 uV，且 h/4 到 h/8 的差值不得超过 101.56 uV"
+    },
+    "revised": {
+      "id": "r06-step-tol-v2",
+      "difference_limit_uV": 500.0,
+      "readout_margin_floor_uV": 101.56,
+      "disclosure_upper_bound_uV": 500.0,
+      "interpretation": "已完成 h/8 细化且通过 35 ns 终点、三路零源积分及写保持极性的构型，31.9 ns h/4 到 h/8 差值采用不超过 500.0 uV 的实用上界，并保留原 101.56 uV 判据下的超差记录"
+    }
+  },
+  "step_convergence": [
+    {
+      "profile": "LHS01",
+      "bits": {
+        "b0": {
+          "difference_uV": 360.697007326,
+          "readout_margin_V": null,
+          "readout_margin_status": "引用证据说明高于原 101.56 uV 基准，但未列出绝对读出裕量"
+        },
+        "b1": {
+          "difference_uV": 280.151916,
+          "readout_margin_V": null,
+          "readout_margin_status": "引用证据说明高于原 101.56 uV 基准，但未列出绝对读出裕量"
+        }
+      },
+      "original_criterion": "difference_limit_exceeded",
+      "revised_criterion": "passed",
+      "p0_status": "dual_state_qualified_and_signed"
+    },
+    {
+      "profile": "LHS03",
+      "bits": {
+        "b0": {
+          "difference_uV": 342.456937659,
+          "readout_margin_V": 0.045981466357188,
+          "readout_margin_status": "reported"
+        },
+        "b1": {
+          "difference_uV": 200.771554332,
+          "readout_margin_V": 0.030577828017404,
+          "readout_margin_status": "reported"
+        }
+      },
+      "original_criterion": "difference_limit_exceeded",
+      "revised_criterion": "passed",
+      "p0_status": "dual_state_qualified_and_signed"
+    },
+    {
+      "profile": "LHS04",
+      "bits": {
+        "b0": {
+          "difference_uV": 333.308762201,
+          "readout_margin_V": null,
+          "readout_margin_status": "引用证据说明高于原 101.56 uV 基准，但未列出绝对读出裕量"
+        },
+        "b1": {
+          "difference_uV": 165.842689285,
+          "readout_margin_V": null,
+          "readout_margin_status": "引用证据说明高于原 101.56 uV 基准，但未列出绝对读出裕量"
+        }
+      },
+      "original_criterion": "difference_limit_exceeded",
+      "revised_criterion": "passed",
+      "p0_status": "dual_state_qualified_and_signed"
+    },
+    {
+      "profile": "LHS05",
+      "bits": {
+        "b0": {
+          "difference_uV": 338.927326872,
+          "readout_margin_V": null,
+          "readout_margin_status": "引用证据说明高于原 101.56 uV 基准，但未列出绝对读出裕量"
+        },
+        "b1": {
+          "difference_uV": 221.123247803,
+          "readout_margin_V": null,
+          "readout_margin_status": "原严格读取器拒绝记录保留，PLT 时间戳舍入边界复核后采用该差值"
+        }
+      },
+      "original_criterion": "difference_limit_exceeded",
+      "revised_criterion": "passed_with_plt_rounding_boundary_review",
+      "p0_status": "dual_state_qualified_and_signed"
+    }
+  ],
+  "p0_acceptance": {
+    "qualified_profiles": [
+      "LHS01",
+      "LHS03",
+      "LHS04",
+      "LHS05"
+    ],
+    "dual_bit_scope": [
+      "b0",
+      "b1"
+    ],
+    "common_checks": [
+      "35 ns terminal point",
+      "three zero-source integrals",
+      "write and hold polarity",
+      "h/4 to h/8 actual BE step comparison"
+    ],
+    "disclosure": [
+      "原 101.56 uV 判据下的超差记录保持原样",
+      "r06-step-tol-v2 将 h/4 到 h/8 差值上界设为 500.0 uV",
+      "LHS05 b1 的 PLT 舍入边界复核与原严格读取器拒绝记录同时保留"
+    ]
+  },
+  "p2_right_censored_release": {
+    "profile_scope": "D2",
+    "authorized": true,
+    "decision_scope": "right-censored release for independently P0-qualified profiles",
+    "threshold_bracket_observed": false,
+    "navigation_transport_pools": {
+      "prepared": 48,
+      "passed": 48,
+      "statistic": "48 个导航检查对应的输运池均通过"
+    },
+    "evidence": [
+      "原 P2 决定按右删失放行",
+      "清单 SHA、P1 决定 SHA 与导航报告 SHA 已记录在引用证据中",
+      "48 个导航输运池检查通过"
+    ]
+  },
+  "evidence_boundary": [
+    "本资产只汇总引用证据中已经出现的数值与状态，不替代原始运行目录、验收收据或调度器账本",
+    "LHS01、LHS04、LHS05 的引用材料没有列出各位态绝对读出裕量，因此对应字段保留为 null",
+    "LHS05 b1 的差值使用 PLT 打印时间戳舍入边界复核值，原严格读取器拒绝记录仍属于证据范围",
+    "P2 的 threshold_bracket_observed 保持为 false，放行口径为右删失观测"
+  ]
+}

@@ -1,0 +1,120 @@
+{
+  "schema": "r06-unblock-t-and-s-next-wave-v1",
+  "work_order": "r06-unblock-t-and-s-next-wave-20261125-03",
+  "status": "partial",
+  "objective_result": {
+    "target_ready": 10,
+    "observed_ready": 12,
+    "target_reached": true,
+    "ready_increase": 10,
+    "new_S_tasks": 0,
+    "new_T_first_probes": 10,
+    "T_followups_not_bound": 20
+  },
+  "before": {
+    "scope": "补齐供料配方后、调度器消费本工单 T 批次前的官方快照",
+    "observation_utc": "2026-11-25T22:58:32.355898+00:00",
+    "observation_fresh": true,
+    "running": 16,
+    "free": 0,
+    "ready": 2,
+    "blocked_by_stage": {"missing_material": 0, "awaiting_acceptance": 0, "other": 0},
+    "awaiting_acceptance": 0,
+    "missing_material": 0,
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00"
+  },
+  "after": {
+    "scope": "已消费五批 T 首探后，等待 15 秒再调用官方说明接口取得的快照",
+    "observation_utc": "2026-11-25T23:07:24.837380+00:00",
+    "observation_fresh": true,
+    "running": 16,
+    "free": 0,
+    "ready": 12,
+    "blocked_by_stage": {"missing_material": 0, "awaiting_acceptance": 2, "other": 46},
+    "awaiting_acceptance": 2,
+    "missing_material": 0,
+    "last_publication_utc": "2026-11-25T23:04:39.186057+00:00",
+    "last_publication_tasks": ["r06-t-lhs01-development-shape-b-x10-b1-supply-r1"]
+  },
+  "stage_count_scope": "待验收及缺料数字取自官方连续供料的分阶段阻塞统计。冻结清单上的已归档、待复核或其他阶段状态另行统计。",
+  "right_censored_acceptance": {
+    "criterion": "r06-t-right-censored-v1",
+    "decision_utc": "2026-11-25T22:09:02+00:00",
+    "profile": "LHS02-development",
+    "supplemental_accepted_receipts": 6,
+    "supplemental_threshold_references": 2,
+    "tested_scales": [3, 10, 30],
+    "terminal_ns": 35.0,
+    "read_sample_ns": 31.9,
+    "zero_control_source_integrals_all_zero": true,
+    "readout_error": false,
+    "threshold_status": "right_censored_above_30x",
+    "threshold_bracket_established": false,
+    "v1_frozen_gate_status": "failed",
+    "x30_signed_margin_V": {"shape-a": 0.023166484161076, "shape-b": 0.024208065971427},
+    "scope": "补充收据及参考记录引用判据修订和原验收证据，与原冻结记录并存。"
+  },
+  "published_batches": [
+    {
+      "profile": "LHS01-development",
+      "sha256": "f2cb5fd06915285b9b4665e99684cffcf26c3ed98f4dd5eed64057aecacaf232",
+      "tasks": ["r06-t-lhs01-development-shape-a-x10-b1-supply-r1", "r06-t-lhs01-development-shape-b-x10-b1-supply-r1"]
+    },
+    {
+      "profile": "LHS03-development",
+      "sha256": "ba7bcbce3896759162de83a4de5fe2193bded28e01c95a3d0c77f5c553774105",
+      "tasks": ["r06-t-lhs03-development-shape-a-x10-b1-supply-r1", "r06-t-lhs03-development-shape-b-x10-b1-supply-r1"]
+    },
+    {
+      "profile": "LHS04-development",
+      "sha256": "c9a5e3b271a7368fb50cdb68a536476ad0f887603dde9956dfd707d6ea6132a9",
+      "tasks": ["r06-t-lhs04-development-shape-a-x10-b1-supply-r1", "r06-t-lhs04-development-shape-b-x10-b1-supply-r1"]
+    },
+    {
+      "profile": "LHS05-development",
+      "sha256": "5c185de254db17dc2b84e43c73b978f35a8c6d4023357fa5e0d97521be3f0c65",
+      "tasks": ["r06-t-lhs05-development-shape-a-x10-b1-supply-r1", "r06-t-lhs05-development-shape-b-x10-b1-supply-r1"]
+    },
+    {
+      "profile": "LHS06-development",
+      "sha256": "5dce310b2f4346aacbbab8365878562548d61c5f02cd870e0357a6aa09c2da09",
+      "tasks": ["r06-t-lhs06-development-shape-a-x10-b1-supply-r1", "r06-t-lhs06-development-shape-b-x10-b1-supply-r1"]
+    }
+  ],
+  "T_publication_evidence": {
+    "batch_schema": "tcad-r06-approved-supply-v1",
+    "intake_verified_batches": 5,
+    "scheduler_proposed_cases": 10,
+    "method": "复用 LHS02 首探备料流程，按每组已有 P0、P2、同态零源绑定和真实输运事件生成 x10 输入，经官方入口验签。",
+    "followup_dependency": "其余 x3 和 x30 按同一粒子事件等待已验收的 x10 响应或适用的冻结阈值参考。"
+  },
+  "S_reconciliation": {
+    "transport_pools_succeeded": 48,
+    "response_cells_configured": 48,
+    "response_cells_previously_missing": 40,
+    "previously_covered_cells": ["LHS01/G4/S", "LHS03/G4/S", "LHS06/G0/S", "LHS06/G1/S", "LHS06/G2/S", "LHS06/G3/S", "LHS06/G4/S", "LHS06/G5/S"],
+    "original_blocker": "缺少固定响应上下文与来源适配器所需的活动供料配方单元。",
+    "verified_response_fields": ["context", "projection", "transport_audit", "controls", "source_mapping", "preparation", "qualification", "navigation"],
+    "frozen_cases": 90,
+    "response_status_cases": 90,
+    "missing_case_ids": 0,
+    "queued_or_run": 35,
+    "verified_zero_reuse": 55,
+    "by_profile": {
+      "LHS01": {"queued_or_run": 6, "verified_zero_reuse": 9},
+      "LHS02": {"queued_or_run": 5, "verified_zero_reuse": 10},
+      "LHS03": {"queued_or_run": 7, "verified_zero_reuse": 8},
+      "LHS04": {"queued_or_run": 6, "verified_zero_reuse": 9},
+      "LHS05": {"queued_or_run": 6, "verified_zero_reuse": 9},
+      "LHS06": {"queued_or_run": 5, "verified_zero_reuse": 10}
+    },
+    "explanation": "每组冻结了 15 项 S。已验签的零硅电离抽样复用同态零源，只有需要实际求解的抽样进入响应队列。冻结清单内无待投的 S 项，未发布新的 S 批次。",
+    "remaining_producer_issue": "官方连续供料仍报告 46 项其他阻塞。可见的 40 条明细均指向两个 D0–D3 备料函数无法匹配 LHS 输运池。LHS 专用响应服务的已冻结清单覆盖完整。"
+  },
+  "collection_review": {
+    "collected_LHS_S_candidates_with_existing_case_receipt": 17,
+    "collected_LHS_T_candidates_with_existing_case_receipt": 6,
+    "collected_LHS_S_or_T_candidate_missing_case_receipt": 0
+  },
+  "evidence_boundary": "已核实十项 T 首探入队及 LHS02 的八份右删失补充文件。冻结清单下的 20 项 T 后续倍率尚未绑定。若需追加全新的 S 抽样，应先冻结新的抽样清单。"
+}

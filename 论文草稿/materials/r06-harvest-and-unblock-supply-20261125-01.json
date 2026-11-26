@@ -1,0 +1,211 @@
+{
+  "order_id": "r06-harvest-and-unblock-supply-20261125-01",
+  "generated_at": "2026-11-25T17:49:53Z",
+  "outcome": "partial",
+  "scope": {
+    "local_allowed_path_used": "论文草稿/materials/",
+    "local_worktree_preserved": true,
+    "server_scheduler": "existing tcad-autonomy.service only",
+    "new_solver_pool_started": false,
+    "original_runs_ledgers_and_failure_records_preserved": true
+  },
+  "before": {
+    "observed_at": "2026-11-25T17:44:41Z",
+    "running": 16,
+    "free": 0,
+    "ready": 13,
+    "awaiting_acceptance": 2,
+    "missing_material": 47,
+    "blocked_by_stage": {
+      "missing_material": 47,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "r06_released_runs": null,
+    "lhs_transport_collected": null,
+    "disk": {
+      "server_root_available_gib": 56.0,
+      "vm_overlay_available_gib": 47.0,
+      "vm_disk_file_growth_headroom_gib": null,
+      "measurement_note": "当前 explain 与挂载快照未暴露独立的虚拟磁盘文件增长指标。"
+    }
+  },
+  "after": {
+    "observed_at": "2026-11-25T17:49:53Z",
+    "running": 16,
+    "free": 0,
+    "ready": 13,
+    "awaiting_acceptance": 2,
+    "missing_material": 47,
+    "blocked_by_stage": {
+      "missing_material": 47,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "r06_released_runs": null,
+    "lhs_transport_collected": null,
+    "last_publication_from_explain": {
+      "observed_at": "2026-11-25T15:35:46Z",
+      "tasks": [
+        "r06-lhs03-c0-proton-r1",
+        "r06-lhs03-c1-proton-r1"
+      ]
+    },
+    "disk": {
+      "server_root_available_gib": 56.0,
+      "vm_overlay_available_gib": 47.0,
+      "vm_disk_file_growth_headroom_gib": null,
+      "measurement_note": "当前 explain 与挂载快照未暴露独立的虚拟磁盘文件增长指标。"
+    }
+  },
+  "actions": {
+    "acceptance_review": {
+      "new_case_acceptance_signed": 0,
+      "items": [
+        {
+          "configuration": "D1-short-channel / G0 / shape-a / x30 / b1",
+          "result": "blocked",
+          "evidence": [
+            "原运行已 collected 且退出码为 0",
+            "官方 reader 在 fresh observation 中无 eligible run",
+            "冻结输入声明为单线程，device.cmd 声明 Number_Of_Threads=4"
+          ],
+          "missing": "冻结资源声明与实际输入不一致，缺少可签署的数值读出证据。"
+        },
+        {
+          "configuration": "D2-narrow-fin / G0 / shape-a / x10 / b0",
+          "result": "blocked",
+          "evidence": {
+            "terminal_35ns_and_zero_source_integrals": "present",
+            "Mevent_V": 0.044010104122456,
+            "Mzero_V": 0.04354187345977,
+            "deltaM_V": 0.000468230662686,
+            "numerics_v1_observation": "not_comparable_time_grid",
+            "readout_error": null
+          },
+          "missing": "未形成完整 comparison.json 与冻结 acceptance 所需的可比时间网格证据，results.tar 也未恢复到 reader 期望位置。"
+        }
+      ]
+    },
+    "await_release": {
+      "maintenance_count": 16,
+      "released_in_this_order": 0,
+      "current_item_list": "现行 case-waits 未公开 await_release 逐项列表",
+      "reason": "没有可核验的当前上游条件与逐项入口，未进行盲目释放。"
+    },
+    "response_adapter_blockers": {
+      "missing_material_total": 47,
+      "adapter_blocked_total": 40,
+      "groups": {
+        "LHS01": [
+          "C0",
+          "C1",
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G5"
+        ],
+        "LHS02": [
+          "C0",
+          "C1",
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5"
+        ],
+        "LHS03": [
+          "C0",
+          "C1",
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5"
+        ],
+        "LHS04": [
+          "C0",
+          "C1",
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5"
+        ],
+        "LHS05": [
+          "C0",
+          "C1",
+          "G0",
+          "G1",
+          "G2",
+          "G3",
+          "G4",
+          "G5"
+        ],
+        "LHS06": [
+          "C0"
+        ]
+      },
+      "interpretation": "这些 S 区块均等待 pinned response context 与 profile source adapter。"
+    },
+    "response_supply": {
+      "service_run": {
+        "exit_code": 0,
+        "succeeded": 40,
+        "not_submitted": 8,
+        "not_submitted_configurations": [
+          "LHS03 C0",
+          "LHS03 C1",
+          "LHS03 G0",
+          "LHS03 G1",
+          "LHS03 G2",
+          "LHS03 G3",
+          "LHS03 G4",
+          "LHS03 G5"
+        ],
+        "new_response_batch_generated": false
+      },
+      "approved_batch_publication": {
+        "schema": "tcad-r06-approved-supply-v1",
+        "entries": 4,
+        "batch_sha256": "5f051f172541882f6c15d0d7607268c29fc9294e5a56b2885082093e0a0d058b",
+        "receipt_filename": "da3cdedbd292072e7c702a217078ef174cfd6802f631a02572afdc61fb7dacbd.json",
+        "published": true,
+        "post_publication_ready_change": 0,
+        "reason": "原调度器在投递后 15 秒复查时仍为 16/16 占用，批次已接受并等待槽位。"
+      }
+    },
+    "repairs": {
+      "count": 2,
+      "latest_authoritative_result": "held",
+      "reason": "background_repair_verification_pending",
+      "published_count": 0,
+      "retry_performed": false
+    }
+  },
+  "evidence_boundary": {
+    "verified": [
+      "供料服务成功运行一次，结果为 40 succeeded 与 8 not_submitted",
+      "4 条已验证 approved supply 通过原验签入口投递",
+      "投递后等待 15 秒并重新执行官方 explain",
+      "当前 40 项响应适配器阻塞的构型分组",
+      "两项待验收的具体构型与可用读出缺口",
+      "服务器根文件系统与 VM overlay 可用空间"
+    ],
+    "not_resolved": [
+      "两项 case-acceptance",
+      "16 项 await_release 的逐项释放",
+      "8 项 LHS03 response context/adapter",
+      "两项 repair 的后台核验与入队",
+      "当前 explain 未暴露的 r06_released_runs 与 lhs_transport_collected"
+    ]
+  },
+  "changed_files": [
+    "论文草稿/materials/r06-harvest-and-unblock-supply-20261125-01.json",
+    "论文草稿/materials/asset-registry.jsonl"
+  ]
+}

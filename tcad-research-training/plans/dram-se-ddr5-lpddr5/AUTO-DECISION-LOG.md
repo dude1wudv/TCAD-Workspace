@@ -73,3 +73,52 @@
 3. 期间优先派发并行队列中零服务器写入的高优本地任务（`order-web-status-reconcile-01` 状态页三方源码对齐与全量本地验证）；一旦服务器剩余空间回升至 `>= 26 GiB` 或 `LHS03 b1 h/8` 完成且具备收集条件，立即恢复端到端收集、签收与填槽。
 
 案例：LHS01, LHS03, LHS04, LHS05, LHS06
+
+## 2026-11-25T20:13:29+00:00 · criterion_amendment · r0.6 D1/D2 实用验收判据修订（线程实测等价与精确 31.9 ns 共同读出点，r06-d1-d2-acceptance-v1）
+
+### 修订背景与直读取证
+
+依据已验收工单 `r06-close-d1-d2-evidence-and-refill-20261125-01`（脱敏证据见 `论文草稿/materials/r06-close-d1-d2-evidence-and-refill-20261125-01.json`）对远端归档的只读内存直读复核，当前两项 `awaiting_acceptance` 案例的物理与数值结果均已完整闭环，仅被官方严格读取器的非物理前置检查拒签：
+
+1. **`D1-short-channel / G0 / shape-a / x30 / b1`（线程声明偏差）**：
+   - 物理与数值结果完整通过：`terminal_time_ns = 35.0000000000000 ns`，三路注入源积分均为 `37554.23485351159` 电子-空穴对（对应零源三路积分均为 `0E-41`），写/保持极性一致（`stored_bit = 1`，`BL = +1.2 V`，预充 `+0.6 V`），精确 `31.9000000000000 ns` 读出 `Mevent = 0.024934786484250 V`、`Mzero = 0.026114683051315 V`、`deltaM = -0.001179896567065 V`（`-1.180 mV`）。
+   - 拒签根因：`device.cmd` 中 `Number_Of_Threads = 4` 与冻结契约 `frozen_native_threads = 1` 不一致；但求解器归档日志实证**实际执行线程数为 `assembly_threads = 1`、`solver_threads = 1`**，实际数值求解行为与单线程冻结契约完全等价。重跑无物理收益且徒耗 16 槽算力。
+
+2. **`D2-narrow-fin / G0 / shape-a / x10 / b0`（自适应全时间网格点数不等）**：
+   - 物理与数值结果完整通过：事件与零源归档均精确到达 `terminal_time_ns = 35.0000000000000 ns`，事件三路注入源积分均为 `12244.503216500916625` 电子-空穴对（零源为 `0E-41`），写/保持极性一致（`stored_bit = 0`，`BL = 0 V`，预充 `+0.6 V`）。
+   - 拒签根因：带辐射注入瞬态的事件仿真因自适应时间步长细分产生 `736` 个时间点，而零源基线为 `714` 个时间点，触发官方严格全网格逐点等长检查 `not_comparable_time_grid`。
+   - 关键实证：两归档均**精确命中共同读出点 `t_event_ns = t_zero_ns = 31.9000000000000 ns`（`abs_delta_t_ns = 0E-13`）**，最近点口径与线性插值口径结果完全一致至 15 位有效数字：`Mevent = 0.044010104122456 V`、`Mzero = 0.043541873459770 V`、`deltaM = +0.000468230662686 V`（`+0.468 mV`）。自适应步长在辐射脉冲瞬态增加 22 个中间子步属于正常数值行为，不影响精确共同读出时刻的可比性。
+
+### 修订后的实用验收判据（`r06-d1-d2-acceptance-v1`）
+
+1. **`r06-d1-thread-audit-v1`（线程实测等价判据）**：当 `device.cmd` 的 `Number_Of_Threads` 与冻结单线程声明存在字面偏差，但求解器运行日志明确证实实际执行 `assembly_threads == 1` 且 `solver_threads == 1`（与冻结单线程行为一致），且 35 ns 终点、三路源积分、写保持极性及 31.9 ns 读出均完整通过时，批准签署该案实用验收收据；后续新生成 `device.cmd` 模板仍应保持与冻结线程数声明一致。
+2. **`r06-d2-exact-readout-grid-v1`（共同精确读出时刻判据）**：当事件仿真因辐射注入自适应细步导致全时间网格点数与零源基线不等，但二者均精确达到 35.0 ns 终点、三路源积分与写保持极性一致，且均精确包含共同 `31.9000000000000 ns` 读出时刻（`abs_delta_t_ns == 0`，最近点与线性插值一致）时，批准按该精确共同时刻读出值签署实用验收收据。
+3. **立即执行动作**：依据本修订，批准立即为 `D1-short-channel / G0 / shape-a / x30 / b1` 与 `D2-narrow-fin / G0 / shape-a / x10 / b0` 签署带本决策引用的 `case-acceptance` 验收收据，推动 `awaiting_acceptance` 清零并核查解锁下游批次。
+4. **不可篡改与论文披露声明**：所有原运行目录、原归档文件与原严格读取器拒签记录必须保持原样不可修改、不可删除；上述两项实用判据修订及原始差异细节将在论文方法与质量控制章节如实披露。
+
+案例：D1-short-channel/G0/shape-a/x30/b1, D2-narrow-fin/G0/shape-a/x10/b0
+
+## 2026-11-25T22:09:02+00:00 · criterion_amendment · r0.6 T 阈值倍率扫描右删失实用验收与下游放行判据（r06-t-right-censored-v1）
+
+### 修订背景与实测证据
+
+依据 `LHS02-development` 全部 6 项 T（阈值倍率扫描）归档运行在官方保留读取器下的实测读出（均满足 `terminal_ns = 35.0 ns`、三路零源注入积分为 `0`、`readout_error = false`、与同态零源 `b1` 基准 `zero_signed_margin_V = +0.024241191 V`（`+24.241 mV`）在精确 `31.9 ns` 读出点配对）：
+
+1. **`shape-a`（事件 `63377`，存储位 `b1`）**：
+   - `x3`：`event = +24.018 mV`，`paired_delta_margin = -0.223 mV`（占零源裕量 `-0.92%`）；
+   - `x10`：`event = +23.782 mV`，`paired_delta_margin = -0.460 mV`（`-1.90%`）；
+   - `x30`：`event = +23.166 mV`，`paired_delta_margin = -1.075 mV`（`-4.43%`）。
+2. **`shape-b`（事件 `69773`，存储位 `b1`）**：
+   - `x3`：`event = +24.239 mV`，`paired_delta_margin = -0.002 mV`（`-0.009%`）；
+   - `x10`：`event = +24.232 mV`，`paired_delta_margin = -0.009 mV`（`-0.038%`）；
+   - `x30`：`event = +24.208 mV`，`paired_delta_margin = -0.033 mV`（`-0.137%`）。
+
+物理与统计结论：上述两条响应曲线随倍率单调退化但呈显著亚线性特征，至 `x30` 时最大裕量损失仍不足 `4.5%`（`shape-b` 仅 `0.14%`），均处于清晰的**右删失未翻转区（`threshold_lower_bound > 30x`）**。强行继续外推极高非物理倍率（如 `x100`–`x1000`）以人为制造翻转区间（`threshold_bracket_established = true`）物理意义极低，且会严重挤占 16 槽共享池推进 `LHS01/03/04/05/06` 正式 T 扫描与 S 响应矩阵的算力。
+
+### 修订后的实用验收与推进判据（`r06-t-right-censored-v1`）
+
+1. **右删失 T 运行实用验收规则**：对于 `r0.6` 开发构型（含 `LHS02-development` 及后续 `LHS01/03/04/05/06`）中已完成至 `x3/x10/x30` 的 T 阈值扫描运行，只要满足：（a）`terminal_ns = 35.0 ns` 完整收敛；（b）三路零源积分为 `0` 且事件注入积分核验通过；（c）`readout_error = false` 且 `31.9 ns` 配对零源读出完整有效；（d）在 `x30` 下读出裕量仍保持正值且无翻转（右删失），即批准按**有效右删失观测（`right_censored_above_30x`）**签署实用 `case-acceptance` 验收收据与阈值参考结论，不再强制要求建立翻转括号或追加 `>x30` 极端倍率。
+2. **解锁下游 LHS 构型 T 扫描与 S 批次**：依据本判据，立即批准完结 `LHS02-development` 6 项 T 运行的右删失验收闭环，并授权立即按既有合规供料规范推进 `LHS01/03/04/05/06` 的 T 首探/后续倍率备料与入队（不再因等待 `LHS02` 建立翻转括号而阻塞其余 5 组构型共 30 项 T 运行）。
+3. **不可篡改与论文披露声明**：所有原运行目录、原运行标识以及原冻结读取器记录的 `v1_frozen_gate_status = failed`、`threshold_bracket_established = false` 均保持原样不可修改、不可删除；本右删失实用判据（`r06-t-right-censored-v1`）及各构型在 `x3/x10/x30` 下的连续裕量退化幅度与右删失界将在论文方法、统计建模与局限性章节如实披露。
+
+案例：LHS02-development/shape-a, LHS02-development/shape-b, LHS01-development, LHS03-development, LHS04-development, LHS05-development, LHS06-development

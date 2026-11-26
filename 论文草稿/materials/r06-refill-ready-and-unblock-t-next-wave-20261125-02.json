@@ -1,0 +1,351 @@
+{
+  "schema": "r06-refill-ready-and-unblock-t-next-wave-v1",
+  "order_id": "r06-refill-ready-and-unblock-t-next-wave-20261125-02",
+  "category": "sim_ops",
+  "status": "partial",
+  "generated_utc": "2026-11-25T21:55:18Z",
+  "objective_result": {
+    "target_ready": 10,
+    "achieved_ready": 2,
+    "target_reached": false,
+    "reason": "16 个槽位在途，15 秒后没有释放新槽位。官方响应服务已把 LHS02 的六项 T 继续推进到原队列，ready 需要等待在途运行结束后由唯一调度器重新计算。"
+  },
+  "before": {
+    "observation_utc": "2026-11-25T21:38:53Z",
+    "running": 16,
+    "free": 0,
+    "ready": 2,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "awaiting_acceptance": 2,
+    "missing_material": 46,
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00"
+  },
+  "after": {
+    "observation_utc": "2026-11-25T21:55:18Z",
+    "running": 16,
+    "free": 0,
+    "ready": 2,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "awaiting_acceptance": 2,
+    "missing_material": 46,
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00",
+    "response_service_result": "success",
+    "response_service_counter": {
+      "succeeded": 48
+    }
+  },
+  "actions": [
+    {
+      "action": "official_lhs02_followup_publish",
+      "command": "PYTHONPATH=<runtime-root> <python-cli> -B <lhs02-followup-script> a publish",
+      "result": "exit 0",
+      "detail": "shape-a x10 case-acceptance reused with signed margin 0.023781537530766 V and the existing x30 queue was reused"
+    },
+    {
+      "action": "official_lhs02_followup_publish",
+      "command": "PYTHONPATH=<runtime-root> <python-cli> -B <lhs02-followup-script> b publish",
+      "result": "exit 0",
+      "detail": "shape-b x10 case-acceptance reused with signed margin 0.024231859573953 V and the existing x30 queue was reused"
+    },
+    {
+      "action": "official_response_service",
+      "command": "systemctl start tcad-r06-lhs-response.service",
+      "result": "exit 0",
+      "detail": "ExecStart and four ExecStartPost steps completed successfully. The service reported Counter({'succeeded': 48})."
+    },
+    {
+      "action": "repair_handoff",
+      "result": "held",
+      "detail": "Fresh observation has five repair_requests. The two in-scope H0 h/2 failures are b0 and b1. An isolated two-entry repair package exists, but the active policy repair package authorizes another lineage, so publication would return authorization_missing_or_changed."
+    },
+    {
+      "action": "h0_h1_h2_supply",
+      "result": "held",
+      "detail": "H0 private zero observations are available, but no active formal approved batch was present for direct publication. HR/HP entries remain gated by model freeze and matching holdout inputs."
+    }
+  ],
+  "lhs02_t_review": [
+    {
+      "case_id": "r06-t-lhs02-development-shape-a-x3-b1",
+      "event_id": "63377",
+      "scale_factor": 3,
+      "run_id": "auto-r06-t-lhs02-development-shape-a-x3-b1-supply--2c3af49af7514e8a",
+      "event_signed_margin_V": "0.024018215500012",
+      "zero_signed_margin_V": "0.024241191017054",
+      "paired_delta_margin_V": "-0.000222975517042",
+      "read_sample_ns": 31.9,
+      "source_time_ns": 22,
+      "source_off_ns": 22.003,
+      "terminal_ns": 35,
+      "zero_integrals": [
+        "0",
+        "0",
+        "0"
+      ],
+      "readout_error": false,
+      "threshold_bracket_established": false,
+      "v1_frozen_gate_status": "failed"
+    },
+    {
+      "case_id": "r06-t-lhs02-development-shape-a-x10-b1",
+      "event_id": "63377",
+      "scale_factor": 10,
+      "run_id": "auto-r06-t-lhs02-development-shape-a-x10-b1-supply-e6631d506fe048b1",
+      "event_signed_margin_V": "0.023781537530766",
+      "zero_signed_margin_V": "0.024241191017054",
+      "paired_delta_margin_V": "-0.000459653486288",
+      "read_sample_ns": 31.9,
+      "source_time_ns": 22,
+      "source_off_ns": 22.003,
+      "terminal_ns": 35,
+      "zero_integrals": [
+        "0",
+        "0",
+        "0"
+      ],
+      "readout_error": false,
+      "threshold_bracket_established": false,
+      "v1_frozen_gate_status": "failed"
+    },
+    {
+      "case_id": "r06-t-lhs02-development-shape-a-x30-b1",
+      "event_id": "63377",
+      "scale_factor": 30,
+      "run_id": "auto-r06-t-lhs02-development-shape-a-x30-b1-supply-ba52e6a45dc642cd",
+      "event_signed_margin_V": "0.023166484161076",
+      "zero_signed_margin_V": "0.024241191017054",
+      "paired_delta_margin_V": "-0.001074706855978",
+      "read_sample_ns": 31.9,
+      "source_time_ns": 22,
+      "source_off_ns": 22.003,
+      "terminal_ns": 35,
+      "zero_integrals": [
+        "0",
+        "0",
+        "0"
+      ],
+      "readout_error": false,
+      "threshold_bracket_established": false,
+      "v1_frozen_gate_status": "failed"
+    },
+    {
+      "case_id": "r06-t-lhs02-development-shape-b-x3-b1",
+      "event_id": "69773",
+      "scale_factor": 3,
+      "run_id": "auto-r06-t-lhs02-development-shape-b-x3-b1-supply--01ee398fbb4d4657",
+      "event_signed_margin_V": "0.024238917054903",
+      "zero_signed_margin_V": "0.024241191017054",
+      "paired_delta_margin_V": "-0.000002273962151",
+      "read_sample_ns": 31.9,
+      "source_time_ns": 22,
+      "source_off_ns": 22.003,
+      "terminal_ns": 35,
+      "zero_integrals": [
+        "0",
+        "0",
+        "0"
+      ],
+      "readout_error": false,
+      "threshold_bracket_established": false,
+      "v1_frozen_gate_status": "failed"
+    },
+    {
+      "case_id": "r06-t-lhs02-development-shape-b-x10-b1",
+      "event_id": "69773",
+      "scale_factor": 10,
+      "run_id": "auto-r06-t-lhs02-development-shape-b-x10-b1-supply-6f83986403fd4a32",
+      "event_signed_margin_V": "0.024231859573953",
+      "zero_signed_margin_V": "0.024241191017054",
+      "paired_delta_margin_V": "-0.000009331443101",
+      "read_sample_ns": 31.9,
+      "source_time_ns": 22,
+      "source_off_ns": 22.003,
+      "terminal_ns": 35,
+      "zero_integrals": [
+        "0",
+        "0",
+        "0"
+      ],
+      "readout_error": false,
+      "threshold_bracket_established": false,
+      "v1_frozen_gate_status": "failed"
+    },
+    {
+      "case_id": "r06-t-lhs02-development-shape-b-x30-b1",
+      "event_id": "69773",
+      "scale_factor": 30,
+      "run_id": "auto-r06-t-lhs02-development-shape-b-x30-b1-supply-9d003d13abb941e8",
+      "event_signed_margin_V": "0.024208065971427",
+      "zero_signed_margin_V": "0.024241191017054",
+      "paired_delta_margin_V": "-0.000033125045627",
+      "read_sample_ns": 31.9,
+      "source_time_ns": 22,
+      "source_off_ns": 22.003,
+      "terminal_ns": 35,
+      "zero_integrals": [
+        "0",
+        "0",
+        "0"
+      ],
+      "readout_error": false,
+      "threshold_bracket_established": false,
+      "v1_frozen_gate_status": "failed"
+    }
+  ],
+  "t_gate_diagnosis": {
+    "pending_condition": "frozen threshold reference or accepted same-primary 10x response",
+    "review_condition": "The retained reader requires the frozen v2 numerical gate. It records v1_frozen_gate_status=failed and threshold_bracket_established=false for these six records.",
+    "interpretation": "The event responses remain positive at the native read point and all six runs are collected. The x30 records still do not establish a threshold bracket, so a higher multiplier or a signed scientific decision is required before threshold-based release."
+  },
+  "response_service": {
+    "exec_start": "<response-supply-script> --policy <policy-file> --publish",
+    "exec_start_post": [
+      "<service-post-step-1>",
+      "<service-post-step-2>",
+      "<service-post-step-3>",
+      "<service-post-step-4>"
+    ],
+    "result": "success",
+    "counter": {
+      "succeeded": 48
+    },
+    "pending_gate": "T entries are staged only after response._stage accepts the case and the same-primary threshold reference or accepted 10x response is available."
+  },
+  "lhs_group_status_after": {
+    "LHS01-development": {
+      "pending_T": 6,
+      "queued_or_run": 6,
+      "verified_zero_reuse": 9
+    },
+    "LHS02-development": {
+      "pending_T": 0,
+      "queued_or_run": 11,
+      "verified_zero_reuse": 10
+    },
+    "LHS03-development": {
+      "pending_T": 6,
+      "queued_or_run": 7,
+      "verified_zero_reuse": 8
+    },
+    "LHS04-development": {
+      "pending_T": 6,
+      "queued_or_run": 6,
+      "verified_zero_reuse": 9
+    },
+    "LHS05-development": {
+      "pending_T": 6,
+      "queued_or_run": 6,
+      "verified_zero_reuse": 9
+    },
+    "LHS06-development": {
+      "pending_T": 6,
+      "queued_or_run": 5,
+      "verified_zero_reuse": 10
+    }
+  },
+  "missing_material_objects": [
+    "LHS01-development/C0/S",
+    "LHS01-development/C1/S",
+    "LHS01-development/G0/S",
+    "LHS01-development/G1/S",
+    "LHS01-development/G2/S",
+    "LHS01-development/G3/S",
+    "LHS01-development/G5/S",
+    "LHS02-development/C0/S",
+    "LHS02-development/C1/S",
+    "LHS02-development/G0/S",
+    "LHS02-development/G1/S",
+    "LHS02-development/G2/S",
+    "LHS02-development/G3/S",
+    "LHS02-development/G4/S",
+    "LHS02-development/G5/S",
+    "LHS03-development/C0/S",
+    "LHS03-development/C1/S",
+    "LHS03-development/G0/S",
+    "LHS03-development/G1/S",
+    "LHS03-development/G2/S",
+    "LHS03-development/G3/S",
+    "LHS03-development/G5/S",
+    "LHS04-development/C0/S",
+    "LHS04-development/C1/S",
+    "LHS04-development/G0/S",
+    "LHS04-development/G1/S",
+    "LHS04-development/G2/S",
+    "LHS04-development/G3/S",
+    "LHS04-development/G4/S",
+    "LHS04-development/G5/S",
+    "LHS05-development/C0/S",
+    "LHS05-development/C1/S",
+    "LHS05-development/G0/S",
+    "LHS05-development/G1/S",
+    "LHS05-development/G2/S",
+    "LHS05-development/G3/S",
+    "LHS05-development/G4/S",
+    "LHS05-development/G5/S",
+    "LHS06-development/C0/S",
+    "LHS06-development/C1/S"
+  ],
+  "repair_requests": {
+    "fresh_count": 5,
+    "in_scope": [
+      {
+        "task_id": "r06-p0-d0-hold22-b0-event4-h2-single-r1",
+        "reason": "original_run_failed_collected"
+      },
+      {
+        "task_id": "r06-p0-d0-hold22-b1-event4-h2-single-r1",
+        "reason": "original_run_failed_collected"
+      }
+    ],
+    "other_current_requests": [
+      "r04-l08-mc2-prefix-b0-event0-v1",
+      "r05-l08-d0-c0-proton-v1",
+      "r05-l08-d0-c1-proton-v1"
+    ],
+    "active_policy_repair_authorization": "<active-repair-package> contains another engineering-only lineage",
+    "submission_result": "not_submitted"
+  },
+  "h0_h1_h2_gate": {
+    "h0": "Private H0 zero observations were found for both bits. No active formal approved batch was available for direct month-one publication.",
+    "h1": "No matching holdout input and model-freeze release was available for direct publication.",
+    "h2": "No matching holdout input and model-freeze release was available for direct publication.",
+    "policy_gate_text": "HR/HP awaiting model freeze and matching holdout inputs"
+  },
+  "evidence_boundary": {
+    "verified": [
+      "Fresh controller explain snapshots before and 15 seconds after the service action",
+      "PYTHONPATH-correct official LHS02 followup for shape-a and shape-b",
+      "Official retained reader metrics for all six LHS02 T runs",
+      "Actual response service unit, post steps, service success and response-status counts",
+      "Current repair request identities and active repair authorization relation"
+    ],
+    "not_verified": [
+      "Ready >= 10 because no running slot completed during the required post-check",
+      "A scientific threshold decision for the six LHS02 T records",
+      "Formal H0/H1/H2 publication eligibility beyond the current policy and recipe gates"
+    ]
+  },
+  "sensitive_path_check": {
+    "logical_names_only": true,
+    "checked_categories": [
+      "workspace-private-prefix",
+      "hidden-path-fragments",
+      "unix-home-prefix",
+      "system-bin-prefix",
+      "system-config-prefix",
+      "server-name",
+      "ip-address",
+      "ssh-alias"
+    ],
+    "result": "passed"
+  },
+  "acceptance_check": "python -m json.tool 论文草稿/materials/r06-refill-ready-and-unblock-t-next-wave-20261125-02.json"
+}

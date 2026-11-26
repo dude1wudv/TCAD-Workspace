@@ -1,0 +1,247 @@
+{
+  "order_id": "r06-close-d1-d2-evidence-and-refill-20261125-01",
+  "outcome": "completed",
+  "execution_status": "completed_all_executable_actions",
+  "observation_scope": {
+    "archive_read": "D1 event and matched zero archives, D2 event and matched zero archives",
+    "archive_handling": "read-only in-memory tarfile parsing",
+    "scientific_acceptance": "pending for both requested cases",
+    "server_state_mutation": "none"
+  },
+  "before": {
+    "observation_utc": "2026-11-25T20:02:46.737291+00:00",
+    "running": 16,
+    "free": 0,
+    "ready": 5,
+    "blocked": 48,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00",
+    "last_publication_tasks": [
+      "r06-s-lhs03-development-p04-b1-supply-r1",
+      "r06-s-lhs03-development-p04-b0-supply-r1"
+    ],
+    "pending_reason": "all_slots_occupied"
+  },
+  "after": {
+    "observation_utc": "2026-11-25T20:06:10.311965+00:00",
+    "running": 16,
+    "free": 0,
+    "ready": 4,
+    "blocked": 48,
+    "blocked_by_stage": {
+      "missing_material": 46,
+      "awaiting_acceptance": 2,
+      "other": 0
+    },
+    "last_publication_utc": "2026-11-25T19:15:22.570892+00:00",
+    "pending_reason": "all_slots_occupied",
+    "waiting_reason": "awaiting_evidence_or_retry"
+  },
+  "supply_actions": {
+    "publication_performed": false,
+    "case_acceptance_performed": false,
+    "repair_release_performed": false,
+    "reason": "16 of 16 scheduler slots remained occupied, and no new batch had a safe dispatch condition during this work order",
+    "response_supply": {
+      "status_observation_utc": "2026-11-25T19:59:15.567800+00:00",
+      "successful_response_pools": 48,
+      "service_state": "inactive_dead",
+      "service_exit_status": 0,
+      "ready_waterline_observed": 5,
+      "current_ready_after_wait": 4,
+      "waterline_configuration": "not present in the status payload",
+      "queue_interpretation": "The scheduler consumed one ready item during the observation interval while all slots stayed occupied"
+    },
+    "repair_review": {
+      "count": 2,
+      "state": "background_repair_verification_pending",
+      "release_condition": "backend verification must clear held state",
+      "action": "read-only review only"
+    },
+    "h1_h2_and_later_multipliers": {
+      "h1_h2": "isolated zero geometry gate remains open",
+      "t_later_multipliers": "pending frozen threshold reference or accepted same-primary 10x response",
+      "new_ready_batch": false
+    }
+  },
+  "non_adapter_missing_material": {
+    "controller_reported_total": 46,
+    "adapter_items_exposed_by_controller": 40,
+    "items": [
+      {
+        "task": "r06-z-h0-long-channel-b0",
+        "stage": "Z",
+        "missing_prerequisite": "isolated zero baseline qualification, including write, hold, readout, and numerical convergence review",
+        "observed_wait": "isolated_zero_baseline",
+        "source_run_collected": true,
+        "source_run_status": "succeeded"
+      },
+      {
+        "task": "r06-z-h0-long-channel-b1",
+        "stage": "Z",
+        "missing_prerequisite": "isolated zero baseline numerical qualification and function review",
+        "observed_wait": "isolated_zero_baseline",
+        "source_run_collected": true,
+        "source_run_status": "succeeded"
+      },
+      {
+        "task": "r06-z-h1-lhs-holdout-a-b0",
+        "stage": "Z",
+        "missing_prerequisite": "isolated zero geometry admission after bounds review",
+        "observed_wait": "isolated_zero_geometry",
+        "bounds_checked": 204,
+        "bounds_failed": 127,
+        "task_candidate": null
+      },
+      {
+        "task": "r06-z-h1-lhs-holdout-a-b1",
+        "stage": "Z",
+        "missing_prerequisite": "isolated zero geometry admission after bounds review",
+        "observed_wait": "isolated_zero_geometry",
+        "bounds_checked": 204,
+        "bounds_failed": 127,
+        "task_candidate": null
+      },
+      {
+        "task": "r06-z-h2-lhs-holdout-b-b0",
+        "stage": "Z",
+        "missing_prerequisite": "isolated zero geometry admission after bounds review",
+        "observed_wait": "isolated_zero_geometry",
+        "bounds_checked": 204,
+        "bounds_failed": 127,
+        "task_candidate": null
+      },
+      {
+        "task": "r06-z-h2-lhs-holdout-b-b1",
+        "stage": "Z",
+        "missing_prerequisite": "isolated zero geometry admission after bounds review",
+        "observed_wait": "isolated_zero_geometry",
+        "bounds_checked": 204,
+        "bounds_failed": 127,
+        "task_candidate": null
+      }
+    ],
+    "adapter_prerequisite": "awaiting pinned response context and profile source adapter"
+  },
+  "d1_direct_read": {
+    "case": "D1-short-channel / G0 / shape-a / x30 / b1",
+    "event_archive": {
+      "terminal_time_ns": "35.0000000000000",
+      "three_source_integrals_pairs": {
+        "IntegrSemiconductor OpticalGeneration": "37554.23485351159000000000000",
+        "IntegrSemiconductor OpticalGenerationFromSpectrum": "37554.23485351159000000000000",
+        "IntegrSemiconductor OpticalGenerationFromSpectrumUnscaled": "37554.23485351159000000000000"
+      },
+      "stored_bit": 1,
+      "write_polarity": "BL=+1.2 V from 1.2*bit",
+      "hold_polarity": "BL precharge=+0.6 V",
+      "readout_at_31_9_ns": {
+        "Mevent_V": "0.024934786484250",
+        "Mzero_V": "0.026114683051315",
+        "deltaM_V": "-0.001179896567065",
+        "formula": "for stored bit 1, signed margin is BL voltage minus the 0.6 V reference"
+      },
+      "readout_timestamp_ns": "31.9000000000000"
+    },
+    "zero_archive": {
+      "terminal_time_ns": "35.0000000000000",
+      "three_source_integrals_pairs": {
+        "IntegrSemiconductor OpticalGeneration": "0E-41",
+        "IntegrSemiconductor OpticalGenerationFromSpectrum": "0E-41",
+        "IntegrSemiconductor OpticalGenerationFromSpectrumUnscaled": "0E-41"
+      },
+      "stored_bit": 1,
+      "write_polarity": "BL=+1.2 V from 1.2*bit",
+      "hold_polarity": "BL precharge=+0.6 V"
+    },
+    "resource_comparison": {
+      "device_cmd_Number_Of_Threads": 4,
+      "frozen_native_threads": 1,
+      "archive_log_assembly_threads": 1,
+      "archive_log_solver_threads": 1,
+      "reader_rule": "the frozen native thread count, native core count, and device.cmd Number_Of_Threads must agree",
+      "reader_rejection_condition": "Number_Of_Threads=4 differs from frozen native_threads=1"
+    },
+    "acceptance": {
+      "signed": false,
+      "reason": "thread resource declaration mismatch"
+    }
+  },
+  "d2_direct_read": {
+    "case": "D2-narrow-fin / G0 / shape-a / x10 / b0",
+    "event_archive": {
+      "terminal_time_ns": "35.0000000000000",
+      "time_grid_points": 736,
+      "three_source_integrals_pairs": {
+        "IntegrSemiconductor OpticalGeneration": "12244.50321650091662500000000",
+        "IntegrSemiconductor OpticalGenerationFromSpectrum": "12244.50321650091662500000000",
+        "IntegrSemiconductor OpticalGenerationFromSpectrumUnscaled": "12244.50321650091662500000000"
+      },
+      "nearest_31_9_ns_timestamp": "31.9000000000000",
+      "Mevent_V": "0.044010104122456",
+      "write_polarity": "BL=0 V from 1.2*bit with stored bit 0",
+      "hold_polarity": "BL precharge=+0.6 V"
+    },
+    "zero_archive": {
+      "terminal_time_ns": "35.0000000000000",
+      "time_grid_points": 714,
+      "three_source_integrals_pairs": {
+        "IntegrSemiconductor OpticalGeneration": "0E-41",
+        "IntegrSemiconductor OpticalGenerationFromSpectrum": "0E-41",
+        "IntegrSemiconductor OpticalGenerationFromSpectrumUnscaled": "0E-41"
+      },
+      "nearest_31_9_ns_timestamp": "31.9000000000000",
+      "Mzero_V": "0.043541873459770",
+      "write_polarity": "BL=0 V from 1.2*bit with stored bit 0",
+      "hold_polarity": "BL precharge=+0.6 V"
+    },
+    "time_grid_comparison": {
+      "event_time_grid_points": 736,
+      "zero_time_grid_points": 714,
+      "t_event_ns": "31.9000000000000",
+      "t_zero_ns": "31.9000000000000",
+      "abs_delta_t_ns": "0E-13",
+      "nearest_point": {
+        "Mevent_V": "0.044010104122456",
+        "Mzero_V": "0.043541873459770",
+        "deltaM_V": "0.000468230662686"
+      },
+      "linear_interpolation": {
+        "Mevent_V": "0.044010104122456",
+        "Mzero_V": "0.043541873459770",
+        "deltaM_V": "0.000468230662686"
+      },
+      "official_not_comparable_condition": "not comparable when lengths differ or any corresponding time token differs",
+      "official_code_effect": "lengths 736 and 714 differ, so status is not_comparable_time_grid and interpolation_used is false",
+      "strict_current_rule_if_grids_match": "per-field limit is max(1e-22 A, 1e-8 times the absolute reference current)"
+    },
+    "acceptance": {
+      "signed": false,
+      "reason": "official strict comparison rejects the unequal full time grids"
+    }
+  },
+  "director_decisions_needed": [
+    {
+      "case": "D1-short-channel / G0 / shape-a / x30 / b1",
+      "decision": "choose whether to preserve the one-thread frozen resource contract and rerun, or approve a contract revision for the observed four-thread device.cmd declaration",
+      "evidence": "35 ns endpoint and readout were directly extracted, but the reader rejects the thread declaration mismatch"
+    },
+    {
+      "case": "D2-narrow-fin / G0 / shape-a / x10 / b0",
+      "decision": "choose whether to require a matched full time grid or issue a documented rule decision for the exact common 31.9 ns sample",
+      "evidence": "the two archives share an exact 31.9 ns point, while the full grids contain 736 and 714 points"
+    }
+  ],
+  "redaction_review": {
+    "absolute_server_paths": "excluded",
+    "network_identifiers": "excluded",
+    "credentials": "excluded",
+    "asset_registry_modified": false,
+    "existing_worktree_changes_preserved": true
+  },
+  "blockers": []
+}
