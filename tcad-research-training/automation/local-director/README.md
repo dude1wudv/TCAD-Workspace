@@ -4,9 +4,9 @@ Windows 11、PowerShell 7、Python 3.13。核心包使用 Python 标准库。看
 
 ## 配置
 
-在本目录复制 `config.example.json` 为 `config.json`，填写本机配置。`repo_root`、SMTP 环境文件相对配置文件目录解析，`state_dir` 相对仓库解析。`remote_controller_cmd` 推荐使用 argv 数组，第一项填服务器上的 Python 可执行文件，随后填控制器路径及固定参数。默认时区为北京时间，Windows 缺少时区数据时使用 UTC+8。
+在本目录复制 `config.example.json` 为 `config.json`，填写本机配置。`repo_root` 相对配置文件目录解析，`state_dir` 相对仓库解析。`remote_controller_cmd` 推荐使用 argv 数组，第一项填服务器上的 Python 可执行文件，随后填控制器路径及固定参数。默认时区为北京时间，Windows 缺少时区数据时使用 UTC+8。
 
-运行数据放在 `state_dir`。其中有 `state.json`、`queue.json`、`orders/<id>/`、`briefings/`、`DASHBOARD.md` 和 `auto-director-public.json`。`secrets.env` 可包含 `SMTP_HOST`、`SMTP_PORT`、`SMTP_USER`、`SMTP_PASSWORD` 和 `SMTP_FROM`。配置 SMTP 后用 STARTTLS 投递。缺少凭据时可在 `pending_drafts/` 查看待投递草稿。日报写入 `reports/daily-YYYYMMDD.md`。
+运行数据放在 `state_dir`。其中有 `state.json`、`queue.json`、`orders/<id>/`、`briefings/`、`DASHBOARD.md` 和 `auto-director-public.json`。`notify` 将日报写入 `reports/daily-YYYYMMDD.md`，其他通知写入 `notifications/`。SEE Pulse 手机 App 读取服务器已发布的服务和自动化状态，在发现异常时发出 Android 通知。日报和手工通知的正文保存在本地。
 
 例子在本目录执行，可用 `--config <path>` 指定其他配置。
 

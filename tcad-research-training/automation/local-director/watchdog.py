@@ -237,7 +237,7 @@ def _write_briefing(cfg, state, event, server, thesis, now):
             location = order_dir(cfg, order["order_id"]) / "receipt.json"
             lines.append(f"- 收据相对状态目录 `{location.relative_to(cfg.state_dir.resolve()).as_posix()}`")
     if event["reason"] == "DAILY_DIGEST":
-        lines.append("- 使用 `director_ctl.py notify --level digest` 归档并投递日报。")
+        lines.append("- 使用 `director_ctl.py notify --level digest` 在本地归档日报。")
     if event["reason"] == "CODEX_CIRCUIT_BROKEN":
         lines.append("- 原工单已熔断，请评估新策略。")
     compact_payload = {"server_summary": summary, "thesis": thesis}

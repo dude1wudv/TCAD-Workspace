@@ -15,9 +15,6 @@ REPO_ROOT = BASE_DIR.parents[2]
 
 @dataclass(frozen=True)
 class NotifyConfig:
-    recipient: str = ""
-    smtp_env_file: Path | None = None
-    fallback_gmail_draft: bool = True
     enabled: bool = True
 
 
@@ -106,11 +103,14 @@ def load_config(path: str | Path | None = None) -> Config:
     values = _object(read_json(location), Config)
     repo = _path(values.pop("repo_root", str(REPO_ROOT)), location.parent)
     runtime = _path(values.pop("state_dir", "local_runtime/local-director"), repo)
-    notify_raw = _object(values.pop("notify", {}), NotifyConfig)
-    if notify_raw.get("smtp_env_file") is not None:
-        notify_raw["smtp_env_file"] = _path(notify_raw["smtp_env_file"], location.parent)
+    notify_raw = values.pop("notify", {})
+    if type(notify_raw) is not dict:
+        raise ValueError("invalid notify")
+    for legacy_key in ("recipient", "smtp_env_file", "fallback_gmail_draft"):
+        notify_raw.pop(legacy_key, None)
+    notify_raw = _object(notify_raw, NotifyConfig)
     for key, value in notify_raw.items():
-        if key != "smtp_env_file" and type(value) is not type(getattr(NotifyConfig(), key)):
+        if type(value) is not type(getattr(NotifyConfig(), key)):
             raise ValueError(f"invalid notify.{key}")
     for key, value in values.items():
         default = getattr(Config(), key)

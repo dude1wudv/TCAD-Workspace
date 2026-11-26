@@ -78,12 +78,11 @@ def _count(value) -> int:
 
 def redact_configured_text(cfg, text: str) -> str:
     paths = (
-        cfg.repo_root, cfg.state_dir, cfg.notify.smtp_env_file,
+        cfg.repo_root, cfg.state_dir,
         cfg.remote_policy_path, cfg.remote_observation_path, cfg.remote_director_status_path,
     )
     values = {form for path in paths if path
               for form in (str(path), str(path).replace("\\", "/"))}
-    values.add(cfg.notify.recipient)
     aliases = {cfg.server_ssh_target, cfg.server_ssh_target.rpartition("@")[2]}
     patterns = [re.escape(value) for value in sorted(values, key=len, reverse=True) if len(value) > 2]
     patterns.extend(rf"(?<![a-z0-9_.-]){re.escape(alias)}(?![a-z0-9_.-])"

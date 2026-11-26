@@ -27,9 +27,6 @@
   "daily_thesis_hour": 22,
   "daily_digest_hour": 23,
   "notify": {
-    "recipient": "user@example.com",
-    "smtp_env_file": "../../../local_runtime/local-director/secrets.env",
-    "fallback_gmail_draft": true,
     "enabled": true
   }
 }

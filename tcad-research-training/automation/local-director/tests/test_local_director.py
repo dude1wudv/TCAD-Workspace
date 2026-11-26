@@ -185,14 +185,18 @@ class ConfigTests(OfflineCase):
             "repo_root": "repo",
             "state_dir": "runtime",
             "remote_controller_cmd": ["python", "controller.py"],
-            "notify": {"smtp_env_file": "smtp.env", "enabled": False},
+            "notify": {
+                "recipient": "reader@example.invalid",
+                "smtp_env_file": "smtp.env",
+                "fallback_gmail_draft": True,
+                "enabled": False,
+            },
         }
         write_json(path, options)
         cfg = load_config(path)
         self.assertEqual(cfg.repo_root, self.root / "repo")
         self.assertEqual(cfg.state_dir, cfg.repo_root / "runtime")
         self.assertEqual(cfg.remote_controller_cmd, ("python", "controller.py"))
-        self.assertEqual(cfg.notify.smtp_env_file, self.root / "smtp.env")
         self.assertFalse(cfg.notify.enabled)
         self.assertEqual(cfg.local_time(NOW).hour, 12)
         for updates in (
@@ -376,32 +380,30 @@ class ControlTests(OfflineCase):
 
 
 class NotificationTests(OfflineCase):
-    def test_digest_archives_and_failed_smtp_falls_back_to_local_draft(self):
+    def test_digest_archives_locally(self):
         from notifier import notify
 
-        options = self.root / "smtp.env"
-        options.write_text("SMTP_HOST=example.invalid\nSMTP_FROM=sender@example.invalid\n", encoding="utf-8")
-        cfg = replace(self.cfg, notify=NotifyConfig(recipient="reader@example.invalid", smtp_env_file=options))
-        with patch("notifier._send_smtp", side_effect=OSError("offline fixture")) as smtp:
-            result = notify(cfg, "digest", "Daily progress", "Two figure entries updated.")
-        smtp.assert_called_once()
-        self.assertEqual(result["status"], "drafted")
-        self.assertEqual(result["mode"], "draft_fallback")
-        self.assertEqual(result["warning"], "smtp_OSError")
+        result = notify(self.cfg, "digest", "Daily progress", "Two figure entries updated.")
+        self.assertEqual(result["status"], "archived")
+        self.assertEqual(result["mode"], "local_archive")
         self.assertIn("Two figure entries updated.", Path(result["archive_path"]).read_text(encoding="utf-8"))
-        self.assertIn("To: reader@example.invalid", Path(result["draft_path"]).read_text(encoding="utf-8"))
+
+    def test_alert_body_stays_in_local_archive(self):
+        from notifier import notify
+
+        result = notify(self.cfg, "alert", "Review needed", "Please review the current work.")
+        self.assertEqual(result["status"], "archived")
+        archive = Path(result["archive_path"])
+        self.assertEqual(archive.parent, self.cfg.state_dir / "notifications")
+        self.assertIn("Please review the current work.", archive.read_text(encoding="utf-8"))
 
     def test_sensitive_digest_blocks_delivery_and_redacts_archive(self):
         from notifier import notify
 
-        cfg = replace(self.cfg, notify=NotifyConfig(recipient="reader@example.invalid"))
-        with patch("notifier._send_smtp") as smtp:
-            result = notify(cfg, "digest", "Daily progress", "TOKEN=fixture-secret")
-        smtp.assert_not_called()
+        result = notify(self.cfg, "digest", "Daily progress", "TOKEN=fixture-secret")
         self.assertEqual(result["status"], "blocked")
         self.assertIn("credential", result["reasons"])
         self.assertNotIn("fixture-secret", Path(result["archive_path"]).read_text(encoding="utf-8"))
-        self.assertFalse((self.cfg.state_dir / "pending_drafts").exists())
 
 
 class WatchdogTests(OfflineCase):

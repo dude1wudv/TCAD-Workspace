@@ -3,14 +3,8 @@
 from __future__ import annotations
 
 import re
-import smtplib
-import ssl
 import unicodedata
 from datetime import datetime, timedelta, timezone
-from email.errors import HeaderParseError
-from email.headerregistry import Address
-from email.message import EmailMessage
-from pathlib import Path
 from uuid import uuid4
 
 from schemas import atomic_write, utc_now
@@ -89,43 +83,8 @@ def redact_text(text: str) -> str:
     return "[REDACTED]" if find_sensitive(result) else result
 
 
-def _smtp_options(path: Path) -> dict[str, str]:
-    values = {}
-    for line in path.read_text(encoding="utf-8-sig").splitlines():
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        key, separator, value = line.removeprefix("export ").partition("=")
-        if not separator:
-            raise ValueError("invalid SMTP environment file")
-        value = value.strip()
-        if len(value) >= 2 and value[0] in "\"'" and value[-1] == value[0]:
-            value = value[1:-1]
-        values[key.strip()] = value
-    return values
-
-
-def _send_smtp(message: EmailMessage, options: dict[str, str]) -> None:
-    host = options.get("SMTP_HOST", "smtp.gmail.com")
-    user = options.get("SMTP_USER")
-    password = options.get("SMTP_PASSWORD")
-    sender = options.get("SMTP_FROM") or user
-    if not host or not sender or not user or not password:
-        raise ValueError("incomplete SMTP configuration")
-    port = int(options.get("SMTP_PORT", "587"))
-    context = ssl.create_default_context()
-    message["From"] = Address(addr_spec=sender)
-    client = smtplib.SMTP(host, port, timeout=15)
-    try:
-        client.starttls(context=context)
-        client.login(user, password)
-        client.send_message(message)
-    finally:
-        client.close()
-
-
 def notify(cfg, level: str, subject: str, body: str) -> dict:
-    """Archive digests and use TLS SMTP or a local Markdown draft."""
+    """Keep notification messages in the local audit trail."""
     level = level.lower()
     result = {"status": "disabled", "mode": "disabled"}
     reasons = find_sensitive("\n".join((level, subject, body)))
@@ -140,39 +99,14 @@ def notify(cfg, level: str, subject: str, body: str) -> dict:
     if reasons:
         return {**result, "status": "blocked", "mode": "blocked", "reasons": reasons}
 
-    settings = cfg.notify
-    if not settings.enabled:
+    if not cfg.notify.enabled:
         return result
-    title = " ".join(_without_controls(subject).split())
-    content = _without_controls(body)
-    try:
-        recipient = Address(addr_spec=settings.recipient)
-        if not recipient.username or not recipient.domain:
-            raise ValueError("incomplete recipient")
-    except (HeaderParseError, ValueError, TypeError, IndexError):
-        recipient = None
-
-    warning = "smtp_unconfigured" if recipient else "recipient_unconfigured"
-    if recipient:
+    if "archive_path" not in result:
+        path = runtime_dir / "notifications" / f"{uuid4().hex}.md"
+        title = " ".join(_without_controls(subject).split())
         try:
-            message = EmailMessage()
-            message["To"] = recipient
-            message["Subject"] = title
-            message.set_content(content)
-            options = _smtp_options(settings.smtp_env_file or runtime_dir / "secrets.env")
-            _send_smtp(message, options)
-        except (HeaderParseError, OSError, ValueError, KeyError, IndexError) as error:
-            warning = "smtp_" + type(error).__name__
-        else:
-            return {**result, "status": "sent", "mode": "smtp"}
-
-    if settings.fallback_gmail_draft:
-        path = runtime_dir / "pending_drafts" / f"{uuid4().hex}.md"
-        draft = f"To: {recipient or ''}\nSubject: {title}\n\n{content}\n"
-        try:
-            atomic_write(path, draft)
+            atomic_write(path, f"# {title}\n\n{_without_controls(body)}\n")
         except OSError:
-            return {**result, "status": "failed", "mode": "failed", "warning": "draft_write_failed",
-                    "smtp_warning": warning}
-        return {**result, "status": "drafted", "mode": "draft_fallback", "draft_path": str(path), "warning": warning}
-    return {**result, "status": "failed", "mode": "failed", "warning": warning}
+            return {**result, "status": "failed", "mode": "local_archive", "warning": "archive_write_failed"}
+        result["archive_path"] = str(path)
+    return {**result, "status": "archived", "mode": "local_archive"}
