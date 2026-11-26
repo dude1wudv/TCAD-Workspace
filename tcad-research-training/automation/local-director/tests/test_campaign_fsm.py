@@ -264,6 +264,60 @@ class CampaignFsmTests(unittest.TestCase):
             ready = {task["task"] for task in ready_tasks(backlog, state["phase"])}
             self.assertEqual(ready, {"campaign-fsm-supervisor", "local-archive-sync"})
 
+    def test_operational_dispatch_and_live_block_progress_unseal(self):
+        from campaign_fsm import operational_tasks
+        from probes import summarize_server
+
+        with tempfile.TemporaryDirectory() as directory:
+            state_dir = Path(directory)
+            cfg = Config(state_dir=state_dir, campaign_execution_enabled=True, codex_sandbox="danger-full-access")
+            campaign, backlog = ensure_campaign_files(state_dir)
+            campaign["phase"] = "P1A_SIM_DEV"
+            snap = {
+                "online": True,
+                "service_active": True,
+                "observation": {
+                    "running_count": 10,
+                    "active_count": 10,
+                    "max_parallel_jobs": 16,
+                    "scheduler": {"pool": {"slots": {"total": 16, "free": 6, "quarantined": 0}}},
+                    "runs": [],
+                },
+                "explain": {
+                    "replenishment": {
+                        "ready": 0,
+                        "preparing": True,
+                        "blocked_count": 12,
+                        "blocked_by_stage": {"awaiting_acceptance": 2, "missing_material": 0},
+                    }
+                },
+                "case_waits": {
+                    "cases": [
+                        *[{"block": "Z", "status": "zero_baseline_reused"} for _ in range(20)],
+                        *[{"block": "T", "status": "acceptance_recorded"} for _ in range(44)],
+                        *[{"block": "T", "status": "decision_pending"} for _ in range(11)],
+                        *[{"block": "S", "status": "acceptance_recorded"} for _ in range(148)],
+                        *[{"block": "R", "status": "zero_source_reused"} for _ in range(12)],
+                        *[{"block": "HR", "status": "sealed"} for _ in range(28)],
+                    ]
+                },
+                "server_free_bytes": 48 * 1024**3,
+            }
+            snap["summary"] = summarize_server(snap)
+            self.assertTrue(snap["summary"]["starved"])
+            self.assertEqual(snap["summary"]["decision_pending"], 11)
+            self.assertTrue(observe_campaign(cfg, campaign, snap, NOW))
+            self.assertEqual(campaign["blocks"]["Z"]["accepted"], 20)
+            self.assertEqual(campaign["blocks"]["T"]["accepted"], 44)
+            self.assertEqual(campaign["blocks"]["S"]["accepted"], 148)
+            self.assertEqual(campaign["blocks"]["R"]["accepted"], 12)
+            self.assertIsNone(campaign["blocks"]["HR"]["accepted"])
+            self.assertIn("sim-ops-refill", operational_tasks("P1A_SIM_DEV", snap))
+            self.assertEqual(
+                actionable(cfg, campaign, backlog, snap, DirectorState().to_dict(), now=NOW),
+                (True, "simulation_supply"),
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

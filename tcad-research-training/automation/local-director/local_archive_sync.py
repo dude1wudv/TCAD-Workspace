@@ -10,10 +10,14 @@ state directory private and export only archive-summary.json.
 import argparse
 import hashlib
 import importlib.util
+import io
 import json
+import os
 from pathlib import Path
 import re
+import shlex
 import subprocess
+import tarfile
 import tempfile
 
 SOURCE = Path(__file__).resolve().parents[1] / "server-codex" / "retention.py"
@@ -24,6 +28,13 @@ INDEX_SCHEMA = "tcad-result-archive-index-v1"
 SUMMARY_SCHEMA = "tcad-result-archive-summary-v1"
 
 
+def _hidden_kwargs():
+    if os.name == "nt":
+        flag = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+        return {"creationflags": flag} if flag else {}
+    return {}
+
+
 def _overlaps(left, right):
     return left.is_relative_to(right) or right.is_relative_to(left)
 
@@ -32,7 +43,9 @@ def _roots(run, development_root, sealed_root):
     roots = tuple(ret._checked_path(path) for path in (development_root, sealed_root))
     ret.need(not _overlaps(*roots), "Archive roots must be separate")
     listing = subprocess.check_output(
-        ["git", "-C", str(SOURCE.parent), "worktree", "list", "--porcelain", "-z"])
+        ["git", "-C", str(SOURCE.parent), "worktree", "list", "--porcelain", "-z"],
+        **_hidden_kwargs(),
+    )
     worktrees = [Path(item[9:].decode("utf-8")).resolve()
                  for item in listing.split(b"\0") if item.startswith(b"worktree ")]
     ret.need(worktrees, "Unable to verify repository locations")
@@ -143,14 +156,72 @@ def pull_verify(remote_root, run_id, *, runtime_state, case_manifest, developmen
                    allow_sealed=allow_sealed, state_dir=state_dir)
 
 
+def ssh_pull_verify(ssh_target, remote_runs_root, run_id, *, remote_runtime_state, case_manifest,
+                    development_root, sealed_root, allow_sealed=False, state_dir=None, write_back=False):
+    """Pull a completed retained run bundle over SSH, verify SHA-256 + gzip stream, and publish to local archive."""
+    _check_run_id(run_id)
+    ret.need(bool(re.fullmatch(r"[A-Za-z0-9_.-]+(?:@[A-Za-z0-9_.-]+)?", ssh_target)) and not ssh_target.startswith("-"),
+             "Invalid SSH target")
+    ret.need(remote_runs_root.startswith("/") and remote_runtime_state.startswith("/"),
+             "Remote paths must be absolute")
+    remote_run = f"{remote_runs_root.rstrip('/')}/{run_id}"
+    with tempfile.TemporaryDirectory(prefix=".ssh-pull-") as tmp:
+        stage = Path(tmp)
+        runtime_local = stage / "runtime.json"
+        staged_runs = stage / "runs"
+        staged_run = staged_runs / run_id
+        staged_run.mkdir(parents=True, mode=0o700)
+        rt_cmd = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", "--", ssh_target,
+                  f"cat -- {shlex.quote(remote_runtime_state)}"]
+        rt_res = subprocess.run(rt_cmd, capture_output=True, timeout=60, check=True, **_hidden_kwargs())
+        runtime_local.write_bytes(rt_res.stdout)
+        tar_script = (
+            f"set -eu; d={shlex.quote(remote_run)}; "
+            'cd "$d"; files="manifest.json retention.json guest-reclaim.json"; '
+            'for f in results.raw.tar.gz results.essential.tar.gz results.log-witness.jsonl.gz; do '
+            '[ -f "$f" ] && files="$files $f"; done; tar -cf - $files'
+        )
+        tar_cmd = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", "--", ssh_target, tar_script]
+        tar_res = subprocess.run(tar_cmd, capture_output=True, timeout=600, check=True, **_hidden_kwargs())
+        with tarfile.open(fileobj=io.BytesIO(tar_res.stdout), mode="r:") as archive_stream:
+            for member in archive_stream.getmembers():
+                ret.need(member.isfile() and "/" not in member.name and "\\" not in member.name
+                         and not member.name.startswith("."), "Unsafe member in remote bundle")
+                extracted = archive_stream.extractfile(member)
+                ret.need(extracted is not None, "Missing stream member")
+                (staged_run / member.name).write_bytes(extracted.read())
+        result = _mirror(staged_run, stage, runtime_state=runtime_local, case_manifest=case_manifest,
+                         development_root=development_root, sealed_root=sealed_root,
+                         allow_sealed=allow_sealed, state_dir=state_dir)
+        if write_back:
+            manifest, _ = ret._manifest(staged_run)
+            partition = ret.archive_partition(manifest, runtime_local, case_manifest)
+            target_root = Path(sealed_root if partition == "sealed" else development_root)
+            receipt_bytes = (target_root / "runs" / run_id / ret.MIRROR_RECEIPT).read_bytes()
+            remote_receipt = f"{remote_run}/{ret.MIRROR_RECEIPT}"
+            wb_script = (
+                f"set -eu; t={shlex.quote(remote_receipt)}; "
+                's=$(mktemp -- "${t}.XXXXXX"); trap \'rm -f -- "$s"\' EXIT; '
+                'cat > "$s"; chmod 0644 -- "$s"; mv -fT -- "$s" "$t"'
+            )
+            wb_cmd = ["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=20", "--", ssh_target, wb_script]
+            subprocess.run(wb_cmd, input=receipt_bytes, capture_output=True, timeout=30, check=True, **_hidden_kwargs())
+            result["receipt_written_back"] = True
+        return result
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("action", choices=("mirror", "pull-verify"))
+    parser.add_argument("action", choices=("mirror", "pull-verify", "ssh-pull"))
     parser.add_argument("run_dir", type=Path, nargs="?")
     for option in ("runtime-state", "case-manifest", "development-root", "sealed-root"):
-        parser.add_argument("--" + option, required=True, type=Path)
+        parser.add_argument("--" + option, required=False, type=Path)
     parser.add_argument("--state-dir", type=Path)
     parser.add_argument("--remote-root", type=Path)
+    parser.add_argument("--ssh-target")
+    parser.add_argument("--remote-runs-root")
+    parser.add_argument("--remote-runtime-state")
+    parser.add_argument("--write-back", action="store_true")
     parser.add_argument("--run-id")
     parser.add_argument("--allow-sealed", action="store_true", help="Archive operator only")
     args = vars(parser.parse_args())
@@ -158,15 +229,29 @@ def main():
     try:
         run_dir = args.pop("run_dir")
         remote_root = args.pop("remote_root")
+        ssh_target = args.pop("ssh_target")
+        remote_runs_root = args.pop("remote_runs_root")
+        remote_runtime_state = args.pop("remote_runtime_state")
+        write_back = args.pop("write_back")
         run_id = args.pop("run_id")
         if action == "mirror":
-            ret.need(run_dir is not None and remote_root is None and run_id is None,
-                     "mirror requires a local run directory")
+            ret.need(run_dir is not None and remote_root is None and run_id is None
+                     and args["runtime_state"] is not None,
+                     "mirror requires a local run directory and --runtime-state")
             result = mirror_run(run_dir, **args)
-        else:
-            ret.need(run_dir is None and remote_root is not None and isinstance(run_id, str) and run_id,
-                     "pull-verify requires --remote-root and --run-id")
+        elif action == "pull-verify":
+            ret.need(run_dir is None and remote_root is not None and isinstance(run_id, str) and run_id
+                     and args["runtime_state"] is not None,
+                     "pull-verify requires --remote-root, --run-id, and --runtime-state")
             result = pull_verify(remote_root, run_id, **args)
+        else:
+            args.pop("runtime_state", None)
+            ret.need(bool(ssh_target and remote_runs_root and remote_runtime_state and run_id),
+                     "ssh-pull requires --ssh-target, --remote-runs-root, --remote-runtime-state, and --run-id")
+            result = ssh_pull_verify(
+                ssh_target, remote_runs_root, run_id,
+                remote_runtime_state=remote_runtime_state, write_back=write_back, **args,
+            )
         print(json.dumps(result))
         return 0
     except (OSError, ValueError, KeyError, TypeError, AttributeError, subprocess.SubprocessError):

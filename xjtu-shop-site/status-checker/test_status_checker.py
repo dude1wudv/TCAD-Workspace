@@ -3,15 +3,18 @@ import io
 import json
 import os
 import stat
+import sys
 import tempfile
 import unittest
+from functools import partial
 from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import patch
 
 from status_checker import (
     build_activity_feed, build_freshness_health, build_service_health, build_simulation_health,
-    build_live, build_status, check_public_payload, main, overall_state, project_dispatch_flow, project_planner,
+    build_live, build_status, check_public_payload, load_campaign, main, overall_state, project_campaign,
+    project_dispatch_flow, project_planner,
     research_site_state, simulation_status, write_json_atomic,
 )
 
@@ -100,6 +103,149 @@ class StatusCheckerTests(unittest.TestCase):
                 self.assertNotIn("collection", stale)
         source["scheduler"]["flow"]["slots"] *= 2
         self.assertEqual(project_dispatch_flow(source, SNAPSHOT)["state"], "unknown")
+
+    def test_actual_publisher_to_live_json_offline_contract(self):
+        publisher_root = Path(__file__).resolve().parents[2] / "tcad-research-training" / "automation" / "local-director"
+        self.assertTrue((publisher_root / "status_publisher.py").is_file())
+        sys.path.insert(0, str(publisher_root))
+        try:
+            from campaign_fsm import ensure_campaign_files, save_campaign
+            from config import Config
+            from schemas import DirectorState, read_json, write_json
+            from status_publisher import refresh_status
+        finally:
+            sys.path.remove(str(publisher_root))
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cfg = Config(repo_root=root, state_dir=root / "director", public_status_url="")
+            campaign, _ = ensure_campaign_files(cfg.state_dir)
+            campaign["blocks"]["Z"]["accepted"] = 0
+            blocked_reasons = (
+                "candidate_failed", "checks_failed", "supervisor_failed", "receipt_invalid",
+                "dependency_blocked", "disk_floor", "holdout_sealed", "production_not_verified",
+            )
+            blocked = [
+                {"task": f"status-gate-{index}", "reason": reason}
+                for index, reason in enumerate(blocked_reasons)
+            ]
+            campaign["blocked"] = [
+                {
+                    **item,
+                    "detail": "private run-aaaaaaaaaaaa /srv/internal evidence",
+                    "failures": 3,
+                    "updated_at": "2026-11-26T00:00:00+00:00",
+                }
+                for item in blocked
+            ]
+            save_campaign(cfg.state_dir, campaign)
+            state = DirectorState(daily_date="2026-11-26", daily_codex_used=0)
+            disks = {
+                "server_free_bytes": 2 * 1024**3,
+                "vm_allocated_bytes": 3 * 1024**3,
+                "vm_free_bytes": None,
+                "vm_growth_bytes": 5 * 1024**3,
+            }
+            server = {**disks, "online": True, "private": "/srv/private server run-aaaaaaaaaaaa"}
+
+            refresh_status(cfg, state, server, {"total": 0, "chapters_done": 0}, publish=False)
+            published_path = cfg.state_dir / "auto-director-public.json"
+            published = read_json(published_path)
+            live_path = root / "live.json"
+            args = ["status_checker.py", "--mode", "live", "--live-output", str(live_path),
+                    "--history-path", str(root / "history.json"), "--research-cache", str(root / "cache.json")]
+            collect = partial(
+                build_status, runner=fake_runner, observation_path=root / "observation.json",
+                runtime_path=root / "runtime.json", runs_root=root / "runs", pause_path=root / "pause.json",
+                scheduler_path=root / "scheduler.json", auto_director_path=published_path,
+            )
+            with (
+                patch("sys.argv", args),
+                patch("status_checker.build_status", collect),
+                patch("status_checker.PROGRESS_PATH", root / "progress.sqlite3"),
+                patch("status_checker.system_metrics", return_value={}),
+            ):
+                self.assertEqual(main(), 0)
+                live = json.loads(live_path.read_text(encoding="utf-8"))
+                self.assertEqual(live["auto_director"]["campaign"], published["campaign"])
+                public = live["auto_director"]["campaign"]
+                self.assertEqual(public["codex"]["used"], 0)
+                self.assertEqual(public["blocks"]["Z"]["accepted"], 0)
+                self.assertIsNone(public["blocks"]["HR"]["accepted"])
+                self.assertEqual(public["disks"], disks)
+                self.assertEqual(public["blocked"], blocked)
+                for payload in (published, live):
+                    for secret in ("run-aaaaaaaaaaaa", "/srv/internal", "/srv/private", "campaign_id"):
+                        self.assertNotIn(secret, json.dumps(payload))
+
+                published.pop("campaign")
+                write_json(published_path, published)
+                self.assertEqual(main(), 0)
+                legacy_live = json.loads(live_path.read_text(encoding="utf-8"))
+                self.assertNotIn("auto_director", legacy_live)
+                self.assertEqual(legacy_live["schema_version"], live["schema_version"])
+
+    def test_live_campaign_acceptance_and_private_fields(self):
+        private = "r06-hr-lhs12-d0"
+        blocks = dict.fromkeys(("Z", "T", "S", "R", "AL", "HR", "HP"), {"accepted": 0, "total": 10})
+        blocks["HR"] = {"accepted": None, "total": 3, "features": [private], "solved": 3}
+        blocks[private] = {"accepted": 1, "total": 1}
+        source = {
+            "phase": "P0_BOOTSTRAP", "codex": {"used": 2, "cap": 20, "reserved": 4, "session": private},
+            "blocks": blocks,
+            "disks": {"server_free_bytes": 100, "vm_allocated_bytes": 80, "vm_free_bytes": None,
+                      "vm_growth_bytes": 40, "aggregate": 220, "mount": "/srv/private"},
+            "archive": {"mirrored": True, "cloud_verified": False, "receipt": private},
+            "training": "waiting", "desk": "blocked", "note": private,
+            "blocked": [{"task": "blind-eval", "reason": "holdout_sealed", "run_id": private},
+                        {"task": private, "reason": "holdout_sealed"},
+                        {"task": "hr-case", "reason": "receipt_invalid"},
+                        {"task": "run-aaaaaaaaaaaa", "reason": "receipt_invalid"},
+                        {"task": "verify-d0", "reason": "receipt_invalid"},
+                        {"task": "train-model", "reason": private},
+                        {"task": "/srv/private", "reason": "disk_floor"},
+                        {"task": "a" * 41, "reason": "disk_floor"}],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "director.json"
+            path.write_text(json.dumps({"campaign": source, "recent_public_note": private}), encoding="utf-8")
+            with patch("status_checker.system_metrics", return_value={}):
+                status = build_status(runner=fake_runner, mode="live", auto_director_path=path)
+            live = build_live(status, None)
+        self.assertEqual(live["auto_director"], {"campaign": {
+            "phase": "P0_BOOTSTRAP", "codex": {"used": 2, "cap": 20, "reserved": 4},
+            "blocks": {key: {"accepted": None, "total": 3} if key == "HR" else {"accepted": 0, "total": 10}
+                       for key in ("Z", "T", "S", "R", "AL", "HR", "HP")},
+            "disks": {"server_free_bytes": 100, "vm_allocated_bytes": 80, "vm_free_bytes": None, "vm_growth_bytes": 40},
+            "archive": {"mirrored": True, "cloud_verified": False}, "training": "waiting", "desk": "blocked",
+            "blocked": [{"task": "blind-eval", "reason": "holdout_sealed"}],
+        }})
+        check_public_payload(live)
+
+    def test_campaign_unknown_values_and_legacy_feed(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "director.json"
+            self.assertIsNone(load_campaign(path))
+            for raw in ('{"director_state":"monitoring"}', '{broken',
+                        '{"campaign":{"phase":"P0_BOOTSTRAP","phase":"P1A_SIM_DEV"}}',
+                        '{"campaign":{"phase":"future-phase"}}'):
+                with self.subTest(raw=raw):
+                    path.write_text(raw, encoding="utf-8")
+                    self.assertIsNone(load_campaign(path))
+            with patch("status_checker.system_metrics", return_value={}):
+                status = build_status(runner=fake_runner, mode="live", auto_director_path=path)
+            self.assertNotIn("auto_director", build_live(status, None))
+        self.assertEqual(project_campaign({
+            "phase": "P1A_SIM_DEV", "codex": {"used": True, "cap": 3, "reserved": 1},
+            "blocks": {"S": {"solved": 4, "total": 5}, "T": {"accepted": 4, "total": 2}, "Z": {"total": "5"}},
+            "disks": {"server_free_bytes": -1, "vm_allocated_bytes": 4.0, "vm_free_bytes": True, "vm_growth_bytes": 0},
+            "archive": {"mirrored": "true", "cloud_verified": 0}, "training": [], "desk": "verified",
+            "blocked": [None, {"task": "inventory", "reason": []}, {"task": "verify\n", "reason": "checks_failed"}],
+        }), {
+            "phase": "P1A_SIM_DEV", "blocks": {"S": {"accepted": None, "total": 5}, "T": {"accepted": None, "total": 2}},
+            "disks": {"server_free_bytes": None, "vm_allocated_bytes": None, "vm_free_bytes": None, "vm_growth_bytes": 0},
+            "archive": {"cloud_verified": 0}, "blocked": [],
+        })
 
     def test_occupied_reconciliation_pending_does_not_claim_native_running(self):
         observation, runtime, runs, source = self.make_inputs()

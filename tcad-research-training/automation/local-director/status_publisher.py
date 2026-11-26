@@ -10,9 +10,10 @@ import subprocess
 import unicodedata
 from datetime import datetime, timezone
 
-from campaign_fsm import load_campaign, public_campaign_with_metrics, update_public_metrics
+from campaign_fsm import apply_progress, load_campaign, public_campaign_with_metrics, update_public_metrics
 from config import ssh_command
 from notifier import find_sensitive, redact_text
+from runtime import hidden_subprocess_kwargs
 from schemas import atomic_write, read_json, utc_now, write_json
 
 
@@ -177,27 +178,53 @@ def _campaign_disks(server: dict) -> dict[str, int | None]:
 
 
 def observe_campaign(cfg, campaign, server, now) -> bool:
-    """Project existing evidence in memory and report an increase in verified archive counts."""
+    """Project verified server, progress, and archive evidence into campaign state."""
     update_public_metrics(campaign, disks=_campaign_disks(server))
+    changed = False
+    summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
+    block_counts = summary.get("block_accepted_counts")
+    if isinstance(block_counts, dict) and block_counts:
+        before_blocks = {k: v.get("accepted") for k, v in campaign.get("blocks", {}).items()}
+        apply_progress(campaign, {"blocks": block_counts})
+        after_blocks = {k: v.get("accepted") for k, v in campaign.get("blocks", {}).items()}
+        if any((after_blocks.get(k) or 0) > (before_blocks.get(k) or 0) for k in after_blocks if after_blocks.get(k) is not None):
+            changed = True
+    progress_path = cfg.state_dir / "campaign-progress.json"
+    if progress_path.is_file():
+        try:
+            progress = read_json(progress_path)
+            if isinstance(progress, dict):
+                before_snapshot = json.dumps(
+                    {k: campaign.get(k) for k in ("blocks", "milestones", "training", "desk", "holdout")},
+                    sort_keys=True,
+                )
+                apply_progress(campaign, progress)
+                after_snapshot = json.dumps(
+                    {k: campaign.get(k) for k in ("blocks", "milestones", "training", "desk", "holdout")},
+                    sort_keys=True,
+                )
+                if after_snapshot != before_snapshot:
+                    changed = True
+        except (OSError, ValueError):
+            LOG.warning("Campaign progress file is unreadable or invalid.")
     try:
         archive = read_json(cfg.state_dir / "archive-summary.json")
     except FileNotFoundError:
-        return False
+        archive = None
     except (OSError, ValueError):
         LOG.warning("Campaign archive summary is unreadable.")
-        return False
-    if not isinstance(archive, dict) or archive.get("schema") != "tcad-result-archive-summary-v1":
+        archive = None
+    if isinstance(archive, dict) and archive.get("schema") == "tcad-result-archive-summary-v1":
+        counts = {key: _metric(archive.get(key)) for key in ("mirrored", "cloud_verified")}
+        if all(value is not None for value in counts.values()):
+            for key, value in counts.items():
+                if value > campaign["archive"][key]:
+                    campaign["archive"][key] = value
+                    changed = True
+        else:
+            LOG.warning("Campaign archive summary has invalid counts.")
+    elif archive is not None:
         LOG.warning("Campaign archive summary has an unexpected schema.")
-        return False
-    counts = {key: _metric(archive.get(key)) for key in ("mirrored", "cloud_verified")}
-    if any(value is None for value in counts.values()):
-        LOG.warning("Campaign archive summary has invalid counts.")
-        return False
-    changed = False
-    for key, value in counts.items():
-        if value > campaign["archive"][key]:
-            campaign["archive"][key] = value
-            changed = True
     if changed:
         campaign["last_progress_at"] = now.astimezone(timezone.utc).isoformat(timespec="seconds")
     return changed
@@ -230,7 +257,7 @@ def _send_snapshot(cfg, snapshot) -> str | None:
     try:
         result = subprocess.run(
             ssh_command(cfg, script), input=payload, stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL, timeout=30, check=False,
+            stderr=subprocess.DEVNULL, timeout=30, check=False, **hidden_subprocess_kwargs(),
         )
     except subprocess.TimeoutExpired:
         return "publish_timeout"

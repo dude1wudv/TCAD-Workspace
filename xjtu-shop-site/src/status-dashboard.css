@@ -623,6 +623,14 @@ summary { cursor: pointer; color: var(--accent); font-weight: 650; user-select: 
 .plan-stats > div { display: grid; gap: 2px; padding: 10px 12px; background: var(--inset); border-radius: var(--radius-sm); color: var(--muted); font-size: 11.5px; }
 .plan-stats strong { color: var(--text); font-size: 19px; font-weight: 800; }
 
+#campaign:empty { display: none; }
+.campaign-panel h3 { font-size: 14px; }
+.campaign-panel .kpi-tag { white-space: normal; }
+.campaign-blocks { grid-template-columns: repeat(auto-fit, minmax(min(100%, 100px), 1fr)); margin-block: 8px 12px; }
+.campaign-blocks > div, .campaign-blocked code { overflow-wrap: anywhere; }
+.campaign-panel .diagnostics { margin-block: 8px 12px; }
+.campaign-blocked { padding-inline-start: 20px; }
+
 .p0-summary {
   display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px;
   padding-block: 16px; margin-top: 16px; border-block: 1px solid var(--border);

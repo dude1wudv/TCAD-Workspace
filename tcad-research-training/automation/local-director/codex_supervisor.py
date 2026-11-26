@@ -12,7 +12,9 @@ from campaign_fsm import (
     CAMPAIGN_STATES,
     advance_phase,
     cooldown_active,
+    is_operational_task,
     next_phase,
+    operational_tasks,
     public_campaign_with_metrics,
     ready_tasks,
     register_blocked,
@@ -21,6 +23,7 @@ from campaign_fsm import (
 from codex_runner import _codex_executable, _worker_command
 from config import Config
 from notifier import redact_text
+from runtime import hidden_subprocess_kwargs
 from schemas import read_json
 from status_publisher import redact_configured_text
 
@@ -70,14 +73,17 @@ def actionable(
     if server.get("online") is False or server.get("service_active") is False:
         return True, "server_health"
     disk = server.get("disks", {}).get("server_free_bytes")
-    if type(disk) is int and disk < 20 * 1024**3:
+    if disk is None:
+        disk = summary.get("server_free_bytes")
+    if type(disk) is int and disk < 35 * 1024**3:
         return True, "disk_floor"
-    if (summary.get("starved") or (summary.get("free_slots", 0) > 0 and not summary.get("ready"))
-            or summary.get("awaiting_acceptance") or summary.get("missing_material")):
+    if (summary.get("starved") or (summary.get("free_slots", 0) >= 2 and not summary.get("ready"))
+            or summary.get("awaiting_acceptance") or summary.get("decision_pending")
+            or summary.get("missing_material")):
         return True, "simulation_supply"
     if next_phase(campaign):
         return True, "phase_gate"
-    if ready_tasks(backlog, campaign["phase"]):
+    if ready_tasks(backlog, campaign["phase"]) or operational_tasks(campaign["phase"], server):
         return True, "backlog_ready"
     if scheduled_pulse and _deep_check_due(campaign, moment):
         return True, "deep_check_due"
@@ -95,11 +101,14 @@ def _public_request(
     active = director_state.get("active_order") if isinstance(director_state, dict) else None
     order = active.get("order") if isinstance(active, dict) else None
     summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
+    ops_ready = operational_tasks(campaign["phase"], server)
+    backlog_ready = [task["task"] for task in ready_tasks(backlog, campaign["phase"])]
     return {
         "reason": reason,
         "campaign": public_campaign_with_metrics(campaign),
         "next_phase": next_phase(campaign),
-        "ready_tasks": [task["task"] for task in ready_tasks(backlog, campaign["phase"])],
+        "ready_tasks": [*ops_ready, *backlog_ready],
+        "operational_tasks": ops_ready,
         "backlog": [
             {
                 "task": task["task"],
@@ -117,7 +126,8 @@ def _public_request(
             "service_active": server.get("service_active"),
             "summary": {key: summary[key] for key in (
                 "running", "free_slots", "slots_total", "ready", "preparing", "starved",
-                "blocked_count", "awaiting_acceptance", "missing_material",
+                "blocked_count", "awaiting_acceptance", "decision_pending", "waiting_cases",
+                "run_bound", "missing_material",
             ) if type(summary.get(key)) in (int, bool)},
         },
         "active_order": {
@@ -131,11 +141,15 @@ def _public_request(
 
 def build_prompt(request: dict[str, Any]) -> str:
     return (
-        "You are a read-only campaign supervisor. Use only the supplied JSON request. "
-        "Use no tools and make no changes. Return one action suggestion. Dispatch only from ready_tasks and only when there is no active work. "
-        "Accept or reject only the active campaign task in review; accept requires a passed delivery. "
-        "Advance only when next_phase is present. A blocked action requires three observed failures. "
-        "Use log for noteworthy issues that have no executable action; write a short Chinese reason. "
+        "You are the autonomous 30-day campaign supervisor with full authorization to keep simulations, "
+        "refills, archive mirroring, ML training, active learning, and research desk delivery moving forward without waiting for human approval. "
+        "Use only the supplied JSON request and return one concrete action decision. "
+        "Priority: (1) If active_order is awaiting_review or stalled, accept when delivery.passed is true or reject otherwise; "
+        "(2) If next_phase is non-null, immediately return action=advance; "
+        "(3) If no active work is running and operational_tasks is non-empty (e.g. sim-repair, sim-ops-refill, archive-remote-sync), immediately dispatch the highest-priority operational task to keep 16 slots busy and disk safe; "
+        "(4) Otherwise if ready_tasks is non-empty, dispatch a ready task to advance parallel engineering/training/desk delivery. "
+        "Never defer to a maintainer or pause for human confirmation; return noop only when no task or phase advance is available. "
+        "A blocked action requires three observed failures. Write a short Chinese reason. "
         "Return exactly one JSON object matching the supplied output schema. Do not include progress or any extra fields.\n\n"
         "REQUEST\n" + json.dumps(request, ensure_ascii=False, allow_nan=False, separators=(",", ":"))
     )
@@ -223,6 +237,7 @@ def _invoke_supervisor(cfg: Config, output: Path, request: dict[str, Any]) -> di
             errors="replace",
             timeout=cfg.codex_supervisor_timeout_seconds,
             check=False,
+            **hidden_subprocess_kwargs(),
         )
     except (OSError, subprocess.SubprocessError) as error:
         raise RuntimeError(f"supervisor launch failed: {type(error).__name__}") from error
@@ -249,7 +264,7 @@ def validate_action(
     task_id = decision["task"]
     active = director_state.get("active_order") or {}
     if action == "dispatch":
-        if not any(task["task"] == task_id for task in ready_tasks(backlog, campaign["phase"])):
+        if not (is_operational_task(task_id) or any(task["task"] == task_id for task in ready_tasks(backlog, campaign["phase"]))):
             raise ValueError("supervisor selected a task that is not ready")
         if active.get("status") in ("queued", "retry_queued", "running", "stalled", "awaiting_review"):
             raise ValueError("finish the active work order before dispatching")
