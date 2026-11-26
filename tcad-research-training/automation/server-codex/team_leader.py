@@ -53,6 +53,8 @@ def observation_summary(observation, maintenance, policy, now, lhs_responses=())
     fresh = 0 <= now - sampled_at <= stale_after
     collected = {row["id"] for row in observation.get("runs", [])
                  if row.get("collected") is True and row.get("success") is True}
+    released = sum(row.get('id', '').startswith('r06-') and row.get('collected') is True
+                   and row.get('occupied') is False for row in observation.get('runs', []))
     lhs_zero_pairs = [f"LHS{index:02}" for index in range(1, 7)
                       if all(f"r06-p0-lhs{index:02}-hold22-readout-b{bit}-r1" in collected for bit in (0, 1))]
     d2_feedback = sorted(key for key in collected if key.startswith('r06-t-d2-narrow-fin-') and '-x10-' in key)
@@ -81,6 +83,7 @@ def observation_summary(observation, maintenance, policy, now, lhs_responses=())
         "resources_blocked": [key for key in RESOURCE_REASONS if number(breakdown, key)],
         "remote_uncertain": observation.get("discovery_uncertain") is True,
         "queue_complete": observation.get("queue_complete") is True,
+        "r06_released_runs": released,
         "lhs04_zero_pair_collected": 'LHS04' in lhs_zero_pairs,
         "lhs_zero_pairs_collected": lhs_zero_pairs,
         "d2_threshold_feedback_collected": d2_feedback,
@@ -108,7 +111,8 @@ def trigger(summary):
         )
     }
     for key in ('lhs_halfstep_pairs_collected', 'lhs_quartersteps_collected',
-                'lhs_eighthsteps_collected', 'd2_x30_feedback_collected'):
+                'lhs_eighthsteps_collected', 'd2_x30_feedback_collected', 'r06_released_runs',
+                'r06_reviewed_responses'):
         if summary.get(key):
             event[key] = summary[key]
     return event
@@ -133,6 +137,8 @@ def has_actionable_event(event):
         bool(event.get('d2_x30_feedback_collected')),
         bool(event.get("lhs_transport_collected")),
         bool(event.get("queue_complete")),
+        bool(event.get("r06_released_runs")),
+        bool(event.get("r06_reviewed_responses")),
     ))
 
 
@@ -157,6 +163,8 @@ def run(args):
         load_optional(Path(args.maintenance_summary)), policy, now,
         load_optional(response_register).get("cases", ()),
     )
+    decisions = Path(policy['workspace']) / 'plans/dram-se-ddr5-lpddr5/r06-gate/results/case-acceptance'
+    summary['r06_reviewed_responses'] = sum(1 for _ in decisions.glob('r06-*.json'))
     if args.inspect:
         print(json.dumps(summary, ensure_ascii=False))
         return

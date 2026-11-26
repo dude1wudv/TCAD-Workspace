@@ -11,3 +11,6 @@ UMask=0077
 Nice=15
 IOSchedulingClass=idle
 ExecStart=/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-r06-lhs-response/supply.py --policy /etc/tcad-autonomy/policy.json --publish
+ExecStartPost=/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-case-reconciliation/review_collections.py --policy /etc/tcad-autonomy/policy.json
+ExecStartPost=/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-case-reconciliation/refill_timing.py --policy /etc/tcad-autonomy/policy.json --output /home/tcad/course-workspace/local_runtime/server-codex/r06-case-reconciliation-r1/refill-timing.json
+ExecStartPost=/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-case-reconciliation/case_waits.py --policy /etc/tcad-autonomy/policy.json --output /home/tcad/course-workspace/local_runtime/server-codex/r06-case-reconciliation-r1/case-waits.json

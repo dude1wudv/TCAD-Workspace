@@ -24,4 +24,6 @@
 - **禁止重复全量哈希**：已有收据或校验缓存的目录禁止重复执行全目录 `sha256sum` 审计。
 - **禁止无证据降并发**：无真实 OOM、服务器可用内存触及门槛或硬件故障证据时，禁止私自调低 `max_parallel_jobs`。
 
+原收集数 `r06_released_runs` 或正式读出记录数 `r06_reviewed_responses` 变化时，先从上次检查以来的新归档和新验收定位受影响的正式 case。优先处理已有同事件、同态对照和签署依据的正式单，逐单验签后立即交给原发布接口，再继续核对其他项。每次交付前查 case、历史修复和原队列。逐项依赖与因果耗时投影在 `local_runtime/server-codex/r06-case-reconciliation-r1/`。数值超差、分支未选和留出封存按冻结判据保留。原收集后的标准 S/T 读出由 `review_collections.py` 处理，先查对应记录和复核结果。报告写明新启动的正式 case 与实测前置耗时，沿用同一时钟的原始收集和启动记录。
+
 最后一条消息只输出一个 JSON 对象，例如 `{"status":"waiting","summary":"简述实测","next_step":"说明下一步","next_check_seconds":600,"evidence":[]}`。可用 `status` 为 `progress`、`waiting`、`blocked`、`complete`。
