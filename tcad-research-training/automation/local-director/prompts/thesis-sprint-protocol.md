@@ -1,6 +1,6 @@
 # 每日一次论文重写与增量拼接协议（Daily Thesis Sprint）
 
-本协议仅在每日 `DAILY_THESIS_SPRINT` 唤醒时执行（北京时间每天 1 次）。
+本协议保留为历史参考，不由当前 Local Director 自动触发。
 
 ## 总原则
 - **从零构建，不继承旧废稿**：`论文草稿/` 为全新 v2 工程，围绕真实课题目标（《AI辅助下的DRAM存储器单粒子效应评估研究》）、真实物理建模与已核验工况从头设计结构与行文。
@@ -22,6 +22,6 @@
 1. **第 1 天（骨架定稿）**：若 `论文草稿/thesis-blueprint.json` 尚处 `BOOTSTRAP` 阶段，先结合 `shared/research-brief.md`、`plans/dram-se-ddr5-lpddr5/PLAN.md` 与当前已存在有效素材，定出精炼合理的章目大纲并写入 `thesis-blueprint.json`，同时更新 `main.tex` 与各 `sections/*.tex` 骨架。
 2. **常规日（聚焦增量）**：
    - 读取当日新增的 `asset-registry.jsonl` 条目与 `thesis-blueprint.json`；
-   - 选定 **1 个最高优先级章节或证据块**，由 Gemini 亲自撰写/修订对应 `.tex` 正文与 `refs/references.bib`；
+   - 选定 **1 个最高优先级章节或证据块**，由本地 Codex Worker 撰写或修订对应 `.tex` 正文与 `refs/references.bib`；
    - 更新 `thesis-blueprint.json` 中该章状态（`SKELETON -> DRAFTING -> EVIDENCE_BOUND -> REVISED`）与最近写作日期。
 3. **交由 Codex 编译验收**：写完立即派发 `category=latex_build` 工单给 Codex，要求其运行 `论文草稿/build.ps1`（MiKTeX `xelatex + bibtex`），修复任何 LaTeX 语法/交叉引用/图表路径/表格溢出报错，确认零 fatal error 且无敏感泄露后提交到滚动分支。

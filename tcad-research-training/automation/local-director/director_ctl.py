@@ -22,7 +22,7 @@ DECISION_LOG = Path("tcad-research-training/plans/dram-se-ddr5-lpddr5/AUTO-DECIS
 def brief_state(state):
     active = state.active_order
     result = {"updated_at": state.updated_at, "daily_date": state.daily_date,
-              "daily_wakeups_used": state.daily_wakeups_used, "daily_codex_used": state.daily_codex_used,
+              "daily_codex_used": state.daily_codex_used,
               "active_turn": bool(state.active_turn), "pending_events": [entry["reason"] for entry in state.pending_events]}
     result["active_order"] = {
         "order_id": active["order"]["order_id"], "status": active["status"], "attempt": active["attempt"],
@@ -59,9 +59,11 @@ def _receipt(cfg, active):
     return receipt
 
 
-def _codex_slot(cfg, state):
-    cfg.reset_day(state, cfg.local_time(datetime.now(timezone.utc)).date())
-    if cfg.codex_daily_cap is not None and state.daily_codex_used >= cfg.codex_daily_cap:
+def _codex_slot(cfg, state, *, urgent: bool = False, now: datetime | None = None):
+    moment = now or datetime.now(timezone.utc)
+    local_date = cfg.local_time(moment).date()
+    bucket = "urgent" if urgent else "routine"
+    if not cfg.can_consume_codex(state, bucket, local_date):
         raise ValueError("daily Codex cap reached")
 
 
@@ -102,28 +104,43 @@ def _wait_for_order(cfg, order_id: str) -> dict:
         time.sleep(2.0)
 
 
-def dispatch(cfg, state, order, *, wait: bool = False):
+def dispatch(cfg, state, order, *, wait: bool = False, campaign_task: str | None = None,
+             now: datetime | None = None, urgent: bool = False):
     if state.active_order and state.active_order["status"] in {"queued", "retry_queued", "running", "stalled", "awaiting_review"}:
         raise ValueError("finish the current order before dispatching another")
-    _codex_slot(cfg, state)
+    _codex_slot(cfg, state, urgent=urgent, now=now)
     directory = order_dir(cfg, order.order_id)
     directory.mkdir(parents=True, exist_ok=False)
+    active = {
+        "order": order.to_dict(),
+        "status": "queued",
+        "attempt": 1,
+        "rejections": 0,
+        "run_meta": None,
+        "campaign_task": campaign_task,
+    }
     if not wait and _watchdog_daemon_running(cfg):
-        state.active_order = {"order": order.to_dict(), "status": "queued", "attempt": 1, "rejections": 0, "run_meta": None}
+        state.active_order = active
         state.daily_codex_used += 1
         state.last_stall_at = ""
         clear_order_events(state)
         save_state(cfg, state)
         return {"order_id": order.order_id, "status": "queued"}
-    try:
-        run_meta = launch_worker(cfg, order, attempt=1)
-    except (OSError, RuntimeError, ValueError) as error:
-        write_json(directory / "launch_error.json", {"error": redact_text(str(error))})
-        raise
-    state.active_order = {"order": order.to_dict(), "status": "running", "attempt": 1, "rejections": 0, "run_meta": run_meta}
+    state.active_order = active
     state.daily_codex_used += 1
     state.last_stall_at = ""
     clear_order_events(state)
+    save_state(cfg, state)
+    try:
+        run_meta = launch_worker(cfg, order, attempt=1)
+    except (OSError, RuntimeError, ValueError) as error:
+        state.daily_codex_used -= 1
+        state.active_order = None
+        write_json(directory / "launch_error.json", {"error": redact_text(str(error))})
+        save_state(cfg, state)
+        raise
+    active.update(status="running", run_meta=run_meta)
+    state.active_order = active
     save_state(cfg, state)
     return {"order_id": order.order_id, "pid": run_meta["pid"], "status": "running"}
 

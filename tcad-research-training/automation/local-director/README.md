@@ -1,6 +1,6 @@
 # Local Director
 
-Windows 11、PowerShell 7、Python 3.13。核心包使用 Python 标准库。看门狗采集研究状态，按配额唤醒 Gemini，由 `director_ctl.py` 登记决策和派发本地 Codex 工单。每次只运行一个 Codex 工单，队列可保存多个待办。
+Windows 11、PowerShell 7、Python 3.13。核心包使用 Python 标准库。看门狗采集研究状态，按配额唤醒只读 Codex Supervisor，由 `director_ctl.py` 登记决策和派发本地 Codex Worker 工单。每次只运行一个 Codex 工单，队列可保存多个待办。
 
 ## 配置
 
@@ -18,7 +18,7 @@ python watchdog.py --tick --force-trigger REVIEW
 python watchdog.py --daemon
 ```
 
-`--tick --dry-run` 做只读采样并输出拟触发事件。正常 tick 保存简报、状态与收据，并按变化发布公开快照。每日唤醒共 24 次，普通事件用前 18 次，紧急事件可用至 22 次，每日论文冲刺和日报可用至 24 次。
+`--tick --dry-run` 做只读采样并输出拟触发事件。正常 tick 保存简报、状态与收据，并按变化发布公开快照。每日最多使用 30 次 Codex，普通工单最多使用前 24 次，保留 6 次处理紧急运维、故障和阶段里程碑。
 
 ## 工单和决策
 

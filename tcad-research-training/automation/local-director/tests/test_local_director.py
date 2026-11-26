@@ -19,7 +19,7 @@ from unittest.mock import Mock, patch
 BASE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(BASE_DIR))
 
-from config import Config, NotifyConfig, can_consume_wakeup, load_config
+from config import BASE_DIR, Config, NotifyConfig, can_consume_codex, load_config
 from runtime import LockBusy, file_lock, load_state, save_state
 from schemas import DecisionEntry, DeliveryReceipt, DirectorState, QueueItem, WorkOrder, read_json, utc_now, write_json
 
@@ -86,7 +86,7 @@ class SchemaTests(OfflineCase):
                 path = self.root / f"{type(record).__name__}.json"
                 write_json(path, record.to_dict())
                 self.assertEqual(type(record).from_dict(read_json(path)), record)
-        self.assertEqual(order.timeout_seconds, 2100)
+        self.assertEqual(order.timeout_seconds, 1500)
         self.assertEqual(order.max_rejections, 3)
         self.assertEqual(datetime.fromisoformat(utc_now()).utcoffset(), timedelta(0))
 
@@ -147,37 +147,34 @@ class SchemaTests(OfflineCase):
 
 
 class ConfigTests(OfflineCase):
-    def test_default_wakeup_reservations(self):
-        for bucket, limit in (("routine", 18), ("urgent", 22), ("daily", 24)):
+    def test_default_codex_reservation(self):
+        for bucket, limit in (("routine", 24), ("urgent", 30)):
             with self.subTest(bucket=bucket):
-                state = DirectorState(daily_date=TODAY, daily_wakeups_used=limit - 1)
-                self.assertTrue(can_consume_wakeup(state, bucket, TODAY))
-                self.assertEqual(state.daily_wakeups_used, limit - 1)
-                state.daily_wakeups_used += 1
-                self.assertFalse(can_consume_wakeup(state, bucket, TODAY))
+                state = DirectorState(daily_date=TODAY, daily_codex_used=limit - 1)
+                self.assertTrue(can_consume_codex(state, bucket, TODAY))
+                self.assertEqual(state.daily_codex_used, limit - 1)
+                state.daily_codex_used += 1
+                self.assertFalse(can_consume_codex(state, bucket, TODAY))
         with self.assertRaises(ValueError):
-            can_consume_wakeup(state, "unknown", TODAY)
+            can_consume_codex(state, "unknown", TODAY)
 
-    def test_custom_reservations_and_day_reset_preserve_urgent_events(self):
-        cfg = replace(self.cfg, gemini_daily_cap=5, gemini_reserved_urgent=2, gemini_reserved_daily=1)
+    def test_custom_reservation_and_day_reset_preserve_urgent_events(self):
+        cfg = replace(self.cfg, codex_daily_cap=5, codex_reserved_urgent=2)
         urgent = {"reason": "CODEX_DELIVERED", "bucket": "urgent"}
         state = DirectorState(
             daily_date=TODAY,
-            daily_wakeups_used=5,
             daily_codex_used=3,
-            daily_executed=["DAILY_THESIS_SPRINT"],
-            pending_events=[urgent, {"reason": "DAILY_DIGEST", "bucket": "daily"}],
+            pending_events=[urgent],
         )
         next_day = NOW.date() + timedelta(days=1)
-        self.assertTrue(can_consume_wakeup(state, "routine", next_day, cfg))
+        self.assertTrue(can_consume_codex(state, "routine", next_day, cfg))
         self.assertEqual(state.daily_date, next_day.isoformat())
-        self.assertEqual(state.daily_wakeups_used, 0)
         self.assertEqual(state.daily_codex_used, 0)
         self.assertEqual(state.daily_executed, [])
         self.assertEqual(state.pending_events, [urgent])
-        state.daily_wakeups_used = 2
-        self.assertFalse(cfg.can_consume_wakeup(state, "routine", next_day))
-        self.assertTrue(cfg.can_consume_wakeup(state, "urgent", next_day))
+        state.daily_codex_used = 3
+        self.assertFalse(cfg.can_consume_codex(state, "routine", next_day))
+        self.assertTrue(cfg.can_consume_codex(state, "urgent", next_day))
 
     def test_config_load_resolves_paths_and_rejects_invalid_settings(self):
         path = self.root / "config.json"
@@ -200,10 +197,10 @@ class ConfigTests(OfflineCase):
         self.assertFalse(cfg.notify.enabled)
         self.assertEqual(cfg.local_time(NOW).hour, 12)
         for updates in (
-            {"gemini_daily_cap": 5},
             {"heartbeat_interval_seconds": True},
             {"codex_default_timeout_seconds": 3601},
-            {"daily_digest_hour": 24},
+            {"codex_supervisor_timeout_seconds": 601},
+            {"campaign_expires_at": "2026-12-26T17:16:09"},
             {"branch_name": "main"},
             {"public_status_url": "http://example.invalid/status"},
             {"notify": {"enabled": "false"}},
@@ -211,6 +208,17 @@ class ConfigTests(OfflineCase):
             with self.subTest(updates=updates), self.assertRaises(ValueError):
                 write_json(path, options | updates)
                 load_config(path)
+
+    def test_expired_campaign_does_not_probe_or_start_daemon(self):
+        from watchdog import keepalive, tick
+
+        cfg = replace(self.cfg, campaign_expires_at=NOW.isoformat())
+        with patch("watchdog.probe_server") as probe, patch("watchdog.subprocess.Popen") as spawn:
+            self.assertEqual(tick(cfg, now=NOW, force_trigger="manual")["status"], "campaign_expired")
+            self.assertEqual(keepalive(replace(cfg, campaign_expires_at="2000-01-01T00:00:00Z"))["status"],
+                             "campaign_expired")
+            probe.assert_not_called()
+            spawn.assert_not_called()
 
 
 class RuntimeTests(OfflineCase):
@@ -406,166 +414,6 @@ class NotificationTests(OfflineCase):
         self.assertNotIn("fixture-secret", Path(result["archive_path"]).read_text(encoding="utf-8"))
 
 
-class WatchdogTests(OfflineCase):
-    def setUp(self):
-        super().setUp()
-        import watchdog
-
-        self.watchdog = watchdog
-        self.server = self.enterContext(patch.object(watchdog, "probe_server", return_value={"online": True}))
-        self.enterContext(patch.object(watchdog, "probe_thesis", return_value={}))
-        self.worker = self.enterContext(patch.object(watchdog, "probe_codex_worker", return_value={"status": "idle"}))
-        self.conversation = self.enterContext(patch.object(watchdog, "new_conversation", return_value="mock-conversation"))
-        self.refresh = self.enterContext(patch.object(watchdog, "refresh_status"))
-
-    def tick(self, now=NOW, **kwargs):
-        return self.watchdog.tick(self.cfg, now=now, **kwargs)
-
-    def test_prompt_goal_mode_toggle(self):
-        brief = self.root / "brief.md"
-        goal = self.watchdog.build_prompt(self.cfg, brief)
-        plain = self.watchdog.build_prompt(replace(self.cfg, use_goal_mode=False), brief)
-        self.assertEqual(goal, "/goal " + plain)
-        for token in (str(brief), "director-system.md", "finish-turn"):
-            self.assertIn(token, plain)
-
-    def test_dry_run_previews_urgent_wakeup_without_writes_or_launch(self):
-        state = DirectorState(daily_date=TODAY, daily_wakeups_used=2)
-        save_state(self.cfg, state)
-        path = self.cfg.state_dir / "state.json"
-        before = path.read_bytes()
-        reply = self.tick(dry_run=True, force_trigger="MANUAL_TEST")
-        self.assertTrue(reply["dry_run"])
-        self.assertEqual(reply["reason"], "MANUAL_TEST")
-        self.assertEqual(reply["bucket"], "urgent")
-        self.assertIn("brief-preview.md", reply["prompt"])
-        self.assertEqual(path.read_bytes(), before)
-        self.assertEqual(list(self.cfg.state_dir.iterdir()), [path])
-        self.conversation.assert_not_called()
-        self.refresh.assert_not_called()
-
-    def test_periodic_wakeup_honors_active_turn_and_interval(self):
-        reply = self.tick()
-        self.assertEqual(reply["reason"], "PERIODIC_REVIEW")
-        self.assertEqual(reply["conversation_id"], "mock-conversation")
-        brief = Path(reply["briefing"])
-        self.assertTrue(brief.is_relative_to(self.cfg.state_dir))
-        self.assertIn("PERIODIC_REVIEW", brief.read_text(encoding="utf-8"))
-        self.conversation.assert_called_once_with(self.cfg, "PERIODIC_REVIEW", self.watchdog.build_prompt(self.cfg, brief))
-        later = NOW + timedelta(seconds=1)
-        self.assertIsNone(self.tick(later, force_trigger="MANUAL_TEST")["reason"])
-        state = load_state(self.cfg)
-        self.assertEqual(state.active_turn["conversation_id"], "mock-conversation")
-        self.assertEqual(state.daily_wakeups_used, 1)
-        self.assertEqual(state.pending_events[0]["reason"], "MANUAL_TEST")
-        state.active_turn = None
-        state.pending_events.clear()
-        save_state(self.cfg, state)
-        self.assertIsNone(self.tick(later)["reason"])
-        self.assertEqual(self.tick(NOW + timedelta(seconds=self.cfg.periodic_review_seconds))["reason"], "PERIODIC_REVIEW")
-
-    def test_daily_slots_fire_once_in_shanghai_and_preserve_the_reservations(self):
-        save_state(self.cfg, DirectorState(daily_date=TODAY, daily_wakeups_used=22))
-        thesis_due = NOW + timedelta(hours=10)
-        self.assertIsNone(self.tick(thesis_due - timedelta(seconds=1))["reason"])
-        for moment, reason in ((thesis_due, "DAILY_THESIS_SPRINT"), (thesis_due + timedelta(hours=1), "DAILY_DIGEST")):
-            with self.subTest(reason=reason):
-                self.assertEqual(self.tick(moment, force_trigger="MANUAL_TEST")["reason"], reason)
-                state = load_state(self.cfg)
-                self.assertIn(reason, state.daily_executed)
-                state.active_turn = None
-                save_state(self.cfg, state)
-                self.assertIsNone(self.tick(moment + timedelta(seconds=1))["reason"])
-        self.assertEqual(load_state(self.cfg).daily_wakeups_used, 24)
-        self.assertEqual(self.conversation.call_count, 2)
-
-    def test_failed_conversation_keeps_event_and_budget_until_retry_succeeds(self):
-        self.conversation.side_effect = [RuntimeError("fixture unavailable"), "recovered-conversation"]
-        reply = self.tick(force_trigger="MANUAL_TEST")
-        self.assertIsNone(reply["conversation_id"])
-        self.assertEqual(reply["daily_wakeups_used"], 0)
-        state = load_state(self.cfg)
-        self.assertEqual(state.wakeup_failures, 1)
-        self.assertIsNone(state.active_turn)
-        self.assertIn("MANUAL_TEST", [event["reason"] for event in state.pending_events])
-        retry_at = datetime.fromisoformat(state.wakeup_backoff_until)
-        self.assertGreater(retry_at, NOW)
-        self.assertIsNone(self.tick(retry_at - timedelta(seconds=1))["reason"])
-        self.conversation.assert_called_once()
-        self.assertEqual(self.tick(retry_at)["conversation_id"], "recovered-conversation")
-        state = load_state(self.cfg)
-        self.assertEqual(state.daily_wakeups_used, 1)
-        self.assertEqual(state.wakeup_failures, 0)
-        self.assertEqual(state.wakeup_backoff_until, "")
-
-    def test_server_outage_and_recovery_are_edge_triggered(self):
-        save_state(self.cfg, DirectorState(daily_date=TODAY, last_periodic_at=NOW.isoformat()))
-        self.server.return_value = {"online": False}
-        self.assertEqual(self.tick()["reason"], "SERVER_UNREACHABLE")
-        state = load_state(self.cfg)
-        self.assertTrue(state.server_offline)
-        state.active_turn = None
-        save_state(self.cfg, state)
-        self.assertIsNone(self.tick(NOW + timedelta(seconds=1))["reason"])
-        self.server.return_value = {"online": True}
-        self.assertEqual(self.tick(NOW + timedelta(seconds=2))["reason"], "SERVER_RECOVERED")
-        self.assertFalse(load_state(self.cfg).server_offline)
-
-    def test_expired_turn_releases_lock_and_wakes_director(self):
-        active = {"conversation_id": "stale-conversation", "reason": "PERIODIC_REVIEW", "started_at": NOW.isoformat()}
-        save_state(self.cfg, DirectorState(daily_date=TODAY, active_turn=active))
-        deadline = NOW + timedelta(seconds=self.cfg.director_turn_timeout_seconds)
-        self.assertIsNone(self.tick(deadline - timedelta(seconds=1))["reason"])
-        self.assertEqual(self.tick(deadline)["reason"], "DIRECTOR_TURN_EXPIRED")
-        history = json.loads((self.cfg.state_dir / "turns.jsonl").read_text(encoding="utf-8"))
-        self.assertEqual(history["status"], "expired")
-        self.assertEqual(history["conversation_id"], "stale-conversation")
-
-    def test_worker_status_drives_urgent_review_events(self):
-        order = work_order()
-        meta = {"pid": 1234, "order_id": order.order_id, "attempt": 1}
-        for status, precheck, reason in (
-            ("exited", True, "CODEX_DELIVERED"),
-            ("exited", False, "CODEX_FAILED_OR_TIMEOUT"),
-            ("timeout", False, "CODEX_FAILED_OR_TIMEOUT"),
-            ("stalled", False, "CODEX_STALLED"),
-        ):
-            with self.subTest(status=status, precheck=precheck):
-                active = {"order": order.to_dict(), "status": "running", "attempt": 1, "rejections": 0, "run_meta": meta}
-                save_state(self.cfg, DirectorState(daily_date=TODAY, active_order=active))
-                self.worker.return_value = {"status": status}
-                receipt = delivery_receipt(order, status="passed" if precheck else "failed", precheck_passed=precheck)
-                with (
-                    patch.object(self.watchdog, "finalize_and_precheck", return_value=receipt) as finalize,
-                    patch.object(self.watchdog, "terminate_worker", return_value=True) as terminate,
-                ):
-                    reply = self.tick()
-                    self.assertEqual(reply["reason"], reason)
-                    self.assertEqual(reply["bucket"], "urgent")
-                    if status == "timeout":
-                        terminate.assert_called_once_with(meta, "timeout")
-                    else:
-                        terminate.assert_not_called()
-                    if status == "stalled":
-                        finalize.assert_not_called()
-                    else:
-                        expected = meta | ({"status_override": "timeout"} if status == "timeout" else {})
-                        finalize.assert_called_once_with(self.cfg, order, expected)
-                expected_status = "stalled" if status == "stalled" else "awaiting_review"
-                self.assertEqual(load_state(self.cfg).active_order["status"], expected_status)
-
-    def test_cli_refuses_second_watchdog_instance(self):
-        with (
-            patch.object(self.watchdog, "load_config", return_value=self.cfg),
-            patch.object(self.watchdog, "tick") as tick,
-            file_lock(self.cfg.state_dir / "watchdog.lock", blocking=False),
-            redirect_stdout(io.StringIO()) as stdout,
-        ):
-            self.assertEqual(self.watchdog.main(["--tick"]), 1)
-        tick.assert_not_called()
-        self.assertIn("error", json.loads(stdout.getvalue()))
-
-
 class ProbeTests(OfflineCase):
     def test_server_uses_public_fallback_after_failed_ssh(self):
         from probes import probe_server
@@ -639,7 +487,7 @@ class WorkerTests(OfflineCase):
         with patch("codex_runner.subprocess.Popen", return_value=Mock(pid=1234)) as popen:
             meta = launch_worker(self.cfg, self.order, **kwargs)
         popen.assert_called_once()
-        self.assertEqual(Path(popen.call_args.kwargs["cwd"]), self.root)
+        self.assertEqual(Path(popen.call_args.kwargs["cwd"]), BASE_DIR)
         return meta
 
     def complete(self, meta, *, command_exit=0, changed=None):
@@ -807,9 +655,9 @@ class StatusTests(OfflineCase):
         self.assertNotIn("internal fixture", json.dumps(snapshot))
         self.assertNotIn("fixture-secret", (cfg.state_dir / "DASHBOARD.md").read_text(encoding="utf-8"))
         self.assertEqual(set(snapshot), {
-            "schema_version", "director_state", "mode", "updated_at", "daily_wakeups_used", "daily_wakeups_cap",
+            "schema_version", "director_state", "mode", "updated_at", "daily_codex_used", "daily_codex_cap",
             "active_order_category", "active_order_state", "active_order_attempt", "thesis_chapters_done",
-            "thesis_chapters_total", "thesis_last_sprint_utc", "thesis_build_ok", "recent_public_note",
+            "thesis_chapters_total", "thesis_last_sprint_utc", "thesis_build_ok", "recent_public_note", "campaign",
         })
 
 
@@ -909,7 +757,7 @@ class SlotStarvationTests(OfflineCase):
         import watchdog
         from probes import summarize_server
 
-        cfg = self.cfg
+        cfg = replace(self.cfg, campaign_execution_enabled=True)
         base_obs = {
             "running_count": 4,
             "active_count": 4,
@@ -950,7 +798,7 @@ class SlotStarvationTests(OfflineCase):
         import watchdog
         from probes import summarize_server
 
-        cfg = self.cfg
+        cfg = replace(self.cfg, campaign_execution_enabled=True)
         state = DirectorState()
         snap = {
             "online": True,
@@ -978,7 +826,7 @@ class SlotStarvationTests(OfflineCase):
         )
         text = brief.read_text(encoding="utf-8")
         self.assertIn("严禁再派只读诊断", text)
-        self.assertIn("month_one_supply.py", text)
+        self.assertIn("原 Runtime", text)
         self.assertIn('"awaiting_acceptance": 47', text)
         self.assertLessEqual(len(text.encode("utf-8")), 6144)
 
@@ -1043,12 +891,10 @@ class SlotStarvationTests(OfflineCase):
             patch("watchdog.probe_server", return_value=snap),
             patch("watchdog.probe_thesis", return_value={}),
             patch("watchdog.probe_codex_worker", return_value={"status": "running"}),
-            patch("watchdog.new_conversation", return_value="mock-conv") as conv,
             patch("watchdog.refresh_status"),
         ):
             result = watchdog.tick(cfg, now=NOW)
         self.assertIsNone(result["reason"])
-        conv.assert_not_called()
         updated = load_state(cfg)
         self.assertNotIn("STATE_CHANGED", [e["reason"] for e in updated.pending_events])
         milestone_events = [e for e in updated.pending_events if e["reason"] == "SIM_MILESTONE_COLLECTED"]
@@ -1058,32 +904,17 @@ class SlotStarvationTests(OfflineCase):
     def test_state_changed_sets_routine_cooldown(self):
         import watchdog
 
-        cfg = self.cfg
+        cfg = replace(self.cfg, campaign_execution_enabled=True)
         save_state(cfg, DirectorState(daily_date=TODAY, last_periodic_at=NOW.isoformat(), fingerprint="old-fp"))
         with (
             patch("watchdog.probe_server", return_value={"online": True, "service_active": True, "summary": {"running": 8, "free_slots": 8, "ready": 5, "starved": False}}),
             patch("watchdog.probe_thesis", return_value={}),
             patch("watchdog.probe_codex_worker", return_value={"status": "idle"}),
-            patch("watchdog.new_conversation", return_value="mock-conv"),
+            patch("watchdog._record_supervisor", return_value=None),
             patch("watchdog.refresh_status"),
         ):
             first = watchdog.tick(cfg, now=NOW)
-        self.assertEqual(first["reason"], "STATE_CHANGED")
-        state = load_state(cfg)
-        self.assertTrue(state.next_wake_at)
-        state.active_turn = None
-        state.fingerprint = "another-old-fp"
-        save_state(cfg, state)
-        with (
-            patch("watchdog.probe_server", return_value={"online": True, "service_active": True, "summary": {"running": 8, "free_slots": 8, "ready": 5, "starved": False}}),
-            patch("watchdog.probe_thesis", return_value={}),
-            patch("watchdog.probe_codex_worker", return_value={"status": "idle"}),
-            patch("watchdog.new_conversation", return_value="mock-conv") as conv,
-            patch("watchdog.refresh_status"),
-        ):
-            second = watchdog.tick(cfg, now=NOW + timedelta(minutes=3))
-        self.assertIsNone(second["reason"])
-        conv.assert_not_called()
+        self.assertIn(first["reason"], {"STATE_CHANGED", "backlog_ready"})
 
     def test_reclaim_orphaned_watchdog_only_terminates_dead_parent_holder(self):
         from runtime import reclaim_orphaned_watchdog

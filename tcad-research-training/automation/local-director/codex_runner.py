@@ -269,7 +269,7 @@ def launch_worker(
               if os.name == "nt" else {"start_new_session": True})
     supervisor = subprocess.Popen(
         [sys.executable, "-B", str(Path(__file__).resolve()), "--supervise", str(run_path)],
-        cwd=root, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **detach,
+        cwd=BASE_DIR, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **detach,
     )
     threading.Thread(target=supervisor.wait, daemon=True).start()
     result = {**meta, "pid": supervisor.pid}
@@ -342,6 +342,30 @@ def _windows_job(name: str, *, create: bool):
         kernel.CloseHandle(handle)
         raise ctypes.WinError(error)
     return handle
+
+
+def _windows_pid_exists(pid: int) -> bool | None:
+    import ctypes
+    from ctypes import wintypes
+
+    kernel = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+    kernel.OpenProcess.restype = wintypes.HANDLE
+    kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+    handle = kernel.OpenProcess(0x00100000 | 0x1000, False, pid)
+    if not handle:
+        error = ctypes.get_last_error()
+        if error in {2, 87}:
+            return False
+        return None
+    try:
+        kernel.WaitForSingleObject.argtypes = [wintypes.HANDLE, wintypes.DWORD]
+        result = kernel.WaitForSingleObject(handle, 0)
+        if result == 0:
+            return False
+        return True if result == 0x00000102 else None
+    finally:
+        kernel.CloseHandle(handle)
 
 
 def _resume_missing(meta: dict) -> bool:
@@ -418,13 +442,16 @@ def _supervise(run_path: Path) -> None:
 
 
 def _windows_process(pid: int) -> dict | None:
-    result = subprocess.run(
-        ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
-         "[Console]::OutputEncoding=[Text.UTF8Encoding]::new(); "
-         f"Get-CimInstance Win32_Process -Filter 'ProcessId = {pid}' -ErrorAction Stop | "
-         "Select-Object CommandLine, ParentProcessId, CreationDate | ConvertTo-Json -Compress"],
-        capture_output=True, check=True, timeout=5, creationflags=subprocess.CREATE_NO_WINDOW,
-    )
+    try:
+        result = subprocess.run(
+            ["powershell.exe", "-NoProfile", "-NonInteractive", "-Command",
+             "[Console]::OutputEncoding=[Text.UTF8Encoding]::new(); "
+             f"Get-CimInstance Win32_Process -Filter 'ProcessId = {pid}' -ErrorAction Stop | "
+             "Select-Object CommandLine, ParentProcessId, CreationDate | ConvertTo-Json -Compress"],
+            capture_output=True, check=True, timeout=10, creationflags=subprocess.CREATE_NO_WINDOW,
+        )
+    except subprocess.TimeoutExpired:
+        return {"_query_unknown": True}
     return json.loads(result.stdout) if result.stdout.strip() else None
 
 
@@ -447,10 +474,12 @@ def _tree_stopped(run_meta: dict) -> bool:
     if type(pid) is not int or pid <= 1:
         return False
     if os.name == "nt":
-        if not run_meta.get("job_name") or _windows_process(pid) or _windows_job(run_meta["job_name"], create=False):
+        supervisor_exists = _windows_pid_exists(pid)
+        if (supervisor_exists is not False or not run_meta.get("job_name")
+                or _windows_job(run_meta["job_name"], create=False)):
             return False
         worker_path = Path(run_meta["worker_pid_path"])
-        return not worker_path.is_file() or _windows_process(read_json(worker_path)["pid"]) is None
+        return not worker_path.is_file() or _windows_pid_exists(read_json(worker_path)["pid"]) is False
     if not Path("/proc/self/stat").is_file():
         return False
     for entry in Path("/proc").iterdir():
@@ -469,7 +498,7 @@ def _live_run_for_pid(pid: int) -> dict | None:
     script = Path(__file__).resolve()
     if os.name == "nt":
         process = _windows_process(pid)
-        if process is None:
+        if process is None or process.get("_query_unknown"):
             return None
         script_arg = re.escape(subprocess.list2cmdline([str(script)]))
         match = re.fullmatch(r'(?i)(?:"[^"]+"|\S+) -B ' + script_arg + r' --supervise (?:"([^"]+)"|(\S+))',
@@ -509,7 +538,7 @@ def _stop_live_child(run_meta: dict) -> None:
         process = _windows_process(pid)
         command = _worker_command(worker["argv"])
         command_line = subprocess.list2cmdline(command) if isinstance(command, list) else command
-        if (process and process["ParentProcessId"] == supervisor_pid
+        if (process and not process.get("_query_unknown") and process["ParentProcessId"] == supervisor_pid
                 and process["CommandLine"] == command_line
                 and _windows_process(pid) == process):
             subprocess.run(["taskkill.exe", "/PID", str(pid), "/T", "/F"], capture_output=True, check=True,

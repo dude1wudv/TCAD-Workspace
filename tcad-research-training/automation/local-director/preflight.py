@@ -54,7 +54,7 @@ def _executable_available(name: str) -> bool:
 def run_preflight(cfg: Config, *, offline: bool = False) -> dict:
     python = {"ok": sys.version_info >= (3, 13), "version": ".".join(map(str, sys.version_info[:3]))}
     git = _git_check(cfg)
-    tools = {name: _executable_available(name) for name in ("codex", "agentapi", "xelatex", "latexmk", "gh")}
+    tools = {name: _executable_available(name) for name in ("codex", "xelatex", "latexmk", "gh")}
     power = _power_check()
     paths = {"state_dir": cfg.state_dir.is_dir(), "thesis_dir": (cfg.repo_root / "论文草稿").is_dir()}
     if offline:

@@ -2,17 +2,27 @@ import argparse
 import json
 import logging
 import os
-import re
-import shutil
 import subprocess
 import sys
 import time
 from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from types import SimpleNamespace
 
 from codex_runner import finalize_and_precheck, launch_worker, terminate_worker
-from config import BASE_DIR, load_config
+from campaign_fsm import (
+    advance_phase,
+    assert_holdout_read_allowed,
+    ensure_campaign_files,
+    mark_task,
+    register_blocked,
+    save_backlog,
+    save_campaign,
+    task_work_order,
+)
+from codex_supervisor import actionable, record_wakeup, run_supervisor, validate_action
+from config import load_config
 from probes import compute_state_fingerprint, probe_codex_worker, probe_server, probe_thesis, summarize_server
 from runtime import (
     LockBusy,
@@ -26,10 +36,9 @@ from runtime import (
     state_lock,
 )
 from schemas import DeliveryReceipt, WorkOrder, append_jsonl, atomic_write, parse_time, read_json, write_json
-from status_publisher import redact_configured_text, redact_text, refresh_status
+from status_publisher import observe_campaign, redact_configured_text, redact_text, refresh_status
 
 
-DAILY = {"DAILY_THESIS_SPRINT": "daily_thesis_hour", "DAILY_DIGEST": "daily_digest_hour"}
 BACKOFF_SECONDS = (900, 1800, 3600)
 LOG = logging.getLogger(__name__)
 
@@ -88,13 +97,9 @@ _ROUTINE_MILESTONE_KEYS = (
 )
 _MILESTONE_KEYS = (*_URGENT_MILESTONE_KEYS, *_ROUTINE_MILESTONE_KEYS)
 _STARVE_COOLDOWN_SECONDS = 1200
-_STATE_CHANGE_COOLDOWN_SECONDS = 1800
-_WORKER_BUSY_DEFERRED_REASONS = {
-    "STATE_CHANGED",
-    "PERIODIC_REVIEW",
-    "SIM_MILESTONE_COLLECTED",
-    "SLOTS_STARVING",
-    "SERVER_RECOVERED",
+_URGENT_ACTIONS = {
+    "disk_floor", "server_health", "phase_gate", "worker_receipt_or_stall",
+    "simulation_supply", "SLOTS_STARVING",
 }
 
 
@@ -121,7 +126,7 @@ def _milestone_increased(previous, current, keys=_MILESTONE_KEYS):
     return changed
 
 
-def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, *, dry_run):
+def _observe_events(cfg, state, server, thesis, now, *, dry_run):
     if state.active_turn and _due(now, state.active_turn["started_at"], cfg.director_turn_timeout_seconds):
         if not dry_run:
             append_jsonl(cfg.state_dir / "turns.jsonl", {"status": "expired", "at": _timestamp(now), **state.active_turn})
@@ -170,39 +175,25 @@ def _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, 
         write_json(cfg.state_dir / "milestones.json", milestones)
 
     fingerprint = compute_state_fingerprint(server, thesis)
-    if fingerprint != state.fingerprint:
-        if state.fingerprint and not worker_busy:
-            add_event(state, "STATE_CHANGED", "routine")
-        state.fingerprint = fingerprint
-    for reason, field in DAILY.items():
-        if local_time.hour >= getattr(cfg, field) and reason not in state.daily_executed:
-            add_event(state, reason, "daily")
-    if _due(now, state.last_periodic_at, cfg.periodic_review_seconds):
-        add_event(state, "PERIODIC_REVIEW", "routine")
-    if force_trigger:
-        add_event(state, redact_text(" ".join(force_trigger.split()))[:120], "urgent", "手动触发")
+    state.fingerprint = fingerprint
+    state.pending_events = [entry for entry in state.pending_events
+                            if entry["reason"] not in {"STATE_CHANGED", "PERIODIC_REVIEW"} and entry["bucket"] != "daily"]
 
 
-def _pick_event(cfg, state, now, local_date):
+def _pick_event(cfg, state, now, local_date, action_reason, force_trigger=None):
     if state.active_turn or not _due(now, state.wakeup_backoff_until):
         return None
-    active = state.active_order
-    worker_running = bool(active and active.get("status") in {"queued", "retry_queued", "running"})
-    for bucket in ("urgent", "daily", "routine"):
-        if bucket == "routine" and not _due(now, state.next_wake_at):
-            continue
-        if cfg.can_consume_wakeup(state, bucket, local_date):
-            event = next(
-                (
-                    entry for entry in state.pending_events
-                    if entry["bucket"] == bucket
-                    and (not worker_running or entry["reason"] not in _WORKER_BUSY_DEFERRED_REASONS)
-                ),
-                None,
-            )
-            if event is not None:
-                return event
-    return None
+    if action_reason is None or action_reason in {"cooldown", "worker_busy", "monitor_only"}:
+        return None
+    bucket = "urgent" if action_reason in _URGENT_ACTIONS else "routine"
+    if not cfg.can_consume_codex(state, bucket, local_date):
+        return None
+    if action_reason == "backlog_ready" and state.daily_codex_used + 1 >= cfg.codex_daily_cap - cfg.codex_reserved_urgent:
+        return None
+    if not _due(now, state.next_wake_at) and action_reason != "worker_receipt_or_stall":
+        return None
+    return {"reason": action_reason, "bucket": bucket,
+            "detail": redact_configured_text(cfg, force_trigger or "")[:120]}
 
 
 def _write_briefing(cfg, state, event, server, thesis, now):
@@ -213,7 +204,7 @@ def _write_briefing(cfg, state, event, server, thesis, now):
         f"# Local Director 简报 · {_timestamp(now)}",
         f"- 本轮触发 `{event['reason']}` {event['detail']}",
         f"- 待处理事件 {names}",
-        f"- 已用每日唤醒 {state.daily_wakeups_used}/{cfg.gemini_daily_cap}",
+        f"- 已用每日 Codex {state.daily_codex_used}/{cfg.codex_daily_cap}",
         f"- 服务器在线 {server.get('online')} · 来源 {server.get('source')} · 调度服务 {server.get('service_active')}",
         (
             f"- 槽位态势：运行 {summary.get('running', 0)} / 总 {summary.get('slots_total', 0)} · "
@@ -224,20 +215,14 @@ def _write_briefing(cfg, state, event, server, thesis, now):
         f"- 论文 {thesis.get('chapters_done', 0)}/{thesis.get('chapters_total', 0)} 章 · 素材 {thesis.get('assets_count', 0)} · 构建 {thesis.get('build_ok')}",
         f"- 最近决策 {state.last_decision}",
     ]
-    if summary.get("starved") or summary.get("awaiting_acceptance", 0) > 0 or summary.get("missing_material", 0) > 0:
-        lines.append(
-            "- **【硬性行动指令】**：严禁再派只读诊断/方案报告单！必须直接派发端到端 `sim_ops`/`sim_repair` 执行工单，"
-            "要求 Codex 按 `prompts/server-ops-playbook.md` 切 `tcad` 账号复核读出、签署合格资格/Z绑定/P2放行/case-acceptance、"
-            "备料并调 `month_one_supply.py` 投递填满空槽，并在交卷前核验 `running + ready` 实际回升！"
-        )
+    if summary.get("free_slots") and not summary.get("ready"):
+        lines.append("- 严禁再派只读诊断工单。服务器提交仍由原 Runtime 按验签结果处理。")
     if active:
         order = active["order"]
         lines.append(f"- 工单 `{order['order_id']}` · `{order['category']}` · {active['status']} · 第 {active['attempt']} 次")
         if active["status"] == "awaiting_review":
             location = order_dir(cfg, order["order_id"]) / "receipt.json"
             lines.append(f"- 收据相对状态目录 `{location.relative_to(cfg.state_dir.resolve()).as_posix()}`")
-    if event["reason"] == "DAILY_DIGEST":
-        lines.append("- 使用 `director_ctl.py notify --level digest` 在本地归档日报。")
     if event["reason"] == "CODEX_CIRCUIT_BROKEN":
         lines.append("- 原工单已熔断，请评估新策略。")
     compact_payload = {"server_summary": summary, "thesis": thesis}
@@ -249,113 +234,192 @@ def _write_briefing(cfg, state, event, server, thesis, now):
     return path
 
 
-def build_prompt(cfg, brief_path):
-    prefix = "/goal " if cfg.use_goal_mode else ""
-    config_hint = f' Use --config "{cfg.config_path}" with director_ctl.py.' if cfg.config_path else ""
-    return (
-        f"{prefix}Read the Local Director protocol at {BASE_DIR / 'prompts' / 'director-system.md'} "
-        f"and this turn's briefing at {brief_path}. Follow the listed trigger and review boundaries. "
-        f"The workspace is {cfg.repo_root}. The runtime directory is {cfg.state_dir}. "
-        f"Finish through the local director_ctl.py finish-turn command.{config_hint}"
-    )
+def _delivery(cfg, state):
+    from director_ctl import _receipt
 
-
-def _agentapi_argv():
-    executable = shutil.which("agentapi")
-    if not executable:
-        raise FileNotFoundError("agentapi is not on PATH")
-    path = Path(executable)
-    if os.name == "nt" and path.suffix.lower() in {".bat", ".cmd"}:
-        text = path.read_text(encoding="utf-8-sig")
-        wrapper = re.fullmatch(r'\s*(?:@echo off\s*)?"([^"\r\n]+\.exe)"\s+agentapi\s+%\*\s*', text, re.I)
-        if not wrapper:
-            raise ValueError("agentapi batch launcher requires a native executable or the standard launcher")
-        return [wrapper[1], "agentapi"]
-    return [executable]
-
-
-def new_conversation(cfg, reason, prompt):
-    argv = [*_agentapi_argv(), "new-conversation", f"--model={cfg.gemini_model}", f"--title=[AutoDirector] {reason}", prompt]
-    result = subprocess.run(argv, cwd=cfg.repo_root, capture_output=True, text=True, encoding="utf-8", errors="replace", timeout=25)
-    if result.returncode:
-        raise RuntimeError(f"agentapi exited with code {result.returncode}")
-    text = result.stdout.strip()
+    active = state.active_order or {}
+    if active.get("status") != "awaiting_review" or not active.get("campaign_task"):
+        return None
     try:
-        data = json.loads(text)
-    except json.JSONDecodeError:
-        data = None
-    conversation = None
-    if isinstance(data, dict):
-        nested = (data.get("response") or {}).get("newConversation") if isinstance(data.get("response"), dict) else None
-        for source in (data, nested):
-            if isinstance(source, dict) and not conversation:
-                conversation = source.get("conversation_id") or source.get("conversationId") or source.get("id")
-    if not conversation:
-        match = re.search(r'"?conversation(?:[ _-]?id)?"?\s*[:=]\s*["\']?([\w-]{8,100})', text, re.I)
-        if match is None:
-            match = re.fullmatch(r"[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}", text)
-            conversation = match[0] if match else None
-        else:
-            conversation = match[1]
-    if not isinstance(conversation, str) or not re.fullmatch(r"[A-Za-z0-9_-]{8,128}", conversation):
-        raise RuntimeError("agentapi did not return a conversation ID")
-    return conversation
+        receipt = _receipt(cfg, active)
+    except (OSError, ValueError):
+        return {"passed": False}
+    return {"passed": receipt.precheck_passed and bool(receipt.git_changed_files),
+            "checks_passed": sum(check.get("passed") is True for check in receipt.verification_results)}
 
 
-def _record_wakeup(cfg, state, event, brief_path, now):
+def _reject_campaign_task(cfg, state, campaign, backlog, reason):
+    from director_ctl import cancel
+
+    active = state.active_order
+    task_id = active["campaign_task"]
+    cancel(cfg, state, SimpleNamespace(order=active["order"]["order_id"], reason=reason))
+    task = mark_task(backlog, task_id, "pending", error=reason)
+    if task["failures"] >= cfg.codex_max_task_failures:
+        mark_task(backlog, task_id, "blocked")
+        register_blocked(campaign, task_id, "checks_failed", reason, task["failures"])
+
+
+def _check_campaign_dispatch(campaign, task_id):
+    if task_id == "holdout-blind-eval":
+        assert_holdout_read_allowed(campaign)
+        if campaign["training"] != "ready" or campaign["holdout"]["blind_eval_count"] != 0:
+            raise ValueError("holdout blind evaluation requires a ready model and no previous evaluation")
+
+
+def _execute_decision(cfg, state, campaign, backlog, decision, delivery, now, *, urgent=False):
+    from director_ctl import accept, dispatch
+
+    validate_action(cfg, campaign, backlog, decision, state.to_dict(), delivery)
+    task_id = decision["task"]
+    reason = decision["reason"]
+    action = decision["action"]
+    if action == "dispatch":
+        task = next(item for item in backlog["tasks"] if item["task"] == task_id)
+        _check_campaign_dispatch(campaign, task_id)
+        order = WorkOrder.from_dict(task_work_order(task, created_by_turn="campaign-supervisor",
+                                                   timeout_seconds=cfg.codex_default_timeout_seconds, now=now))
+        try:
+            dispatch_args = {"campaign_task": task_id, "now": now}
+            if urgent:
+                dispatch_args["urgent"] = True
+            dispatch(cfg, state, order, **dispatch_args)
+        finally:
+            active = state.active_order or {}
+            if (active.get("campaign_task") == task_id
+                    and active.get("order", {}).get("order_id") == order.order_id):
+                mark_task(backlog, task_id, "running")
+        return False
+    if action == "accept":
+        result = accept(cfg, state, SimpleNamespace(order=state.active_order["order"]["order_id"], note=reason,
+                                                   commit_msg=f"feat(campaign): {task_id}", push_pr=False, force=False))
+        mark_task(backlog, task_id, "accepted")
+        return bool(result["commit"])
+    if action == "reject":
+        _reject_campaign_task(cfg, state, campaign, backlog, reason)
+    elif action == "blocked":
+        task = mark_task(backlog, task_id, "blocked")
+        register_blocked(campaign, task_id, decision["blocked_reason"], reason, task["failures"])
+    elif action == "advance":
+        return advance_phase(campaign, now=_timestamp(now)) is not None
+    return False
+
+
+def _record_supervisor(cfg, state, campaign, backlog, event, server, delivery, now, observed_progress):
+    reason = event["reason"]
+    state.active_turn = {"type": "codex_supervisor", "started_at": _timestamp(now), "reason": reason}
+    state.daily_codex_used += 1
+    save_state(cfg, state)
     try:
-        conversation = new_conversation(cfg, event["reason"], build_prompt(cfg, brief_path))
+        decision = run_supervisor(cfg, campaign, backlog, server, state.to_dict(), reason, delivery)
+        changed = _execute_decision(
+            cfg, state, campaign, backlog, decision, delivery, now,
+            urgent=event["bucket"] == "urgent",
+        )
+        record_wakeup(cfg, campaign, decision["action"], decision["task"], decision["reason"],
+                      changed=changed or observed_progress, now=now)
+        state.last_decision = decision["reason"][:500]
+        state.last_periodic_at = _timestamp(now)
+        state.wakeup_failures = 0
+        state.wakeup_backoff_until = ""
+        state.next_wake_at = (_timestamp(now + timedelta(seconds=decision["next_check_seconds"]))
+                              if decision["action"] in {"noop", "log"} else "")
+        state.pending_events = [item for item in state.pending_events if item["reason"] != "SIM_MILESTONE_COLLECTED"]
+        append_jsonl(
+            cfg.state_dir / "turns.jsonl",
+            {
+                "status": "supervisor_complete",
+                "action": decision["action"],
+                "task": decision.get("task"),
+                "reason": decision["reason"],
+                "cooldown_until": campaign.get("cooldown_until"),
+                "at": _timestamp(now),
+            },
+        )
+        return decision
     except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
         delay = BACKOFF_SECONDS[min(state.wakeup_failures, len(BACKOFF_SECONDS) - 1)]
         state.wakeup_failures += 1
         state.wakeup_backoff_until = _timestamp(now + timedelta(seconds=delay))
-        append_jsonl(cfg.state_dir / "turns.jsonl", {"status": "start_failed", "reason": event["reason"], "at": _timestamp(now),
-                                                    "error": redact_text(str(error)), "retry_at": state.wakeup_backoff_until})
+        failure = redact_configured_text(cfg, str(error))[:300]
+        record_wakeup(cfg, campaign, "error", None, failure, changed=observed_progress, now=now)
+        append_jsonl(
+            cfg.state_dir / "turns.jsonl",
+            {
+                "status": "supervisor_failed",
+                "reason": event["reason"],
+                "at": _timestamp(now),
+                "error": failure,
+                "retry_at": state.wakeup_backoff_until,
+            },
+        )
         return None
-    reason = event["reason"]
-    state.active_turn = {"conversation_id": conversation, "started_at": _timestamp(now), "reason": reason}
-    state.daily_wakeups_used += 1
-    if reason in DAILY and reason not in state.daily_executed:
-        state.daily_executed.append(reason)
-    if reason == "PERIODIC_REVIEW":
-        state.last_periodic_at = _timestamp(now)
-    if reason == "STATE_CHANGED":
-        cooldown_until = now + timedelta(seconds=_STATE_CHANGE_COOLDOWN_SECONDS)
-        if not state.next_wake_at or parse_time(state.next_wake_at) < cooldown_until:
-            state.next_wake_at = _timestamp(cooldown_until)
-    state.pending_events.remove(event)
-    state.wakeup_failures = 0
-    state.wakeup_backoff_until = ""
-    return conversation
+    finally:
+        state.active_turn = None
+        save_state(cfg, state)
 
 
-def _tick_state(cfg, state, server, thesis, now, dry_run, force_trigger):
+def _tick_state(cfg, state, server, thesis, now, dry_run, force_trigger, scheduled_pulse=False):
     local_time = cfg.local_time(now)
     cfg.reset_day(state, local_time.date())
+    campaign, backlog = ensure_campaign_files(cfg.state_dir, create=not dry_run)
     worker = probe_codex_worker(cfg, state)
     _advance_worker(cfg, state, worker, now, dry_run=dry_run)
-    _observe_events(cfg, state, server, thesis, now, local_time, force_trigger, dry_run=dry_run)
-    event = _pick_event(cfg, state, now, local_time.date())
-    result = {"dry_run": dry_run, "reason": event["reason"] if event else None, "bucket": event["bucket"] if event else None,
-              "pending_events": [item["reason"] for item in state.pending_events], "conversation_id": None,
-              "daily_wakeups_used": state.daily_wakeups_used, "backoff_until": state.wakeup_backoff_until}
+    _observe_events(cfg, state, server, thesis, now, dry_run=dry_run)
+    observed_progress = observe_campaign(cfg, campaign, server, now)
+    if observed_progress:
+        campaign["wakeups_without_progress"] = 0
+    delivery = _delivery(cfg, state)
+    if not dry_run and cfg.campaign_execution_enabled and delivery is not None and not delivery["passed"]:
+        _reject_campaign_task(cfg, state, campaign, backlog, "工单未通过确定性验收；查看对应收据或启动错误记录。")
+        delivery = None
+    is_actionable, action_reason = actionable(
+        cfg,
+        campaign,
+        backlog,
+        server,
+        state.to_dict(),
+        now=now,
+        scheduled_pulse=scheduled_pulse,
+    )
+    if action_reason == "simulation_supply" and any(
+        item["reason"] == "SLOTS_STARVING" for item in state.pending_events
+    ):
+        action_reason = "SLOTS_STARVING"
+    if action_reason is None and any(item["reason"] == "SIM_MILESTONE_COLLECTED" for item in state.pending_events):
+        is_actionable, action_reason = True, "phase_gate"
+    if action_reason is None and force_trigger:
+        is_actionable, action_reason = True, "manual_review"
+    event = _pick_event(cfg, state, now, local_time.date(), action_reason, force_trigger)
+    result = {
+        "dry_run": dry_run,
+        "reason": event["reason"] if event else None,
+        "bucket": event["bucket"] if event else None,
+        "pending_events": [item["reason"] for item in state.pending_events],
+        "supervisor": None,
+        "daily_codex_used": state.daily_codex_used,
+        "backoff_until": state.wakeup_backoff_until,
+        "action_reason": action_reason,
+    }
     if dry_run:
-        if event:
-            result["prompt"] = build_prompt(cfg, cfg.state_dir / "briefings" / "brief-preview.md")
+        result["actionable"] = is_actionable
         return result
     if event:
-        brief_path = _write_briefing(cfg, state, event, server, thesis, now)
-        save_state(cfg, state)
-        result["conversation_id"] = _record_wakeup(cfg, state, event, brief_path, now)
-        result["briefing"] = str(brief_path)
-        result["daily_wakeups_used"] = state.daily_wakeups_used
+        _write_briefing(cfg, state, event, server, thesis, now)
+        decision = _record_supervisor(cfg, state, campaign, backlog, event, server, delivery, now, observed_progress)
+        result["supervisor"] = decision
+        result["daily_codex_used"] = state.daily_codex_used
         result["backoff_until"] = state.wakeup_backoff_until
+    save_campaign(cfg.state_dir, campaign)
+    save_backlog(cfg.state_dir, backlog)
     save_state(cfg, state)
-    refresh_status(cfg, state, server, thesis)
+    refresh_status(cfg, state, server, thesis, publish=cfg.publish_campaign_status)
     return result
 
 
 def _pump_queued_orders(cfg) -> bool:
+    if not cfg.campaign_execution_enabled:
+        return False
     with state_lock(cfg):
         state = load_state(cfg)
         active = state.active_order
@@ -367,6 +431,9 @@ def _pump_queued_orders(cfg) -> bool:
         previous = DeliveryReceipt.from_dict(retry["previous_receipt"]) if retry.get("previous_receipt") else None
         feedback = retry.get("feedback", "")
         try:
+            if active.get("campaign_task") == "holdout-blind-eval":
+                campaign, _ = ensure_campaign_files(cfg.state_dir, create=False)
+                _check_campaign_dispatch(campaign, active["campaign_task"])
             run_meta = launch_worker(cfg, order, attempt=attempt, previous_receipt=previous, feedback=feedback)
         except (OSError, RuntimeError, ValueError) as error:
             write_json(order_dir(cfg, order.order_id) / "launch_error.json", {"error": redact_text(str(error))})
@@ -383,16 +450,50 @@ def _pump_queued_orders(cfg) -> bool:
         return True
 
 
-def tick(cfg, *, dry_run=False, force_trigger=None, now=None):
+def tick(cfg, *, dry_run=False, force_trigger=None, now=None, scheduled_pulse=False):
     moment = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    if not dry_run:
-        _pump_queued_orders(cfg)
-    server = probe_server(cfg)
-    thesis = probe_thesis(cfg)
+    if cfg.campaign_expired(moment):
+        return {"status": "campaign_expired", "supervisor": None}
     if dry_run:
-        return _tick_state(cfg, load_state(cfg), server, thesis, moment, True, force_trigger)
-    with state_lock(cfg):
-        return _tick_state(cfg, load_state(cfg), server, thesis, moment, False, force_trigger)
+        server = probe_server(cfg)
+        thesis = probe_thesis(cfg)
+        return _tick_state(cfg, load_state(cfg), server, thesis, moment, True, force_trigger, scheduled_pulse)
+    try:
+        with file_lock(cfg.state_dir / "tick.lock"):
+            _pump_queued_orders(cfg)
+            server = probe_server(cfg)
+            thesis = probe_thesis(cfg)
+            with state_lock(cfg):
+                return _tick_state(cfg, load_state(cfg), server, thesis, moment, False, force_trigger, scheduled_pulse)
+    except LockBusy:
+        return {"status": "tick_busy", "supervisor": None}
+
+
+def _daemon_argv(cfg) -> list[str]:
+    argv = [sys.executable, "-B", str(Path(__file__).resolve())]
+    if cfg.config_path:
+        argv.extend(["--config", str(cfg.config_path)])
+    argv.append("--daemon")
+    return argv
+
+
+def keepalive(cfg) -> dict:
+    if cfg.campaign_expired(datetime.now(timezone.utc)):
+        return {"status": "campaign_expired"}
+    lock_path = cfg.state_dir / "watchdog.lock"
+    try:
+        with file_lock(lock_path):
+            argv = _daemon_argv(cfg)
+            detach = (
+                {"creationflags": subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP}
+                if os.name == "nt" else {"start_new_session": True}
+            )
+            with (cfg.state_dir / "watchdog.log").open("ab") as output:
+                process = subprocess.Popen(argv, cwd=cfg.repo_root, stdin=subprocess.DEVNULL,
+                                           stdout=output, stderr=output, **detach)
+    except LockBusy:
+        return {"status": "already_running"}
+    return {"status": "started", "pid": process.pid}
 
 
 @contextmanager
@@ -421,38 +522,63 @@ def main(argv=None):
     modes = parser.add_mutually_exclusive_group(required=True)
     modes.add_argument("--daemon", action="store_true")
     modes.add_argument("--tick", action="store_true")
+    modes.add_argument("--keepalive", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force-trigger")
+    parser.add_argument("--scheduled-pulse", action="store_true")
     parser.add_argument("--exit-with-parent", action="store_true")
     args = parser.parse_args(argv)
-    if args.daemon and (args.dry_run or args.force_trigger):
-        parser.error("--dry-run and --force-trigger require --tick")
+    if args.daemon and (args.dry_run or args.force_trigger or args.scheduled_pulse):
+        parser.error("daemon mode does not accept tick-only options")
+    if args.keepalive and (args.dry_run or args.force_trigger or args.scheduled_pulse or args.exit_with_parent):
+        parser.error("keepalive mode does not accept tick-only or daemon-only options")
+    if args.scheduled_pulse and not args.tick:
+        parser.error("--scheduled-pulse requires --tick")
     if args.exit_with_parent and not args.daemon:
         parser.error("--exit-with-parent requires --daemon")
     try:
         cfg = load_config(args.config)
+        if args.keepalive:
+            print(json.dumps(keepalive(cfg), ensure_ascii=False))
+            return 0
         if args.dry_run:
-            print(json.dumps(tick(cfg, dry_run=True, force_trigger=args.force_trigger), ensure_ascii=False))
+            print(json.dumps(tick(
+                cfg,
+                dry_run=True,
+                force_trigger=args.force_trigger,
+                scheduled_pulse=args.scheduled_pulse,
+            ), ensure_ascii=False))
+            return 0
+        if args.tick:
+            print(json.dumps(tick(cfg, force_trigger=args.force_trigger,
+                                  scheduled_pulse=args.scheduled_pulse), ensure_ascii=False))
             return 0
         watcher = ParentWatcher() if args.exit_with_parent else None
         try:
             with _acquire_watchdog_lock(cfg.state_dir / "watchdog.lock", reclaim_orphan=bool(args.exit_with_parent)):
                 while True:
+                    if cfg.campaign_expired(datetime.now(timezone.utc)):
+                        print('{"status": "campaign_expired"}', flush=True)
+                        return 0
                     if watcher and watcher.parent_exited():
                         print(json.dumps({"status": "parent_exited", "ppid": watcher.ppid}, ensure_ascii=False), flush=True)
                         return 0
                     started = time.monotonic()
                     try:
-                        result = tick(cfg, force_trigger=args.force_trigger)
+                        result = tick(
+                            cfg,
+                            force_trigger=args.force_trigger,
+                            scheduled_pulse=args.scheduled_pulse,
+                        )
                         print(json.dumps(result, ensure_ascii=False), flush=True)
                     except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
                         if not args.daemon:
                             raise
                         LOG.error("watchdog tick failed: %s", redact_text(str(error)))
-                    if args.tick:
-                        return 0
                     deadline = started + cfg.heartbeat_interval_seconds
                     while time.monotonic() < deadline:
+                        if cfg.campaign_expired(datetime.now(timezone.utc)):
+                            break
                         if watcher and watcher.parent_exited():
                             print(json.dumps({"status": "parent_exited", "ppid": watcher.ppid}, ensure_ascii=False), flush=True)
                             return 0

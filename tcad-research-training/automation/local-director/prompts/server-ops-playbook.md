@@ -1,10 +1,10 @@
 # 服务器仿真端到端推进手册（验收、签名、备料、投递、填槽）
 
-本手册继承原服务器 `team-leader.md` 的全部实操能力，由本地 Gemini 4 Neon 总监统一决策、由本地 Codex (`auto/gpt-6.2-sol high`) 通过 SSH 执行。**目标是让 `r0.6` 16 槽共享池持续满载推进，绝不只读干看！**
+本手册记录原服务器 Runtime 的验收、供料和复核入口，供本地 Codex Supervisor 生成建议和检查清单。Local Director 不通过 SSH 执行服务器写操作，实际变更由原生调度器及维护者按项目授权完成。
 
 ## 1. 唯一执行原则
 - **必须端到端闭环**：只要服务器存在空槽（`free_slots >= 2` 且 `ready == 0`）、`awaiting_acceptance > 0`、`missing_material > 0` 或新收集里程碑，Codex 必须在**同一个工单内**完成：**核验归档读出 → 签发验收/资格/Z绑定/P2放行 → 备料与更新供料配方 → 调 `month_one_supply.py` 发布验签批次 → 复查 `explain --month-one` 确认 `running + ready` 实际增加**。
-- **使用 `tcad` 服务账号运行项目代码**：通过 SSH 执行工作区 `/home/tcad/course-workspace` 下脚本、读取器、验收签名和 `month_one_supply.py` 时，一律使用 `runuser -u tcad -- ...`（严禁以 root 污染 `tcad` 拥有的账本和状态文件权限）。
+- **账号和入口**：服务器端操作由既有 Runtime 负责，需维护者在受控环境核对执行账号和权限。
 - **保持唯一调度器与原账本不可篡改**：
   - 严禁另开求解池、严禁删除 `.solver.lock`、严禁杀死在途正常仿真、严禁修改或覆盖原运行目录、原 `run_id` 与原失败记录；
   - 新批次必须经原验签入口 `/opt/tcad-autonomy/python/bin/python3 -B /opt/tcad-autonomy/current/month_one_supply.py --policy /etc/tcad-autonomy/policy.json <workspace-relative-batch> <batch-sha256>` 发布；

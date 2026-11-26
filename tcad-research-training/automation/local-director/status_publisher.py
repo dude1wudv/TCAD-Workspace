@@ -3,17 +3,20 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 import shlex
 import subprocess
 import unicodedata
 from datetime import datetime, timezone
 
+from campaign_fsm import load_campaign, public_campaign_with_metrics, update_public_metrics
 from config import ssh_command
 from notifier import find_sensitive, redact_text
 from schemas import atomic_write, read_json, utc_now, write_json
 
 
+LOG = logging.getLogger(__name__)
 _ORDER_CATEGORIES = {
     "sim_ops", "sim_repair", "data_extract", "predictor", "thesis_assets", "latex_build", "web_status",
 }
@@ -110,7 +113,7 @@ def _public_snapshot(cfg, state, server, thesis, now, stamp) -> dict:
     if state.get("server_offline") or server.get("online") is False:
         director_state = "offline"
     elif state.get("active_turn") is not None:
-        director_state = "gemini_active"
+        director_state = "codex_supervisor_active"
     elif order_state in {"running", "retrying"}:
         director_state = "codex_running"
     elif backoff is not None and backoff > now:
@@ -128,8 +131,8 @@ def _public_snapshot(cfg, state, server, thesis, now, stamp) -> dict:
         "director_state": director_state,
         "mode": "event_driven",
         "updated_at": stamp,
-        "daily_wakeups_used": _count(state.get("daily_wakeups_used")),
-        "daily_wakeups_cap": _count(cfg.gemini_daily_cap),
+        "daily_codex_used": _count(state.get("daily_codex_used")),
+        "daily_codex_cap": _count(cfg.codex_daily_cap),
         "active_order_category": category if valid_order else "none",
         "active_order_state": order_state,
         "active_order_attempt": attempt,
@@ -139,6 +142,77 @@ def _public_snapshot(cfg, state, server, thesis, now, stamp) -> dict:
         "thesis_build_ok": build_ok if type(build_ok) is bool else None,
         "recent_public_note": _public_note(state.get("recent_public_note"), cfg.server_ssh_target),
     }
+
+
+def _metric(value) -> int | None:
+    return value if type(value) is int and value >= 0 else None
+
+
+def _first_metric(*values) -> int | None:
+    return next((value for value in values if _metric(value) is not None), None)
+
+
+def _campaign_disks(server: dict) -> dict[str, int | None]:
+    summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
+    observation = server.get("observation") if isinstance(server.get("observation"), dict) else {}
+    scheduler = observation.get("scheduler") if isinstance(observation.get("scheduler"), dict) else {}
+    virtual_machine = scheduler.get("virtual_machine") if isinstance(scheduler.get("virtual_machine"), dict) else {}
+    storage = virtual_machine.get("storage") if isinstance(virtual_machine.get("storage"), dict) else {}
+    server_storage = server.get("storage") if isinstance(server.get("storage"), dict) else {}
+    growth = server.get("vm_disk_growth") if isinstance(server.get("vm_disk_growth"), dict) else {}
+    return {
+        "server_free_bytes": _first_metric(
+            server.get("server_free_bytes"), summary.get("server_free_bytes"), server_storage.get("available_bytes")
+        ),
+        "vm_allocated_bytes": _first_metric(
+            server.get("vm_allocated_bytes"), summary.get("vm_allocated_bytes"), storage.get("total_bytes")
+        ),
+        "vm_free_bytes": _first_metric(
+            server.get("vm_free_bytes"), summary.get("vm_free_bytes"), storage.get("available_bytes")
+        ),
+        "vm_growth_bytes": _first_metric(
+            server.get("vm_growth_bytes"), summary.get("vm_growth_bytes"), growth.get("available_bytes")
+        ),
+    }
+
+
+def observe_campaign(cfg, campaign, server, now) -> bool:
+    """Project existing evidence in memory and report an increase in verified archive counts."""
+    update_public_metrics(campaign, disks=_campaign_disks(server))
+    try:
+        archive = read_json(cfg.state_dir / "archive-summary.json")
+    except FileNotFoundError:
+        return False
+    except (OSError, ValueError):
+        LOG.warning("Campaign archive summary is unreadable.")
+        return False
+    if not isinstance(archive, dict) or archive.get("schema") != "tcad-result-archive-summary-v1":
+        LOG.warning("Campaign archive summary has an unexpected schema.")
+        return False
+    counts = {key: _metric(archive.get(key)) for key in ("mirrored", "cloud_verified")}
+    if any(value is None for value in counts.values()):
+        LOG.warning("Campaign archive summary has invalid counts.")
+        return False
+    changed = False
+    for key, value in counts.items():
+        if value > campaign["archive"][key]:
+            campaign["archive"][key] = value
+            changed = True
+    if changed:
+        campaign["last_progress_at"] = now.astimezone(timezone.utc).isoformat(timespec="seconds")
+    return changed
+
+
+def _campaign_snapshot(cfg, server, state):
+    campaign = load_campaign(cfg.state_dir, create=False)
+    public = public_campaign_with_metrics(campaign)
+    public["codex"] = {
+        "used": _count(state.get("daily_codex_used")),
+        "cap": _count(cfg.codex_daily_cap),
+        "reserved": _count(cfg.codex_reserved_urgent),
+    }
+    public["disks"] = _campaign_disks(server)
+    return public
 
 
 def _send_snapshot(cfg, snapshot) -> str | None:
@@ -228,7 +302,12 @@ def refresh_status(cfg, state, server_snap=None, thesis_snap=None, *, publish=Tr
             "last_sprint_utc": previous.get("thesis_last_sprint_utc"),
             "build_ok": previous.get("thesis_build_ok"),
         }
-    snapshot = _public_snapshot(cfg, local_state, server_snap or {}, thesis_snap or {}, now, stamp)
+    server = server_snap or {}
+    snapshot = _public_snapshot(cfg, local_state, server, thesis_snap or {}, now, stamp)
+    try:
+        snapshot["campaign"] = _campaign_snapshot(cfg, server, local_state)
+    except (OSError, ValueError):
+        snapshot["campaign"] = None
     if not dashboard_only:
         write_json(snapshot_path, snapshot)
     publish_state, publish_warning = _publish(cfg, snapshot, now) if publish else ("skipped", None)
@@ -242,7 +321,7 @@ def refresh_status(cfg, state, server_snap=None, thesis_snap=None, *, publish=Tr
         f"- 刷新时间：{stamp}",
         f"- 状态记录时间：{local_state.get('updated_at') or '—'}",
         f"- 总监状态：{snapshot['director_state']}",
-        f"- 今日唤醒：{snapshot['daily_wakeups_used']} / {snapshot['daily_wakeups_cap']}",
+        f"- 今日 Codex：{snapshot['daily_codex_used']} / {snapshot['daily_codex_cap']}",
         f"- 工单：{snapshot['active_order_category']} / {snapshot['active_order_state']}"
         f"（第 {snapshot['active_order_attempt']} 次）",
         f"- 本地工单状态：{(active.get('order') or {}).get('order_id', '—')} / {active.get('status', '—')}",
@@ -256,6 +335,25 @@ def refresh_status(cfg, state, server_snap=None, thesis_snap=None, *, publish=Tr
         f"- 公开说明：{snapshot['recent_public_note'] or '—'}",
         f"- 远端发布：{publish_state}",
     ]
+    campaign = snapshot.get("campaign")
+    if isinstance(campaign, dict):
+        blocks = campaign.get("blocks", {})
+        lines.extend(
+            (
+                f"- 当前阶段：{campaign.get('phase', '—')}",
+                "- 科研块："
+                + " · ".join(
+                    f"{key} {value.get('accepted') if isinstance(value, dict) else '—'}/"
+                    f"{value.get('total') if isinstance(value, dict) else '—'}"
+                    for key, value in blocks.items()
+                ),
+                f"- 归档：本地镜像 {campaign.get('archive', {}).get('mirrored', 0)} · 云盘核验 {campaign.get('archive', {}).get('cloud_verified', 0)}",
+                f"- 训练：{campaign.get('training', 'waiting')} · 工作台：{campaign.get('desk', 'waiting')}",
+            )
+        )
+        for item in campaign.get("blocked", []):
+            if isinstance(item, dict):
+                lines.append(f"- BLOCKED：{item.get('task', 'unknown')} / {item.get('reason', 'dependency_blocked')}")
     if warning:
         lines.append(f"- 本地警告：{warning}")
     if publish_warning:
