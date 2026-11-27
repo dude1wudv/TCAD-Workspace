@@ -45,7 +45,11 @@ BLOCKED_REASONS = (
 TASK_STATUSES = ("pending", "running", "accepted", "blocked", "cooldown")
 
 
-def _now(value: str | None = None) -> datetime:
+def _now(value: datetime | str | None = None) -> datetime:
+    if isinstance(value, datetime):
+        if value.tzinfo is None:
+            raise ValueError("campaign timestamps require a timezone")
+        return value.astimezone(timezone.utc)
     if value:
         parsed = datetime.fromisoformat(value)
         if parsed.tzinfo is None:
@@ -328,6 +332,14 @@ def ensure_campaign_files(state_dir: Path, *, create: bool = True) -> tuple[dict
             write_json(state_path, state)
     if backlog_path.exists():
         backlog = _validate_backlog(read_json(backlog_path))
+        defaults = {item["task"]: item for item in default_backlog()["tasks"]}
+        for item in backlog["tasks"]:
+            template = defaults.get(item["task"])
+            if template and item.get("status") == "pending":
+                item["phase"] = list(template["phase"])
+                item["prerequisites"] = list(template["prerequisites"])
+                item["allowed_paths"] = list(template["allowed_paths"])
+                item["acceptance_checks"] = list(template["acceptance_checks"])
     else:
         backlog = default_backlog()
         if create:
@@ -639,20 +651,96 @@ OPERATIONAL_TASKS: dict[str, dict[str, Any]] = {
 }
 
 
+OP_TASK_COOLDOWN_SECONDS = 1800
+
+
 def is_operational_task(task_id: str | None) -> bool:
     return isinstance(task_id, str) and task_id in OPERATIONAL_TASKS
 
 
-def operational_tasks(phase: str, server: dict[str, Any] | None = None) -> list[str]:
+def operational_signature(server: dict[str, Any] | None) -> str:
+    if not isinstance(server, dict):
+        return "{}"
+    summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
+    sig = {
+        "online": server.get("online"),
+        "service_active": server.get("service_active"),
+        "running": summary.get("running"),
+        "ready": summary.get("ready"),
+        "quarantined": summary.get("quarantined"),
+        "awaiting_acceptance": summary.get("awaiting_acceptance"),
+        "decision_pending": summary.get("decision_pending"),
+        "missing_material": summary.get("missing_material"),
+        "actionable_blocked_count": summary.get("actionable_blocked_count", summary.get("blocked_count")),
+        "r06_released_runs": summary.get("r06_released_runs"),
+    }
+    return str(sorted(sig.items()))
+
+
+def record_operational_cooldown(
+    state: dict[str, Any],
+    task_id: str,
+    server: dict[str, Any] | None,
+    *,
+    now: datetime | None = None,
+    seconds: int = OP_TASK_COOLDOWN_SECONDS,
+) -> None:
+    if not is_operational_task(task_id):
+        return
+    moment = _now(now)
+    bucket = state.setdefault("_op_cooldowns", {})
+    if not isinstance(bucket, dict):
+        bucket = {}
+        state["_op_cooldowns"] = bucket
+    bucket[task_id] = {
+        "until": _stamp(moment + timedelta(seconds=max(60, int(seconds)))),
+        "sig": operational_signature(server),
+    }
+
+
+def operational_cooldown_active(
+    state: dict[str, Any] | None,
+    task_id: str,
+    server: dict[str, Any] | None,
+    *,
+    now: datetime | None = None,
+) -> bool:
+    if not isinstance(state, dict) or not is_operational_task(task_id):
+        return False
+    bucket = state.get("_op_cooldowns")
+    if not isinstance(bucket, dict):
+        return False
+    entry = bucket.get(task_id)
+    if not isinstance(entry, dict):
+        return False
+    until = entry.get("until")
+    if not isinstance(until, str) or not until:
+        return False
+    if entry.get("sig") != operational_signature(server):
+        return False
+    try:
+        return _now(now) < _now(until)
+    except ValueError:
+        return False
+
+
+def operational_tasks(
+    phase: str,
+    server: dict[str, Any] | None = None,
+    *,
+    campaign: dict[str, Any] | None = None,
+    now: datetime | None = None,
+) -> list[str]:
     if not isinstance(server, dict) or phase == "P0_BOOTSTRAP":
         return []
     summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
     ready: list[str] = []
-    if server.get("online") is False or server.get("service_active") is False or summary.get("repair_requests", 0) > 0:
+    if server.get("online") is False or server.get("service_active") is False or summary.get("quarantined", 0) > 0:
         ready.append("sim-repair")
+    actionable_blocked = summary.get("actionable_blocked_count", summary.get("blocked_count", 0))
     if phase in {"P1A_SIM_DEV", "P1B_SIM_AL1", "P1C_SIM_AL2_HOLDOUT"} and (
         summary.get("starved")
-        or (summary.get("free_slots", 0) >= 2 and not summary.get("ready"))
+        or (summary.get("free_slots", 0) >= 2 and not summary.get("ready") and actionable_blocked > 0)
         or summary.get("awaiting_acceptance", 0) > 0
         or summary.get("decision_pending", 0) > 0
         or summary.get("missing_material", 0) > 0
@@ -665,7 +753,7 @@ def operational_tasks(phase: str, server: dict[str, Any] | None = None) -> list[
         "P1A_SIM_DEV", "P1B_SIM_AL1", "P1C_SIM_AL2_HOLDOUT", "P2A_DEV_TRAIN_AL1", "P2B_RETRAIN_AL2",
     }:
         ready.append("archive-remote-sync")
-    return ready
+    return [task_id for task_id in ready if not operational_cooldown_active(campaign, task_id, server, now=now)]
 
 
 def operational_work_order(task_id: str, *, created_by_turn: str, timeout_seconds: int = 1800,

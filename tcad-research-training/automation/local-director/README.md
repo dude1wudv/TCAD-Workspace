@@ -20,6 +20,8 @@ python watchdog.py --daemon
 
 `--tick --dry-run` 做只读采样并输出拟触发事件。正常 tick 保存简报、状态与收据，并按变化发布公开快照。每日最多使用 30 次 Codex，普通工单最多使用前 24 次，保留 6 次处理紧急运维、故障和阶段里程碑。
 
+`codex_visible_thread_id` 可配置为桌面端本地 Codex 线程 ID。配置后，新工单首次启动会通过 `codex resume` 进入该可见线程，命令和进度会出现在桌面端；已有工单重试优先沿用自己的历史会话，当前在途工单不迁移。
+
 ## 工单和决策
 
 ```powershell

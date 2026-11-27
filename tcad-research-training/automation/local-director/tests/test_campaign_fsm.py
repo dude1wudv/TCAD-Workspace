@@ -318,6 +318,101 @@ class CampaignFsmTests(unittest.TestCase):
                 (True, "simulation_supply"),
             )
 
+    def test_historical_repair_requests_and_completed_s_drive_noise_do_not_deadlock(self):
+        from campaign_fsm import operational_tasks, record_operational_cooldown
+        from codex_runner import finalize_and_precheck
+        from probes import summarize_server
+        from schemas import WorkOrder
+
+        with tempfile.TemporaryDirectory() as directory:
+            state_dir = Path(directory)
+            cfg = Config(state_dir=state_dir, campaign_execution_enabled=True, codex_sandbox="danger-full-access")
+            campaign, backlog = ensure_campaign_files(state_dir)
+            campaign["phase"] = "P1A_SIM_DEV"
+            snap = {
+                "online": True,
+                "service_active": True,
+                "observation": {
+                    "running_count": 4,
+                    "active_count": 4,
+                    "max_parallel_jobs": 16,
+                    "scheduler": {"pool": {"slots": {"total": 16, "free": 12, "quarantined": 0}}},
+                    "repair_requests": [{"id": "r06-p0-old-failed"}],
+                    "runs": [],
+                },
+                "explain": {
+                    "replenishment": {
+                        "ready": 0,
+                        "preparing": True,
+                        "blocked_count": 2,
+                        "blocked_by_stage": {"awaiting_acceptance": 0, "missing_material": 0},
+                        "blocked": {
+                            "LHS01-development/C0/S": "Drive archive download failed or did not match its receipt",
+                            "LHS01-development/C1/S": "Drive archive download failed or did not match its receipt",
+                        },
+                    }
+                },
+                "case_waits": {
+                    "cases": [
+                        *[{"block": "Z", "status": "zero_baseline_reused"} for _ in range(20)],
+                        *[{"block": "T", "status": "acceptance_recorded"} for _ in range(60)],
+                        *[{"block": "T", "status": "run_bound"} for _ in range(8)],
+                        *[{"block": "S", "status": "acceptance_recorded"} for _ in range(150)],
+                        *[{"block": "R", "status": "zero_source_reused"} for _ in range(12)],
+                    ]
+                },
+                "server_free_bytes": 46 * 1024**3,
+                "server_cloud_verified": 129,
+            }
+            snap["summary"] = summarize_server(snap)
+            self.assertEqual(snap["summary"]["actionable_blocked_count"], 0)
+            self.assertFalse(snap["summary"]["starved"])
+            self.assertEqual(operational_tasks("P1A_SIM_DEV", snap, campaign=campaign, now=NOW), [])
+            self.assertTrue(observe_campaign(cfg, campaign, snap, NOW))
+            self.assertEqual(campaign["archive"]["cloud_verified"], 129)
+
+            snap["summary"]["decision_pending"] = 1
+            self.assertEqual(operational_tasks("P1A_SIM_DEV", snap, campaign=campaign, now=NOW), ["sim-ops-refill"])
+            record_operational_cooldown(campaign, "sim-ops-refill", snap, now=NOW)
+            self.assertEqual(operational_tasks("P1A_SIM_DEV", snap, campaign=campaign, now=NOW), [])
+            snap["summary"]["decision_pending"] = 2
+            self.assertEqual(operational_tasks("P1A_SIM_DEV", snap, campaign=campaign, now=NOW), ["sim-ops-refill"])
+
+    def test_zero_quota_auto_accept_and_auto_advance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            state_dir = Path(directory)
+            cfg = Config(state_dir=state_dir, public_status_url="", campaign_execution_enabled=True)
+            campaign, backlog = ensure_campaign_files(state_dir)
+            for task in backlog["tasks"]:
+                if "P0_BOOTSTRAP" in task["phase"]:
+                    task["status"] = "accepted"
+            campaign["milestones"]["bootstrap_ready"] = True
+            campaign["phase"] = "P1A_SIM_DEV"
+            write_json(state_dir / "campaign_state.json", campaign)
+            write_json(state_dir / "campaign_backlog.json", backlog)
+            snap = {
+                "online": True,
+                "service_active": True,
+                "summary": {
+                    "running": 0, "free_slots": 16, "slots_total": 16, "ready": 0, "starved": False,
+                    "block_accepted_counts": {"Z": 20, "T": 68, "S": 150, "R": 12, "AL": 0},
+                },
+            }
+            with (
+                patch("watchdog.probe_server", return_value=snap),
+                patch("watchdog.probe_thesis", return_value={}),
+                patch("watchdog.run_supervisor", side_effect=AssertionError("should auto-advance without supervisor")) as sup,
+            ):
+                # Mark all P2A tasks accepted so tick only tests zero-quota auto_advance without triggering backlog dispatch
+                for task in backlog["tasks"]:
+                    task["status"] = "accepted"
+                write_json(state_dir / "campaign_backlog.json", backlog)
+                tick(cfg, now=NOW)
+                sup.assert_not_called()
+            updated, _ = ensure_campaign_files(state_dir, create=False)
+            self.assertEqual(updated["phase"], "P2A_DEV_TRAIN_AL1")
+            self.assertTrue(updated["gates"]["G1"])
+
 
 if __name__ == "__main__":
     unittest.main()
