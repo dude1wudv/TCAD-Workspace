@@ -531,6 +531,35 @@ class WorkerTests(OfflineCase):
             self.assertEqual(read_json(Path(meta["attempt_dir"]) / "receipt.json"), expected.to_dict())
         self.assertEqual(read_json(self.folder / "receipt.json"), second_receipt.to_dict())
 
+    def test_new_worker_resumes_configured_visible_thread(self):
+        from codex_runner import launch_worker
+
+        self.cfg = replace(self.cfg, codex_visible_thread_id="visible-thread")
+        meta = self.launch()
+        self.assertEqual(meta["codex_session_id"], "visible-thread")
+        self.assertEqual(read_json(Path(meta["run_path"]))["argv"][-3:],
+                         ["resume", "visible-thread", "-"])
+
+    def test_operational_precheck_allows_remote_artifacts_and_info_blockers(self):
+        from codex_runner import finalize_and_precheck
+
+        self.order = WorkOrder.from_dict({
+            **self.order.to_dict(),
+            "order_id": "sim-ops-refill-test-1",
+            "category": "sim_ops",
+        })
+        meta = self.launch()
+        self.complete(meta, changed=[])
+        last_msg = Path(meta["last_msg_path"])
+        payload = read_json(last_msg)
+        payload["changed_files"] = []
+        payload["artifacts_produced"] = ["supply-approved/abc123.json", "auto-r06-t-lhs04-b-x3"]
+        payload["blockers"] = ["remaining unrelated case waiting"]
+        write_json(last_msg, payload)
+        receipt = finalize_and_precheck(self.cfg, self.order, meta)
+        self.assertTrue(receipt.precheck_passed, receipt.precheck_errors)
+        self.assertEqual(receipt.status, "passed")
+
     def test_precheck_rejects_unverified_checks_and_out_of_scope_changes(self):
         from codex_runner import finalize_and_precheck
 

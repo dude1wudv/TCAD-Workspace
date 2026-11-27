@@ -13,4 +13,4 @@
    - 严守留出隔离：在 `freeze_manifest.json` 核验落盘前绝不读取 `HR`/`HP` 留出标签；绝不谎报通过或把短探针/工程 `COLLECTED` 写成科学验收通过。
 4. **最小清晰实现（KISS / YAGNI）与硬验证交卷**：
    - 禁止过度抽象、冗余包装或静默吞错；
-   - 退出前必须将工单 `acceptance_checks` 中的每条命令作为独立单行命令原样执行，严格按 `order_result.schema.json` 输出最终 JSON（`changed_files` 必须与实际 Git 变更一致；纯服务器运维/训练工单允许 `changed_files` 为空列表 `[]`）。
+   - 退出前必须将工单 `acceptance_checks` 中的每条命令作为独立单行命令原样执行，严格按 `order_result.schema.json` 输出最终 JSON（`changed_files` 必须与实际 Git 变更一致；纯服务器运维/训练工单允许 `changed_files` 为空列表 `[]`；`artifacts_produced` 仅填本地仓库内新增或更新的文件路径，服务器回执与运行 ID 写在 `summary` 中；当工单本身已完成 `outcome="completed"` 时，其余无关在途算例的说明请写在 `summary` 中，`blockers` 保持空列表 `[]`）。

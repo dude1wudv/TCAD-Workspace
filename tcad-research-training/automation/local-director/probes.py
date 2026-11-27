@@ -23,9 +23,11 @@ _SSH_SECTIONS = (
 )
 _CASE_WAITS_SECTION = "__DIRECTOR_CASE_WAITS__"
 _DISK_SECTION = "__DIRECTOR_SERVER_DISK__"
+_GDRIVE_SECTION = "__DIRECTOR_GDRIVE_OFFLOAD__"
 _MAINTENANCE_SUMMARY_PATH = "/var/lib/tcad-run-maintenance/summary.json"
 _RESPONSE_SUPPLY_PATH = "/home/tcad/course-workspace/local_runtime/server-codex/r06-lhs-response-supply-r1/response-status.json"
 _CASE_WAITS_PATH = "/home/tcad/course-workspace/local_runtime/server-codex/r06-case-reconciliation-r1/case-waits.json"
+_RUNS_DIR = "/home/tcad/course-workspace/local_runtime/cloud-benchmark/centos79-guest-20261116/runs"
 _NOISE_KEYS = {
     "utc", "timestamp", "time", "source", "errors", "events", "progress", "metrics",
     "system", "resources", "virtual_machine", "activity_feed", "ready_since", "elapsed", "duration",
@@ -107,6 +109,8 @@ def _server_script(cfg: Config) -> str:
         f"cat -- {shlex.quote(_CASE_WAITS_PATH)} 2>/dev/null || printf '{{}}'",
         f"printf '\\n%s\\n' {_DISK_SECTION}",
         "df -B1 --output=avail / 2>/dev/null | tail -n 1 || true",
+        f"printf '\\n%s\\n' {_GDRIVE_SECTION}",
+        f"find {shlex.quote(_RUNS_DIR)} -maxdepth 2 -name 'gdrive-offload.json' 2>/dev/null | wc -l || echo 0",
     ])
     return "\n".join(script)
 
@@ -214,13 +218,44 @@ def summarize_server(snapshot: dict) -> dict:
             elif block in {"T", "S", "R", "AL"} and status in {"acceptance_recorded", "zero_source_reused"}:
                 block_accepted[block] += 1
 
+    s_complete = block_accepted.get("S") == 150
+    if blocked_map:
+        actionable_blocked_count = sum(
+            1
+            for key, reason in blocked_map.items()
+            if not (
+                s_complete
+                and isinstance(key, str)
+                and key.endswith("/S")
+                and "Drive archive download failed" in str(reason)
+            )
+        )
+    else:
+        actionable_blocked_count = blocked_count
+
+    if wait_cases:
+        has_actionable_supply = (
+            awaiting_acceptance > 0
+            or decision_pending > 0
+            or missing_material > 0
+            or actionable_blocked_count > 0
+        )
+    else:
+        has_actionable_supply = (
+            actionable_blocked_count > 0
+            or awaiting_acceptance > 0
+            or decision_pending > 0
+            or missing_material > 0
+            or slots_total > 0
+        )
+
     starved = bool(
         snapshot.get("online")
         and snapshot.get("service_active") is not False
         and free_slots >= 2
         and ready == 0
         and (not preparing or awaiting_acceptance > 0 or decision_pending > 0)
-        and (blocked_count > 0 or awaiting_acceptance > 0 or decision_pending > 0 or missing_material > 0 or slots_total > 0)
+        and has_actionable_supply
     )
     result = {
         "running": running,
@@ -231,6 +266,7 @@ def summarize_server(snapshot: dict) -> dict:
         "starved": starved,
         "quarantined": quarantined,
         "blocked_count": blocked_count,
+        "actionable_blocked_count": actionable_blocked_count,
         "missing_material": missing_material,
         "awaiting_acceptance": awaiting_acceptance,
         "decision_pending": decision_pending,
@@ -254,6 +290,8 @@ def summarize_server(snapshot: dict) -> dict:
         result["block_accepted_counts"] = block_accepted
     if type(snapshot.get("server_free_bytes")) is int and snapshot["server_free_bytes"] >= 0:
         result["server_free_bytes"] = snapshot["server_free_bytes"]
+    if type(snapshot.get("server_cloud_verified")) is int and snapshot["server_cloud_verified"] >= 0:
+        result["server_cloud_verified"] = snapshot["server_cloud_verified"]
     return result
 
 
@@ -279,12 +317,17 @@ def _ssh_snapshot(cfg: Config, snapshot: dict) -> bool:
     explain, maint_marker, stream = stream.partition(f"\n{_SSH_SECTIONS[3]}\n")
     maintenance, resp_marker, rest = stream.partition(f"\n{_SSH_SECTIONS[4]}\n") if maint_marker else ("", "", "")
     response_supply, waits_marker, rest2 = rest.partition(f"\n{_CASE_WAITS_SECTION}\n") if resp_marker else ("", "", "")
-    case_waits_text, disk_marker, disk_text = rest2.partition(f"\n{_DISK_SECTION}\n") if waits_marker else ("", "", "")
+    case_waits_text, disk_marker, disk_rest = rest2.partition(f"\n{_DISK_SECTION}\n") if waits_marker else ("", "", "")
+    disk_text, gdrive_marker, gdrive_text = disk_rest.partition(f"\n{_GDRIVE_SECTION}\n") if disk_marker else ("", "", "")
     snapshot.update(online=True, source="ssh")
     if disk_marker:
         raw_avail = disk_text.strip().splitlines()[-1].strip() if disk_text.strip() else ""
         if raw_avail.isdigit():
             snapshot["server_free_bytes"] = int(raw_avail)
+    if gdrive_marker:
+        raw_gdrive = gdrive_text.strip().splitlines()[-1].strip() if gdrive_text.strip() else ""
+        if raw_gdrive.isdigit():
+            snapshot["server_cloud_verified"] = int(raw_gdrive)
     service = service.strip()
     if service in {"active", "inactive", "failed", "activating", "deactivating", "reloading", "maintenance"}:
         snapshot["service_active"] = service in {"active", "reloading"}

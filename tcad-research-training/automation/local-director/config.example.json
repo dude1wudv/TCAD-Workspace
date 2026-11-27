@@ -16,6 +16,7 @@
   "codex_model": "auto/gpt-6.2-sol",
   "codex_effort": "high",
   "codex_sandbox": "danger-full-access",
+  "codex_visible_thread_id": "",
   "codex_supervisor_model": "auto/gpt-6.2-sol",
   "codex_supervisor_effort": "high",
   "codex_supervisor_sandbox": "read-only",

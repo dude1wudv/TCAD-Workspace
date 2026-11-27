@@ -225,6 +225,10 @@ def observe_campaign(cfg, campaign, server, now) -> bool:
             LOG.warning("Campaign archive summary has invalid counts.")
     elif archive is not None:
         LOG.warning("Campaign archive summary has an unexpected schema.")
+    cloud_live = _metric(summary.get("server_cloud_verified"))
+    if cloud_live is not None and cloud_live > campaign["archive"]["cloud_verified"]:
+        campaign["archive"]["cloud_verified"] = cloud_live
+        changed = True
     if changed:
         campaign["last_progress_at"] = now.astimezone(timezone.utc).isoformat(timespec="seconds")
     return changed

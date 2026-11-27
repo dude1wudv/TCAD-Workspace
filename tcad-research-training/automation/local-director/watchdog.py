@@ -17,8 +17,10 @@ from campaign_fsm import (
     ensure_campaign_files,
     is_operational_task,
     mark_task,
+    next_phase,
     operational_work_order,
     recompute_gates,
+    record_operational_cooldown,
     register_blocked,
     save_backlog,
     save_campaign,
@@ -256,13 +258,14 @@ def _delivery(cfg, state):
             "checks_passed": sum(check.get("passed") is True for check in receipt.verification_results)}
 
 
-def _reject_campaign_task(cfg, state, campaign, backlog, reason):
+def _reject_campaign_task(cfg, state, campaign, backlog, reason, *, server=None, now=None):
     from director_ctl import cancel
 
     active = state.active_order
     task_id = active["campaign_task"]
     cancel(cfg, state, SimpleNamespace(order=active["order"]["order_id"], reason=reason))
     if is_operational_task(task_id):
+        record_operational_cooldown(campaign, task_id, server, now=now)
         return
     task = mark_task(backlog, task_id, "pending", error=reason)
     if task["failures"] >= cfg.codex_max_task_failures:
@@ -292,7 +295,7 @@ def _execute_decision(cfg, state, campaign, backlog, decision, delivery, now, *,
             if urgent:
                 dispatch_args["urgent"] = True
             dispatch(cfg, state, order, **dispatch_args)
-            return True
+            return False
         task = next(item for item in backlog["tasks"] if item["task"] == task_id)
         _check_campaign_dispatch(campaign, task_id)
         order = WorkOrder.from_dict(task_work_order(task, created_by_turn="campaign-supervisor",
@@ -396,9 +399,46 @@ def _tick_state(cfg, state, server, thesis, now, dry_run, force_trigger, schedul
     if observed_progress:
         campaign["wakeups_without_progress"] = 0
     delivery = _delivery(cfg, state)
-    if not dry_run and cfg.campaign_execution_enabled and delivery is not None and not delivery["passed"]:
-        _reject_campaign_task(cfg, state, campaign, backlog, "工单未通过确定性验收；查看对应收据或启动错误记录。")
-        delivery = None
+    if not dry_run and cfg.campaign_execution_enabled and delivery is not None:
+        if not delivery["passed"]:
+            _reject_campaign_task(
+                cfg, state, campaign, backlog,
+                "工单未通过确定性验收；查看对应收据或启动错误记录。",
+                server=server, now=now,
+            )
+            delivery = None
+        else:
+            active_task = (state.active_order or {}).get("campaign_task")
+            auto_decision = {
+                "action": "accept",
+                "task": active_task,
+                "phase": campaign["phase"],
+                "reason": "确定性预检与验收命令已通过，零配额自动签收。",
+                "next_check_seconds": 60,
+                "blocked_reason": None,
+            }
+            _execute_decision(cfg, state, campaign, backlog, auto_decision, delivery, now, urgent=True)
+            if is_operational_task(active_task):
+                record_operational_cooldown(campaign, active_task, server, now=now)
+            campaign["wakeups_without_progress"] = 0
+            campaign["last_progress_at"] = _timestamp(now)
+            state.last_decision = auto_decision["reason"]
+            append_jsonl(
+                cfg.state_dir / "turns.jsonl",
+                {"status": "auto_accept", "action": "accept", "task": active_task,
+                 "reason": auto_decision["reason"], "at": _timestamp(now)},
+            )
+            delivery = None
+    if not dry_run and cfg.campaign_execution_enabled and next_phase(campaign) is not None:
+        advanced_to = advance_phase(campaign, now=_timestamp(now))
+        if advanced_to:
+            note = f"门控已满足，自动推进阶段至 {advanced_to}。"
+            state.last_decision = note
+            append_jsonl(
+                cfg.state_dir / "turns.jsonl",
+                {"status": "auto_advance", "action": "advance", "task": None,
+                 "phase": advanced_to, "reason": note, "at": _timestamp(now)},
+            )
     is_actionable, action_reason = actionable(
         cfg,
         campaign,
@@ -606,6 +646,7 @@ def main(argv=None):
         try:
             with _acquire_watchdog_lock(cfg.state_dir / "watchdog.lock", reclaim_orphan=bool(args.exit_with_parent)):
                 while True:
+                    cfg = load_config(args.config)
                     if cfg.campaign_expired(datetime.now(timezone.utc)):
                         print('{"status": "campaign_expired"}', flush=True)
                         return 0

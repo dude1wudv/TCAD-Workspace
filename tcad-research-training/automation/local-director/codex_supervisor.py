@@ -14,6 +14,7 @@ from campaign_fsm import (
     cooldown_active,
     is_operational_task,
     next_phase,
+    operational_cooldown_active,
     operational_tasks,
     public_campaign_with_metrics,
     ready_tasks,
@@ -70,20 +71,26 @@ def actionable(
     if isinstance(active, dict) and active.get("status") in {"awaiting_review", "stalled"}:
         return True, "worker_receipt_or_stall"
     summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
-    if server.get("online") is False or server.get("service_active") is False:
+    if (server.get("online") is False or server.get("service_active") is False or summary.get("quarantined", 0) > 0) and not operational_cooldown_active(campaign, "sim-repair", server, now=moment):
         return True, "server_health"
     disk = server.get("disks", {}).get("server_free_bytes")
     if disk is None:
         disk = summary.get("server_free_bytes")
-    if type(disk) is int and disk < 35 * 1024**3:
+    if type(disk) is int and disk < 35 * 1024**3 and not operational_cooldown_active(campaign, "archive-remote-sync", server, now=moment):
         return True, "disk_floor"
-    if (summary.get("starved") or (summary.get("free_slots", 0) >= 2 and not summary.get("ready"))
-            or summary.get("awaiting_acceptance") or summary.get("decision_pending")
-            or summary.get("missing_material")):
+    actionable_blocked = summary.get("actionable_blocked_count", summary.get("blocked_count", 0))
+    if (
+        (summary.get("starved")
+         or (summary.get("free_slots", 0) >= 2 and not summary.get("ready") and actionable_blocked > 0)
+         or summary.get("awaiting_acceptance")
+         or summary.get("decision_pending")
+         or summary.get("missing_material"))
+        and not operational_cooldown_active(campaign, "sim-ops-refill", server, now=moment)
+    ):
         return True, "simulation_supply"
     if next_phase(campaign):
         return True, "phase_gate"
-    if ready_tasks(backlog, campaign["phase"]) or operational_tasks(campaign["phase"], server):
+    if ready_tasks(backlog, campaign["phase"]) or operational_tasks(campaign["phase"], server, campaign=campaign, now=moment):
         return True, "backlog_ready"
     if scheduled_pulse and _deep_check_due(campaign, moment):
         return True, "deep_check_due"
@@ -101,7 +108,7 @@ def _public_request(
     active = director_state.get("active_order") if isinstance(director_state, dict) else None
     order = active.get("order") if isinstance(active, dict) else None
     summary = server.get("summary") if isinstance(server.get("summary"), dict) else {}
-    ops_ready = operational_tasks(campaign["phase"], server)
+    ops_ready = operational_tasks(campaign["phase"], server, campaign=campaign)
     backlog_ready = [task["task"] for task in ready_tasks(backlog, campaign["phase"])]
     return {
         "reason": reason,

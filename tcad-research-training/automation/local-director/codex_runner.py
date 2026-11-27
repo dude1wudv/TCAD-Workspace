@@ -14,6 +14,7 @@ from pathlib import Path
 from uuid import uuid4
 
 from config import BASE_DIR, Config
+from notifier import find_sensitive
 from runtime import hidden_subprocess_kwargs, silent_python_executable
 from schemas import DeliveryReceipt, WorkOrder, atomic_write, parse_time, read_json, utc_now, write_json
 
@@ -203,7 +204,7 @@ def launch_worker(
         if previous_receipt is not None:
             raise ValueError("first attempt cannot resume a prior receipt")
         baseline = {"head": head, "files": _snapshot(root), "order": order_data}
-        session = None
+        session = cfg.codex_visible_thread_id or None
     else:
         baseline = read_json(baseline_path)
         if baseline["head"] != head or baseline["order"] != order_data:
@@ -221,7 +222,11 @@ def launch_worker(
         previous_exit = _read_exit(previous_run)
         if not _exit_confirmed(previous_exit) and not _tree_stopped(previous_run):
             raise ValueError("preceding worker exit was not confirmed")
-        session = previous_receipt.codex_session_id if _valid_session(previous_receipt.codex_session_id) else None
+        session = (
+            previous_receipt.codex_session_id
+            if _valid_session(previous_receipt.codex_session_id)
+            else (cfg.codex_visible_thread_id or None)
+        )
 
     run_path = folder / "run.json"
     prompt_path = folder / "prompt.md"
@@ -753,7 +758,12 @@ def finalize_and_precheck(cfg: Config, order: WorkOrder, run_meta: dict) -> Deli
         manifest_errors.append(f"invalid final result: {exc}")
     if result and result["outcome"] != "completed":
         errors.append(f"Codex outcome: {result['outcome']}")
-    if result.get("blockers"):
+    allow_info_blockers = (
+        bool(result)
+        and result.get("outcome") == "completed"
+        and order.category in {"sim_ops", "sim_repair", "data_extract", "predictor"}
+    )
+    if result.get("blockers") and not allow_info_blockers:
         errors.append("Codex reported blockers")
 
     events_path = Path(run_meta["events_path"])
@@ -780,7 +790,12 @@ def finalize_and_precheck(cfg: Config, order: WorkOrder, run_meta: dict) -> Deli
     if result and {name.replace("\\", "/") for name in result["changed_files"]} != set(changed):
         manifest_errors.append("reported changed_files do not match the Git delta from dispatch")
     artifacts = result.get("artifacts_produced", [])
+    remote_ops = order.category in {"sim_ops", "sim_repair"}
     for artifact in artifacts:
+        if remote_ops:
+            if find_sensitive(str(artifact)) or (cfg.server_ssh_target and cfg.server_ssh_target in str(artifact)):
+                manifest_errors.append(f"artifact {artifact}: sensitive text")
+            continue
         issue = _path_error(root, artifact.replace("\\", "/"), order.allowed_paths, must_exist=True, ssh_target=cfg.server_ssh_target)
         if issue:
             manifest_errors.append(f"artifact {artifact}: {issue}")
@@ -846,7 +861,12 @@ def commit_paths(cfg: Config, order: WorkOrder, run_meta: dict, receipt: Deliver
         entry = current.get(name)
         if issue or entry is None or entry != approved[name]:
             raise ValueError(f"approved path failed revalidation: {name}: {issue or 'Git state changed'}")
+    remote_ops = order.category in {"sim_ops", "sim_repair"}
     for artifact in manifest["receipt"]["artifacts_produced"]:
+        if remote_ops:
+            if find_sensitive(str(artifact)) or (cfg.server_ssh_target and cfg.server_ssh_target in str(artifact)):
+                raise ValueError(f"artifact {artifact}: sensitive text")
+            continue
         issue = _path_error(root, artifact.replace("\\", "/"), order.allowed_paths, must_exist=True, ssh_target=cfg.server_ssh_target)
         if issue:
             raise ValueError(f"artifact {artifact}: {issue}")
