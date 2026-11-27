@@ -38,6 +38,7 @@ class Config:
     codex_model: str = "auto/gpt-6.2-sol"
     codex_effort: str = "high"
     codex_sandbox: str = "danger-full-access"
+    codex_visible_thread_id: str = ""
     codex_supervisor_model: str = "auto/gpt-6.2-sol"
     codex_supervisor_effort: str = "high"
     codex_supervisor_sandbox: str = "read-only"
@@ -175,6 +176,9 @@ def load_config(path: str | Path | None = None) -> Config:
         raise ValueError("invalid Codex sandbox")
     if cfg.codex_supervisor_sandbox not in {"read-only", "workspace-write"}:
         raise ValueError("Codex supervisor must use read-only or workspace-write sandbox")
+    if cfg.codex_visible_thread_id and not re.fullmatch(
+            r"[A-Za-z0-9][A-Za-z0-9_-]{0,127}", cfg.codex_visible_thread_id):
+        raise ValueError("invalid visible Codex thread ID")
     try:
         cfg.local_time(datetime.now(timezone.utc))
     except ZoneInfoNotFoundError as error:
